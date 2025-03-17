@@ -39,6 +39,7 @@ The following resources are managed through Flux in this repository:
 - **Cloudflared**
 - **Flaresolverr**
 - **Grafana**
+- **Harbor**
 - **Home Assistant**
 - **Jellyfin**
 - **Jellyseerr**
@@ -50,7 +51,6 @@ The following resources are managed through Flux in this repository:
 - **Qbittorrent**
 - **Radarr**
 - **Redbot**
-- **Registry**
 - **Requestrr**
 - **Sonarr**
 - **Suwayomi**
