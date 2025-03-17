@@ -53,6 +53,7 @@ The following resources are managed through Flux in this repository:
 - **Radarr**
 - **Redbot**
 - **Requestrr**
+- **SABnzbd**
 - **Sonarr**
 - **Suwayomi**
 - **Traefik**
