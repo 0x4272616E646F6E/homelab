@@ -34,20 +34,13 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
-- **Authentik**
+**Apps**
 - **Bazarr**
-- **Cert Manager**
-- **Cloudflared**
 - **Flaresolverr**
-- **Grafana**
-- **Harbor**
 - **Home Assistant**
 - **Jellyfin**
 - **Jellyseerr**
-- **MetalLB**
-- **OpenBao**
 - **Paperless-NGX**
-- **Prometheus**
 - **Prowlarr**
 - **Qbittorrent**
 - **Radarr**
@@ -56,6 +49,17 @@ The following resources are managed through Flux in this repository:
 - **SABnzbd**
 - **Sonarr**
 - **Suwayomi**
+
+**Infrastructure**
+- **Authentik**
+- **Cert Manager**
+- **Cloudflared**
+- **Gluetun**
+- **Grafana**
+- **Harbor**
+- **MetalLB**
+- **OpenBao**
+- **Prometheus**
 - **Traefik**
 - **Vector**
 - **Wazuh**
