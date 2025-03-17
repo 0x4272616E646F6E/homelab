@@ -36,6 +36,7 @@ The following resources are managed through Flux in this repository:
 
 - **Authentik**
 - **Bazarr**
+- **Cert Manager**
 - **Cloudflared**
 - **Flaresolverr**
 - **Grafana**
