@@ -34,7 +34,7 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
-- **Authelia**
+- **Authentik**
 - **Bazarr**
 - **Cloudflared**
 - **Flaresolverr**
