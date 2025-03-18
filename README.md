@@ -1,0 +1,73 @@
+# Flux
+
+This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux continuously monitors this repository and automatically applies changes to your Kubernetes cluster.
+
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Flux Setup](#flux-setup)
+3. [Resources Managed](#resources-managed)
+4. [Contributing](#contributing)
+5. [License](#license)
+
+
+## Prerequisites
+
+Before using this repository, ensure that you have the following:
+
+- **Kubernetes Cluster**: A working Kubernetes cluster.
+- **Flux CLI**: Install the Flux CLI.
+-	**Git**: You should have Git installed to clone and manage the repository.
+-	**Kubectl**: To interact with the Kubernetes cluster.
+
+## Flux Setup
+
+This repository uses Flux to manage the deployment of Kubernetes resources. Flux continuously watches this repository for changes and automatically applies them to the cluster. Here’s a breakdown of how Flux is set up in this repository:
+	•	GitRepository: A custom Flux resource that tells Flux where the Git repository is located, which branch to track, and the synchronization interval.
+	•	Kustomization: A Flux resource used to define what paths and resources to apply to the cluster.
+
+These resources are defined in the following files:
+	•	flux-system/flux-gitrepository.yaml - Defines the Git repository for Flux to track.
+	•	flux-system/flux-kustomization.yaml - Defines the Kustomization to apply the manifests located in this repository.
+
+
+## Resources Managed
+
+The following resources are managed through Flux in this repository:
+
+**Apps**
+- **Bazarr**
+- **Flaresolverr**
+- **Home Assistant**
+- **Jellyfin**
+- **Jellyseerr**
+- **Paperless-NGX**
+- **Prowlarr**
+- **Qbittorrent**
+- **Radarr**
+- **Redbot**
+- **Requestrr**
+- **SABnzbd**
+- **Sonarr**
+- **Suwayomi**
+
+**Infrastructure**
+- **Authentik**
+- **Cert Manager**
+- **Cloudflared**
+- **Gluetun**
+- **Grafana**
+- **Harbor**
+- **MetalLB**
+- **OpenBao**
+- **Prometheus**
+- **Traefik**
+- **Vector**
+- **Wazuh**
+
+## Contributing
+
+If you would like to contribute to this repository, feel free to fork it, create a branch, and submit a pull request. Please follow the guidelines for setting up new Kubernetes resources and ensure that all changes are properly documented.
+
+## License
+
+This repository is licensed under the MIT License.
