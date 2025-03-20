@@ -5,4 +5,4 @@ metadata:
   namespace: infrastructure
 spec:
   addresses:
-  - 10.0.0.249/32
+  - 10.0.0.249
