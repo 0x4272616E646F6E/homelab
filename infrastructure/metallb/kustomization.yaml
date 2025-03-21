@@ -5,9 +5,13 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  path: ./metallb
+  path: ./infrastructure/metallb
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   namespace: metallb-system
+  resources:
+    - github.com/metallb/metallb/config/native?ref=v0.14.9
+    - ip_address_pool.yaml
+    - l2_advertisement.yaml
