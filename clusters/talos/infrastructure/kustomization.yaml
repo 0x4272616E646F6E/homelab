@@ -15,4 +15,3 @@ spec:
     - name: flux-system
   resources:
     - namespace.yaml
-    - ./infrastructure

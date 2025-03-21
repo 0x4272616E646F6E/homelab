@@ -15,4 +15,3 @@ spec:
     - name: infrastructure
   resources:
     - namespace.yaml
-    - ./apps
