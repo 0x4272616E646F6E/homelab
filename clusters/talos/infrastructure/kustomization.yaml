@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m0s
-  path: ./infrastructure
+  path: ./clusters/talos/infrastructure
   prune: true
   sourceRef:
     kind: GitRepository
