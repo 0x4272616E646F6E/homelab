@@ -13,5 +13,3 @@ spec:
   namespace: infrastructure
   dependsOn:
     - name: flux-system
-  resources:
-    - namespace.yaml
