@@ -9,8 +9,6 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 	- [Prerequisites](#prerequisites)
 	- [Flux Setup](#flux-setup)
 	- [Resources Managed](#resources-managed)
-		- [Apps](#apps)
-		- [Infrastructure](#infrastructure)
 	- [Contributing](#contributing)
 	- [License](#license)
 
@@ -39,14 +37,21 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
-### Apps
-
+- **Authentik**
 - **Bazarr**
+- **Cert Manager**
+- **Cloudflared**
 - **Flaresolverr**
+- **Gluetun**
+- **Grafana**
 - **Home Assistant**
 - **Jellyfin**
 - **Jellyseerr**
+- **MetalLB**
+- **Nexus**
+- **OpenBao**
 - **Paperless-NGX**
+- **Prometheus**
 - **Prowlarr**
 - **Qbittorrent**
 - **Radarr**
@@ -55,18 +60,6 @@ The following resources are managed through Flux in this repository:
 - **SABnzbd**
 - **Sonarr**
 - **Suwayomi**
-
-### Infrastructure
-
-- **Authentik**
-- **Cert Manager**
-- **Cloudflared**
-- **Gluetun**
-- **Grafana**
-- **Harbor**
-- **MetalLB**
-- **OpenBao**
-- **Prometheus**
 - **Traefik**
 - **Vector**
 - **Wazuh**
