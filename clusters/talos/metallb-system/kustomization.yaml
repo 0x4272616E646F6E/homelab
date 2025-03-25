@@ -3,10 +3,10 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - exclude-l2-config.yaml
-- /crd
-- /rbac
-- /controllers
-- /webhook
+- crd/
+- rbac/
+- controllers/
+- webhook/
 - ip_address_pool.yaml
 - l2_advertisement.yaml
 namespace: metallb-system
