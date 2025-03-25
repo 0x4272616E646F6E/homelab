@@ -2,11 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - namespace.yaml
-- exclude-l2-config.yaml
-- crd/
-- rbac/
-- controllers/
-- webhook/
+- metallb-native.yaml
 - ip_address_pool.yaml
 - l2_advertisement.yaml
 namespace: metallb-system
