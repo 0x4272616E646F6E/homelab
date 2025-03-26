@@ -10,5 +10,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  depends_on:
+  dependsOn:
   - name: metallb-crds
