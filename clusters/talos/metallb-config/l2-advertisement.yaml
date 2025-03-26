@@ -1,8 +1,8 @@
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: default-l2-advertisement
+  name: metallb-l2-advertisement
   namespace: metallb-system
 spec:
   ipAddressPools:
-  - default-pool
+  - metallb-pool
