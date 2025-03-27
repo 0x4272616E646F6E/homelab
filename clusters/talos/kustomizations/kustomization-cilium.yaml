@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./cilium"
+  path: "./clusters/talos/cilium"
   prune: true
   sourceRef:
     kind: GitRepository
