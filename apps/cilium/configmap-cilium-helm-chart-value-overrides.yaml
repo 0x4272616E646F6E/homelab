@@ -7,7 +7,7 @@ data:
   values.yaml: |-
       agent-not-ready-taint-key: node.cilium.io/agent-not-ready
       arping-refresh-period: 30s
-      auto-direct-node-routes: "true"
+      auto-direct-node-routes: "false"
       bpf-events-drop-enabled: "true"
       bpf-events-policy-verdict-enabled: "true"
       bpf-events-trace-enabled: "true"
