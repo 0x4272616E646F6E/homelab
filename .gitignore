@@ -1,2 +1,37 @@
-bin/
-*.env
+# Ignore editor-specific files
+.vscode/
+
+# Ignore MacOS-specific files
+.DS_Store
+
+# Ignore system files
+Thumbs.db
+
+# Ignore Flux generated files or temp files
+flux-system/*.yaml
+flux-system/*.kustomization.yaml
+flux-system/*.gitops.yaml
+
+# Ignore backup and swap files
+*~
+*.bak
+*.swp
+
+# Ignore Helm chart dependencies
+*/charts/
+*/.helmignore
+
+# Ignore temporary files from Git operations
+*.orig
+*.rej
+
+# Ignore local environment files (e.g., Docker, Kubernetes configs)
+.env
+docker-compose.override.yml
+.kube/
+
+# Ignore any logs
+*.log
+
+# Ignore any generated configuration files
+.kustomize/
