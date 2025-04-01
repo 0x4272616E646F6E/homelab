@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: harbor
+  namespace: development
+spec:
+  chart:
+    spec:
+      chart: harbor
+      version: 1.16.2
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: harbor
+  valuesFrom:
+  - kind: ConfigMap
+    name: harbor-helm-chart-value-overrides
+    valuesKey: values.yaml

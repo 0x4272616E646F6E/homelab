@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: openbao
+  namespace: openbao
+spec:
+  chart:
+    spec:
+      chart: openbao
+      version: 2.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: openbao
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: openbao
+  valuesFrom:
+  - kind: ConfigMap
+    name: openbao-helm-chart-value-overrides
+    valuesKey: values.yaml
