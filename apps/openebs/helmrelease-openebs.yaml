@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: openebs
+  namespace: openebs
+spec:
+  chart:
+    spec:
+      chart: openebs
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: openebs
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: openebs
+  valuesFrom:
+  - kind: ConfigMap
+    name: openebs-helm-chart-value-overrides
+    valuesKey: values.yaml

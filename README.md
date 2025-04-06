@@ -40,16 +40,18 @@ The following resources are managed through Flux in this repository:
 - **Authentik**
 - **Bazarr**
 - **Cert Manager**
+- **Cilium**
 - **Cloudflared**
+- **Falco**
 - **Flaresolverr**
 - **Gluetun**
 - **Grafana**
+- **Harbor**
 - **Home Assistant**
 - **Jellyfin**
 - **Jellyseerr**
-- **MetalLB**
-- **Nexus**
 - **OpenBao**
+- **OpebEBS**
 - **Paperless-NGX**
 - **Prometheus**
 - **Prowlarr**
