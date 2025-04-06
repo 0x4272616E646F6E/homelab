@@ -16,9 +16,6 @@ data:
         rbac:
           create: true
 
-      ndm:
-        enabled: true
-
       # Refer to https://github.com/openebs/zfs-localpv/blob/v2.7.1/deploy/helm/charts/values.yaml for complete set of values.
       zfs-localpv:
         crds:
