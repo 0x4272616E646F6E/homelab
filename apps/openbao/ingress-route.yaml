@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: openbao-https
+  namespace: openbao
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`openbao.oglesby.io`)
+      kind: Rule
+      services:
+        - name: openbao
+          port: 8200
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: openbao-http
+  namespace: openbao
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`openbao.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: openbao
+          port: 8200
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: openbao
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sabnzbd-https
+  namespace: download
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`sabnzbd.oglesby.io`)
+      kind: Rule
+      services:
+        - name: sabnzbd
+          port: 8080
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: sabnzbd-http
+  namespace: download
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`sabnzbd.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: sabnzbd
+          port: 8080
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: download
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

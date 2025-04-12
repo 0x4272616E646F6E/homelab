@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bazarr-https
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`bazarr.oglesby.io`)
+      kind: Rule
+      services:
+        - name: bazarr
+          port: 6767
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: bazarr-http
+  namespace: media
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`bazarr.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: bazarr
+          port: 6767
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: media
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prowlarr-https
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`prowlarr.oglesby.io`)
+      kind: Rule
+      services:
+        - name: prowlarr
+          port: 9696
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prowlarr-http
+  namespace: media
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`prowlarr.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: prowlarr
+          port: 9696
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: media
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

@@ -16,7 +16,7 @@ data:
         enabled: true
 
         # -- The namespace to deploy to. Defaults to the `helm` installation namespace.
-        namespace: ""
+        namespace: "openbao"
 
         # -- Image pull secret to use for registry authentication.
         # Alternatively, the value may be specified as an array of strings.
@@ -788,7 +788,7 @@ data:
           mountPath: "/openbao/data"
           # Name of the storage class to use.  If null it will use the
           # configured default Storage Class.
-          storageClass: null
+          storageClass: local-block
           # Access Mode of the storage device being used for the PVC
           accessMode: ReadWriteOnce
           # Annotations to apply to the PVC
@@ -817,7 +817,7 @@ data:
           mountPath: "/openbao/audit"
           # Name of the storage class to use.  If null it will use the
           # configured default Storage Class.
-          storageClass: null
+          storageClass: local-block 
           # Access Mode of the storage device being used for the PVC
           accessMode: ReadWriteOnce
           # Annotations to apply to the PVC
@@ -891,7 +891,7 @@ data:
         # different HA backend.
         ha:
           enabled: false
-          replicas: 3
+          replicas: 1
 
           # Set the api_addr configuration for OpenBao HA
           # See https://openbao.org/docs/configuration#api_addr

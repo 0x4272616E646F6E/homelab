@@ -827,7 +827,7 @@ data:
         existingClaim: ""
         accessMode: ReadWriteOnce
         size: 128Mi
-        storageClass: ""
+        storageClass: "local-block"
         volumeName: ""
         path: /data
         annotations: {}

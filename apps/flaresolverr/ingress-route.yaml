@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: flaresolverr-https
+  namespace: download
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`flaresolverr.oglesby.io`)
+      kind: Rule
+      services:
+        - name: flaresolverr
+          port: 8191
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: flaresolverr-http
+  namespace: download
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`flaresolverr.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: flaresolverr
+          port: 8191
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: download
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

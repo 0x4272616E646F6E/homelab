@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-https
+  namespace: automation
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`homeassistant.oglesby.io`)
+      kind: Rule
+      services:
+        - name: homeassistant
+          port: 8123
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-http
+  namespace: automation
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`homeassistant.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: homeassistant
+          port: 8123
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: automation
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true

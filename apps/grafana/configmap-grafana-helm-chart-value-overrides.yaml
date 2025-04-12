@@ -422,7 +422,7 @@ data:
       persistence:
         type: pvc
         enabled: false
-        # storageClassName: default
+        # storageClassName: local-block
         accessModes:
           - ReadWriteOnce
         size: 10Gi

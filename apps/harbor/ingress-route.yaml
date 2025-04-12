@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-https
+  namespace: development
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`harbor.oglesby.io`)
+      kind: Rule
+      services:
+        - name: harbor
+          port: 80
+  tls:
+    certResolver: letsencrypt
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-http
+  namespace: development
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`harbor.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - name: harbor
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: development
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
