@@ -422,7 +422,7 @@ data:
       persistence:
         type: pvc
         enabled: false
-        # storageClassName: local-block
+        storageClassName: longhorn-static
         accessModes:
           - ReadWriteOnce
         size: 10Gi

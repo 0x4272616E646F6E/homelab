@@ -788,7 +788,7 @@ data:
           mountPath: "/openbao/data"
           # Name of the storage class to use.  If null it will use the
           # configured default Storage Class.
-          storageClass: local-block
+          storageClass: longhorn-static
           # Access Mode of the storage device being used for the PVC
           accessMode: ReadWriteOnce
           # Annotations to apply to the PVC
@@ -817,7 +817,7 @@ data:
           mountPath: "/openbao/audit"
           # Name of the storage class to use.  If null it will use the
           # configured default Storage Class.
-          storageClass: local-block 
+          storageClass: longhorn-static
           # Access Mode of the storage device being used for the PVC
           accessMode: ReadWriteOnce
           # Annotations to apply to the PVC

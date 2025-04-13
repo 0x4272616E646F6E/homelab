@@ -414,7 +414,7 @@ data:
         existingClaim: ""
         # persistence.storageClassName -- Specifies the storageClassName for PersistentVolumeClaims. Valid for the
         # "Aggregator" role.
-        # storageClassName: local-block
+        # storageClassName: longhorn-static
 
         # persistence.retentionPolicy -- Configure a [PersistentVolumeClaimRetentionPolicy](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#persistentvolumeclaim-retention)
         # for Vector's PersistentVolumeClaims. Valid for the "Aggregator" role.

@@ -827,7 +827,7 @@ data:
         existingClaim: ""
         accessMode: ReadWriteOnce
         size: 128Mi
-        storageClass: "local-block"
+        storageClass: "longhorn-static"
         volumeName: ""
         path: /data
         annotations: {}
