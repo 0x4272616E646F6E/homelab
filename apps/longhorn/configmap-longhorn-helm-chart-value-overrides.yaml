@@ -192,7 +192,7 @@ data:
         # -- Replica count of the CSI Provisioner. When unspecified, Longhorn uses the default value ("3").
         provisionerReplicaCount: 1
         # -- Replica count of the CSI Resizer. When unspecified, Longhorn uses the default value ("3").
-        resizerReplicaCount: ~
+        resizerReplicaCount: 1
         # -- Replica count of the CSI Snapshotter. When unspecified, Longhorn uses the default value ("3").
         snapshotterReplicaCount: 1
       defaultSettings:
