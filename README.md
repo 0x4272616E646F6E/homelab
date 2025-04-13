@@ -5,12 +5,12 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 ## Table of Contents
 
 - [Flux](#flux)
-	- [Table of Contents](#table-of-contents)
-	- [Prerequisites](#prerequisites)
-	- [Flux Setup](#flux-setup)
-	- [Resources Managed](#resources-managed)
-	- [Contributing](#contributing)
-	- [License](#license)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Flux Setup](#flux-setup)
+  - [Resources Managed](#resources-managed)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ## Prerequisites
 
@@ -18,8 +18,8 @@ Before using this repository, ensure that you have the following:
 
 - **Kubernetes Cluster**: A working Kubernetes cluster.
 - **Flux CLI**: Install the Flux CLI.
--	**Git**: You should have Git installed to clone and manage the repository.
--	**Kubectl**: To interact with the Kubernetes cluster.
+- **Git**: You should have Git installed to clone and manage the repository.
+- **Kubectl**: To interact with the Kubernetes cluster.
 
 ## Flux Setup
 
