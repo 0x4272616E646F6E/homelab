@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-helm-chart-value-overrides
-  namespace: longhorn
+  namespace: longhorn-system
 data:
   values.yaml: |-
       # Default values for longhorn.
@@ -186,7 +186,7 @@ data:
         upgradeVersionCheck: true
       csi:
         # -- kubelet root directory. When unspecified, Longhorn uses the default value.
-        kubeletRootDir: ~
+        kubeletRootDir: /var/lib/kubelet
         # -- Replica count of the CSI Attacher. When unspecified, Longhorn uses the default value ("3").
         attacherReplicaCount: 1
         # -- Replica count of the CSI Provisioner. When unspecified, Longhorn uses the default value ("3").
