@@ -11,6 +11,7 @@ Thumbs.db
 flux-system/*.yaml
 flux-system/*.kustomization.yaml
 flux-system/*.gitops.yaml
+talos/*
 
 # Ignore backup and swap files
 *~
