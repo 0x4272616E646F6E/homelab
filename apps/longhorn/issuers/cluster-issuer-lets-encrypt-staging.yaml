@@ -15,7 +15,7 @@ spec:
             email: Brandon.Oglesby@outlook.com
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
-              key: cloudflare-token
+              key: api-token
         selector:
           dnsZones:
             - "oglesby.io"
