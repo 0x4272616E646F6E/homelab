@@ -256,7 +256,7 @@ data:
       # For more information, see the [cert-manager documentation](https://cert-manager.io/docs/configuration/acme/dns01/#setting-nameservers-for-dns01-self-check).
 
       # A comma-separated string with the host and port of the recursive nameservers cert-manager should query.
-      dns01RecursiveNameservers: "1.1.1.1:53,1.0.0.1:53"
+      dns01RecursiveNameservers: "1.1.1.1:53,8.8.8.8:53"
 
       # Forces cert-manager to use only the recursive nameservers for verification.
       # Enabling this option could cause the DNS01 self check to take longer owing to caching performed by the recursive nameservers.
@@ -375,7 +375,7 @@ data:
       # podDnsConfig:
       #   nameservers:
       #     - "1.1.1.1"
-      #     - "1.0.0.1"
+      #     - "8.8.8.8"
 
       # Optional hostAliases for cert-manager-controller pods. May be useful when performing ACME DNS-01 self checks.
       hostAliases: []
