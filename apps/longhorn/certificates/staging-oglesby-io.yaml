@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: oglesby-io
+  namespace: default
+spec:
+  secretName: oglesby-io-staging-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.oglesby.io"
+  dnsNames:
+  - "oglesby.io"
+  - "*.oglesby.io"

@@ -13,7 +13,7 @@ spec:
         - name: longhorn-frontend
           port: 80
   tls:
-    certResolver: letsencrypt-staging
+    secretName: oglesby-io-staging-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
