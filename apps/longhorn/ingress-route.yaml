@@ -26,18 +26,6 @@ spec:
   routes:
     - match: Host(`longhorn.oglesby.io`)
       kind: Rule
-      middlewares:
-        - name: redirect-to-https
       services:
         - name: longhorn-frontend
           port: 80
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: longhorn-system
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
