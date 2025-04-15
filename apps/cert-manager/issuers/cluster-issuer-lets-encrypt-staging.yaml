@@ -16,8 +16,6 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
               key: api-token
-          dns01RecursiveNameservers: "1.1.1.1:53,1.0.0.1:53"
-          dns01RecursiveNameserversOnly: true
         selector:
           dnsZones:
             - "oglesby.io"
