@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  selector:
+    app: jellyfin
+  ports:
+    - port: 7359
+      targetPort: 7359
+      protocol: UDP
+      name: jellyfin-udp1
+    - port: 1900
+      targetPort: 1900
+      protocol: UDP
+      name: jellyfin-udp2
+    - port: 8096
+      targetPort: 8096
+      protocol: TCP
+      name: jellyfin-ui
+  type: ClusterIP

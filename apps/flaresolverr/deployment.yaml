@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaresolverr
+  namespace: download
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaresolverr
+  template:
+    metadata:
+      labels:
+        app: flaresolverr
+    spec:
+      containers:
+        - name: flaresolverr
+          image: docker.io/flaresolverr/flaresolverr:latest
+          ports:
+            - containerPort: 8191
+              protocol: TCP

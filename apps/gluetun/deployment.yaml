@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gluetun
+  namespace: download
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gluetun
+  template:
+    metadata:
+      labels:
+        app: gluetun
+    spec:
+      containers:
+        - name: gluetun
+          image: ghcr.io/qdm12/gluetun:latest
+          ports:
+            - containerPort: 8888
+              protocol: TCP
+            - containerPort: 8388
+              protocol: TCP
+            - containerPort: 8388
+              protocol: UDP
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              value: "mullvad"
+            - name: VPN_TYPE
+              value: "wireguard"
+            - name: WIREGUARD_PRIVATE_KEY
+              value: ""
+            - name: WIREGUARD_ADDRESSES
+              value: ""
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: config
+              mountPath: /gluetun
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: gluetun-config

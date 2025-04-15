@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sabnzbd
+  namespace: download
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sabnzbd
+  template:
+    metadata:
+      labels:
+        app: sabnzbd
+    spec:
+      containers:
+        - name: sabnzbd
+          image: lscr.io/linuxserver/sabnzbd:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: sabnzbd-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads

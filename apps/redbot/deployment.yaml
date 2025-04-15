@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redbot
+  namespace: automation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redbot
+  template:
+    metadata:
+      labels:
+        app: redbot
+    spec:
+      containers:
+        - name: jellyfin
+          image: docker.io/phasecorex/red-discordbot:core
+          env:
+            - name: TOKEN
+              value: ""
+            - name: PREFIX
+              value: "!"
+          volumeMounts:
+            - name: config
+              mountPath: /data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: redbot-config

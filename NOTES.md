@@ -2,4 +2,4 @@
 
 ## Talos Image Used
 
-- "factory.talos.dev/installer/956ae495bd4a1ec442697aac5d1ae09c6f21915711a15e3d8673f5c93c2d9d65:v1.9.5"
+- factory.talos.dev/installer/303e821d35b80491f4aecc472c3aab239cf1916a1d4e71f283a5cf164f3a0dfd:v1.9.5

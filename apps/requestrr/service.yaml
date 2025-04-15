@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: requestrr
+  namespace: media
+spec:
+  selector:
+    app: requestrr
+  ports:
+    - port: 4545
+      targetPort: 4545
+      protocol: TCP
+      name: requestrr-ui
+  type: ClusterIP

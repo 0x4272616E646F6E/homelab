@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellyfin
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin
+  template:
+    metadata:
+      labels:
+        app: jellyfin
+    spec:
+      containers:
+        - name: jellyfin
+          image: lscr.io/linuxserver/jellyfin:latest
+          ports:
+            - containerPort: 7359
+              protocol: UDP
+            - containerPort: 1900
+              protocol: UDP
+            - containerPort: 8096
+              protocol: TCP
+          env:
+            - name: UMASK
+              value: "022"
+          resources:
+            limits:
+              intel.com/gpu: 1
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellyfin-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: media

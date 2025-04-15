@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suwayomi
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: suwayomi
+  template:
+    metadata:
+      labels:
+        app: suwayomi
+    spec:
+      containers:
+        - name: suwayomi
+          image: lscr.io/linuxserver/jellyfin:latest
+          ports:
+            - containerPort: 4567
+              protocol: TCP
+          env:
+            - name: FLARESOLVERR_ENABLED
+              value: "true"
+            - name: FLARESOLVERR_URL
+              value: "https://flaresolverr.oglesby.io"
+          volumeMounts:
+            - name: media
+              mountPath: /home/suwayomi/.local/share/Tachidesk/downloads
+            - name: config
+              mountPath: /home/suwayomi/.local/share/Tachidesk
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: suwayomi-media
+        - name: config
+          persistentVolumeClaim:
+            claimName: suwayomi-config
