@@ -6,7 +6,4 @@ metadata:
 spec:
   nodeSelector:
     matchLabels: {}
-  interfaces:
-    - ^eth[0-9]+
-  externalIPs: true
   loadBalancerIPs: true
