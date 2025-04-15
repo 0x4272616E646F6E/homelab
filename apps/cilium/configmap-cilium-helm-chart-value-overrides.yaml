@@ -62,6 +62,7 @@ data:
       enable-ipv6-masquerade: "true"
       enable-k8s-networkpolicy: "true"
       enable-k8s-terminating-endpoint: "true"
+      enable-l2-announcements: "true"
       enable-l2-neigh-discovery: "true"
       enable-l2-pod-announcements: true
       enable-l7-proxy: "true"
