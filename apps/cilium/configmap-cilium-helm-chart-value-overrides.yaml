@@ -394,7 +394,7 @@ data:
       # @schema
       # -- Enable installation of PodCIDR routes between worker
       # nodes if worker nodes share a common L2 network segment.
-      autoDirectNodeRoutes: false
+      autoDirectNodeRoutes: true
       # -- Enable skipping of PodCIDR routes between worker
       # nodes if the worker nodes are in a different L2 network segment.
       directRoutingSkipUnreachable: false
