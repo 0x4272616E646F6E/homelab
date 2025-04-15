@@ -149,7 +149,7 @@ data:
       proxy-xff-num-trusted-hops-egress: "0"
       proxy-xff-num-trusted-hops-ingress: "0"
       remove-cilium-node-taints: "true"
-      routing-mode: tunnel
+      routing-mode: native
       service-no-backend-response: reject
       set-cilium-is-up-condition: "true"
       set-cilium-node-taints: "true"
