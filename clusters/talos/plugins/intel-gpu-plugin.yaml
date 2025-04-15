@@ -20,7 +20,6 @@ spec:
           securityContext:
             privileged: true
           args:
-            - "--device-type=all"
             - "--shared-dev-num=4"
           volumeMounts:
             - name: devfs
