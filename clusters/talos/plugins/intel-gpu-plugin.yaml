@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: intel-gpu-plugin
-          image: intel/intel-gpu-plugin:stable
+          image: docker.io/intel/intel-gpu-plugin:0.32.0
           securityContext:
             privileged: true
           args:
