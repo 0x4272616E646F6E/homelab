@@ -6,5 +6,5 @@ spec:
   nodeSelector:
     matchLabels: {}
   interfaces:
-    - eth0
+    - ^eth[0-9]+
   loadBalancerIPs: true
