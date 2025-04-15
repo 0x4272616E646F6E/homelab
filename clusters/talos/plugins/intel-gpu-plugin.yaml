@@ -25,7 +25,15 @@ spec:
             - name: devfs
               mountPath: /dev/dri
               readOnly: true
+            - name: kubelet-device-plugins
+              mountPath: /var/lib/kubelet/device-plugins
+              readOnly: false
       volumes:
         - name: devfs
           hostPath:
             path: /dev/dri
+            type: Directory
+        - name: kubelet-device-plugins
+          hostPath:
+            path: /var/lib/kubelet/device-plugins
+            type: Directory
