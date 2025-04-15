@@ -292,7 +292,7 @@ data:
         # -- Storage network for in-cluster traffic. When unspecified, Longhorn uses the Kubernetes cluster network.
         storageNetwork: ~
         # -- Flag that prevents accidental uninstallation of Longhorn.
-        deletingConfirmationFlag: ~
+        deletingConfirmationFlag: false
         # -- Timeout between the Longhorn Engine and replicas. Specify a value between "8" and "30" seconds. The default value is "8".
         engineReplicaTimeout: ~
         # -- Setting that allows you to enable and disable snapshot hashing and data integrity checks.
