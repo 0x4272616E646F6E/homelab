@@ -792,7 +792,7 @@ data:
       # masqueraded (to an output device IPv4 address), if the output device runs the
       # program. When not specified, probing will automatically detect devices that have
       # a non-local route. This should be used only when autodetection is not suitable.
-      # devices: ""
+      devices: "eth0"
 
       # -- Enables experimental support for the detection of new and removed datapath
       # devices. When devices change the eBPF datapath is reloaded and services updated.
@@ -807,7 +807,7 @@ data:
       # disableIptablesFeederRules: ""
 
       # -- Limit iptables-based egress masquerading to interface selector.
-      egressMasqueradeInterfaces: "eth0"
+      egressMasqueradeInterfaces: ""
 
       # -- Enable setting identity mark for local traffic.
       # enableIdentityMark: true
