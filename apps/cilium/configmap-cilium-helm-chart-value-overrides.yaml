@@ -60,7 +60,7 @@ data:
       # @default -- `"~/.kube/config"`
       kubeConfigPath: ""
       # -- (string) Kubernetes service host - use "auto" for automatic lookup from the cluster-info ConfigMap
-      k8sServiceHost: "10.0.0.251"
+      k8sServiceHost: "127.0.0.1"
       # @schema
       # type: [string, integer]
       # @schema
