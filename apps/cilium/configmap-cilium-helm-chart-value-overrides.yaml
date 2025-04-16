@@ -448,7 +448,7 @@ data:
         # -- Enable L2 pod announcements
         enabled: true
         # -- Interface used for sending Gratuitous ARP pod announcements
-        interface: ""
+        interface: "eth0"
       # -- This feature set enables virtual BGP routers to be created via
       # CiliumBGPPeeringPolicy CRDs.
       bgpControlPlane:
@@ -854,7 +854,7 @@ data:
       ingressController:
         # -- Enable cilium ingress controller
         # This will automatically set enable-envoy-config as well.
-        enabled: false
+        enabled: true
         # -- Set cilium ingress controller to be the default ingress controller
         # This will let cilium ingress controller route entries without ingress class set
         default: false
