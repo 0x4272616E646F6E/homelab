@@ -854,7 +854,7 @@ data:
       ingressController:
         # -- Enable cilium ingress controller
         # This will automatically set enable-envoy-config as well.
-        enabled: true
+        enabled: false
         # -- Set cilium ingress controller to be the default ingress controller
         # This will let cilium ingress controller route entries without ingress class set
         default: false
