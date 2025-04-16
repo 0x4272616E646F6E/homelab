@@ -782,7 +782,7 @@ data:
         labels: {}
         # -- Additional entries here will be added to the service spec.
         # -- Cannot contain type, selector or ports entries.
-        spec: {}
+        spec:
           externalTrafficPolicy: Local
         # loadBalancerIP: "1.2.3.4"
         # clusterIP: "2.3.4.5"
