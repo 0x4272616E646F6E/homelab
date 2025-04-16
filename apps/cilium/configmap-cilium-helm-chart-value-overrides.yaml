@@ -632,7 +632,7 @@ data:
         # -- (list) Configure explicitly allowed VLAN id's for bpf logic bypass.
         # [0] will allow all VLAN id's without any filtering.
         # @default -- `[]`
-        vlanBypass: ~
+        vlanBypass: 0
         # -- (bool) Disable ExternalIP mitigation (CVE-2020-8554)
         # @default -- `false`
         disableExternalIPMitigation: false
