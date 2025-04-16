@@ -16,6 +16,15 @@ spec:
       containers:
         - name: jellyfin
           image: docker.io/phasecorex/red-discordbot:core
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+              ephemeral-storage: "2Gi"
           env:
             - name: TOKEN
               value: ""
