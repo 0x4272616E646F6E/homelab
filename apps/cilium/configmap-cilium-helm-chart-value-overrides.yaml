@@ -448,7 +448,7 @@ data:
         # -- Enable L2 pod announcements
         enabled: true
         # -- Interface used for sending Gratuitous ARP pod announcements
-        interface: "eth0"
+        interface: ""
       # -- This feature set enables virtual BGP routers to be created via
       # CiliumBGPPeeringPolicy CRDs.
       bgpControlPlane:
