@@ -1,0 +1,14 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hubble-http
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`hubble.oglesby.io`)
+      kind: Rule
+      services:
+        - name: hubble-ui
+          port: 80
