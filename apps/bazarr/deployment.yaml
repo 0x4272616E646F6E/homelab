@@ -13,12 +13,22 @@ spec:
       labels:
         app: bazarr
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:latest
           ports:
             - containerPort: 6767
               protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+              ephemeral-storage: "2Gi"
           volumeMounts:
             - name: config
               mountPath: /config

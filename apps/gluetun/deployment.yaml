@@ -13,6 +13,7 @@ spec:
       labels:
         app: gluetun
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: gluetun
           image: ghcr.io/qdm12/gluetun:latest
@@ -23,6 +24,15 @@ spec:
               protocol: TCP
             - containerPort: 8388
               protocol: UDP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+              ephemeral-storage: "2Gi"
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "mullvad"
