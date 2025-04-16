@@ -609,7 +609,7 @@ data:
         # @schema
         # -- (bool) Enable native IP masquerade support in eBPF
         # @default -- `false`
-        masquerade: ~
+        masquerade: true
         # @schema
         # type: [null, boolean]
         # @schema
@@ -807,7 +807,7 @@ data:
       # disableIptablesFeederRules: ""
 
       # -- Limit iptables-based egress masquerading to interface selector.
-      # egressMasqueradeInterfaces: ""
+      egressMasqueradeInterfaces: "eth0"
 
       # -- Enable setting identity mark for local traffic.
       # enableIdentityMark: true
