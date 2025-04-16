@@ -1658,7 +1658,7 @@ data:
             port: 6062
         ui:
           # -- Whether to enable the Hubble UI.
-          enabled: false
+          enabled: true
           standalone:
             # -- When true, it will allow installing the Hubble UI only, without checking dependencies.
             # It is useful if a cluster already has cilium and Hubble relay installed and you just
@@ -2123,6 +2123,7 @@ data:
         enabled: false
       # -- Configure service load balancing
       loadBalancer:
+        enabled: true
         # -- standalone enables the standalone L4LB which does not connect to
         # kube-apiserver.
         # standalone: false
