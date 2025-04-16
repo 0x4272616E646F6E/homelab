@@ -2026,7 +2026,7 @@ data:
       # -- Configure the kube-proxy replacement in Cilium BPF datapath
       # Valid options are "true" or "false".
       # ref: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
-      #kubeProxyReplacement: "true"
+      kubeProxyReplacement: "true"
 
       # -- healthz server bind address for the kube-proxy replacement.
       # To enable set the value to '0.0.0.0:10256' for all ipv4
@@ -2129,18 +2129,18 @@ data:
 
         # -- algorithm is the name of the load balancing algorithm for backend
         # selection e.g. random or maglev
-        # algorithm: random
+        algorithm: maglev
 
         # -- mode is the operation mode of load balancing for remote backends
         # e.g. snat, dsr, hybrid
-        # mode: snat
+        mode: snat
 
         # -- acceleration is the option to accelerate service handling via XDP
         # Applicable values can be: disabled (do not use XDP), native (XDP BPF
         # program is run directly out of the networking driver's early receive
         # path), or best-effort (use native mode XDP acceleration on devices
         # that support it).
-        acceleration: disabled
+        acceleration: best-effort
         # -- dsrDispatch configures whether IP option or IPIP encapsulation is
         # used to pass a service IP and port to remote backend
         # dsrDispatch: opt
