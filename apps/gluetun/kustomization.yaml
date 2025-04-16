@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: download
+commonLabels:
+  app.kubernetes.io/managed-by: flux
+resources:
+  # - secrets.sop.yaml 
+  # - configmap.yaml
+  - pvc.yaml
+  # - serviceaccount.yaml
+  # - rbac.yaml
+  - deployment.yaml
+  # - statefulset.yaml
+  - service.yaml
+  # - ingress-route.yaml
