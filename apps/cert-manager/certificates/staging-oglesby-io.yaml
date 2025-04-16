@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: oglesby-io
-  namespace: cert-manager
+  namespace: longhorn-static
 spec:
   secretName: oglesby-io-staging-tls
   issuerRef:
