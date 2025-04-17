@@ -7,7 +7,7 @@ data:
   values.yaml: |-
       envFrom:
         - secretRef:
-          name: authentik-secrets
+            name: authentik-secrets
 
       # -- Provide a name in place of `authentik`. Prefer using global.nameOverride if possible
       nameOverride: ""
