@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: authentik
+  name: authentik-config-map
   namespace: authentik
 data:
   values.yaml: |-
