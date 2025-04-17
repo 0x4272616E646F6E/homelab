@@ -10,8 +10,8 @@ spec:
     kind: ClusterIssuer
   commonName: "*.oglesby.io"
   dnsNames:
-  - "oglesby.io"
-  - "*.oglesby.io"
+    - "oglesby.io"
+    - "*.oglesby.io"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
