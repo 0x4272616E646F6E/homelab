@@ -5,6 +5,12 @@ metadata:
   namespace: authentik
 data:
   values.yaml: |-
+    server:
+      envFrom:
+        - secretRef:
+            name: authentik-secrets
+
+    worker:
       envFrom:
         - secretRef:
             name: authentik-secrets
