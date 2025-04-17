@@ -15,6 +15,5 @@ spec:
               name: cloudflare-api-token-secret
               key: api-token
         selector:
-          dnsNames:
+          dnsZones:
             - "oglesby.io"
-            - "*.oglesby.io"

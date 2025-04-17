@@ -10,7 +10,6 @@ spec:
     kind: ClusterIssuer
   commonName: "*.oglesby.io"
   dnsNames:
-    - "oglesby.io"
     - "*.oglesby.io"
   secretTemplate:
     annotations:
