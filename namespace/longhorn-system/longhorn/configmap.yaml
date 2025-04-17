@@ -213,7 +213,7 @@ data:
         # -- Percentage of minimum available disk capacity. When the minimum available capacity exceeds the total available capacity, the disk becomes unschedulable until more space is made available for use. The default value is "25".
         storageMinimalAvailablePercentage: ~
         # -- Percentage of disk space that is not allocated to the default disk on each new Longhorn node.
-        storageReservedPercentageForDefaultDisk: 5
+        storageReservedPercentageForDefaultDisk: 1
         # -- Upgrade Checker that periodically checks for new Longhorn versions. When a new version is available, a notification appears on the Longhorn UI. This setting is enabled by default
         upgradeChecker: ~
         # -- The Upgrade Responder sends a notification whenever a new Longhorn version that you can upgrade to becomes available. The default value is https://longhorn-upgrade-responder.rancher.io/v1/checkupgrade.
