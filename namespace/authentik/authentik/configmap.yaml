@@ -230,9 +230,9 @@ data:
         # -- whether to enable server resources
         enabled: true
 
-      envFrom:
-        - secretRef:
-            name: authentik-secrets
+        envFrom:
+          - secretRef:
+              name: authentik-secrets
 
         # -- authentik server name
         name: server
@@ -665,9 +665,9 @@ data:
         # -- whether to enable worker resources
         enabled: true
 
-      envFrom:
-        - secretRef:
-            name: authentik-secrets
+        envFrom:
+          - secretRef:
+              name: authentik-secrets
 
         # -- authentik worker name
         name: worker
