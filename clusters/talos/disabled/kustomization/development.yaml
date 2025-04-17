@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: falco
+  name: development
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./apps/falco"
+  path: "./namespace/development"
   prune: true
   sourceRef:
     kind: GitRepository
