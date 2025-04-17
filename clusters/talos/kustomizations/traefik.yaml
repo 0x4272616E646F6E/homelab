@@ -4,13 +4,13 @@ metadata:
   name: traefik
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 4m
   path: "./namespace/traefik"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 5m
+  timeout: 2m
   dependsOn:
     - name: kube-system
     - name: cert-manager
