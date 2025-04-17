@@ -19,6 +19,3 @@ spec:
   - kind: ConfigMap
     name: authentik-config-map
     valuesKey: values.yaml
-  - kind: Secret
-    name: authentik-secrets
-    valuesKey: values.yaml
