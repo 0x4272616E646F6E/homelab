@@ -1045,11 +1045,11 @@ data:
           extendedConfiguration: |
             max_connections = 500
           resourcesPreset: "none"
-          # persistence:
-          #   enabled: true
-          #   storageClass:
-          #   accessModes:
-          #     - ReadWriteOnce
+          persistence:
+            enabled: true
+            storageClass: "longhorn-static"
+            accessModes:
+              - ReadWriteOnce
         readReplicas:
           resourcesPreset: "none"
         backup:
