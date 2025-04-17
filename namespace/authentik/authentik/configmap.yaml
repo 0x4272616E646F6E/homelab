@@ -230,10 +230,6 @@ data:
         # -- whether to enable server resources
         enabled: true
 
-        envFrom:
-          - secretRef:
-              name: authentik-secrets
-
         # -- authentik server name
         name: server
 
@@ -325,11 +321,11 @@ data:
 
         # -- envFrom to pass to the authentik server. Does not apply to GeoIP
         # @default -- `[]` (See [values.yaml])
-        envFrom: []
+        envFrom:
           # - configMapRef:
           #     name: config-map-name
           # - secretRef:
-          #     name: secret-name
+          #     name: authentik-secrets
 
         # -- Specify postStart and preStop lifecycle hooks for you authentik server container
         lifecycle: {}
@@ -665,10 +661,6 @@ data:
         # -- whether to enable worker resources
         enabled: true
 
-        envFrom:
-          - secretRef:
-              name: authentik-secrets
-
         # -- authentik worker name
         name: worker
 
@@ -764,7 +756,7 @@ data:
           # - configMapRef:
           #     name: config-map-name
           # - secretRef:
-          #     name: secret-name
+          #     name: authentik-secrets
 
         # -- Specify postStart and preStop lifecycle hooks for you authentik worker container
         lifecycle: {}
