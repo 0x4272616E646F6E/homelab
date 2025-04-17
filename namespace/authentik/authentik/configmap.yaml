@@ -207,7 +207,7 @@ data:
           # -- postgresql Username
           # @default -- `authentik`
           user: "authentik"
-          password: ""
+          # password: ""
           port: 5432
         redis:
           # -- set the redis hostname to talk to
