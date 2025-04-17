@@ -1,13 +1,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cilium
+  name: longhorn-system
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./apps/cilium"
+  path: "./namespace/longhorn-system"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   timeout: 5m
+  dependsOn:
+    - name: kube-system

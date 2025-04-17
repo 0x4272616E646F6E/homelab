@@ -13,7 +13,7 @@ flux-system/*.kustomization.yaml
 flux-system/*.gitops.yaml
 
 # Ignore local only files
-local/*
+.local/*
 
 # Ignore backup and swap files
 *~

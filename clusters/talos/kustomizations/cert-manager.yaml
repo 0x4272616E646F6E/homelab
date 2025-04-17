@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./apps/cert-manager"
+  path: "./namespace/cert-manager"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -15,3 +15,5 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+  dependsOn:
+    - name: kube-system
