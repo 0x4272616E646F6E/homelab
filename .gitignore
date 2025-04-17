@@ -11,8 +11,9 @@ Thumbs.db
 flux-system/*.yaml
 flux-system/*.kustomization.yaml
 flux-system/*.gitops.yaml
-talos/*
-secrets/*
+
+# Ignore local only files
+local/*
 
 # Ignore backup and swap files
 *~
