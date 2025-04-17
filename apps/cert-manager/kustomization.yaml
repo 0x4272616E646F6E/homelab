@@ -9,3 +9,6 @@ resources:
   - issuers/letsencrypt-staging.yaml
   - issuers/letsencrypt-production.yaml
   - certificate.yaml
+
+patchesStrategicMerge:
+  - certificate-reflector.yaml
