@@ -37,35 +37,35 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
-- **Authentik**
-- **Bazarr**
-- **Cert Manager**
-- **Cilium**
-- **Cloudflared**
-- **Falco**
-- **Flaresolverr**
-- **Gluetun**
-- **Grafana**
-- **Harbor**
-- **Home Assistant**
-- **Jellyfin**
-- **Jellyseerr**
-- **OpenBao**
-- **OpebEBS**
-- **Paperless-NGX**
-- **Prometheus**
-- **Prowlarr**
-- **Qbittorrent**
-- **Radarr**
-- **Redbot**
-- **Reflector**
-- **Requestrr**
-- **SABnzbd**
-- **Sonarr**
-- **Suwayomi**
-- **Traefik**
-- **Vector**
-- **Wazuh**
+- [ ] **Authentik**
+- [ ] **Bazarr**
+- [x] **Cert Manager**
+- [x] **Cilium**
+- [ ] **Cloudflared**
+- [ ] **Falco**
+- [ ] **Flaresolverr**
+- [ ] **Gluetun**
+- [ ] **Grafana**
+- [ ] **Harbor**
+- [ ] **Home Assistant**
+- [x] **Intel GPU Plugin**
+- [ ] **Jellyfin**
+- [ ] **Jellyseerr**
+- [x] **Longhorn**
+- [ ] **OpenBao**
+- [ ] **Prometheus**
+- [ ] **Prowlarr**
+- [ ] **Qbittorrent**
+- [ ] **Radarr**
+- [ ] **Redbot**
+- [x] **Reflector**
+- [ ] **Requestrr**
+- [ ] **SABnzbd**
+- [ ] **Sonarr**
+- [ ] **Suwayomi**
+- [x] **Traefik**
+- [ ] **Vector**
+- [ ] **Wazuh**
 
 ## Contributing
 
