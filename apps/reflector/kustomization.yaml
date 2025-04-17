@@ -6,6 +6,3 @@ resources:
   # - secrets.sop.yaml 
   - configmap.yaml
   - helmrelease.yaml
-  - issuers/letsencrypt-staging.yaml
-  - issuers/letsencrypt-production.yaml
-  - certificate.yaml
