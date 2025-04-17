@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 5m
-  path: "./apps/kube-system"
+  path: "./namespace/kube-system"
   prune: true
   sourceRef:
     kind: GitRepository
