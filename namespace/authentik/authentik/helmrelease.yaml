@@ -25,7 +25,7 @@ spec:
       existingSecretKey: secret_key
       postgresql:
         existingSecret: authentik-secrets
-        existingSecretKey: postgres-password
+        existingSecretKey: password
 
     postgresql:
       auth:
