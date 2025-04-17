@@ -6,4 +6,5 @@ resources:
   # - secrets.sop.yaml 
   - configmap.yaml
   - helmrelease.yaml
+  - middlewares.yaml
   - ingress-route.yaml
