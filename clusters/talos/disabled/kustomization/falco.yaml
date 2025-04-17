@@ -4,10 +4,10 @@ metadata:
   name: falco
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 4m
   path: "./namespace/falco"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 5m
+  timeout: 2m

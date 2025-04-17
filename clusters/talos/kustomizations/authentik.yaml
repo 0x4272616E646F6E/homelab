@@ -4,10 +4,16 @@ metadata:
   name: authentik
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 4m
   path: "./namespace/authentik"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  timeout: 5m
+  timeout: 2m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  dependsOn:
+    - name: kube-system
