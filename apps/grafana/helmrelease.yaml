@@ -17,5 +17,5 @@ spec:
   releaseName: grafana
   valuesFrom:
   - kind: ConfigMap
-    name: grafana-helm-chart-value-overrides
+    name: grafana-config-map
     valuesKey: values.yaml

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: openbao-helm-chart-value-overrides
+  name: openbao-config-map
   namespace: openbao
 data:
   values.yaml: |-

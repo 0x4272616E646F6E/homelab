@@ -17,5 +17,5 @@ spec:
   releaseName: harbor
   valuesFrom:
   - kind: ConfigMap
-    name: harbor-helm-chart-value-overrides
+    name: harbor-config-map
     valuesKey: values.yaml

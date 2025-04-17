@@ -17,5 +17,5 @@ spec:
   releaseName: longhorn
   valuesFrom:
   - kind: ConfigMap
-    name: longhorn-helm-chart-value-overrides
+    name: longhorn-config-map
     valuesKey: values.yaml

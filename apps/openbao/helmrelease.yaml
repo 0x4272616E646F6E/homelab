@@ -17,5 +17,5 @@ spec:
   releaseName: openbao
   valuesFrom:
   - kind: ConfigMap
-    name: openbao-helm-chart-value-overrides
+    name: openbao-config-map
     valuesKey: values.yaml

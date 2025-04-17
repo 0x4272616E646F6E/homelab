@@ -17,5 +17,5 @@ spec:
   releaseName: cilium
   valuesFrom:
   - kind: ConfigMap
-    name: cilium-helm-chart-value-overrides
+    name: cilium-config-map
     valuesKey: values.yaml

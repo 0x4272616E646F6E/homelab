@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cilium-helm-chart-value-overrides
+  name: cilium-config-map
   namespace: kube-system
 data:
   values.yaml: |-

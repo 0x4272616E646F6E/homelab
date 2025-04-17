@@ -17,5 +17,5 @@ spec:
   releaseName: vector
   valuesFrom:
   - kind: ConfigMap
-    name: vector-helm-chart-value-overrides
+    name: vector-config-map
     valuesKey: values.yaml

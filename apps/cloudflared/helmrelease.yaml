@@ -17,5 +17,5 @@ spec:
   releaseName: cloudflared
   valuesFrom:
   - kind: ConfigMap
-    name: cloudflared-helm-chart-value-overrides
+    name: cloudflared-config-map
     valuesKey: values.yaml

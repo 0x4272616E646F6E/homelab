@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vector-helm-chart-value-overrides
+  name: vector-config-map
   namespace: vector
 data:
   values.yaml: |-

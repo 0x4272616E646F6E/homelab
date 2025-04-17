@@ -17,5 +17,5 @@ spec:
   releaseName: reflector
   valuesFrom:
   - kind: ConfigMap
-    name: reflector-helm-chart-value-overrides
+    name: reflector-config-map
     valuesKey: values.yaml

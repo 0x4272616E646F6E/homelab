@@ -17,5 +17,5 @@ spec:
   releaseName: falco
   valuesFrom:
   - kind: ConfigMap
-    name: falco-helm-chart-value-overrides
+    name: falco-config-map
     valuesKey: values.yaml

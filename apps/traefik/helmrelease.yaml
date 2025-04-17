@@ -17,5 +17,5 @@ spec:
   releaseName: traefik
   valuesFrom:
   - kind: ConfigMap
-    name: traefik-helm-chart-value-overrides
+    name: traefik-config-map
     valuesKey: values.yaml

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: longhorn-helm-chart-value-overrides
+  name: longhorn-config-map
   namespace: longhorn-system
 data:
   values.yaml: |-
