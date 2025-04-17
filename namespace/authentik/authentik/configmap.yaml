@@ -5,10 +5,6 @@ metadata:
   namespace: authentik
 data:
   values.yaml: |-
-      envFrom:
-        - secretRef:
-          name: authentik-secrets
-
       # -- Provide a name in place of `authentik`. Prefer using global.nameOverride if possible
       nameOverride: ""
       # -- String to fully override `"authentik.fullname"`. Prefer using global.fullnameOverride if possible
@@ -159,7 +155,7 @@ data:
         log_level: info
         # -- Secret key used for cookie singing and unique user IDs,
         # don't change this after the first install
-        secret_key: ""
+        # secret_key: ""
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
