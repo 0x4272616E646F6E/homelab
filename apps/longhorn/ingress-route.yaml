@@ -10,11 +10,11 @@ spec:
     - match: Host(`longhorn.oglesby.io`)
       kind: Rule
       services:
-        - name: longhorn-frontend
-          port: 80
+      - name: longhorn-frontend
+        port: 80
       middlewares:
-        - name: redirect-https
-          namespace: traefik
+      - name: redirect-https
+        namespace: traefik
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -28,7 +28,7 @@ spec:
     - match: Host(`longhorn.oglesby.io`)
       kind: Rule
       services:
-        - name: longhorn-frontend
-          port: 80
+      - name: longhorn-frontend
+        port: 80
   tls: 
     secretName: oglesby-io-tls
