@@ -28,4 +28,4 @@ spec:
         - name: longhorn-frontend
           port: 80
   tls: 
-    secretName: oglesby-io-staging-tls
+    secretName: oglesby-io-tls

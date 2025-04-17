@@ -7,5 +7,5 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - issuers/letsencrypt-staging.yaml
-  # - issuers/letsencrypt-production.yaml
-  - certificates/oglesby-io-staging.yaml
+  - issuers/letsencrypt-production.yaml
+  - certificate.yaml
