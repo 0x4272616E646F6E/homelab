@@ -156,6 +156,8 @@ data:
         # -- Secret key used for cookie singing and unique user IDs,
         # don't change this after the first install
         # secret_key: ""
+        existingSecret: authentik-secrets
+        existingSecretKey: secret_key
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
@@ -208,6 +210,8 @@ data:
           # @default -- `authentik`
           user: "authentik"
           # password: ""
+          existingSecret: authentik-secrets
+          existingSecretKey: password
           port: 5432
         redis:
           # -- set the redis hostname to talk to
@@ -1041,6 +1045,8 @@ data:
           username: authentik
           database: authentik
           # password: ""
+          existingSecret: authentik-secrets
+          existingSecretKey: postgres-password
         primary:
           extendedConfiguration: |
             max_connections = 500

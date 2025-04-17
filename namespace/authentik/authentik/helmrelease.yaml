@@ -19,15 +19,3 @@ spec:
   - kind: ConfigMap
     name: authentik-config-map
     valuesKey: values.yaml
-  values:
-    authentik:
-      existingSecret: authentik-secrets
-      existingSecretKey: secret_key
-      postgresql:
-        existingSecret: authentik-secrets
-        existingSecretKey: password
-
-    postgresql:
-      auth:
-        existingSecret: authentik-secrets
-        existingSecretKey: postgres-password
