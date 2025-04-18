@@ -6,20 +6,15 @@ metadata:
 data:
   values.yaml: |-
       authentik:
-        secret_key: "1tGmyxXBjwZZeLmTF8VSp264UnJv1LNlSNU04U15WKqUYttWkJ"
         error_reporting:
-            enabled: false
-        postgresql:
-            password: "Xfv5x1TzCTVEmcwK2P6WBUNcTLU5mh1y"
+          enabled: false
       server:
-          ingress:
-              ingressClassName: traefik
-              enabled: false
-              hosts:
-                  - authentik.oglesby.io
+        ingress:
+          ingressClassName: traefik
+          enabled: false
+          hosts:
+            - authentik.oglesby.io
       postgresql:
-          enabled: true
-          auth:
-              password: "Xfv5x1TzCTVEmcwK2P6WBUNcTLU5mh1y"
+        enabled: true
       redis:
-          enabled: true
+        enabled: true
