@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: flaresolverr
-  namespace: download
+  namespace: media
 spec:
   selector:
     app: flaresolverr

@@ -31,13 +31,3 @@ spec:
       services:
         - name: prometheus
           port: 9090
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: monitoring
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true

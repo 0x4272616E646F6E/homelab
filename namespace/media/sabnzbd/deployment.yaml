@@ -1,28 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorrent
-  namespace: download
+  name: sabnzbd
+  namespace: media
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: qbittorrent
+      app: sabnzbd
   template:
     metadata:
       labels:
-        app: qbittorrent
+        app: sabnzbd
     spec:
       containers:
-        - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest
+        - name: sabnzbd
+          image: lscr.io/linuxserver/sabnzbd:latest
           ports:
             - containerPort: 8080
               protocol: TCP
-            - containerPort: 6881
-              protocol: TCP
-            - containerPort: 6881
-              protocol: UDP
           resources:
             requests:
               cpu: "100m"
@@ -32,20 +28,15 @@ spec:
               cpu: "500m"
               memory: "512Mi"
               ephemeral-storage: "2Gi"
-          env:
-            - name: WEBUI_PORT
-              value: "8080"
-            - name: TORRENTING_PORT
-              value: "6881"
           volumeMounts:
             - name: config
               mountPath: /config
             - name: downloads
-              mountPath: /data
+              mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: qbittorrent-config
+            claimName: sabnzbd-config
         - name: downloads
           persistentVolumeClaim:
             claimName: downloads

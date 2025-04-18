@@ -31,13 +31,3 @@ spec:
       services:
         - name: jellyseerr
           port: 5055
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: media
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true

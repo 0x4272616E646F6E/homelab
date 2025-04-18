@@ -4,7 +4,12 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
+  - pvc.yaml
   - prowlarr/
+  - gluetun/
+  - flaresolverr/
+  - qbittorrent/
+  - sabnzbd/
   - bazarr/
   - radarr/
   - sonarr/

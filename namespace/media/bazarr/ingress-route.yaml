@@ -31,13 +31,3 @@ spec:
       services:
         - name: bazarr
           port: 6767
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: media
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
