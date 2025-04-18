@@ -155,7 +155,7 @@ data:
         log_level: info
         # -- Secret key used for cookie singing and unique user IDs,
         # don't change this after the first install
-        secret_key: ""
+        secret_key: "1tGmyxXBjwZZeLmTF8VSp264UnJv1LNlSNU04U15WKqUYttWkJ"
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
@@ -207,7 +207,7 @@ data:
           # -- postgresql Username
           # @default -- `authentik`
           user: "authentik"
-          password: ""
+          password: "Xfv5x1TzCTVEmcwK2P6WBUNcTLU5mh1y"
           port: 5432
         redis:
           # -- set the redis hostname to talk to
@@ -1018,7 +1018,7 @@ data:
 
       prometheus:
         rules:
-          enabled: false
+          enabled: true
           # -- PrometheusRule namespace
           namespace: ""
           # -- PrometheusRule selector
@@ -1040,7 +1040,7 @@ data:
         auth:
           username: authentik
           database: authentik
-          # password: ""
+          password: "Xfv5x1TzCTVEmcwK2P6WBUNcTLU5mh1y"
         primary:
           extendedConfiguration: |
             max_connections = 500
@@ -1064,7 +1064,7 @@ data:
 
       redis:
         # -- enable the Bitnami Redis chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/redis/ for possible values.
-        enabled: false
+        enabled: true
         architecture: standalone
         auth:
           enabled: false

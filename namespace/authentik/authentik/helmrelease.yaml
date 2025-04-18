@@ -16,6 +16,6 @@ spec:
   timeout: 5m
   releaseName: authentik
   valuesFrom:
-  - kind: Secret
-    name: authentik-secrets
+  - kind: ConfigMap
+    name: authentik-config-map
     valuesKey: values.yaml
