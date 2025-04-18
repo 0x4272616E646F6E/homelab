@@ -157,7 +157,6 @@ data:
         # don't change this after the first install
         secret_key: "env://AUTHENTIK_SECRET_KEY"
         existingSecret: authentik-secrets
-        existingSecretKey: AUTHENTIK_SECRET_KEY
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
