@@ -119,7 +119,7 @@ data:
             valueFrom:
               secretKeyRef:
                 name: authentik-secrets
-                key: secret_key
+                key: AUTHENTIK_SECRET_KEY
           # - name: AUTHENTIK_VAR_ANOTHER
           #   valueFrom:
           #     configMapKeyRef:
