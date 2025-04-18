@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: cloudflared-tunnel
+      chart: cloudflare-tunnel
       version: 0.3.2
       sourceRef:
         kind: HelmRepository
