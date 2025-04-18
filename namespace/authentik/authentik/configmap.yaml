@@ -112,14 +112,14 @@ data:
         # -- Environment variables to pass to all deployed Deployments. Does not apply to GeoIP
         # See configuration options at https://goauthentik.io/docs/installation/configuration/
         # @default -- `[]` (See [values.yaml])
-        env:
+        env: []
           # - name: AUTHENTIK_VAR_NAME
           #   value: VALUE
-          - name: AUTHENTIK_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: authentik-secrets
-                key: AUTHENTIK_SECRET_KEY
+          # - name: AUTHENTIK_VAR_OTHER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: secret-name
+          #       key: secret-key
           # - name: AUTHENTIK_VAR_ANOTHER
           #   valueFrom:
           #     configMapKeyRef:
@@ -155,7 +155,9 @@ data:
         log_level: info
         # -- Secret key used for cookie singing and unique user IDs,
         # don't change this after the first install
-        # secret_key: ""
+        secret_key: "env://AUTHENTIK_SECRET_KEY"
+        existingSecret: authentik-secrets
+        existingSecretKey: AUTHENTIK_SECRET_KEY
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
@@ -738,7 +740,7 @@ data:
         # -- Environment variables to pass to the authentik worker. Does not apply to GeoIP
         # See configuration options at https://goauthentik.io/docs/installation/configuration/
         # @default -- `[]` (See [values.yaml])
-        env: []
+        env:
           # - name: AUTHENTIK_VAR_NAME
           #   value: VALUE
           # - name: AUTHENTIK_VAR_OTHER
