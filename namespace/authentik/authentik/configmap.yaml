@@ -6,15 +6,20 @@ metadata:
 data:
   values.yaml: |-
       authentik:
-        error_reporting:
-          enabled: false
+          error_reporting:
+              enabled: false
+          # postgresql:
+          #     password: ""
       server:
-        ingress:
-          ingressClassName: traefik
-          enabled: false
-          hosts:
-            - authentik.oglesby.io
+          ingress:
+              ingressClassName: traefik
+              enabled: false
+              hosts:
+                  - authentik.oglesby.io
       postgresql:
-        enabled: true
+          enabled: true
+          #   auth:
+          #     password: ""
       redis:
-        enabled: true
+          enabled: true
+
