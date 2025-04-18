@@ -112,14 +112,14 @@ data:
         # -- Environment variables to pass to all deployed Deployments. Does not apply to GeoIP
         # See configuration options at https://goauthentik.io/docs/installation/configuration/
         # @default -- `[]` (See [values.yaml])
-        env:
+        env: []
           # - name: AUTHENTIK_VAR_NAME
           #   value: VALUE
-          - name: AUTHENTIK_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: authentik-secrets
-                key: AUTHENTIK_SECRET_KEY
+          # - name: AUTHENTIK_VAR_OTHER
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: secret-name
+          #       key: secret-key
           # - name: AUTHENTIK_VAR_ANOTHER
           #   valueFrom:
           #     configMapKeyRef:
@@ -155,7 +155,7 @@ data:
         log_level: info
         # -- Secret key used for cookie singing and unique user IDs,
         # don't change this after the first install
-        secret_key: "env://AUTHENTIK_SECRET_KEY"
+        secret_key: ""
         events:
           context_processors:
             # -- Path for the GeoIP City database. If the file doesn't exist, GeoIP features are disabled.
@@ -207,9 +207,7 @@ data:
           # -- postgresql Username
           # @default -- `authentik`
           user: "authentik"
-          # password: ""
-          existingSecret: authentik-secrets
-          existingSecretKey: password
+          password: ""
           port: 5432
         redis:
           # -- set the redis hostname to talk to
@@ -738,7 +736,7 @@ data:
         # -- Environment variables to pass to the authentik worker. Does not apply to GeoIP
         # See configuration options at https://goauthentik.io/docs/installation/configuration/
         # @default -- `[]` (See [values.yaml])
-        env:
+        env: []
           # - name: AUTHENTIK_VAR_NAME
           #   value: VALUE
           # - name: AUTHENTIK_VAR_OTHER
@@ -1035,7 +1033,7 @@ data:
 
       postgresql:
         # -- enable the Bitnami PostgreSQL chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/postgresql/ for possible values.
-        enabled: true
+        enabled: false
         image:
           repository: bitnami/postgresql
           tag: 15.8.0-debian-12-r18
@@ -1043,17 +1041,15 @@ data:
           username: authentik
           database: authentik
           # password: ""
-          existingSecret: authentik-secrets
-          existingSecretKey: postgres-password
         primary:
           extendedConfiguration: |
             max_connections = 500
           resourcesPreset: "none"
-          persistence:
-            enabled: true
-            storageClass: "longhorn-static"
-            accessModes:
-              - ReadWriteOnce
+          # persistence:
+          #   enabled: true
+          #   storageClass:
+          #   accessModes:
+          #     - ReadWriteOnce
         readReplicas:
           resourcesPreset: "none"
         backup:
@@ -1068,7 +1064,7 @@ data:
 
       redis:
         # -- enable the Bitnami Redis chart. Refer to https://github.com/bitnami/charts/blob/main/bitnami/redis/ for possible values.
-        enabled: true
+        enabled: false
         architecture: standalone
         auth:
           enabled: false
