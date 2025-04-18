@@ -10,7 +10,7 @@ spec:
       version: 2025.4.0
       sourceRef:
         kind: HelmRepository
-        name: cloudflare
+        name: community-charts
         namespace: flux-system
   interval: 15m
   timeout: 5m
