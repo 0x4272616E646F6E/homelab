@@ -11,7 +11,7 @@ data:
         # Your Cloudflare account number.
         # account: ""
         # The name of the tunnel this instance will serve
-        tunnelName: "k8s"
+        # tunnelName: "k8s"
         # The ID of the above tunnel.
         # tunnelId: ""
         # The secret for the tunnel.
