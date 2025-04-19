@@ -9,13 +9,13 @@ data:
       # Cloudflare parameters.
       cloudflare:
         # Your Cloudflare account number.
-        account: ""
+        #account: ""
         # The name of the tunnel this instance will serve
         tunnelName: "k8s"
         # The ID of the above tunnel.
-        tunnelId: ""
+        #tunnelId: ""
         # The secret for the tunnel.
-        secret: ""
+        #secret: ""
         # If defined, no secret is created for the credentials, and instead, the secret referenced is used
         secretName: cloudflared-secrets
         # If true, turn on WARP routing for TCP
