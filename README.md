@@ -37,16 +37,16 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
-- [ ] **Authentik**
+- [X] **Authentik**
 - [ ] **Bazarr**
 - [x] **Cert Manager**
 - [x] **Cilium**
-- [ ] **Cloudflared**
+- [X] **Cloudflared**
 - [ ] **Falco**
 - [ ] **Flaresolverr**
 - [ ] **Gluetun**
 - [ ] **Grafana**
-- [ ] **Harbor**
+- [X] **Harbor**
 - [ ] **Home Assistant**
 - [x] **Intel GPU Plugin**
 - [ ] **Jellyfin**
