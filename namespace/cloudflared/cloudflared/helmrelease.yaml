@@ -21,4 +21,4 @@ spec:
     valuesKey: values.yaml
   - kind: Secret
     name: cloudflared-secrets
-    valuesKey: values.yaml
+    valuesKey: credentials.json
