@@ -19,6 +19,3 @@ spec:
   - kind: ConfigMap
     name: cloudflared-config-map
     valuesKey: values.yaml
-  - kind: Secret
-    name: cloudflared-secrets
-    valuesKey: credentials.json
