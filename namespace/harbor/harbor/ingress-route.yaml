@@ -10,7 +10,7 @@ spec:
     - match: Host(`harbor.oglesby.io`)
       kind: Rule
       services:
-        - name: harbor
+        - name: harbor-portal
           port: 80
   tls:
     certResolver: letsencrypt
@@ -27,7 +27,7 @@ spec:
     - match: Host(`harbor.oglesby.io`)
       kind: Rule
       services:
-        - name: harbor
+        - name: harbor-portal
           port: 80
       middlewares:
       - name: redirect-https
