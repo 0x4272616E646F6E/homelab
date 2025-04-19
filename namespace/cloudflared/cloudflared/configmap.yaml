@@ -7,22 +7,22 @@ data:
   values.yaml: |-
       # Default values for cloudflare-tunnel.
       # Cloudflare parameters.
-      # cloudflare:
+      cloudflare:
         # Your Cloudflare account number.
-        # account: ""
+        account: ""
         # The name of the tunnel this instance will serve
-        # tunnelName: "k8s"
+        tunnelName: "k8s"
         # The ID of the above tunnel.
-        # tunnelId: ""
+        tunnelId: ""
         # The secret for the tunnel.
-        # secret: ""
+        secret: ""
         # If defined, no secret is created for the credentials, and instead, the secret referenced is used
-        # secretName: null
+        secretName: cloudflared-secrets
         # If true, turn on WARP routing for TCP
-        # enableWarp: false
+        enableWarp: false
         # Define ingress rules for the tunnel. See
         # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/configuration-file/ingress
-        # ingress: []
+        ingress: []
           # The first rule proxies traffic to the httpbin sample service named web-server at port 80
           # - hostname: tunnel.example.com
           #  service: http://web-service:80
