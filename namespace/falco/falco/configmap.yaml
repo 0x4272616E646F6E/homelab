@@ -88,7 +88,7 @@ data:
 
       scc:
         # -- Create OpenShift's Security Context Constraint.
-        create: true
+        create: false
 
       resources:
         # -- Although resources needed are subjective on the actual workload we provide
@@ -177,7 +177,7 @@ data:
       # -- metrics configures Falco to enable and expose the metrics.
       metrics:
         # -- enabled specifies whether the metrics should be enabled.
-        enabled: false
+        enabled: true
         # -- interval is stats interval in Falco follows the time duration definitions
         # used by Prometheus.
         # https://prometheus.io/docs/prometheus/latest/querying/basics/#time-durations
@@ -370,7 +370,7 @@ data:
 
         docker:
           # -- Enable Docker support.
-          enabled: true
+          enabled: false
           # -- The path of the Docker daemon socket.
           socket: /var/run/docker.sock
 
@@ -382,7 +382,7 @@ data:
 
         crio:
           # -- Enable CRI-O support.
-          enabled: true
+          enabled: false
           # -- The path of the CRI-O socket.
           socket: /run/crio/crio.sock
 
@@ -397,7 +397,7 @@ data:
           # https://github.com/falcosecurity/charts/tree/master/charts/k8s-metacollector
           # When this option is disabled, Falco falls back to the container annotations to grab the metadata.
           # In such a case, only the ID, name, namespace, labels of the pod will be available.
-          enabled: false
+          enabled: true
           # --pluginRef is the OCI reference for the k8smeta plugin. It could be a full reference such as:
           # "ghcr.io/falcosecurity/plugins/plugin/k8smeta:0.1.0". Or just name + tag: k8smeta:0.1.0.
           pluginRef: "ghcr.io/falcosecurity/plugins/plugin/k8smeta:0.2.1"

@@ -14,7 +14,7 @@ spec:
         port: 80
       middlewares:
       - name: redirect-https
-        namespace: authentik
+        namespace: traefik
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute

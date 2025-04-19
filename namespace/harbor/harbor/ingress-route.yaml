@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: harbor-https
-  namespace: development
+  namespace: harbor
 spec:
   entryPoints:
     - websecure
@@ -19,25 +19,16 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: harbor-http
-  namespace: development
+  namespace: harbor
 spec:
   entryPoints:
     - web
   routes:
     - match: Host(`harbor.oglesby.io`)
       kind: Rule
-      middlewares:
-        - name: redirect-to-https
       services:
         - name: harbor
           port: 80
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: development
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
+      middlewares:
+      - name: redirect-https
+        namespace: traefik
