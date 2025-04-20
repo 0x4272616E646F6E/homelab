@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-config-map
-  namespace: grafana
+  namespace: monitoring
 data:
   values.yaml: |-
       global:
@@ -489,13 +489,13 @@ data:
               - CHOWN
 
       # Administrator credentials when not using an existing secret (see below)
-      adminUser: admin
+      # adminUser: admin
       # adminPassword: strongpassword
 
       # Use an existing secret for the admin user.
       admin:
         ## Name of the secret. Can be templated.
-        existingSecret: ""
+        existingSecret: "grafana-secrets"
         userKey: admin-user
         passwordKey: admin-password
 

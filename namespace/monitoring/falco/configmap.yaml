@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: falco-config-map
-  namespace: falco
+  namespace: monitoring
 data:
   values.yaml: |-
       # Default values for Falco.
@@ -970,7 +970,7 @@ data:
         #
         # -- Send logs to an HTTP endpoint or webhook.
         http_output:
-          enabled: false
+          enabled: true
           url: ""
           user_agent: "falcosecurity/falco"
           # -- Tell Falco to not verify the remote server.

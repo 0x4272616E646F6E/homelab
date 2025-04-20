@@ -1,21 +1,21 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: falco
-  namespace: falco
+  name: loki
+  namespace: monitoring
 spec:
   chart:
     spec:
-      chart: falco
-      version: 4.21.3
+      chart: loki
+      version: 6.29.0
       sourceRef:
         kind: HelmRepository
-        name: falcosecurity
+        name: grafana
         namespace: flux-system
   interval: 15m
   timeout: 5m
-  releaseName: falco
+  releaseName: loki
   valuesFrom:
   - kind: ConfigMap
-    name: falco-config-map
+    name: loki-config-map
     valuesKey: values.yaml

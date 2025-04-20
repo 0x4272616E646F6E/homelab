@@ -4,6 +4,8 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
+  - falco/
   - prometheus/
-  - wazuh/
+  # - loki/
+  # - wazuh/
   - grafana/
