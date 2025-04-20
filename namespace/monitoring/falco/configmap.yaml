@@ -970,7 +970,7 @@ data:
         #
         # -- Send logs to an HTTP endpoint or webhook.
         http_output:
-          enabled: true
+          enabled: false
           url: ""
           user_agent: "falcosecurity/falco"
           # -- Tell Falco to not verify the remote server.
