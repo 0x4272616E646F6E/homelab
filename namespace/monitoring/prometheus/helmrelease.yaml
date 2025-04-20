@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: prometheus-community
+      chart: prometheus
       version: 27.11.0
       sourceRef:
         kind: HelmRepository
