@@ -5,7 +5,7 @@ commonLabels:
 resources:
   - namespace.yaml
   - falco/
+  - vector/
   - prometheus/
   # - loki/
-  # - wazuh/
   - grafana/
