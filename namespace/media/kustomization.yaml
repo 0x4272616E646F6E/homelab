@@ -5,8 +5,8 @@ commonLabels:
 resources:
   - namespace.yaml
   - pvc.yaml
-  #- gluetun/
-  #- ciliumnetworkpolicies.yaml
+  - gluetun/
+  - ciliumnetworkpolicies.yaml
   #- flaresolverr/
   #- qbittorrent/
   #- sabnzbd/
@@ -17,4 +17,4 @@ resources:
   #- jellyfin/
   #- jellyseerr/
   #- requestrr/
-  - suwayomi/
+  # - suwayomi/
