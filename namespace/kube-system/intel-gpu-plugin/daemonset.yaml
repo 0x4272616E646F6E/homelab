@@ -24,7 +24,7 @@ spec:
           volumeMounts:
             - name: devfs
               mountPath: /dev/dri
-              readOnly: true
+              readOnly: false
             - name: kubelet-device-plugins
               mountPath: /var/lib/kubelet/device-plugins
               readOnly: false
