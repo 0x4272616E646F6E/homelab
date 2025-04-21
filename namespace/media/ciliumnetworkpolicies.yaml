@@ -1,20 +1,34 @@
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: default-deny-egress
+  name: media-default-deny-egress
   namespace: media
 spec:
-  endpointSelector: {}
+  endpointSelector: 
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - flaresolverr
+          - qbittorrent
+          - sabnzbd
   egress:
     - toEndpoints: []
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-egress-to-gluetun
+  name: media-allow-egress-to-gluetun
   namespace: media
 spec:
-  endpointSelector: {}
+  endpointSelector: 
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - flaresolverr
+          - qbittorrent
+          - sabnzbd
   egress:
     - toEndpoints:
         - matchLabels:
@@ -23,34 +37,5 @@ spec:
         - ports:
             - port: "8888"
               protocol: TCP
-            - port: "1080"
-              protocol: TCP
----
-apiVersion: "cilium.io/v2"
-kind: CiliumNetworkPolicy
-metadata:
-  name: gluetun-egress-to-internet
-  namespace: media
-spec:
-  endpointSelector:
-    matchLabels:
-      app: gluetun
-  egress:
-    - toCIDR:
-        - 0.0.0.0/0
----
-apiVersion: "cilium.io/v2"
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-dns-egress
-  namespace: media
-spec:
-  endpointSelector: {}
-  egress:
-    - toEndpoints:
-        - matchLabels:
-            k8s-app: kube-dns
-      toPorts:
-        - ports:
             - port: "53"
               protocol: UDP
