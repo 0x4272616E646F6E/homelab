@@ -8,8 +8,8 @@ resources:
   - gluetun/
   - ciliumnetworkpolicies.yaml
   - flaresolverr/
-  # - qbittorrent/
-  # - sabnzbd/
+  - qbittorrent/
+  - sabnzbd/
   - prowlarr/
   - bazarr/
   - radarr/
