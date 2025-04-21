@@ -20,7 +20,9 @@ spec:
     spec:
       containers:
       - name: intel-gpu-plugin
-        arg: "-shared-dev-num=4"
+        arg: 
+        - "-shared-dev-num=4"
+        - "--no-cdi"
         env:
           - name: NODE_NAME
             valueFrom:
