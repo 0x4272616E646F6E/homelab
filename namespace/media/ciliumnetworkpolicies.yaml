@@ -37,5 +37,7 @@ spec:
         - ports:
             - port: "8888"
               protocol: TCP
+            - port: "8888"
+              protocol: UDP
             - port: "53"
               protocol: UDP
