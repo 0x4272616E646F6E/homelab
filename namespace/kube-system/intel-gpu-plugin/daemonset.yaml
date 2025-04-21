@@ -41,5 +41,5 @@ spec:
             type: Directory
         - name: cdi
           hostPath:
-            path: /etc/cdi
+            path: /var/lib/cdi
             type: DirectoryOrCreate
