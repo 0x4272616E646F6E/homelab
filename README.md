@@ -42,10 +42,10 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
-- [ ] **Falco**
+- [x] **Falco**
 - [ ] **Flaresolverr**
 - [ ] **Gluetun**
-- [ ] **Grafana**
+- [x] **Grafana**
 - [X] **Harbor**
 - [ ] **Home Assistant**
 - [x] **Intel GPU Plugin**
@@ -53,7 +53,7 @@ The following resources are managed through Flux in this repository:
 - [ ] **Jellyseerr**
 - [x] **Longhorn**
 - [ ] **OpenBao**
-- [ ] **Prometheus**
+- [x] **Prometheus**
 - [ ] **Prowlarr**
 - [ ] **Qbittorrent**
 - [ ] **Radarr**
@@ -64,8 +64,7 @@ The following resources are managed through Flux in this repository:
 - [ ] **Sonarr**
 - [ ] **Suwayomi**
 - [x] **Traefik**
-- [ ] **Vector**
-- [ ] **Wazuh**
+- [x] **Vector**
 
 ## Contributing
 

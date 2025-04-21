@@ -1,0 +1,40 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: default-deny-egress
+  namespace: media
+spec:
+  endpointSelector: {}
+  egress:
+    - toEndpoints: []
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-egress-to-gluetun
+  namespace: media
+spec:
+  endpointSelector: {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            app: gluetun
+      toPorts:
+        - ports:
+            - port: "8888"
+              protocol: TCP
+            - port: "1080"
+              protocol: TCP
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: gluetun-egress-to-internet
+  namespace: media
+spec:
+  endpointSelector:
+    matchLabels:
+      app: gluetun
+  egress:
+    - toCIDR:
+        - 0.0.0.0/0

@@ -38,16 +38,32 @@ spec:
               value: "mullvad"
             - name: VPN_TYPE
               value: "wireguard"
+            - name: SERVER_CITIES
+              value: "Netherlands"
+            - name: OWNED_ONLY
+              value: "yes"
             - name: WIREGUARD_PRIVATE_KEY
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: gluetun-secrets
+                  key: WIREGUARD_PRIVATE_KEY
             - name: WIREGUARD_ADDRESSES
-              value: ""
+              valueFrom:
+                secretKeyRef:
+                  name: gluetun-secrets
+                  key: WIREGUARD_ADDRESSES
           securityContext:
             privileged: true
           volumeMounts:
             - name: config
               mountPath: /gluetun
+            - name: dev-tun
+              mountPath: /dev/net/tun
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: gluetun-config
+        - name: dev-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice

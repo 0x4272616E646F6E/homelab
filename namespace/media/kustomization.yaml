@@ -5,11 +5,12 @@ commonLabels:
 resources:
   - namespace.yaml
   - pvc.yaml
-  - prowlarr/
   - gluetun/
+  - ciliumnetworkpolicies.yaml
   - flaresolverr/
   - qbittorrent/
   - sabnzbd/
+  - prowlarr/
   - bazarr/
   - radarr/
   - sonarr/
