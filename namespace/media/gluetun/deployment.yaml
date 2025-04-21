@@ -39,7 +39,7 @@ spec:
             - name: VPN_TYPE
               value: "wireguard"
             - name: SERVER_CITIES
-              value: "Netherlands"
+              value: "Amsterdam"
             - name: OWNED_ONLY
               value: "yes"
             - name: WIREGUARD_PRIVATE_KEY
