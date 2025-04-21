@@ -33,7 +33,7 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
-              intel.com/gpu: "1"
+              gpu.intel.com/i915: "1"
           volumeMounts:
             - name: config
               mountPath: /config
