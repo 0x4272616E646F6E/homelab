@@ -7,14 +7,14 @@ resources:
   - pvc.yaml
   - gluetun/
   - ciliumnetworkpolicies.yaml
-  #- flaresolverr/
-  #- qbittorrent/
-  #- sabnzbd/
-  #- prowlarr/
-  #- bazarr/
-  #- radarr/
-  #- sonarr/
-  #- jellyfin/
-  #- jellyseerr/
-  #- requestrr/
-  # - suwayomi/
+  - flaresolverr/
+  - qbittorrent/
+  - sabnzbd/
+  - prowlarr/
+  - bazarr/
+  - radarr/
+  - sonarr/
+  - jellyfin/
+  - jellyseerr/
+  - requestrr/
+  - suwayomi/
