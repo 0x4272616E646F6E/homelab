@@ -28,16 +28,7 @@ spec:
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: homeassistant
           port: 8123
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-to-https
-  namespace: automation
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true

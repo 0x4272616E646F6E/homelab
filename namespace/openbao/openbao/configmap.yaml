@@ -861,7 +861,7 @@ data:
               cluster_address = "[::]:8201"
               # Enable unauthenticated metrics access (necessary for Prometheus Operator)
               #telemetry {
-              #  unauthenticated_metrics_access = "true"
+              #  unauthenticated_metrics_access = "false"
               #}
             }
             storage "file" {

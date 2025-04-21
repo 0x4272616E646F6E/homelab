@@ -47,17 +47,17 @@ The following resources are managed through Flux in this repository:
 - [x] **Gluetun**
 - [x] **Grafana**
 - [X] **Harbor**
-- [ ] **Home Assistant**
+- [x] **Home Assistant**
 - [x] **Intel GPU Plugin**
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
 - [x] **Longhorn**
 - [ ] **OpenBao**
 - [x] **Prometheus**
-- [ ] **Prowlarr**
+- [x] **Prowlarr**
 - [x] **Qbittorrent**
 - [x] **Radarr**
-- [ ] **Redbot**
+- [x] **Redbot**
 - [x] **Reflector**
 - [x] **Requestrr**
 - [x] **SABnzbd**
