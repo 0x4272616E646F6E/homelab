@@ -23,7 +23,6 @@ spec:
       - name: intel-gpu-plugin
         args: 
         - "--shared-dev-num=4"
-        - "--no-cdi"
         env:
           - name: NODE_NAME
             valueFrom:
