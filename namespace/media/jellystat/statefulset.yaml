@@ -39,6 +39,7 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
+        namespace: media
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:
