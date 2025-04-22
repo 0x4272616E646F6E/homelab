@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sabnzbd.oglesby.io`)
+    - match: Host(`nsabnzbd.oglesby.io`)
       kind: Rule
       services:
         - name: sabnzbd
@@ -24,10 +24,11 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`sabnzbd.oglesby.io`)
+    - match: Host(`nsabnzbd.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: sabnzbd
           port: 8080

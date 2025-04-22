@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`qbittorrent.oglesby.io`)
+    - match: Host(`nqbittorrent.oglesby.io`)
       kind: Rule
       services:
         - name: qbittorrent
@@ -24,10 +24,11 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`qbittorrent.oglesby.io`)
+    - match: Host(`nqbittorrent.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: qbittorrent
           port: 8080

@@ -28,6 +28,7 @@ spec:
       kind: Rule
       middlewares:
         - name: redirect-to-https
+        - namespace: traefik
       services:
         - name: unmanic-ui
           port: 8888

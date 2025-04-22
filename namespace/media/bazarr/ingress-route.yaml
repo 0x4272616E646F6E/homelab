@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`bazarr.oglesby.io`)
+    - match: Host(`nbazarr.oglesby.io`)
       kind: Rule
       services:
         - name: bazarr
@@ -24,10 +24,11 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`bazarr.oglesby.io`)
+    - match: Host(`nbazarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: bazarr
           port: 6767

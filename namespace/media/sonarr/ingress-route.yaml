@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarr.oglesby.io`)
+    - match: Host(`nsonarr.oglesby.io`)
       kind: Rule
       services:
         - name: sonarr
@@ -24,10 +24,11 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`sonarr.oglesby.io`)
+    - match: Host(`nsonarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: sonarr
           port: 8989
