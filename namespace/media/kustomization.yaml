@@ -17,8 +17,8 @@ resources:
   - jellyfin/
   - jellyseerr/
   - unmanic/
-  # - jellystat/
-  # - decluttarr/
+  - jellystat/
+  - decluttarr/
   # - janitorr/
   - requestrr/
   - suwayomi/
