@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: jellystat-postgres
+  namespace: media
 spec:
   serviceName: "jellystat-postgres"
   replicas: 1
