@@ -19,6 +19,6 @@ resources:
   - unmanic/
   - jellystat/
   - decluttarr/
-  # - janitorr/
+  - janitorr/
   - requestrr/
   - suwayomi/
