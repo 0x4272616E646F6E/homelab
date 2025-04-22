@@ -16,7 +16,7 @@ spec:
       dnsPolicy: None
       dnsConfig:
         nameservers:
-          - gluetun.media.svc.cluster.local
+          - 10.111.224.228
       containers:
         - name: sabnzbd
           image: lscr.io/linuxserver/sabnzbd:latest

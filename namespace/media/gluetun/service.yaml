@@ -19,4 +19,7 @@ spec:
       targetPort: 8388
       protocol: UDP
       name: gluetun-udp
+    - port: 53
+      targetPort: 53
+      protocol: UDP
   type: ClusterIP
