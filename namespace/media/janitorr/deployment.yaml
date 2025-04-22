@@ -37,7 +37,7 @@ spec:
       volumes:
         - name: janitorr-config
           secret:
-            secretName: janitorr-config
+            secretName: janitorr-secrets
             items:
               - key: application.yml
                 path: application.yml
