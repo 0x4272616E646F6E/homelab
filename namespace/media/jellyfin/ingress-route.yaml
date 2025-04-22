@@ -28,6 +28,7 @@ spec:
       kind: Rule
       middlewares:
         - name: redirect-to-https
+          namespace: traefik
       services:
         - name: jellyfin-ui
           port: 8096

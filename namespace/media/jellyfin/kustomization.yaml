@@ -3,12 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  # - secrets.sop.yaml 
-  # - configmap.yaml
   - pvc.yaml
-  # - serviceaccount.yaml
-  # - rbac.yaml
   - deployment.yaml
-  # - statefulset.yaml
   - service.yaml
   - ingress-route.yaml
