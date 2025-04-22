@@ -10,5 +10,5 @@ spec:
     - port: 5055
       targetPort: 5055
       protocol: TCP
-      name: jellyseerr-ui
+      name: jellyseerr
   type: ClusterIP
