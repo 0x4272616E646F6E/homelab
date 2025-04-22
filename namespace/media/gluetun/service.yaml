@@ -22,4 +22,5 @@ spec:
     - port: 53
       targetPort: 53
       protocol: UDP
+      name: gluetun-dns
   type: ClusterIP
