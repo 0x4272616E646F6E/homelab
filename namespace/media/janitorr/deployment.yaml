@@ -41,9 +41,9 @@ spec:
             items:
               - key: application.yml
                 path: application.yml
-        - name: janitorr-logs
+        - name: logs
           persistentVolumeClaim:
-            claimName: logs
+            claimName: janitorr-logs
         - name: media
           persistentVolumeClaim:
             claimName: media
