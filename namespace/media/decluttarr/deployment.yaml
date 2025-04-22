@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: decluttarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: decluttarr
+  template:
+    metadata:
+      labels:
+        app: decluttarr
+    spec:
+      containers:
+        - name: decluttarr
+          image: ghcr.io/manimatter/decluttarr:latest
+          env:
+            - name: TZ
+              value: "etc/UTC"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TEST_RUN
+              value: "false"
+            - name: SSL_VERIFICATION
+              value: "false"
+            - name: LOG_LEVEL
+              value: INFO
+            - name: REMOVE_TIMER
+              value: "10"
+            - name: REMOVE_FAILED
+              value: "true"
+            - name: REMOVE_FAILED_IMPORTS
+              value: "true"
+            - name: REMOVE_METADATA_MISSING
+              value: "true"
+            - name: REMOVE_MISSING_FILES
+              value: "true"
+            - name: REMOVE_ORPHANS
+              value: "true"
+            - name: REMOVE_SLOW
+              value: "true"
+            - name: REMOVE_STALLED
+              value: "true"
+            - name: REMOVE_UNMONITORED
+              value: "true"
+            - name: RUN_PERIODIC_RESCANS
+              value: '{"SONARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 7},
+                      "RADARR": {"MISSING": true, "CUTOFF_UNMET": true, "MAX_CONCURRENT_SCANS": 3, "MIN_DAYS_BEFORE_RESCAN": 7}}'
+            - name: PERMITTED_ATTEMPTS
+              value: "3"
+            - name: NO_STALLED_REMOVAL_QBIT_TAG
+              value: "Don't Kill"
+            - name: MIN_DOWNLOAD_SPEED
+              value: "100"
+            - name: FAILED_IMPORT_MESSAGE_PATTERNS
+              value: '["Not a Custom Format upgrade for existing",
+                      "Not an upgrade for existing"]'
+            - name: IGNORED_DOWNLOAD_CLIENTS
+              value: '["emulerr"]'
+            - name: RADARR_URL
+              value: http://radarr:7878
+            - name: RADARR_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: decluttarr-secrets
+                  key: RADARR_KEY
+            - name: SONARR_URL
+              value: http://sonarr:8989
+            - name: SONARR_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: decluttarr-secrets
+                  key: SONARR_KEY
+            - name: QBITTORRENT_URL
+              value: http://qbittorrent:8080
+            - name: QBITTORRENT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: decluttarr-secrets
+                  key: QBITTORRENT_USERNAME
+            - name: QBITTORRENT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: decluttarr-secrets
+                  key: QBITTORRENT_PASSWORD
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jellystat
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellystat
+  template:
+    metadata:
+      labels:
+        app: jellystat
+    spec:
+      containers:
+        - name: jellystat
+          image: docker.io/cyfershepard/jellystat:latest
+          env:
+            - name: TZ
+              value: "Etc/UTC"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jellystat-secrets
+                  key: JWT_SECRET
+            - name: POSTGRES_IP
+              value: "jellystat-postgres"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "jfstat"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jellystat-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jellystat-secrets
+                  key: POSTGRES_PASSWORD
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - name: config
+              mountPath: /app/backend/backup-data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jellystat-config

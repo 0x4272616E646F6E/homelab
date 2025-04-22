@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unmanic
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unmanic
+  template:
+    metadata:
+      labels:
+        app: unmanic
+    spec:
+      containers:
+        - name: unmanic
+          image: docker.io/josh5/unmanic:latest
+          ports:
+            - containerPort: 5055
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /library
+            - name: temp
+              mountPath: /tmp/unmanic
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: unmanic-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: media
+        - name: temp
+          persistentVolumeClaim:
+            claimName: unmanic-temp

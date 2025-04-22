@@ -9,8 +9,6 @@ This repository contains Kubernetes manifests for deploying and managing resourc
   - [Prerequisites](#prerequisites)
   - [Flux Setup](#flux-setup)
   - [Resources Managed](#resources-managed)
-  - [Contributing](#contributing)
-  - [License](#license)
 
 ## Prerequisites
 
@@ -42,6 +40,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
+- [ ] **Decluttarr**
 - [x] **Falco**
 - [x] **Flaresolverr**
 - [x] **Gluetun**
@@ -49,10 +48,12 @@ The following resources are managed through Flux in this repository:
 - [X] **Harbor**
 - [x] **Home Assistant**
 - [x] **Intel GPU Plugin**
+- [ ] **Janitorr**
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
+- [ ] **Jellystat**
 - [x] **Longhorn**
-- [ ] **OpenBao**
+- [X] **OpenBao**
 - [x] **Prometheus**
 - [x] **Prowlarr**
 - [x] **Qbittorrent**
@@ -64,12 +65,5 @@ The following resources are managed through Flux in this repository:
 - [x] **Sonarr**
 - [x] **Suwayomi**
 - [x] **Traefik**
+- [x] **Unmanic**
 - [x] **Vector**
-
-## Contributing
-
-If you would like to contribute to this repository, feel free to fork it, create a branch, and submit a pull request. Please follow the guidelines for setting up new Kubernetes resources and ensure that all changes are properly documented.
-
-## License
-
-This repository is licensed under the MIT License.

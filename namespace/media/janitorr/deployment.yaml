@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: janitorr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: janitorr
+  template:
+    metadata:
+      labels:
+        app: janitorr
+    spec:
+      containers:
+        - name: janitorr
+          image: ghcr.io/schaka/janitorr:native-stable
+          ports:
+            - containerPort: 8978
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - name: janitorr-config
+              mountPath: /workspace/application.yml
+              subPath: application.yml
+            - name: logs
+              mountPath: /logs
+            - name: media
+              mountPath: /data
+      volumes:
+        - name: janitorr-config
+          secret:
+            secretName: janitorr-config
+            items:
+              - key: application.yml
+                path: application.yml
+        - name: janitorr-logs
+          persistentVolumeClaim:
+            claimName: logs
+        - name: media
+          persistentVolumeClaim:
+            claimName: media

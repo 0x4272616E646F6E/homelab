@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jellystat-postgres
+spec:
+  serviceName: "jellystat-postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellystat-postgres
+  template:
+    metadata:
+      labels:
+        app: jellystat-postgres
+    spec:
+      containers:
+        - name: jellystat-postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jellystat-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jellystat-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: "jfstat"
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi

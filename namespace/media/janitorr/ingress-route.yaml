@@ -1,33 +1,33 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: jellyfin-https
+  name: janitorr-https
   namespace: media
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`njellyfin.oglesby.io`)
+    - match: Host(`janitorr.oglesby.io`)
       kind: Rule
       services:
-        - name: jellyfin-ui
-          port: 8096
+        - name: janitorr
+          port: 8978
   tls:
     certResolver: letsencrypt
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: jellyfin-http
+  name: janitorr-http
   namespace: media
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`njellyfin.oglesby.io`)
+    - match: Host(`janitorr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
       services:
-        - name: jellyfin-ui
-          port: 8096
+        - name: jellyseerr
+          port: 8978
