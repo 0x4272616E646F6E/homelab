@@ -10,7 +10,7 @@ spec:
     - match: Host(`njellyfin.oglesby.io`)
       kind: Rule
       services:
-        - name: jellyfin-ui
+        - name: jellyfin
           port: 8096
   tls:
     certResolver: letsencrypt
@@ -30,5 +30,5 @@ spec:
         - name: redirect-to-https
           namespace: traefik
       services:
-        - name: jellyfin-ui
+        - name: jellyfin
           port: 8096
