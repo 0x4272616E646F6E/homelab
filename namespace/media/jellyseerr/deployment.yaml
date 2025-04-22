@@ -28,7 +28,7 @@ spec:
               memory: "512Mi"
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /app/config
       volumes:
         - name: config
           persistentVolumeClaim:
