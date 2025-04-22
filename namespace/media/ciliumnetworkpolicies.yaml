@@ -30,9 +30,10 @@ spec:
           - qbittorrent
           - sabnzbd
   egress:
-    - toEndpoints:
-        - matchLabels:
-            app: gluetun
+    - toServices:
+        - k8sService:
+            namespace: media
+            serviceName: gluetun
       toPorts:
         - ports:
             - port: "8888"
