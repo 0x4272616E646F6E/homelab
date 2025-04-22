@@ -34,6 +34,8 @@ spec:
               cpu: "500m"
               memory: "512Mi"
           env:
+            - name: SHADOWSOCKS
+              value: "on"
             - name: VPN_SERVICE_PROVIDER
               value: "mullvad"
             - name: VPN_TYPE
