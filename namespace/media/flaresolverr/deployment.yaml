@@ -13,6 +13,10 @@ spec:
       labels:
         app: flaresolverr
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - gluetun.media.svc.cluster.local
       automountServiceAccountToken: false
       containers:
         - name: flaresolverr

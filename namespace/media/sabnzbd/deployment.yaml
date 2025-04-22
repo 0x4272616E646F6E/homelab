@@ -13,6 +13,10 @@ spec:
       labels:
         app: sabnzbd
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - gluetun.media.svc.cluster.local
       containers:
         - name: sabnzbd
           image: lscr.io/linuxserver/sabnzbd:latest

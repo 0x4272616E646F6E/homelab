@@ -13,6 +13,10 @@ spec:
       labels:
         app: qbittorrent
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - gluetun.media.svc.cluster.local
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest
