@@ -10,5 +10,5 @@ spec:
     - port: 8978
       targetPort: 8978
       protocol: TCP
-      name: janitorr-ui
+      name: janitorr
   type: ClusterIP
