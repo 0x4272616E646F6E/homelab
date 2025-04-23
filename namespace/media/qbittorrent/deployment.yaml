@@ -17,6 +17,9 @@ spec:
       dnsConfig:
         nameservers:
           - 10.64.0.1
+        options:
+          - name: ndots
+            value: "1"
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest
