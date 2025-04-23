@@ -21,17 +21,17 @@ data:
         #   auth:
         #     password: ""
     redis:
-    enabled: true
-      master:
-          persistence:
-          enabled: false
-          resources:
-          requests:
-              memory: 256Mi
-          limits:
-              memory: 512Mi
-          extraFlags:
-          - "--save"
-          - "\"\""
-          - "--appendonly"
-          - "no"
+      enabled: true
+        master:
+            persistence:
+            enabled: false
+            resources:
+            requests:
+                memory: 256Mi
+            limits:
+                memory: 512Mi
+            extraFlags:
+            - "--save"
+            - "\"\""
+            - "--appendonly"
+            - "no"
