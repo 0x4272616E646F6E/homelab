@@ -22,7 +22,6 @@ data:
         #     password: ""
         redis:
         enabled: true
-        architecture: standalone
 
         master:
             persistence:
