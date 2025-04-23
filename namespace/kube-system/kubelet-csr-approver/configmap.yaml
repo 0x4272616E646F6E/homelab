@@ -8,7 +8,7 @@ data:
     # Required configuration item
     providerRegex: "talos.oglesby.io"
     # optional, specified as a string (enclosed with ""). if left empty, defaults to 367 days
-    maxExpirationSeconds: "86400
+    maxExpirationSeconds: "86400"
     # optional, permits to bypass dns resolution checks. default: false
     bypassDnsResolution: false
     # number of DNS SAN names allowed in a certificate request. defaults to 1
