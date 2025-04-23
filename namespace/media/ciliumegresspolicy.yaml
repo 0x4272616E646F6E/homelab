@@ -13,9 +13,6 @@ spec:
               - flaresolverr
               - qbittorrent
               - sabnzbd
-      egressIP:
-        - 10.72.127.202
-        - fc00:bbbb:bbbb:bb01::9:7fc9
-  destinationCIDRs:
-    - 0.0.0.0/0
-    - ::/0
+      egressIP: 10.72.127.202
+      destinationCIDRs:
+        - 0.0.0.0/0
