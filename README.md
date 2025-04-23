@@ -43,7 +43,6 @@ The following resources are managed through Flux in this repository:
 - [ ] **Decluttarr**
 - [x] **Falco**
 - [x] **Flaresolverr**
-- [x] **Gluetun**
 - [x] **Grafana**
 - [X] **Harbor**
 - [x] **Home Assistant**

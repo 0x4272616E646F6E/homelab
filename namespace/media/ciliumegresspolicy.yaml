@@ -1,0 +1,21 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumEgressNATPolicy
+metadata:
+  name: secure-egress
+  namespace: media
+spec:
+  egress:
+    - podSelector:
+        matchExpressions:
+          - key: app
+            operator: In
+            values:
+              - flaresolverr
+              - qbittorrent
+              - sabnzbd
+      egressIP:
+        - 10.72.127.202
+        - fc00:bbbb:bbbb:bb01::9:7fc9
+  destinationCIDRs:
+    - 0.0.0.0/0
+    - ::/0

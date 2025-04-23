@@ -16,7 +16,7 @@ spec:
       dnsPolicy: None
       dnsConfig:
         nameservers:
-          - 10.111.224.228
+          - 10.64.0.1
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest
