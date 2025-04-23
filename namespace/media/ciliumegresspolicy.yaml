@@ -11,4 +11,7 @@ spec:
   destinationCIDRs:
     - 0.0.0.0/0
   egressGateway:
+    nodeSelector:
+      matchLabels:
+        kubernetes.io/hostname: "talos-4m3-8nj"
     interface: wg0
