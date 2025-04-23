@@ -6,33 +6,35 @@ metadata:
 data:
   values.yaml: |-
     authentik:
-        error_reporting:
-            enabled: false
+      error_reporting:
+        enabled: false
         # postgresql:
-        #     password: ""
+        #   password: ""
     server:
-        ingress:
-            ingressClassName: traefik
-            enabled: false
-            hosts:
-                - authentik.oglesby.io
+      ingress:
+        ingressClassName: traefik
+        enabled: false
+        hosts:
+          - authentik.oglesby.io
+
     postgresql:
-        enabled: true
-        #   auth:
-        #     password: ""
+      enabled: true
+        # auth:
+        # password: ""
+
     redis:
-        enabled: true
-        architecture: standalone
-        master:
-            persistence:
-            enabled: false
-            resources:
-            requests:
-                memory: 256Mi
-            limits:
-                memory: 512Mi
-            extraFlags:
-            - "--save"
-            - "\"\""
-            - "--appendonly"
-            - "no"
+      enabled: true
+      architecture: standalone
+      master:
+        persistence:
+          enabled: false
+        resources:
+          requests:
+            memory: 256Mi
+          limits:
+            memory: 512Mi
+        extraFlags:
+          - --save
+          - ""
+          - --appendonly
+          - "no"
