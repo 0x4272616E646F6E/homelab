@@ -9,7 +9,7 @@ resources:
   - flaresolverr/
   - qbittorrent/
   - sabnzbd/
-  # - ciliumegresspolicy.yaml
+  - ciliumegresspolicy.yaml
   - prowlarr/
   - bazarr/
   - radarr/
