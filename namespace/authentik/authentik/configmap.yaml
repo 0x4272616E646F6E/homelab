@@ -22,16 +22,17 @@ data:
         #     password: ""
     redis:
         enabled: true
-          master:
-              persistence:
-              enabled: false
-              resources:
-              requests:
-                  memory: 256Mi
-              limits:
-                  memory: 512Mi
-              extraFlags:
-              - "--save"
-              - "\"\""
-              - "--appendonly"
-              - "no"
+        architecture: standalone
+        master:
+            persistence:
+            enabled: false
+            resources:
+            requests:
+                memory: 256Mi
+            limits:
+                memory: 512Mi
+            extraFlags:
+            - "--save"
+            - "\"\""
+            - "--appendonly"
+            - "no"
