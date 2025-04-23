@@ -1,10 +1,9 @@
-apiVersion: cilium.io/v2alpha1
-kind: CiliumEgressNATPolicy
+apiVersion: cilium.io/v2
+kind: CiliumEgressGatewayPolicy
 metadata:
-  name: secure-egress
-  namespace: media
+  name: media-egress
 spec:
-  egress:
+  selectors:
     - podSelector:
         matchExpressions:
           - key: app
@@ -13,6 +12,11 @@ spec:
               - flaresolverr
               - qbittorrent
               - sabnzbd
-      egressIP: 10.72.127.202
-      destinationCIDRs:
-        - 0.0.0.0/0
+        namespaceSelector:
+          matchLabels:
+            name: media
+  destinationCIDRs:
+    - 0.0.0.0/0
+    - ::/0
+  egressGateway:
+    interface: wg0
