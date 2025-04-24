@@ -23,8 +23,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              apk add --no-cache iproute2  # grab the `ip` binary (≈700 kB)
-              # install rule + routes; ignore “File exists” on restarts
+              apk add --no-cache iproute2
               ip rule add from 10.72.127.202/32 table 100 priority 100 2>/dev/null || true
               ip route add 10.64.0.0/16 dev wg0 table 100              2>/dev/null || true
               ip route add default dev wg0 table 100                   2>/dev/null || true
