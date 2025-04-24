@@ -40,19 +40,19 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
-- [ ] **Decluttarr**
+- [x] **Decluttarr**
+- [x] **Egress Gateway Helper**
 - [x] **Falco**
 - [x] **Flaresolverr**
 - [x] **Grafana**
 - [X] **Harbor**
 - [x] **Home Assistant**
 - [x] **Intel GPU Plugin**
-- [ ] **Janitorr**
+- [x] **Janitorr**
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
-- [ ] **Jellystat**
+- [x] **Jellystat**
 - [x] **Longhorn**
-- [X] **OpenBao**
 - [x] **Prometheus**
 - [x] **Prowlarr**
 - [x] **Qbittorrent**
