@@ -27,8 +27,16 @@ spec:
   routes:
     - match: Host(`longhorn.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: authentik
+          namespace: traefik
       services:
       - name: longhorn-frontend
         port: 80
+    - match: Host(`longhorn.oglesby.io`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      services:
+        - name: ak-outpost-authentik-embedded-outpost
+          port: 9000
   tls: 
     secretName: oglesby-io-tls
