@@ -27,7 +27,8 @@ spec:
     - match: Host(`suwayomi.oglesby.io`)
       kind: Rule
       middlewares:
-        - name: redirect-to-https
+        - name: redirect-https
+          namespace: traefik
       services:
         - name: suwayomi
           port: 4567

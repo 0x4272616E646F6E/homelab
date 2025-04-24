@@ -27,7 +27,8 @@ spec:
     - match: Host(`requestrr.oglesby.io`)
       kind: Rule
       middlewares:
-        - name: redirect-to-https
+        - name: redirect-https
+          namespace: traefik
       services:
         - name: requestrr
           port: 4545
