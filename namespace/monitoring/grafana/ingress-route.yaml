@@ -11,7 +11,7 @@ spec:
       kind: Rule
       services:
         - name: grafana
-          port: 3000
+          port: 80
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -31,4 +31,4 @@ spec:
         namespace: traefik
       services:
         - name: grafana
-          port: 3000
+          port: 80

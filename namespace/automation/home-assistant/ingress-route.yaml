@@ -10,7 +10,7 @@ spec:
     - match: Host(`homeassistant.oglesby.io`)
       kind: Rule
       services:
-        - name: homeassistant-ui
+        - name: homeassistant
           port: 8123
   tls: 
     secretName: oglesby-io-tls
@@ -30,5 +30,5 @@ spec:
         - name: redirect-to-https
           namespace: traefik
       services:
-        - name: homeassistant-ui
+        - name: homeassistant
           port: 8123

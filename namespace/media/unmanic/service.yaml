@@ -10,5 +10,5 @@ spec:
     - port: 8888
       targetPort: 8888
       protocol: TCP
-      name: unmanic-ui
+      name: unmanic
   type: ClusterIP

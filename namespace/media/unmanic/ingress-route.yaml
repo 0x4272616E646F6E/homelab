@@ -10,7 +10,7 @@ spec:
     - match: Host(`unmanic.oglesby.io`)
       kind: Rule
       services:
-        - name: unmanic-ui
+        - name: unmanic
           port: 8888
   tls: 
     secretName: oglesby-io-tls
@@ -30,5 +30,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: unmanic-ui
+        - name: unmanic
           port: 8888

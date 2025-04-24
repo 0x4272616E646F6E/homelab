@@ -10,5 +10,5 @@ spec:
     - port: 8123
       targetPort: 8123
       protocol: TCP
-      name: homeassistant-ui
+      name: homeassistant
   type: ClusterIP
