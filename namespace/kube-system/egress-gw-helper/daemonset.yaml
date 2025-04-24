@@ -25,7 +25,7 @@ spec:
             - |
               apk add --no-cache iproute2
               ip rule add from 10.72.127.202/32 table 100 priority 100 2>/dev/null || true
-              ip route add 10.64.0.0/16 dev wg0 table 100              2>/dev/null || true
+              ip route add 10.64.0.1/32 dev wg0 table 100              2>/dev/null || true
               ip route add default dev wg0 table 100                   2>/dev/null || true
               sleep infinity
       tolerations:
