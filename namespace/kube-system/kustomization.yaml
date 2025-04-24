@@ -5,5 +5,6 @@ commonLabels:
 resources:
   - coredns/
   - cilium/
+  - egress-gw-helper/
   - intel-gpu-plugin/daemonset.yaml
   - kubelet-csr-approver/
