@@ -32,3 +32,20 @@ spec:
         port: 80
   tls: 
     secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authentik-outpost-route
+  namespace: authentik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`longhorn.oglesby.io`) && PathPrefix(`/outpost.goauthentik.io/`)
+      kind: Rule
+      services:
+        - name: ak-outpost-authentik-embedded-outpost
+          port: 9000
+  tls:
+    secretName: oglesby-io-tls
