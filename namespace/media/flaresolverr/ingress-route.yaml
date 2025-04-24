@@ -12,8 +12,8 @@ spec:
       services:
         - name: flaresolverr
           port: 8191
-  tls:
-    certResolver: letsencrypt
+  tls: 
+    secretName: oglesby-io-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
