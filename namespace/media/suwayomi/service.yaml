@@ -10,5 +10,5 @@ spec:
     - port: 4567
       targetPort: 4567
       protocol: TCP
-      name: suwayomi-ui
+      name: suwayomi
   type: ClusterIP
