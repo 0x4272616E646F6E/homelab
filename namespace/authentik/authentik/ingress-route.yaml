@@ -46,6 +46,6 @@ spec:
       kind: Rule
       services:
         - name: ak-outpost-authentik-embedded-outpost
-          port: 9000
+          port: 9443
   tls:
     secretName: oglesby-io-tls
