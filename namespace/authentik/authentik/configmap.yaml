@@ -17,13 +17,6 @@ data:
         hosts:
           - authentik.oglesby.io
 
-    embeddedOutpost:
-      enabled: true
-
-    outpost:
-      tls:
-        enabled: false
-
     postgresql:
       enabled: true
         # auth:
