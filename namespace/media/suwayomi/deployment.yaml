@@ -13,9 +13,14 @@ spec:
       labels:
         app: suwayomi
     spec:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest
+          
           ports:
             - containerPort: 4567
               protocol: TCP
