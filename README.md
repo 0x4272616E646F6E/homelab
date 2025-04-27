@@ -9,6 +9,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
   - [Prerequisites](#prerequisites)
   - [Flux Setup](#flux-setup)
   - [Resources Managed](#resources-managed)
+  - [Runtimes](#runtimes)
 
 ## Prerequisites
 
@@ -71,3 +72,12 @@ The following resources are managed through Flux in this repository:
 - [ ] **Trivy**
 - [x] **Unmanic**
 - [x] **Vector**
+
+## Runtimes
+
+These are the runtimes used in this repository:
+
+- **Container Runtimes**
+  - **Default**: `runc`
+  - **Performance**: `crun`
+  - **Security**: `kata`
