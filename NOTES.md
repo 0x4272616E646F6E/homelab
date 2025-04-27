@@ -27,7 +27,28 @@ Use this command with caution, as it bypasses the normal cleanup process.
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
-factory.talos.dev/installer/303e821d35b80491f4aecc472c3aab239cf1916a1d4e71f283a5cf164f3a0dfd:v1.9.5
+ factory.talos.dev/installer/4025fe953a5ebe84bc39b8c8bd67647cdfa9ce2b28b5517f448286df5f75794c:v1.9.5
+```
+
+### Extensions
+
+```bash
+customization:
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/binfmt-misc
+            - siderolabs/crun
+            - siderolabs/fuse3
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/kata-containers
+            - siderolabs/mei
+            - siderolabs/qemu-guest-agent
+            - siderolabs/stargz-snapshotter
+            - siderolabs/util-linux-tools
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
