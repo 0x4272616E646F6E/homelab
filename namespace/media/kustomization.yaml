@@ -5,11 +5,10 @@ commonLabels:
 resources:
   - namespace.yaml
   - pvc.yaml
-
+  - ciliumegresspolicy.yaml
   - flaresolverr/
   - qbittorrent/
   - sabnzbd/
-  - ciliumegresspolicy.yaml
   - prowlarr/
   - bazarr/
   - radarr/

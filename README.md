@@ -46,15 +46,15 @@ The following resources are managed through Flux in this repository:
 - [x] **Flaresolverr**
 - [x] **Grafana**
 - [X] **Harbor**
-- [X] **Headlamp**
+- [ ] **Headlamp**
 - [x] **Home Assistant**
 - [x] **Intel GPU Plugin**
 - [x] **Janitorr**
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
 - [x] **Jellystat**
-- [x] **Kyverno**
-- [x] **Loki**
+- [ ] **Kyverno**
+- [ ] **Loki**
 - [x] **Longhorn**
 - [x] **Prometheus**
 - [x] **Prowlarr**
