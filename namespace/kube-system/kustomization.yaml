@@ -3,6 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
+  - runtimeclass.yaml
   - coredns/
   - cilium/
   - egress-gw-helper/daemonset.yaml
