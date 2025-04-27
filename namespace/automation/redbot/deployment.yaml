@@ -19,7 +19,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       containers:
-        - name: jellyfin
+        - name: redbot
           image: docker.io/phasecorex/red-discordbot:core
           resources:
             requests:
