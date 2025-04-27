@@ -41,7 +41,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
-- [x] **Decluttarr**
 - [x] **Egress Gateway Helper**
 - [x] **Falco**
 - [x] **Flaresolverr**
