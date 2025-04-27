@@ -14,10 +14,6 @@ spec:
         app: redbot
     spec:
       runtimeClassName: kata
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       containers:
         - name: redbot
           image: docker.io/phasecorex/red-discordbot:core
