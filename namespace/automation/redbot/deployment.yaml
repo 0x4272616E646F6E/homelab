@@ -13,6 +13,11 @@ spec:
       labels:
         app: redbot
     spec:
+      runtimeClassName: gvisor
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: jellyfin
           image: docker.io/phasecorex/red-discordbot:core

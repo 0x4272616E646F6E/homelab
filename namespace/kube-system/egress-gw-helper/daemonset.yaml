@@ -12,6 +12,7 @@ spec:
       labels:
         app: egress-gw-helper
     spec:
+      runtimeClassName: crun
       hostNetwork: true
       hostPID: true
       containers:

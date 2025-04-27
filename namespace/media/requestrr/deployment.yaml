@@ -13,6 +13,11 @@ spec:
       labels:
         app: requestrr
     spec:
+      runtimeClassName: gvisor
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: requestrr
           image: docker.io/thomst08/requestrr:latest
