@@ -13,7 +13,7 @@ spec:
       labels:
         app: qbittorrent
     spec:
-      runtimeClassName: crun
+      runtimeClassName: kata
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
