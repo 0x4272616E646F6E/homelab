@@ -13,7 +13,7 @@ spec:
       labels:
         app: decluttarr
     spec:
-      runtimeClassName: kata
+      runtimeClassName: crun
       containers:
         - name: decluttarr
           image: ghcr.io/manimatter/decluttarr:latest

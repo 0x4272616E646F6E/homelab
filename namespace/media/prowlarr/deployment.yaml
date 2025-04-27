@@ -13,7 +13,7 @@ spec:
       labels:
         app: prowlarr
     spec:
-      runtimeClassName: kata
+      runtimeClassName: crun
       containers:
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:latest

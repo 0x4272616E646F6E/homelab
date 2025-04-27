@@ -13,7 +13,7 @@ spec:
       labels:
         app: requestrr
     spec:
-      runtimeClassName: kata
+      runtimeClassName: crun
       containers:
         - name: requestrr
           image: docker.io/thomst08/requestrr:latest
