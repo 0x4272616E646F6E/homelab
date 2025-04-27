@@ -13,11 +13,7 @@ spec:
       labels:
         app: bazarr
     spec:
-      runtimeClassName: crun
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+      runtimeClassName: kata
       automountServiceAccountToken: false
       containers:
         - name: bazarr

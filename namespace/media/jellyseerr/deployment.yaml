@@ -14,10 +14,6 @@ spec:
         app: jellyseerr
     spec:
       runtimeClassName: crun
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       containers:
         - name: jellyseerr
           image: docker.io/fallenbagel/jellyseerr:latest

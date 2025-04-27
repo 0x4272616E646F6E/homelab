@@ -14,10 +14,6 @@ spec:
         app: jellyfin
     spec:
       runtimeClassName: crun
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       containers:
         - name: jellyfin
           image: lscr.io/linuxserver/jellyfin:latest

@@ -14,10 +14,6 @@ spec:
         app: unmanic
     spec:
       runtimeClassName: crun
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       containers:
         - name: unmanic
           image: docker.io/josh5/unmanic:latest
@@ -28,6 +24,7 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
+              gpu.intel.com/i915: "1"
             limits:
               cpu: "500m"
               memory: "512Mi"
