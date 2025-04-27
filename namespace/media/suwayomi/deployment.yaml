@@ -13,7 +13,7 @@ spec:
       labels:
         app: suwayomi
     spec:
-      runtimeClassName: gvisor
+      runtimeClassName: runc
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
