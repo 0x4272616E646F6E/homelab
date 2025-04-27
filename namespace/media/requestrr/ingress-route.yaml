@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`requestrr.oglesby.io`)
+    - match: Host(`nrequestrr.oglesby.io`)
       kind: Rule
       services:
         - name: requestrr
@@ -24,7 +24,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`requestrr.oglesby.io`)
+    - match: Host(`nrequestrr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: redirect-https
