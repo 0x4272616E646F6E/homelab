@@ -13,7 +13,7 @@ spec:
       labels:
         app: janitorr
     spec:
-      runtimeClassName: gvisor
+      runtimeClassName: crun
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
