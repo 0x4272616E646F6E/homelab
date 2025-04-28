@@ -31,12 +31,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: data
-              mountPath: /data
+            - name: media
+              mountPath: /data/media
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: bazarr-config
-        - name: data
+        - name: media
           persistentVolumeClaim:
             claimName: media

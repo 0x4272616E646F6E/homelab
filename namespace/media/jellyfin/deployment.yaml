@@ -38,12 +38,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: data
+            - name: media
               mountPath: /data
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: jellyfin-config
-        - name: data
+        - name: media
           persistentVolumeClaim:
             claimName: media
