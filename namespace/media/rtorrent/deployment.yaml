@@ -48,8 +48,8 @@ spec:
               mountPath: /downloads
               subPath: downloads
             - name: rtorrent-credentials
-              mountPath: /passwd/htpasswd
-              subPath: htpasswd
+              mountPath: /passwd/rpc.htpasswd
+              subPath: rpc.htpasswd
       volumes:
         - name: config
           persistentVolumeClaim:

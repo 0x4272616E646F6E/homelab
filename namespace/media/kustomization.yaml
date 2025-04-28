@@ -6,9 +6,8 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - ciliumegresspolicy.yaml
-  - debug/
   - flaresolverr/
-  # - rtorrent/
+  - rtorrent/
   - nzbget/
   - prowlarr/
   - bazarr/
