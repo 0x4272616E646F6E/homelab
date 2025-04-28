@@ -36,12 +36,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: downloads
+            - name: media
               mountPath: /downloads
+              subPath: downloads
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: nzbget-config
-        - name: downloads
+        - name: media
           persistentVolumeClaim:
-            claimName: downloads
+            claimName: media

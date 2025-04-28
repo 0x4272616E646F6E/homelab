@@ -10,16 +10,3 @@ spec:
     requests:
       storage: 2000Gi
   storageClassName: longhorn-static
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: downloads
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 500Gi
-    storageClassName: longhorn-static
