@@ -41,16 +41,14 @@ spec:
             limits:
               cpu: "2000m"
               memory: "4Gi"
-          env:
-            - name: WEBUI_PORT
-              value: "8080"
-            - name: TORRENTING_PORT
-              value: "6881"
           volumeMounts:
             - name: config
               mountPath: /config
             - name: downloads
               mountPath: /downloads
+            - name: rtorrent-credentials
+              mountPath: /passwd/htpasswd
+              subPath: htpasswd
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -58,3 +56,9 @@ spec:
         - name: downloads
           persistentVolumeClaim:
             claimName: downloads
+        - name: rtorrent-credentials
+          secret:
+            secretName: rtorrent-secrets
+            items:
+              - key: htpasswd
+                path: htpasswd
