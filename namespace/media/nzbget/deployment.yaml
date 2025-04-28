@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nzbget
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nzbget
+  template:
+    metadata:
+      labels:
+        app: nzbget
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 10.64.0.1
+        options:
+          - name: ndots
+            value: "1"
+      containers:
+        - name: nzbget
+          image: lscr.io/linuxserver/nzbget:latest
+          ports:
+            - containerPort: 6789
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: nzbget-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads

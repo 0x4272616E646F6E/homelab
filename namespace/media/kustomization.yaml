@@ -7,8 +7,8 @@ resources:
   - pvc.yaml
   - ciliumegresspolicy.yaml
   - flaresolverr/
-  - qbittorrent/
-  - sabnzbd/
+  - rtorrent/
+  - nzbget/
   - prowlarr/
   - bazarr/
   - radarr/

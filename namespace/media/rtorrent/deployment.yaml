@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rtorrent
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rtorrent
+  template:
+    metadata:
+      labels:
+        app: rtorrent
+    spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 10.64.0.1
+        options:
+          - name: ndots
+            value: "1"
+      containers:
+        - name: rtorrent
+          image: docker.io/crazymax/rtorrent-rutorrent:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8000
+              protocol: TCP
+            - containerPort: 9000
+              protocol: TCP
+            - containerPort: 50000
+              protocol: TCP
+            - containerPort: 6881
+              protocol: UDP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+          env:
+            - name: WEBUI_PORT
+              value: "8080"
+            - name: TORRENTING_PORT
+              value: "6881"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: downloads
+              mountPath: /downloads
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: rtorrent-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: downloads
