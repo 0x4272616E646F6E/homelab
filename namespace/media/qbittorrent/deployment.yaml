@@ -13,7 +13,7 @@ spec:
       labels:
         app: qbittorrent
     spec:
-      runtimeClassName: kata
+      runtimeClassName: crun
       dnsPolicy: None
       dnsConfig:
         nameservers:
