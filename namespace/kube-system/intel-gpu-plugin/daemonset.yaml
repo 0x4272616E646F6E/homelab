@@ -19,7 +19,6 @@ spec:
       labels:
         app: intel-gpu-plugin
     spec:
-      runtimeClassName: crun
       containers:
       - name: intel-gpu-plugin
         args: 

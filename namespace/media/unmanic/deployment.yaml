@@ -13,7 +13,6 @@ spec:
       labels:
         app: unmanic
     spec:
-      runtimeClassName: crun
       containers:
         - name: unmanic
           image: docker.io/josh5/unmanic:latest

@@ -13,7 +13,6 @@ spec:
       labels:
         app: bazarr
     spec:
-      runtimeClassName: crun
       automountServiceAccountToken: false
       containers:
         - name: bazarr

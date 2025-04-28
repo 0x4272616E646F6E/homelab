@@ -13,7 +13,6 @@ spec:
       labels:
         app: homeassistant
     spec:
-      runtimeClassName: crun
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000

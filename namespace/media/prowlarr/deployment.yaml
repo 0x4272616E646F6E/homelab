@@ -13,7 +13,6 @@ spec:
       labels:
         app: prowlarr
     spec:
-      runtimeClassName: crun
       containers:
         - name: prowlarr
           image: lscr.io/linuxserver/prowlarr:latest

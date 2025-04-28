@@ -13,7 +13,6 @@ spec:
       labels:
         app: radarr
     spec:
-      runtimeClassName: crun
       containers:
         - name: radarr
           image: lscr.io/linuxserver/radarr:latest

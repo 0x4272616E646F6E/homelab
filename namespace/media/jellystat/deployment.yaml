@@ -13,7 +13,6 @@ spec:
       labels:
         app: jellystat
     spec:
-      runtimeClassName: crun
       containers:
         - name: jellystat
           image: docker.io/cyfershepard/jellystat:latest

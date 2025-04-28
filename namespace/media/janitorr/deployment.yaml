@@ -13,7 +13,6 @@ spec:
       labels:
         app: janitorr
     spec:
-      runtimeClassName: crun
       containers:
         - name: janitorr
           image: ghcr.io/schaka/janitorr:native-stable

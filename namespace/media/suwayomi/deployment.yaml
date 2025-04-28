@@ -13,7 +13,6 @@ spec:
       labels:
         app: suwayomi
     spec:
-      runtimeClassName: kata
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest

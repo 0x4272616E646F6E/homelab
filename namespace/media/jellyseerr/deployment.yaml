@@ -13,7 +13,6 @@ spec:
       labels:
         app: jellyseerr
     spec:
-      runtimeClassName: crun
       containers:
         - name: jellyseerr
           image: docker.io/fallenbagel/jellyseerr:latest

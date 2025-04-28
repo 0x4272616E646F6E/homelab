@@ -13,7 +13,6 @@ spec:
       labels:
         app: redbot
     spec:
-      runtimeClassName: kata
       containers:
         - name: redbot
           image: docker.io/phasecorex/red-discordbot:core
