@@ -23,6 +23,9 @@ spec:
       containers:
         - name: rtorrent
           image: docker.io/crazymax/rtorrent-rutorrent:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp /secrets/rpc.htpasswd /passwd/rpc.htpasswd && exec /init
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -47,9 +50,12 @@ spec:
             - name: media
               mountPath: /downloads
               subPath: downloads
+            - name: passwd
+              mountPath: /passwd
             - name: rtorrent-credentials
-              mountPath: /passwd/rpc.htpasswd
+              mountPath: /secrets/rpc.htpasswd
               subPath: rpc.htpasswd
+              readOnly: true
       volumes:
         - name: config
           persistentVolumeClaim:
