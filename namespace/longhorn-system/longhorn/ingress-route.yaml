@@ -27,9 +27,6 @@ spec:
   routes:
     - match: Host(`longhorn.oglesby.io`)
       kind: Rule
-      middlewares:
-        - name: authentik
-          namespace: traefik
       services:
       - name: longhorn-frontend
         port: 80
