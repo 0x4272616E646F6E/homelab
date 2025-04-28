@@ -63,6 +63,8 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
+        - name: passwd
+          emptyDir: {}
         - name: rtorrent-credentials
           secret:
             secretName: rtorrent-secrets
