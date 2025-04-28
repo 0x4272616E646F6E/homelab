@@ -46,7 +46,7 @@ spec:
               memory: "4Gi"
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /data
             - name: media
               mountPath: /downloads
               subPath: downloads
