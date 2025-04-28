@@ -31,9 +31,9 @@ spec:
             - name: config
               mountPath: /config
             - name: media
-              mountPath: /data/media
+              mountPath: /data
             - name: downloads
-              mountPath: /data/downloads
+              mountPath: /downloads
       volumes:
         - name: config
           persistentVolumeClaim:
