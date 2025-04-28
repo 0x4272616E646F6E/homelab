@@ -61,5 +61,5 @@ spec:
           secret:
             secretName: rtorrent-secrets
             items:
-              - key: htpasswd
-                path: htpasswd
+              - key: rpc.htpasswd
+                path: rpc.htpasswd
