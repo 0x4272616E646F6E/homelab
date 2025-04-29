@@ -13,11 +13,6 @@ spec:
       labels:
         app: nzbget
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: "Always"
       dnsPolicy: None
       dnsConfig:
         nameservers:
@@ -28,11 +23,6 @@ spec:
       containers:
         - name: nzbget
           image: lscr.io/linuxserver/nzbget:latest
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
           ports:
             - containerPort: 6789
               protocol: TCP

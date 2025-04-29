@@ -13,19 +13,10 @@ spec:
       labels:
         app: homeassistant
     spec:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
       automountServiceAccountToken: false
       containers:
         - name: homeassistant
           image: lscr.io/linuxserver/homeassistant:latest
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
           ports:
             - containerPort: 8123
               protocol: TCP
