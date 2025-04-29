@@ -13,6 +13,23 @@ spec:
       labels:
         app: nzbget
     spec:
+      initContainers:
+        - name: init-nzbget
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              mkdir -p /init/downloads/complete /init/downloads/incomplete
+              mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
+              chown -R 1000:1000 /init/downloads
+              chown -R 1000:1000 /init/media
+              chmod -R 777 /init/downloads
+              chmod -R 777 /init/media
+          volumeMounts:
+            - name: media
+              mountPath: /init
       dnsPolicy: None
       dnsConfig:
         nameservers:

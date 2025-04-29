@@ -13,6 +13,30 @@ spec:
       labels:
         app: rtorrent
     spec:
+      initContainers:
+        - name: init-rtorrent
+          image: busybox
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              mkdir -p /init/downloads/complete /init/downloads/incomplete
+              mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
+              cp /secrets/rpc.htpasswd /passwd/rpc.htpasswd
+              chown -R 1000:1000 /init/downloads
+              chown -R 1000:1000 /init/media
+              chmod -R 777 /init/downloads
+              chmod -R 777 /init/media
+          volumeMounts:
+            - name: media
+              mountPath: /init
+            - name: passwd
+              mountPath: /passwd
+            - name: rtorrent-credentials
+              mountPath: /secrets/rpc.htpasswd
+              subPath: rpc.htpasswd
+              readOnly: true
       dnsPolicy: None
       dnsConfig:
         nameservers:
@@ -23,18 +47,11 @@ spec:
       containers:
         - name: rtorrent
           image: docker.io/crazymax/rtorrent-rutorrent:latest
-          command: ["/bin/sh", "-c"]
-          args:
-            - cp /secrets/rpc.htpasswd /passwd/rpc.htpasswd && exec /init
           ports:
             - containerPort: 8080
-              protocol: TCP
             - containerPort: 8000
-              protocol: TCP
             - containerPort: 9000
-              protocol: TCP
             - containerPort: 50000
-              protocol: TCP
             - containerPort: 6881
               protocol: UDP
           resources:
@@ -56,6 +73,7 @@ spec:
               mountPath: /secrets/rpc.htpasswd
               subPath: rpc.htpasswd
               readOnly: true
+
       volumes:
         - name: config
           persistentVolumeClaim:
