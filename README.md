@@ -77,6 +77,5 @@ The following resources are managed through Flux in this repository:
 These are the runtimes used in this repository:
 
 - **Container Runtimes**
-  - **Default**: `runc` Maybe `youki` in the future, once my extension is ready.
-  - **Performance**: `crun`
+  - **Default**: `runc` will be `youki` after release.
   - **Security**: `kata`
