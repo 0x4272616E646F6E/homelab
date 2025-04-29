@@ -16,14 +16,6 @@ spec:
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest
-          command:
-            - /bin/sh
-            - -c
-          args:
-            - |
-              set -e
-              chown -R 1000:1000 /home/suwayomi/.local/share/Tachidesk
-              chmod -R 777 /home/suwayomi/.local/share/Tachidesk
           ports:
             - containerPort: 4567
               protocol: TCP
@@ -38,7 +30,11 @@ spec:
             - name: FLARESOLVERR_ENABLED
               value: "true"
             - name: FLARESOLVERR_URL
-              value: "https://flaresolverr.oglesby.io"
+              value: "http://flaresolverr:8191"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           volumeMounts:
             - name: media
               mountPath: /home/suwayomi/.local/share/Tachidesk/downloads
