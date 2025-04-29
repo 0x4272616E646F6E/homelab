@@ -48,10 +48,8 @@ spec:
             - name: config
               mountPath: /data
             - name: media
-              mountPath: /downloads/complete
-              subPath: /downloads/complete
-            - name: incomplete
-              mountPath: /downloads/incomplete
+              mountPath: /downloads
+              subPath: downloads
             - name: passwd
               mountPath: /passwd
             - name: rtorrent-credentials
@@ -73,5 +71,3 @@ spec:
             items:
               - key: rpc.htpasswd
                 path: rpc.htpasswd
-        - name: incomplete
-          emptyDir: {}

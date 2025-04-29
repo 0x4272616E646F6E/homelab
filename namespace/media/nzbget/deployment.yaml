@@ -37,10 +37,8 @@ spec:
             - name: config
               mountPath: /config
             - name: media
-              mountPath: /downloads/complete
-              subPath: /downloads/complete
-            - name: incomplete
-              mountPath: /downloads/incomplete
+              mountPath: /downloads
+              subPath: downloads
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -48,6 +46,4 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
-        - name: incomplete
-          emptyDir: {}
 
