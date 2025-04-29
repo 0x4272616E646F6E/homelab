@@ -19,24 +19,21 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: init-nzbget
-          image: busybox
-          command:
-            - /bin/sh
-            - -c
+          image: busybox:latest
+          command: ["sh","-c"]
+          args:
             - |
               set -e
+              echo "[init] pre-creating folder tree and fixing ownership"
               mkdir -p /init/downloads/complete /init/downloads/incomplete
               mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
+              chown -R 1000:1000 /init
+              chmod -R 777 /init
+          securityContext:
+            runAsUser: 0
           volumeMounts:
             - name: media
               mountPath: /init
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-          - 10.64.0.1
-        options:
-          - name: ndots
-            value: "1"
       containers:
         - name: nzbget
           image: lscr.io/linuxserver/nzbget:latest
@@ -47,13 +44,12 @@ spec:
               value: "1000"
           ports:
             - containerPort: 6789
-              protocol: TCP
           resources:
             requests:
               cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "2000m"
+              cpu: "2"
               memory: "8Gi"
           volumeMounts:
             - name: config
@@ -68,4 +64,3 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
-

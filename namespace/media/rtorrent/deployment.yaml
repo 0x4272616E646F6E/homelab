@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: init-rtorrent
-          image: busybox
+          image: busybox:latest
           command:
             - /bin/sh
             - -c
@@ -23,7 +23,11 @@ spec:
               set -e
               mkdir -p /init/downloads/complete /init/downloads/incomplete
               mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
+              chown -R 1000:1000 /init
+              chmod -R 777 /init
               cp /secrets/rpc.htpasswd /passwd/rpc.htpasswd
+          securityContext:
+            runAsUser: 0
           volumeMounts:
             - name: media
               mountPath: /init
