@@ -13,10 +13,19 @@ spec:
       labels:
         app: bazarr
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       automountServiceAccountToken: false
       containers:
         - name: bazarr
           image: lscr.io/linuxserver/bazarr:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           ports:
             - containerPort: 6767
               protocol: TCP
