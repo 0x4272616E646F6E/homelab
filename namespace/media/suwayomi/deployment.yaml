@@ -13,6 +13,10 @@ spec:
       labels:
         app: suwayomi
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest
@@ -31,10 +35,6 @@ spec:
               value: "true"
             - name: FLARESOLVERR_URL
               value: "http://flaresolverr:8191"
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
           volumeMounts:
             - name: media
               mountPath: /home/suwayomi/.local/share/Tachidesk/downloads
