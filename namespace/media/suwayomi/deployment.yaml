@@ -16,7 +16,14 @@ spec:
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest
-          
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -e
+              chown -R 1000:1000 /home/suwayomi/.local/share/Tachidesk
+              chmod -R 777 /home/suwayomi/.local/share/Tachidesk
           ports:
             - containerPort: 4567
               protocol: TCP
