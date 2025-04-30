@@ -34,6 +34,7 @@ spec:
           volumeMounts:
             - name: media
               mountPath: /init
+              mountPropagation: Bidirectional
       containers:
         - name: nzbget
           image: lscr.io/linuxserver/nzbget:latest
@@ -54,9 +55,11 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              mountPropagation: Bidirectional
             - name: media
               mountPath: /downloads
               subPath: downloads
+              mountPropagation: Bidirectional
       volumes:
         - name: config
           persistentVolumeClaim:
