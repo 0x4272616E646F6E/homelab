@@ -33,15 +33,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-              mountPropagation: Bidirectional
             - name: media
               mountPath: /media
               subPath: media
-              mountPropagation: Bidirectional
             - name: media
               mountPath: /downloads
               subPath: downloads
-              mountPropagation: Bidirectional
       volumes:
         - name: config
           persistentVolumeClaim:
