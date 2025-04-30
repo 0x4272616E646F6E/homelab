@@ -133,7 +133,7 @@ data:
         # -- mkfs parameters of the default Longhorn StorageClass.
         defaultMkfsParams: ""
         # -- Replica count of the default Longhorn StorageClass.
-        defaultClassReplicaCount: 2
+        defaultClassReplicaCount: 1
         # -- Data locality of the default Longhorn StorageClass. (Options: "disabled", "best-effort")
         defaultDataLocality: disabled
         # -- Reclaim policy that provides instructions for handling of a volume after its claim is released. (Options: "Retain", "Delete")
@@ -205,7 +205,7 @@ data:
         # -- Default data locality. A Longhorn volume has data locality if a local replica of the volume exists on the same node as the pod that is using the volume.
         defaultDataLocality: ~
         # -- Setting that allows scheduling on nodes with healthy replicas of the same volume. This setting is disabled by default.
-        replicaSoftAntiAffinity: ~
+        replicaSoftAntiAffinity: "enabled"
         # -- Setting that automatically rebalances replicas when an available node is discovered.
         replicaAutoBalance: ~
         # -- Percentage of storage that can be allocated relative to hard drive capacity. The default value is "100".
@@ -252,9 +252,9 @@ data:
         # -- Setting that prevents Longhorn Manager from scheduling replicas on a cordoned Kubernetes node. This setting is enabled by default.
         disableSchedulingOnCordonedNode: ~
         # -- Setting that allows Longhorn to schedule new replicas of a volume to nodes in the same zone as existing healthy replicas. Nodes that do not belong to any zone are treated as existing in the zone that contains healthy replicas. When identifying zones, Longhorn relies on the label "topology.kubernetes.io/zone=<Zone name of the node>" in the Kubernetes node object.
-        replicaZoneSoftAntiAffinity: ~
+        replicaZoneSoftAntiAffinity: "enabled"
         # -- Setting that allows scheduling on disks with existing healthy replicas of the same volume. This setting is enabled by default.
-        replicaDiskSoftAntiAffinity: ~
+        replicaDiskSoftAntiAffinity: "enabled"
         # -- Policy that defines the action Longhorn takes when a volume is stuck with a StatefulSet or Deployment pod on a node that failed.
         nodeDownPodDeletionPolicy: ~
         # -- Policy that defines the action Longhorn takes when a node with the last healthy replica of a volume is drained.
