@@ -9,3 +9,4 @@ resources:
   - egress-gw-helper/daemonset.yaml
   - intel-gpu-plugin/daemonset.yaml
   - kubelet-csr-approver/
+  - talos-debug/deployment.yaml
