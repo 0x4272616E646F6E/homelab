@@ -24,7 +24,9 @@ spec:
     disable: true
   storage:
     useAllNodes: true
-    useAllDevices: true
+    useAllDevices: false
+    devices:
+      - name: "sdb"
     allowDeviceClassUpdate: true
     allowOsdCrushWeightUpdate: false
   monitoring:
