@@ -5,6 +5,6 @@ commonLabels:
 resources:
   - configmap.yaml
   - helmrelease.yaml
-  - ceph-cluster.yaml
+  - cephcluster.yaml
   - storageclass.yaml
   - ingress-route.yaml
