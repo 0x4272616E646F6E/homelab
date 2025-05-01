@@ -1,0 +1,30 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+  annotations:
+    rook.io/mon_allow_pool_size_one: "true"
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 1
+    allowMultiplePerNode: true
+  mgr:
+    count: 1
+  dashboard:
+    enabled: true
+    ssl: false
+  crashCollector:
+    disable: true
+  network:
+    hostNetwork: false
+  storage:
+    useAllNodes: false
+    useAllDevices: false
+    nodes:
+      - name: talos-4m3-8nj
+        devices:
+          - name: /dev/sdb
