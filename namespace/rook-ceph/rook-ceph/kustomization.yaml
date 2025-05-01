@@ -7,4 +7,5 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - toolbox.yaml
+  - cluster.yaml
   - ingress-route.yaml
