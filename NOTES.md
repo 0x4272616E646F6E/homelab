@@ -1,25 +1,5 @@
 # Notes for the Talos Kubernetes Cluster
 
-## Longhorn
-
-### Skip Finalizers
-
-When attempting to delete the Longhorn namespace, you may encounter issues where finalizers get stuck. Finalizers are Kubernetes resources that prevent the deletion of an object until certain cleanup tasks are completed. If these finalizers are stuck, they can block the deletion process.
-
-To forcefully remove the finalizers and delete the namespace, you can use the following command:
-
-```bash
-kubectl get namespace longhorn-system -o json \
-| jq 'del(.spec.finalizers)' \
-| kubectl replace --raw "/api/v1/namespaces/longhorn-system/finalize" -f -
-```
-
-1. **`kubectl get namespace longhorn-system -o json`**: Retrieves the `longhorn-system` namespace in JSON format.
-2. **`jq 'del(.spec.finalizers)'`**: Uses `jq` to delete the `finalizers` field from the namespace specification.
-3. **`kubectl replace --raw`**: Replaces the namespace resource on the Kubernetes API server with the modified JSON, effectively removing the finalizers and allowing the namespace to be deleted.
-
-Use this command with caution, as it bypasses the normal cleanup process.
-
 ## Talos
 
 ### Talos Installer Image

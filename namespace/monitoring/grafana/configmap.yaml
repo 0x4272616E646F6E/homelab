@@ -422,7 +422,7 @@ data:
       persistence:
         type: pvc
         enabled: false
-        storageClassName: longhorn
+        storageClassName: rook-ceph-block
         accessModes:
           - ReadWriteOnce
         size: 10Gi

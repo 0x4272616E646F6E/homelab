@@ -827,7 +827,7 @@ data:
         existingClaim: ""
         accessMode: ReadWriteOnce
         size: 128Mi
-        storageClass: "longhorn"
+        storageClass: "rook-ceph-block"
         volumeName: ""
         path: /data
         annotations: {}

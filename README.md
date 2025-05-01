@@ -55,7 +55,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Jellystat**
 - [ ] **Kyverno**
 - [ ] **Loki**
-- [x] **Longhorn**
 - [x] **Prometheus**
 - [x] **Prowlarr**
 - [x] **Qbittorrent**
@@ -63,6 +62,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Redbot**
 - [x] **Reflector**
 - [x] **Requestrr**
+- [x] **Rook**
 - [x] **SABnzbd**
 - [x] **Sonarr**
 - [x] **Suwayomi**
