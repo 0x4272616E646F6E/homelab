@@ -14,17 +14,24 @@ spec:
     allowMultiplePerNode: true
   mgr:
     count: 1
+    allowMultiplePerNode: true
   dashboard:
     enabled: true
     ssl: false
   crashCollector:
     disable: true
-  network:
-    hostNetwork: false
+  healthCheck:
+    daemonHealth:
+      mon:
+        disabled: false
+        interval: 45s
+      osd:
+        disabled: false
+        interval: 60s
   storage:
     useAllNodes: false
     useAllDevices: false
     nodes:
       - name: "talos-4m3-8nj"
         devices:
-          - name: "sdb"
+          - name: "/dev/sdb"

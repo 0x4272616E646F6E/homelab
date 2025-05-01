@@ -6,9 +6,9 @@ resources:
   - crds.yaml
   - configmap.yaml
   - helmrelease.yaml
+  - toolbox.yaml
   - cephcluster.yaml
   - cephblockpool.yaml
   - cephfilesystem.yaml
   - storageclass.yaml
-  - toolbox.yaml
   - ingress-route.yaml
