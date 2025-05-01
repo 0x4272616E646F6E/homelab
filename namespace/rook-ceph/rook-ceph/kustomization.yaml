@@ -7,5 +7,6 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - cephcluster.yaml
+  - cephfilesystem.yaml
   - storageclass.yaml
   - ingress-route.yaml
