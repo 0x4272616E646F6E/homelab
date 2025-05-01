@@ -8,7 +8,7 @@ spec:
     replicated:
       size: 1
   dataPools:
-    - name: myfs-data0
+    - name: cephfs-data0
       replicated:
         size: 1
   metadataServer:

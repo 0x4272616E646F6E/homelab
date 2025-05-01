@@ -1,7 +1,17 @@
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
-  name: replicapool
+  name: rbd-data0
+  namespace: rook-ceph
+spec:
+  failureDomain: host
+  replicated:
+    size: 1
+---
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: cephfs-data0
   namespace: rook-ceph
 spec:
   failureDomain: host
