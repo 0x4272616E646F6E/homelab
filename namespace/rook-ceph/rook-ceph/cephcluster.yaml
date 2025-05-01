@@ -25,6 +25,6 @@ spec:
     useAllNodes: false
     useAllDevices: false
     nodes:
-      - name: talos-4m3-8nj
+      - name: "talos-4m3-8nj"
         devices:
-          - name: /dev/sdb
+          - name: "sdb"
