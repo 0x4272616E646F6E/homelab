@@ -10,4 +10,5 @@ resources:
   - cephblockpool.yaml
   - cephfilesystem.yaml
   - storageclass.yaml
+  - toolbox.yaml
   - ingress-route.yaml

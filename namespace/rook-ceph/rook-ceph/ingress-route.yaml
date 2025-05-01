@@ -10,8 +10,8 @@ spec:
     - match: Host(`rook.oglesby.io`)
       kind: Rule
       services:
-      - name: rook
-        port: 80
+      - name: rook-ceph-mgr-dashboard
+        port: 7000
       middlewares:
       - name: redirect-https
         namespace: traefik
@@ -28,7 +28,7 @@ spec:
     - match: Host(`rook.oglesby.io`)
       kind: Rule
       services:
-      - name: rook
-        port: 80
+      - name: rook-ceph-mgr-dashboard
+        port: 7000
   tls: 
     secretName: oglesby-io-tls
