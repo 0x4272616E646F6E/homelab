@@ -52,15 +52,13 @@ spec:
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
 metadata:
-  name: builtin-mgr
+  name: rbd
   namespace: rook-ceph
 spec:
-  name: .mgr
   replicated:
     size: 1
     requireSafeReplicaSize: false
 ---
-
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystem
 metadata:
@@ -102,7 +100,7 @@ metadata:
 provisioner: rook-ceph.rbd.csi.ceph.com
 parameters:
   clusterID: rook-ceph
-  pool: builtin-mgr
+  pool: rbd
   imageFormat: "2"
   imageFeatures: layering
   csi.storage.k8s.io/fstype: ext4
