@@ -13,6 +13,7 @@ spec:
       labels:
         app: jellyseerr
     spec:
+      runtimeClassName: youki
       containers:
         - name: jellyseerr
           image: docker.io/fallenbagel/jellyseerr:latest

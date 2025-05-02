@@ -13,6 +13,7 @@ spec:
       labels:
         app: jellystat
     spec:
+      runtimeClassName: youki
       containers:
         - name: jellystat
           image: docker.io/cyfershepard/jellystat:latest

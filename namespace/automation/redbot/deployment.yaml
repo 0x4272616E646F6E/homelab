@@ -13,6 +13,7 @@ spec:
       labels:
         app: redbot
     spec:
+      runtimeClassName: youki
       containers:
         - name: redbot
           image: docker.io/phasecorex/red-discordbot:core

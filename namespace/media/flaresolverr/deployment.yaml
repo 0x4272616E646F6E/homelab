@@ -13,6 +13,7 @@ spec:
       labels:
         app: flaresolverr
     spec:
+      runtimeClassName: youki
       dnsPolicy: None
       dnsConfig:
         nameservers:

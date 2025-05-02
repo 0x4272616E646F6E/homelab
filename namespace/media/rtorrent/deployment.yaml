@@ -13,6 +13,7 @@ spec:
       labels:
         app: rtorrent
     spec:
+      runtimeClassName: youki
       initContainers:
         - name: init-rtorrent
           image: busybox:latest

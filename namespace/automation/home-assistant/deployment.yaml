@@ -13,6 +13,7 @@ spec:
       labels:
         app: homeassistant
     spec:
+      runtimeClassName: youki
       automountServiceAccountToken: false
       containers:
         - name: homeassistant

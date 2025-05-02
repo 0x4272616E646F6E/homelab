@@ -13,6 +13,7 @@ spec:
       labels:
         app: jellyfin
     spec:
+      runtimeClassName: youki
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
