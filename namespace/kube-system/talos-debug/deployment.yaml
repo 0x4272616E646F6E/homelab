@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 spec:
   nodeName: talos-4m3-8nj
-  restartPolicy: Never
+  restartPolicy: Always
   securityContext:
     runAsUser: 0
   containers:
