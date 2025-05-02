@@ -8,5 +8,5 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 2000Gi
+      storage: 8000Gi
   storageClassName: rook-cephfs
