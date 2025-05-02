@@ -13,7 +13,6 @@ spec:
       labels:
         app: nzbget
     spec:
-      runtimeClassName: youki
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
