@@ -1,0 +1,13 @@
+customization:
+    systemExtensions:
+        officialExtensions:
+            - siderolabs/fuse3
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ice-firmware
+            - siderolabs/intel-ucode
+            - siderolabs/kata-containers
+            - siderolabs/mei
+            - siderolabs/qemu-guest-agent
+            - siderolabs/util-linux-tools
+            - siderolabs/youki
