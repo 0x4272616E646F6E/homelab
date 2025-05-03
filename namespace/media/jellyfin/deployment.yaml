@@ -31,8 +31,8 @@ spec:
               cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: "2"
+              memory: "2Gi"
               gpu.intel.com/i915: "1"
           volumeMounts:
             - name: config
