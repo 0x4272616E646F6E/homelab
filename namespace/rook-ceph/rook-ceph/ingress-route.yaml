@@ -15,6 +15,8 @@ spec:
       middlewares:
       - name: redirect-https
         namespace: traefik
+      - name: internal-whitelist
+        namespace: traefik
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -27,6 +29,9 @@ spec:
   routes:
     - match: Host(`rook.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
       - name: rook-ceph-mgr-dashboard
         port: 7000

@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`njellyfin.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: jellyfin
           port: 8096
@@ -27,8 +30,30 @@ spec:
     - match: Host(`njellyfin.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:
         - name: jellyfin
           port: 8096
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyfin-external-https
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`jellyfin.hosted.fail`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: jellyfin
+          port: 8096
+  tls: 
+    secretName: oglesby-io-tls

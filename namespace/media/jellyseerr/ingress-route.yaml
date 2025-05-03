@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`njellyseerr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: jellyseerr
           port: 5055
@@ -27,6 +30,8 @@ spec:
     - match: Host(`njellyseerr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

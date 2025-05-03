@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`nrequestrr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: requestrr
           port: 4545
@@ -27,6 +30,8 @@ spec:
     - match: Host(`nrequestrr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

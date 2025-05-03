@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`janitorr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: janitorr
           port: 8978
@@ -27,6 +30,8 @@ spec:
     - match: Host(`janitorr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

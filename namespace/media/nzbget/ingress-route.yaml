@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`nzbget.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: nzbget
           port: 6789
@@ -27,6 +30,8 @@ spec:
     - match: Host(`nzbget.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

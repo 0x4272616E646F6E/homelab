@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`rtorrent.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: rtorrent
           port: 8080
@@ -27,6 +30,8 @@ spec:
     - match: Host(`rtorrent.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

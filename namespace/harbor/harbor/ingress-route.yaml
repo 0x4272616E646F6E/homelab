@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`harbor.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: harbor
           port: 80
@@ -30,5 +33,7 @@ spec:
         - name: harbor
           port: 80
       middlewares:
+      - name: internal-whitelist
+        namespace: traefik
       - name: redirect-https
         namespace: traefik

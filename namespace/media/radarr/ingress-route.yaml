@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`nradarr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: radarr
           port: 7878
@@ -27,6 +30,8 @@ spec:
     - match: Host(`nradarr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

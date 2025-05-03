@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`nsonarr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: sonarr
           port: 8989
@@ -27,6 +30,8 @@ spec:
     - match: Host(`nsonarr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:

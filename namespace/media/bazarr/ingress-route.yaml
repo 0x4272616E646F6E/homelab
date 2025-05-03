@@ -9,6 +9,9 @@ spec:
   routes:
     - match: Host(`nbazarr.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
       services:
         - name: bazarr
           port: 6767
@@ -27,6 +30,8 @@ spec:
     - match: Host(`nbazarr.oglesby.io`)
       kind: Rule
       middlewares:
+        - name: internal-whitelist
+          namespace: traefik
         - name: redirect-https
           namespace: traefik
       services:
