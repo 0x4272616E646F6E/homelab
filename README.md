@@ -69,7 +69,6 @@ The following resources are managed through Flux in this repository:
 - [ ] **Tempo**
 - [x] **Traefik**
 - [ ] **Trivy**
-- [x] **Unmanic**
 - [x] **Vector**
 
 ## Runtimes
