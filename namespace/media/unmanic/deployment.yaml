@@ -17,7 +17,7 @@ spec:
         - name: unmanic
           image: docker.io/josh5/unmanic:latest
           ports:
-            - containerPort: 5055
+            - containerPort: 8888
               protocol: TCP
           resources:
             requests:
@@ -33,6 +33,7 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /library
+              subPath: media
             - name: temp
               mountPath: /tmp/unmanic
       volumes:
