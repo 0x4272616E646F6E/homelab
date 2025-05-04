@@ -1,0 +1,326 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: renovate-config-map
+  namespace: development
+data:
+  values.yaml: |-
+    global:
+      # -- Additional labels to be set on all renovate resources
+      commonLabels: {}
+      compatibility:
+        openshift:
+          # --  Adapt the securityContext sections of the deployment to make them compatible with Openshift restricted-v2 SCC: remove runAsUser, runAsGroup and fsGroup and let the platform use their allowed default IDs. Possible values: `auto` (apply if the detected running cluster is Openshift), `force` (perform the adaptation always), `disabled` (do not perform adaptation)
+          adaptSecurityContext: 'auto'
+
+    # -- Override the name of the chart
+    nameOverride: ''
+    # -- Override the fully qualified app name
+    fullnameOverride: ''
+    # -- Annotations to add to secret
+    secretAnnotations: {}
+
+    cronjob:
+      # -- Schedules the job to run using cron notation
+      schedule: '0 1 * * *'  # At 01:00 every day
+      # -- You can specify a time zone for a CronJob by setting timeZone to the name of a valid time zone. (starting with k8s 1.27) <https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones>
+      timeZone: ''  # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for valid names
+      # -- If it is set to true, all subsequent executions are suspended. This setting does not apply to already started executions.
+      suspend: false
+      # -- Annotations to set on the cronjob
+      annotations: {}
+      # -- Labels to set on the cronjob
+      labels: {}
+      # -- "Allow" to allow concurrent runs, "Forbid" to skip new runs if a previous run is still running or "Replace" to replace the previous run
+      concurrencyPolicy: ''
+      # -- "Number of successful completions is reached to mark the job as complete"
+      completions: ''
+      # -- "Where the jobs should be NonIndexed or Indexed"
+      completionMode: ''
+      # -- Amount of failed jobs to keep in history
+      failedJobsHistoryLimit: ''
+      # -- Amount of completed jobs to keep in history
+      successfulJobsHistoryLimit: ''
+      # -- Set to Never to restart the job when the pod fails or to OnFailure to restart when a container fails
+      jobRestartPolicy: Never
+      # -- Time to keep the job after it finished before automatically deleting it
+      ttlSecondsAfterFinished: ''
+      # -- Deadline for the job to finish
+      activeDeadlineSeconds: ''
+      # -- Number of times to retry running the pod before considering the job as being failed
+      jobBackoffLimit: ''
+      # -- Maximal number of failures per index
+      backoffLimitPerIndex: ''
+      # -- Maximal number of failed indexes before terminating the Job execution
+      maxFailedIndexes: ''
+      # -- Deadline to start the job, skips execution if job misses it's configured deadline
+      startingDeadlineSeconds: ''
+      # -- Additional initContainers that can be executed before renovate
+      initContainers: []
+      # initContainers:
+      # - name: INIT_CONTAINER_NAME
+      #   image: INIT_CONTAINER_IMAGE
+      # -- Number of pods to run in parallel
+      parallelism: ''
+      # -- Custom command to run in the container
+      commandOverride: []
+      # -- Custom arguments to run in the container
+      argsOverride: []
+      # -- Prepend shell commands before renovate runs
+      preCommand: ''
+      # preCommand: |
+      #   echo hello
+      #   echo world
+
+      # -- Append shell commands after renovate runs
+      postCommand: ''
+      # postCommand: |
+      #   echo hello
+      #   echo world
+
+    pod:
+      # -- Annotations to set on the pod
+      annotations: {}
+      # -- Labels to set on the pod
+      labels: {}
+
+    image:
+      # -- Registry to pull image from
+      registry: ghcr.io
+      # -- Image name to pull
+      repository: renovatebot/renovate
+      # -- Renovate image tag to pull
+      tag: 40.1.3
+      # -- "IfNotPresent" to pull the image if no image with the specified tag exists on the node, "Always" to always pull the image or "Never" to try and use pre-pulled images
+      pullPolicy: IfNotPresent
+      # -- Set `true` to use the full image. See https://docs.renovatebot.com/getting-started/running/#the-full-image
+      useFull: false
+
+    # -- Secret to use to pull the image from the repository
+    imagePullSecrets: {}
+
+    renovate:
+      # -- Custom exiting global renovate config
+      existingConfigFile: ''
+      # -- Inline global renovate config.json
+      config: ''
+      # See https://docs.renovatebot.com/self-hosted-configuration
+      # config: |
+      #   {
+      #     "platform": "gitlab",
+      #     "endpoint": "https://gitlab.example.com/api/v4",
+      #     "token": "your-gitlab-renovate-user-token",
+      #     "autodiscover": "false",
+      #     "dryRun": true,
+      #     "printConfig": true,
+      #     "repositories": ["username/repo", "orgname/repo"]
+      #   }
+
+      # -- Use the Helm tpl function on your configuration. See README for how to use this value
+      configEnableHelmTpl: false
+
+      # -- Use this to create the renovate-config as a secret instead of a configmap
+      configIsSecret: false
+
+      # -- Use this to create a config.js instead of a config.json
+      configIsJavaScript: false
+
+      # -- Renovate Container-level security-context
+      securityContext: {}
+
+      # Instead of a file system cache, it is highly recommended to use the redis subchart.
+      # Alternatively, SQLite is also a good choice.
+      # Take a look at https://github.com/renovatebot/renovate/discussions/30525 for more information.
+      # -- Options related to persistence
+      persistence:
+        cache:
+          # -- Allow the cache to persist between runs
+          enabled: false
+          # -- Storage class of the cache PVC
+          storageClass: ""
+          # -- Storage size of the cache PVC
+          storageSize: "512Mi"
+          # -- Existing volume, enables binding the pvc to an existing volume
+          volumeName: ""
+          # -- Labels to set on the cache PVC
+          labels: {}
+
+    ssh_config:
+      # -- Whether to enable the use and creation of a secret containing .ssh files
+      enabled: false
+
+      # Provide .ssh config file contents
+      # -- Contents of the id_rsa file
+      id_rsa: ''
+      # -- Contents of the id_rsa_pub file
+      id_rsa_pub: ''
+      # -- Contents of the config file
+      config: ''
+
+      # or provide the name of an existing secret to be read instead.
+      # -- Name of the existing secret containing a valid .ssh configuration
+      existingSecret: ''
+
+    # -- Environment variables that should be referenced from a k8s secret, cannot be used when existingSecret is set
+    secrets: {}
+    # -- k8s secret to reference environment variables from. Overrides secrets if set
+    existingSecret: ''
+
+    # -- Additional configmaps. A generated configMap name is: "renovate.fullname" + "extra" + name(below) e.g. renovate-netrc-config
+    extraConfigmaps: []
+    # extraConfigmaps:
+    #   - name: netrc-config
+    #     data:
+    #       .netrc: |-
+    #         machine gitlab.example.com
+    #         login gitlab-ci-token
+    #         password some-pass
+    #   - name: yet-another-config
+    #     data:
+    #       ya-config.yaml: |-
+    #         "key"="value"
+    #         "key1"="value1"
+
+    # -- Additional volumes to the pod
+    extraVolumes: []
+    # extraVolumes:
+    #   - name: netrc-config
+    #     configMap:
+    #       name: renovate-extra-netrc-config
+
+    # -- Additional volumeMounts to the container
+    extraVolumeMounts: []
+    # extraVolumeMounts:
+    #   - name: netrc-config
+    #     mountPath: /home/ubuntu/.netrc
+    #     subPath: .netrc
+
+    # -- Additional containers to the pod
+    extraContainers: []
+    # extraContainers:
+    #   - name: vault-agent
+    #     image: vault:1.6.2
+    #     args:
+    #     - agent
+    #     - -config
+    #     - /vault/config/config.hcl
+    #     env:
+    #     - name: VAULT_ADDR
+    #       value: https://vault:8200
+    #     - name: VAULT_SKIP_VERIFY
+    #       value: "false"
+    #     - name: VAULT_CACERT
+    #       value: /vault/tls/ca.crt
+
+    serviceAccount:
+      # -- Specifies whether a service account should be created
+      create: false
+      # -- Annotations to add to the service account
+      annotations: {}
+      # -- The name of the service account to use
+      # If not set and create is true, a name is generated using the fullname template
+      name: ''
+
+    # -- Specify resource limits and requests for the renovate container
+    resources: {}
+      # We usually recommend not to specify default resources and to leave this as a conscious
+      # choice for the user. This also increases chances charts run on environments with little
+      # resources, such as Minikube. If you do want to specify resources, uncomment the following
+      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+      # limits:
+      #  cpu: 100m
+      #  memory: 128Mi
+      # requests:
+      #  cpu: 100m
+      #  memory: 128Mi
+
+    # -- Environment variables to add from existing secrets/configmaps. Uses the keys as variable name
+    envFrom: []
+    # envFrom:
+    #   - secretRef:
+    #       name: env-secrets
+    #   - configMapRef:
+    #       name: env-configmap
+
+    # -- Environment variables to set on the renovate container
+    env: {}
+    # env:
+    #   VARIABLE_NAME: "value"
+
+    # -- Additional env. Helpful too if you want to use anything other than a `value` source.
+    envList: []
+    # envList:
+    #   - name: POD_NAME
+    #     valueFrom:
+    #       fieldRef:
+    #         fieldPath: metadata.name
+
+    redis:
+      # Configuration for a Redis subchart. Additional documentation at
+      # https://github.com/bitnami/charts/tree/master/bitnami/redis
+
+      # -- Enable the Redis subchart?
+      enabled: false
+
+      # -- Override the prefix of the redisHost
+      nameOverride: ''
+
+      # -- Disable replication by default
+      architecture: standalone
+
+      auth:
+        # -- Don't require a password by default
+        enabled: false
+
+      # -- Override Kubernetes version for redis chart
+      kubeVersion: ''
+
+    # -- Override hostname resolution
+    hostAliases: []
+    # See: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/
+    # hostAliases:
+    #   - ip: "your-ip"
+    #     hostnames:
+    #       - "your-hostname"
+
+    # -- Pod-level security-context
+    securityContext: {}
+
+    # -- Select the node using labels to specify where the cronjob pod should run on
+    nodeSelector: {}
+    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+    # renovate: true
+
+    # -- Configure the pod(Anti)Affinity and/or node(Anti)Affinity
+    affinity: {}
+    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+
+    # -- Configure which node taints the pod should tolerate
+    tolerations: []
+    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+
+    # -- Create extra manifests via values. Would be passed through `tpl` for templating
+    extraObjects: []
+    # extraObjects:
+    #   - apiVersion: external-secrets.io/v1beta1
+    #     kind: ExternalSecret
+    #     metadata:
+    #       name: '{{ include "renovate.fullname" . }}-token'
+    #     spec:
+    #       secretStoreRef:
+    #         name: default
+    #       data:
+    #         - secretKey: token
+    #           remoteRef:
+    #             key: github-token
+    #   - |
+    #     apiVersion: v1
+    #     kind: ConfigMap
+    #     metadata:
+    #       name: {{ include "renovate.fullname" . }}-config
+    #     data:
+    #       config.json: |
+    #         {
+    #           "platform": "github",
+    #           "repositories": ["username/repo", "orgname/repo"]
+    #         }
