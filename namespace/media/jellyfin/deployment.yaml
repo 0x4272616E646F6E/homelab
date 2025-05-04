@@ -13,6 +13,9 @@ spec:
       labels:
         app: jellyfin
     spec:
+      securityContext:
+        supplementalGroups:
+          - 44 
       containers:
         - name: jellyfin
           image: lscr.io/linuxserver/jellyfin:latest
