@@ -36,6 +36,7 @@ These resources are defined in the following files:
 
 The following resources are managed through Flux in this repository:
 
+- [x] **Actions Runner Controller**
 - [X] **Authentik**
 - [x] **Bazarr**
 - [x] **Cert Manager**
@@ -54,18 +55,22 @@ The following resources are managed through Flux in this repository:
 - [x] **Jellyseerr**
 - [x] **Jellystat**
 - [ ] **Kyverno**
+- [x] **Kubelet CSR Approver**
 - [ ] **Loki**
+- [x] **NzbGet**
 - [x] **Prometheus**
 - [x] **Prowlarr**
-- [x] **Qbittorrent**
 - [x] **Radarr**
 - [x] **Redbot**
 - [x] **Reflector**
 - [x] **Requestrr**
+- [ ] **Renovate**
 - [x] **Rook**
-- [x] **SABnzbd**
+- [x] **rTorrent**
 - [x] **Sonarr**
+- [ ] **SonarQube**
 - [x] **Suwayomi**
+- [x] **Talos Debug**
 - [ ] **Tempo**
 - [x] **Traefik**
 - [ ] **Trivy**
