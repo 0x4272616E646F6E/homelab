@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: harbor-config-map
-  namespace: Harbor
+  namespace: harbor
 data:
   values.yaml: |-
       expose:
