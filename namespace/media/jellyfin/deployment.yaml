@@ -27,8 +27,14 @@ spec:
             - containerPort: 8096
               protocol: TCP
           env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
             - name: UMASK
               value: "022"
+            - name: DOCKER_MODS
+              value: "linuxserver/mods:jellyfin-opencl-intel"
           resources:
             requests:
               cpu: "100m"
