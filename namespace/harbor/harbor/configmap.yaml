@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sonarqube-config-map
-  namespace: development
+  name: harbor-config-map
+  namespace: Harbor
 data:
   values.yaml: |-
       expose:
