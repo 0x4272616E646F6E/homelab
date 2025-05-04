@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`nrequestrr.oglesby.io`)
+    - match: Host(`requestrr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -27,7 +27,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`nrequestrr.oglesby.io`)
+    - match: Host(`requestrr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
