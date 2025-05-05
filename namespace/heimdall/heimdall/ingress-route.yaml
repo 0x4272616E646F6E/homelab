@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: heimdall-https
+  namespace: heimdall
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`heimdall.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: heimdall
+          port: 80
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: heimdall-http
+  namespace: heimdall
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`heimdall.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: redirect-https
+          namespace: traefik
+      services:
+        - name: heimdall
+          port: 80
