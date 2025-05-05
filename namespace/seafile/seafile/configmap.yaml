@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: seafile-config-map
+  namespace: seafile
+data:
+  values.yaml: |-
+    seafile:
+      configs:
+        seafileDataVolume:
+          storageClassName: seafile-data
