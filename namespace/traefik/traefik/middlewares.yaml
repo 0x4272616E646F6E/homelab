@@ -37,7 +37,7 @@ metadata:
   name: internal-whitelist
   namespace: traefik
 spec:
-  IPAllowList:
+  ipAllowList:
     sourceRange:
       - 192.168.0.0/16
       - 172.16.0.0/12
