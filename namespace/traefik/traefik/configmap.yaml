@@ -107,7 +107,8 @@ data:
         #     scheme: HTTP
         # -- Set a runtimeClassName on pod
         runtimeClassName: ""
-
+      dashboard:
+        enabled: true
       # -- [Pod Disruption Budget](https://kubernetes.io/docs/reference/kubernetes-api/policy-resources/pod-disruption-budget-v1/)
       podDisruptionBudget:  # @schema additionalProperties: false
         enabled: false
