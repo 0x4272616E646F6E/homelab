@@ -107,10 +107,7 @@ data:
         #     scheme: HTTP
         # -- Set a runtimeClassName on pod
         runtimeClassName: ""
-      api:
-        dashboard:
-          enabled: true
-        insecure: true
+
       # -- [Pod Disruption Budget](https://kubernetes.io/docs/reference/kubernetes-api/policy-resources/pod-disruption-budget-v1/)
       podDisruptionBudget:  # @schema additionalProperties: false
         enabled: false
@@ -197,13 +194,13 @@ data:
       ingressRoute:
         dashboard:
           # -- Create an IngressRoute for the dashboard
-          enabled: false
+          enabled: true
           # -- Additional ingressRoute annotations (e.g. for kubernetes.io/ingress.class)
           annotations: {}
           # -- Additional ingressRoute labels (e.g. for filtering IngressRoute by custom labels)
           labels: {}
           # -- The router match rule used for the dashboard ingressRoute
-          matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+          matchRule: Host(`traefik.oglesby.io`)
           # -- The internal service used for the dashboard ingressRoute
           services:
             - name: api@internal
@@ -211,11 +208,12 @@ data:
           # -- Specify the allowed entrypoints to use for the dashboard ingress route, (e.g. traefik, web, websecure).
           # By default, it's using traefik entrypoint, which is not exposed.
           # /!\ Do not expose your dashboard without any protection over the internet /!\
-          entryPoints: ["traefik"]
+          entryPoints: ["websecure"]
           # -- Additional ingressRoute middlewares (e.g. for authentication)
-          middlewares: []
+          middlewares: [internal-whitelist]
           # -- TLS options (e.g. secret containing certificate)
-          tls: {}
+          tls:
+            secretName: oglesby-io-tls
         healthcheck:
           # -- Create an IngressRoute for the healthcheck probe
           enabled: false
