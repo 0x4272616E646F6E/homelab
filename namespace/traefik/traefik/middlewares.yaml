@@ -15,7 +15,7 @@ metadata:
     namespace: traefik
 spec:
     forwardAuth:
-      address: https://auth.oglesby.io/outpost.goauthentik.io/auth/traefik
+      address: http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/traefik
       trustForwardHeader: true
       authResponseHeaders:
           - X-authentik-username
@@ -43,4 +43,3 @@ spec:
       - 172.16.0.0/12
       - 10.0.0.0/8
       - 127.0.0.0/8
----
