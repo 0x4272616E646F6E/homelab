@@ -16,6 +16,17 @@ spec:
       containers:
         - name: seafile
           image: seafileltd/seafile-pro-mc:12.0-latest
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"           
+            limits:
+              cpu: "1"
+              memory: "2Gi" 
+          ports:
+            - containerPort: 80
+              name: seafile
+              protocol: TCP
           env:
             - name: SEAFILE_SERVER_HOSTNAME
               valueFrom:
@@ -157,16 +168,6 @@ spec:
                 configMapKeyRef:
                   name: seafile-env
                   key: REDIS_PORT
-            - name: MEMCACHED_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: seafile-env
-                  key: MEMCACHED_HOST
-            - name: MEMCACHED_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: seafile-env
-                  key: MEMCACHED_PORT
             - name: NOTIFICATION_SERVER_URL
               valueFrom:
                 configMapKeyRef:
