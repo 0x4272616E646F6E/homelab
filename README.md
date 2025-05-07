@@ -43,11 +43,13 @@ The following resources are managed through Flux in this repository:
 - [x] **Cilium**
 - [X] **Cloudflared**
 - [x] **Egress Gateway Helper**
+- [ ] **EmulatorJS**
 - [x] **Falco**
 - [x] **Flaresolverr**
 - [x] **Grafana**
 - [X] **Harbor**
 - [ ] **Headlamp**
+- [x] **Heimdall**
 - [x] **Home Assistant**
 - [x] **Intel GPU Plugin**
 - [x] **Janitorr**
@@ -67,6 +69,7 @@ The following resources are managed through Flux in this repository:
 - [ ] **Renovate**
 - [x] **Rook**
 - [x] **rTorrent**
+- [x] **Seafile**
 - [x] **Sonarr**
 - [ ] **SonarQube**
 - [x] **Suwayomi**
