@@ -9,7 +9,7 @@ data:
   SITE_ROOT: "/"
   ENABLE_SEADOC: "false"
   SEADOC_SERVER_URL: "https://seafile.oglesby.io/sdoc-server"
-  SEAFILE_SERVER_HOSTNAME: "seafile.oglesby.io"
+  SEAFILE_SERVER_HOSTNAME: "seafile"
   SEAFILE_SERVER_PROTOCOL: "http"
 
   SEAFILE_MYSQL_DB_HOST: "mariadb"

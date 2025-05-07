@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: mariadb:10.6
+          image: mariadb:10.11
           env:
-            - name: MARIADB_ROOT_PASSWORD
+            - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: seafile-secrets
