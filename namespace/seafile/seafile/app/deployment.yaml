@@ -139,8 +139,8 @@ spec:
                   key: S3_PATH_STYLE_REQUEST
             - name: INIT_SEAFILE_ADMIN_EMAIL
               valueFrom:
-                configMapKeyRef:
-                  name: seafile-env
+                secretKeyRef:
+                  name: seafile-secrets
                   key: INIT_SEAFILE_ADMIN_EMAIL
             - name: CACHE_PROVIDER
               valueFrom:

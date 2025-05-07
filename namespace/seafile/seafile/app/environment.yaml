@@ -37,10 +37,3 @@ data:
   S3_PATH_STYLE_REQUEST: "false"
 
   NOTIFICATION_SERVER_URL: ""
-
-env:
-  - name: INIT_SEAFILE_ADMIN_EMAIL
-    valueFrom:
-      secretKeyRef:
-        name: seafile-secrets
-        key: INIT_SEAFILE_ADMIN_EMAIL
