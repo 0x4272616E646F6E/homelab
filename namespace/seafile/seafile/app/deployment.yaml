@@ -23,10 +23,6 @@ spec:
             limits:
               cpu: "1"
               memory: "2Gi" 
-          ports:
-            - containerPort: 80
-              name: seafile
-              protocol: TCP
           env:
             - name: SEAFILE_SERVER_HOSTNAME
               valueFrom:
@@ -216,5 +212,3 @@ spec:
           persistentVolumeClaim:
             claimName: seafile-data
       restartPolicy: Always
-      imagePullSecrets:
-        - name: regcred
