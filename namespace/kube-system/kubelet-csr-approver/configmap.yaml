@@ -21,7 +21,7 @@ data:
     bypassHostnameCheck: false
     # optional, list of IP (IPv4, IPv6) subnets that are allowed to submit CSRs
     providerIpPrefixes:
-      - 10.0.0.251/32
+      - 10.0.0.250/32
 
     # logging level ranges from -5 (Fatal) to 10 (Verbose). default level is 0
     loggingLevel: 0
