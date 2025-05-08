@@ -29,6 +29,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
+        - name: authentik
       services:
         - name: api@internal
           kind: TraefikService
