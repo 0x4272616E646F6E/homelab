@@ -12,6 +12,8 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: traefik
+        - name: authentik
+          namespace: traefik
       services:
         - name: radarr
           port: 7878
