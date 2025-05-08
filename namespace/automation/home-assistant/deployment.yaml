@@ -13,12 +13,6 @@ spec:
       labels:
         app: homeassistant
     spec:
-      securityContext:
-        fsGroup: 1000
-        runAsUser: 1000
-        runAsGroup: 1000
-      runtimeClassName: youki
-      automountServiceAccountToken: false
       containers:
         - name: homeassistant
           image: lscr.io/linuxserver/homeassistant:latest
