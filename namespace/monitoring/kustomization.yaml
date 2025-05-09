@@ -12,4 +12,4 @@ resources:
   # - loki/
   # - tempo/
   - grafana/
-  # - headlamp/
+  - headlamp/
