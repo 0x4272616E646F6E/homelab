@@ -13,6 +13,7 @@ spec:
       labels:
         app: homeassistant
     spec:
+      runtimeClassName: youki
       containers:
         - name: homeassistant
           image: lscr.io/linuxserver/homeassistant:latest
