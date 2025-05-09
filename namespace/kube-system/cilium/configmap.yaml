@@ -157,7 +157,7 @@ data:
           automount: true
           annotations: {}
         relay:
-          create: true
+          create: false
           name: hubble-relay
           automount: false
           annotations: {}
