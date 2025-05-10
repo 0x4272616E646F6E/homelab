@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emulatorjs
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emulatorjs
+  template:
+    metadata:
+      labels:
+        app: emulatorjs
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: emulatorjs
+          image: lscr.io/linuxserver/emulatorjs:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: roms
+              mountPath: /data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: emulatorjs-config
+        - name: roms
+          persistentVolumeClaim:
+            claimName: emulatorjs-roms

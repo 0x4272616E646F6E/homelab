@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebrowser
+  template:
+    metadata:
+      labels:
+        app: filebrowser
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        initContainers:
+        - name: init-config
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /config/config.json ]; then
+                echo "Creating default config.json"
+                cat <<EOF > /config/config.json
+              {
+                "port": 80,
+                "baseURL": "",
+                "address": "",
+                "log": "stdout",
+                "database": "/database/filebrowser.db",
+                "root": "/srv"
+              }
+              EOF
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      containers:
+        - name: filebrowser
+          image: docker.io/filebrowser/filebrowser:s6
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: db
+              mountPath: /database
+            - name: fileshare
+              mountPath: /srv
+              subPath: fileshare
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: filebrowser-config
+        - name: db
+          persistentVolumeClaim:
+            claimName: filebrowser-db
+        - name: fileshare
+          persistentVolumeClaim:
+            claimName: fileshare

@@ -1,0 +1,41 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: filebrowser-https
+  namespace: fileshare
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`filebrowser.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: authentik
+          namespace: traefik
+      services:
+        - name: filebrowser
+          port: 80
+  tls:
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: filebrowser-http
+  namespace: fileshare
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`filebrowser.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: redirect-https
+          namespace: traefik
+      services:
+        - name: filebrowser
+          port: 80
