@@ -57,7 +57,7 @@ spec:
         - name: authentik
           namespace: traefik
       services:
-        - name: emulatorjs-admin
+        - name: emulatorjs
           port: 3000
   tls:
     secretName: oglesby-io-tls
@@ -79,5 +79,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: emulatorjs-admin
+        - name: emulatorjs
           port: 3000
