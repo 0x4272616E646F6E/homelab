@@ -6,7 +6,7 @@ metadata:
 data:
   values.yaml: |-
     # Required configuration item
-    providerRegex: "talos.oglesby.io"
+    providerRegex: "talos-4m3-8nj"
     # optional, specified as a string (enclosed with ""). if left empty, defaults to 367 days
     maxExpirationSeconds: "86400"
     # optional, permits to bypass dns resolution checks. default: false
@@ -26,8 +26,8 @@ data:
     # logging level ranges from -5 (Fatal) to 10 (Verbose). default level is 0
     loggingLevel: 0
 
-    leaderElection: true
-    replicas: 2
+    leaderElection: false
+    replicas: 1
 
     namespace: ""
 
