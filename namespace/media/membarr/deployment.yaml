@@ -17,6 +17,12 @@ spec:
       containers:
         - name: membarr
           image: docker.io/yoruio/membarr:latest
+          env:
+            - name: token
+              valueFrom:
+                secretKeyRef:
+                  name: membarr-secrets
+                  key: DISCORD_TOKEN
           resources:
             requests:
               cpu: "100m"

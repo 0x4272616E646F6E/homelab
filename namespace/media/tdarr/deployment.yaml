@@ -25,8 +25,8 @@ spec:
             - containerPort: 8266
               protocol: TCP
           env:
-            - name: UMASK
-              value: "022"
+            - name: UMASK_SET
+              value: "002"
             - name: serverIP
               value: "0.0.0.0"
             - name: serverPort
