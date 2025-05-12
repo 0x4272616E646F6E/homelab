@@ -104,9 +104,6 @@ data:
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
       - --kubelet-use-node-status-port
       - --metric-resolution=15s
-      - --tls-cert-file=/tmp/tls.crt
-      - --tls-private-key-file=/tmp/tls.key
-      - --kubelet-insecure-tls
 
     args: []
 
