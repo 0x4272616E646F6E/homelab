@@ -14,9 +14,11 @@ resources:
   - radarr/
   - sonarr/
   - jellyfin/
+  - tdarr/
   - jellyseerr/
   - jellystat/
   - janitorr/
   - requestrr/
+  - membarr/
   - suwayomi/
   - emulatorjs/

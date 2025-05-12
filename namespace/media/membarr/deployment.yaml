@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: membarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: membarr
+  template:
+    metadata:
+      labels:
+        app: membarr
+    spec:
+      runtimeClassName: youki
+      containers:
+        - name: membarr
+          image: docker.io/yoruio/membarr:latest
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /app/app/config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: membarr-config
