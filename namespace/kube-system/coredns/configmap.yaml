@@ -21,15 +21,21 @@ data:
                 fallthrough in-addr.arpa ip6.arpa
                 ttl 30
             }
+
+            # Add a static DNS record for the Talos node
+            hosts {
+                10.0.0.250 talos-4m3-8nj talos-4m3-8nj.cluster.local
+                fallthrough
+            }
+
             forward . 10.0.0.1 {
-            max_concurrent 1000
+                max_concurrent 1000
             }
             cache 30 {
-            disable success cluster.local
-            disable denial cluster.local
+                disable success cluster.local
+                disable denial cluster.local
             }
             loop
             reload
             loadbalance
         }
-
