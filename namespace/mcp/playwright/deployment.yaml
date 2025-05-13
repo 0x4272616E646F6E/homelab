@@ -16,6 +16,7 @@ spec:
       containers:
         - name: playwright
           image: docker.io/mcp/playwright:latest
+          command: ["npx", "@playwright/mcp", "--port=80"]
           ports:
             - containerPort: 80
               protocol: TCP
