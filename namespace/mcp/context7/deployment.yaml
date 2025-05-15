@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: context7
+  namespace: mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: context7
+  template:
+    metadata:
+      labels:
+        app: context7
+    spec:
+      containers:
+        - name: context7
+          image: ghcr.io/0x4272616e646f6e/mcp-context7:2025.05
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"

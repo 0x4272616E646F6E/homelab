@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github
+  namespace: mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: github
+  template:
+    metadata:
+      labels:
+        app: github
+    spec:
+      containers:
+        - name: github
+          image: docker.io/mcp/github-mcp-server:latest
+          command: ["github", "--port 80", "--transport sse"]
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
