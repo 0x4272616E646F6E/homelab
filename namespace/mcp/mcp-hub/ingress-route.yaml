@@ -1,33 +1,33 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: github-https
+  name: mcp-hub-https
   namespace: mcp
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`mcp.oglesby.io`) && PathPrefixStrip(`/github`)
+    - match: Host(`mcp.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: github
-          port: 80
+        - name: mcp-hub
+          port: 3000
   tls:
     secretName: oglesby-io-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: github-http
+  name: mcp-hub-http
   namespace: mcp
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`mcp.oglesby.io`) && PathPrefixStrip(`/github`)
+    - match: Host(`mcp.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -35,5 +35,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: github
-          port: 80
+        - name: mcp-hub
+          port: 3000

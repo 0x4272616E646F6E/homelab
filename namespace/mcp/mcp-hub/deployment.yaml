@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: context7
+  name: mcp-hub
   namespace: mcp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: context7
+      app: mcp-hub
   template:
     metadata:
       labels:
-        app: context7
+        app: mcp-hub
     spec:
       containers:
-        - name: context7
-          image: ghcr.io/0x4272616e646f6e/mcp-context7:2025.05
+        - name: mcp-hub
+          image: docker.io/samanhappy/mcphub:latest
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -24,5 +24,12 @@ spec:
               cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: "2"
+              memory: "4Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: mcp-hub-config

@@ -4,16 +4,4 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  # - 3d-printer/
-  - context7/
-  # - github/
-  # - gitlab/
-  # - google-maps/
-  # - memory/
-  - playwright/
-  - run-python/
-  # - semgrep/
-  # - sequential-thinking/
-  # - shodan/
-  # - virus-total/
-  # - wikipedia/
+  - mcp-hub/
