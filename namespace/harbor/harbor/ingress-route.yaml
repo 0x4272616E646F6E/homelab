@@ -12,6 +12,8 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: traefik
+        - name: xfp-header
+          namespace: traefik
       services:
         - name: harbor
           port: 80
