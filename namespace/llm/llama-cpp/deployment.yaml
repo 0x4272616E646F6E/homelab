@@ -41,6 +41,10 @@ spec:
           - "3000"
           - "--host"
           - "0.0.0.0"
+          - "--ctx-size"
+          - "2048"
+          - "--n-gpu-layers"
+          - "20"
           ports:
             - containerPort: 3000
               protocol: TCP
@@ -51,6 +55,8 @@ spec:
             value: "0"
           - name: GGML_SYCL_DEBUG
             value: "0"
+          - name: SYCL_DEVICE_FILTER
+            value: "level_zero:gpu"
           volumeMounts:
             - name: models
               mountPath: /models
