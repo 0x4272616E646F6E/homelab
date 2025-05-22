@@ -22,9 +22,9 @@ spec:
           - |
             apk add --no-cache curl && \
             echo "Checking if model exists..." && \
-            if [ ! -f /models/qwen3.gguf ]; then
+            if [ ! -f /models/qwen2.5.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/qwen3.gguf "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_1.gguf?download=true"
+              curl -L -o /models/qwen2.5.gguf "https://huggingface.co/ggml-org/Qwen2.5-Coder-1.5B-Q8_0-GGUF/resolve/main/qwen2.5-coder-1.5b-q8_0.gguf?download=true"
             else
               echo "Model already exists, skipping download."
             fi
@@ -36,7 +36,7 @@ spec:
           image: ghcr.io/ggml-org/llama.cpp:server-intel
           args:
           - "-m"
-          - "/models/qwen3.gguf"
+          - "/models/qwen2.5.gguf"
           - "--port"
           - "3000"
           - "--host"
