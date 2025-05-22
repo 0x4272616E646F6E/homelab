@@ -12,11 +12,10 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: traefik
-        - name: xfp-header
-          namespace: traefik
       services:
         - name: harbor
           port: 80
+          passHostHeader: true
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -34,6 +33,7 @@ spec:
       services:
         - name: harbor
           port: 80
+          passHostHeader: true
       middlewares:
       - name: internal-whitelist
         namespace: traefik
