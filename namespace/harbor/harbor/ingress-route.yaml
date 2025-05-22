@@ -37,3 +37,43 @@ spec:
         namespace: traefik
       - name: redirect-https
         namespace: traefik
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-registry-https
+  namespace: harbor
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`harbor.oglesby.io`) && PathPrefix(`/api/`, `/service/`, `/v2/`, `/chartrepo/`, `/c/`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: harbor-registry
+          port: 5000
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-registry-http
+  namespace: harbor
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`harbor.oglesby.io`) && PathPrefix(`/api/`, `/service/`, `/v2/`, `/chartrepo/`, `/c/`)
+      kind: Rule
+      services:
+        - name: harbor-registry
+          port: 5000
+      middlewares:
+      - name: internal-whitelist
+        namespace: traefik
+      - name: redirect-https
+        namespace: traefik
