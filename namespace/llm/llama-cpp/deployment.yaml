@@ -23,9 +23,11 @@ spec:
             if [ ! -f /models/gemma.gguf ]; then
               echo "Downloading model..."
               curl -L -o /models/gemma.gguf "https://huggingface.co/unsloth/gemma-3-4b-it-qat-GGUF/resolve/main/gemma-3-4b-it-qat-Q4_1.gguf?download=true"
+              chmod -R 777 /models
             else
               echo "Model already exists, skipping download."
             fi
+          runAsUser: 0
           volumeMounts:
             - name: models
               mountPath: /models
