@@ -33,7 +33,9 @@ spec:
               mountPath: /models
       containers:
         - name: llama-cpp
-          image: ghcr.io/ggml-org/llama.cpp:server-intel
+          image: harbor.oglesby.io/library/llama-cpp-oneapi:latest
+          imagePullSecrets:
+            - name: harbor-secret
           args:
           - "-m"
           - "/models/gemma3.gguf"
