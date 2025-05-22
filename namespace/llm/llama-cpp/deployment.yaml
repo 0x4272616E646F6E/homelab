@@ -13,6 +13,8 @@ spec:
       labels:
         app: llama-cpp
     spec:
+      imagePullSecrets:          # <── here (pod-wide)
+        - name: harbor-secret
       initContainers:
         - name: model-downloader
           image: alpine:latest
@@ -34,8 +36,6 @@ spec:
       containers:
         - name: llama-cpp
           image: harbor.oglesby.io/library/llama-cpp-oneapi:latest
-          imagePullSecrets:
-            - name: harbor-secret
           args:
           - "-m"
           - "/models/gemma3.gguf"
