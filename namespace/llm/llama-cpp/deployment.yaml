@@ -50,7 +50,7 @@ spec:
               protocol: TCP
           env:
           - name: GGML_SYCL_DISABLE_GRAPH
-            value: "0"
+            value: "1"
           - name: GGML_SYCL_DISABLE_OPT
             value: "0"
           - name: GGML_SYCL_DEBUG
