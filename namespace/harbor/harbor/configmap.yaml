@@ -617,7 +617,7 @@ data:
         # secret: ""
         # Fill in the name of a kubernetes secret if you want to use your own
         # If using existingSecret, the key must be secret
-        existingSecret: "harbor-secrets"
+        # existingSecret: "harbor-secrets"
         # Fill the name of a kubernetes secret if you want to use your own
         # TLS certificate and private key for token encryption/decryption.
         # The secret must contain keys named:
@@ -763,16 +763,16 @@ data:
         # Must be a string of 16 chars.
         # secret: ""
         # Use an existing secret resource
-        existingSecret: "harbor-secrets"
+        # existingSecret: "harbor-secrets"
         # Key within the existing secret for the registry service secret
-        existingSecretKey: REGISTRY_HTTP_SECRET
+        # existingSecretKey: REGISTRY_HTTP_SECRET
         # If true, the registry returns relative URLs in Location headers. The client is responsible for resolving the correct URL.
         relativeurls: false
-        credentials:
+        # credentials:
           # username: "harbor_registry_user"
           # password: "harbor_registry_password"
           # If using existingSecret, the key must be REGISTRY_PASSWD and REGISTRY_HTPASSWD
-          existingSecret: "harbor-secrets"
+          # existingSecret: "harbor-secrets"
           # Login and password in htpasswd string format. Excludes `registry.credentials.username`  and `registry.credentials.password`. May come in handy when integrating with tools like argocd or flux. This allows the same line to be generated each time the template is rendered, instead of the `htpasswd` function from helm, which generates different lines each time because of the salt.
           # htpasswdString: $apr1$XLefHzeG$Xl4.s00sMSCCcMyJljSZb0 # example string
           # htpasswdString: ""
