@@ -15,19 +15,19 @@ spec:
     spec:
       initContainers:
         - name: model-downloader
-          image: curlimages/curl:latest
+          image: alpine:latest
           command:
           - sh
           - -c
           - |
+            apk add --no-cache curl && \
+            echo "Checking if model exists..." && \
             if [ ! -f /models/gemma.gguf ]; then
               echo "Downloading model..."
               curl -L -o /models/gemma.gguf "https://huggingface.co/unsloth/gemma-3-4b-it-qat-GGUF/resolve/main/gemma-3-4b-it-qat-Q4_1.gguf?download=true"
-              chmod -R 777 /models
             else
               echo "Model already exists, skipping download."
             fi
-          runAsUser: 0
           volumeMounts:
             - name: models
               mountPath: /models
