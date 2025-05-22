@@ -43,20 +43,29 @@ spec:
           - "0.0.0.0"
           - "--ctx-size"
           - "2048"
+          - "--batch-size"
+          - "512"
           - "--n-gpu-layers"
-          - "20"
+          - "24"
+          - "--mlock"
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
+          - name: SYCL_DEVICE_FILTER
+            value: "level_zero:gpu"
           - name: GGML_SYCL_DISABLE_GRAPH
+            value: "1"
+          - name: GGML_SYCL_PRIORITIZE_DMMV
+            value: "1"
+          - name: GGML_SYCL_FORCE_MMQ
             value: "1"
           - name: GGML_SYCL_DISABLE_OPT
             value: "0"
           - name: GGML_SYCL_DEBUG
             value: "0"
-          - name: SYCL_DEVICE_FILTER
-            value: "level_zero:gpu"
+          - name: ZES_ENABLE_SYSMAN
+            value: "1"
           volumeMounts:
             - name: models
               mountPath: /models
