@@ -42,15 +42,19 @@ spec:
           - "--host"
           - "0.0.0.0"
           - "--ctx-size"
-          - "2048"
+          - "1024"
           - "--n-gpu-layers"
           - "20"
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
+          - name: GGML_SYCL_DISABLE_GRAPH
+            value: "0"
+          - name: GGML_SYCL_DISABLE_OPT
+            value: "0"
           - name: GGML_SYCL_DEBUG
-            value: "1"
+            value: "0"
           volumeMounts:
             - name: models
               mountPath: /models
