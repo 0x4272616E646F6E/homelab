@@ -35,15 +35,22 @@ spec:
         - name: llama-cpp
           image: ghcr.io/ggml-org/llama.cpp:server-intel
           args:
-            - "-m"
-            - "/models/gemma.gguf"
-            - "--port"
-            - "3000"
-            - "--host"
-            - "0.0.0.0"
+          - "-m"
+          - "/models/gemma.gguf"
+          - "--port"
+          - "3000"
+          - "--host"
+          - "0.0.0.0"
+          - "--ctx-size"
+          - "2048"
+          - "--n-gpu-layers"
+          - "20"
           ports:
             - containerPort: 3000
               protocol: TCP
+          env:
+          - name: GGML_SYCL_DEBUG
+            value: "1"
           volumeMounts:
             - name: models
               mountPath: /models
