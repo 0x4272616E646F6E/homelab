@@ -42,11 +42,11 @@ spec:
           - "--host"
           - "0.0.0.0"
           - "--ctx-size"
-          - "2048"
+          - "1024"
           - "--batch-size"
-          - "128"
+          - "64"
           - "--n-gpu-layers"
-          - "24"
+          - "20"
           ports:
             - containerPort: 3000
               protocol: TCP
