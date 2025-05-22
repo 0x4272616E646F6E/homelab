@@ -54,7 +54,7 @@ spec:
           namespace: traefik
       services:
         - name: harbor-registry
-          port: 5000
+          port: 8080
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -71,7 +71,7 @@ spec:
       kind: Rule
       services:
         - name: harbor-registry
-          port: 5000
+          port: 8080
       middlewares:
       - name: internal-whitelist
         namespace: traefik

@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: llm-https
+  namespace: llm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`llm.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: gemma3
+          port: 3000
+  tls:
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gemma3-http
+  namespace: llm
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`llm.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: redirect-https
+          namespace: traefik
+      services:
+        - name: gemma3
+          port: 3000
