@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: harbor-https
+  name: harbor-portal-https
   namespace: harbor
 spec:
   entryPoints:
@@ -13,7 +13,7 @@ spec:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: harbor
+        - name: harbor-portal
           port: 80
   tls: 
     secretName: oglesby-io-tls
@@ -21,7 +21,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: harbor-http
+  name: harbor-portal-http
   namespace: harbor
 spec:
   entryPoints:
@@ -30,7 +30,7 @@ spec:
     - match: Host(`harbor.oglesby.io`)
       kind: Rule
       services:
-        - name: harbor
+        - name: harbor-portal
           port: 80
       middlewares:
       - name: internal-whitelist
@@ -41,7 +41,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: harbor-registry-https
+  name: harbor-core-https
   namespace: harbor
 spec:
   entryPoints:
@@ -53,15 +53,15 @@ spec:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: harbor-registry
-          port: 8080
+        - name: harbor-core
+          port: 80
   tls: 
     secretName: oglesby-io-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: harbor-registry-http
+  name: harbor-core-http
   namespace: harbor
 spec:
   entryPoints:
@@ -70,8 +70,8 @@ spec:
     - match: Host(`harbor.oglesby.io`) && PathPrefix(`/api/`, `/service/`, `/v2/`, `/chartrepo/`, `/c/`)
       kind: Rule
       services:
-        - name: harbor-registry
-          port: 8080
+        - name: harbor-core
+          port: 80
       middlewares:
       - name: internal-whitelist
         namespace: traefik
