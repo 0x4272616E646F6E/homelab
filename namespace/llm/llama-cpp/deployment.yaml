@@ -22,9 +22,9 @@ spec:
           - |
             apk add --no-cache curl && \
             echo "Checking if model exists..." && \
-            if [ ! -f /models/gemma.gguf ]; then
+            if [ ! -f /models/qwen3.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/gemma.gguf "https://huggingface.co/unsloth/gemma-3-4b-it-qat-GGUF/resolve/main/gemma-3-4b-it-qat-Q4_1.gguf?download=true"
+              curl -L -o /models/qwen3.gguf "https://huggingface.co/unsloth/Qwen3-1.7B-GGUF/resolve/main/Qwen3-1.7B-Q4_1.gguf?download=true"
             else
               echo "Model already exists, skipping download."
             fi
@@ -36,7 +36,7 @@ spec:
           image: ghcr.io/ggml-org/llama.cpp:server-intel
           args:
           - "-m"
-          - "/models/gemma.gguf"
+          - "/models/qwen3.gguf"
           - "--port"
           - "3000"
           - "--host"
