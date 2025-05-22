@@ -4,4 +4,4 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - gemma3/
+  - llama-cpp/

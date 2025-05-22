@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llama-cpp
+  namespace: llm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llama-cpp
+  template:
+    metadata:
+      labels:
+        app: llama-cpp
+    spec:
+      initContainers:
+        - name: model-downloader
+          image: curlimages/curl:latest
+          command:
+          - sh
+          - -c
+          - |
+            if [ ! -f /models/gemma.gguf ]; then
+              echo "Downloading model..."
+              curl -L -o /models/gemma.gguf "https://huggingface.co/unsloth/gemma-3-4b-it-qat-GGUF/resolve/main/gemma-3-4b-it-qat-Q4_1.gguf?download=true"
+            else
+              echo "Model already exists, skipping download."
+            fi
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      containers:
+        - name: llama-cpp
+          image: ghcr.io/ggml-org/llama.cpp:server-intel
+          args:
+            - "-m"
+            - "/models/gemma.gguf"
+            - "--port"
+            - "3000"
+            - "--host"
+            - "0.0.0.0"
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - name: models
+              mountPath: /models
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+              gpu.intel.com/i915: "1"
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: llama-cpp-models
