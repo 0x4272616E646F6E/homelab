@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: optillm
-          image: ghcr.io/codelion/optillm:0.1.12-proxy
+          image: ghcr.io/codelion/optillm:0.1.12-proxy@sha256:225d5c3a38e7fa2159e5722b15e2b7222cf9bfd90e487ed525c5be81113eff03
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
