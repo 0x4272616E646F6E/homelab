@@ -13,12 +13,9 @@ spec:
       labels:
         app: llama-cpp
     spec:
-      imagePullSecrets:
-        - name: harbor-secret
       initContainers:
         - name: model-downloader
           image: alpine:latest
-          imagePullPolicy: Always
           command:
           - sh
           - -c
@@ -36,7 +33,7 @@ spec:
               mountPath: /models
       containers:
         - name: llama-cpp
-          image: harbor.oglesby.io/library/llama-cpp-oneapi:latest
+          image: ghcr.io/ggml-org/llama.cpp:server-intel
           args:
           - "-m"
           - "/models/gemma3.gguf"
@@ -57,8 +54,6 @@ spec:
           - name: SYCL_DEVICE_FILTER
             value: "level_zero:gpu"
           - name: GGML_SYCL_DISABLE_GRAPH
-            value: "1"
-          - name: GGML_SYCL_PRIORITIZE_DMMV
             value: "1"
           - name: GGML_SYCL_FORCE_MMQ
             value: "1"
