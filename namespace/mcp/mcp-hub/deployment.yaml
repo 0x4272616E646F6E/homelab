@@ -16,6 +16,7 @@ spec:
       containers:
         - name: mcp-hub
           image: docker.io/samanhappy/mcphub:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
               protocol: TCP

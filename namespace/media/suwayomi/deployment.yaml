@@ -21,6 +21,7 @@ spec:
       containers:
         - name: suwayomi
           image: ghcr.io/suwayomi/tachidesk:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 4567
               protocol: TCP

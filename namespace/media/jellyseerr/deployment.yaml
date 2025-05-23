@@ -17,6 +17,7 @@ spec:
       containers:
         - name: jellyseerr
           image: docker.io/fallenbagel/jellyseerr:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5055
               protocol: TCP

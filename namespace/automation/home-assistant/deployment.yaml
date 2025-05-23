@@ -17,6 +17,7 @@ spec:
       containers:
         - name: homeassistant
           image: lscr.io/linuxserver/homeassistant:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8123
               protocol: TCP

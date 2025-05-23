@@ -19,6 +19,7 @@ spec:
       containers:
         - name: jellyfin
           image: lscr.io/linuxserver/jellyfin:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 7359
               protocol: UDP

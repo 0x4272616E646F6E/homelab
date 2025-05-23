@@ -17,6 +17,7 @@ spec:
       containers:
         - name: jellystat
           image: docker.io/cyfershepard/jellystat:latest
+          imagePullPolicy: Always
           env:
             - name: TZ
               value: "Etc/UTC"

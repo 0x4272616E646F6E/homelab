@@ -21,6 +21,7 @@ spec:
       initContainers:
         - name: init-nzbget
           image: busybox:latest
+          imagePullPolicy: Always
           command: ["sh","-c"]
           args:
             - |
@@ -38,6 +39,7 @@ spec:
       containers:
         - name: nzbget
           image: lscr.io/linuxserver/nzbget:latest
+          imagePullPolicy: Always
           env:
             - name: PUID
               value: "1000"

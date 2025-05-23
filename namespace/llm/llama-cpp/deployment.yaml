@@ -13,11 +13,12 @@ spec:
       labels:
         app: llama-cpp
     spec:
-      imagePullSecrets:          # <── here (pod-wide)
+      imagePullSecrets:
         - name: harbor-secret
       initContainers:
         - name: model-downloader
           image: alpine:latest
+          imagePullPolicy: Always
           command:
           - sh
           - -c

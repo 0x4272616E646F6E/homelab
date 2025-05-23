@@ -17,6 +17,7 @@ spec:
       initContainers:
         - name: init-rtorrent
           image: busybox:latest
+          imagePullPolicy: Always
           command:
             - /bin/sh
             - -c
@@ -48,6 +49,7 @@ spec:
       containers:
         - name: rtorrent
           image: docker.io/crazymax/rtorrent-rutorrent:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
             - containerPort: 8000

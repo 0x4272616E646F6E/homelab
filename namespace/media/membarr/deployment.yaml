@@ -17,6 +17,7 @@ spec:
       containers:
         - name: membarr
           image: docker.io/yoruio/membarr:latest
+          imagePullPolicy: Always
           env:
             - name: token
               valueFrom:

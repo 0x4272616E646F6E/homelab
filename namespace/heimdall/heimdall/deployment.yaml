@@ -18,6 +18,7 @@ spec:
       containers:
         - name: heimdall
           image: lscr.io/linuxserver/heimdall:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
               protocol: TCP

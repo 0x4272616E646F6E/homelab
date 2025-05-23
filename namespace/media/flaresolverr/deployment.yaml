@@ -25,6 +25,7 @@ spec:
       containers:
         - name: flaresolverr
           image: docker.io/flaresolverr/flaresolverr:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8191
               protocol: TCP

@@ -18,6 +18,7 @@ spec:
       containers:
         - name: emulatorjs
           image: lscr.io/linuxserver/emulatorjs:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
               protocol: TCP
