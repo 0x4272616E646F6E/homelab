@@ -16,75 +16,71 @@ spec:
       initContainers:
         - name: model-downloader
           image: alpine:latest
-          command: [sh, -c]
-          args:
-            - |
-              set -e
-              apk add --no-cache curl
-              if [ ! -f /models/gemma3.gguf ]; then
-                echo "→ downloading Gemma 3 4-B Q4_K_M…"
-                curl -L -o /models/gemma3.gguf \
-                'https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true'
-              else
-                echo "→ model already present, skipping"
-              fi
+          command:
+          - sh
+          - -c
+          - |
+            apk add --no-cache curl && \
+            echo "Checking if model exists..." && \
+            if [ ! -f /models/gemma3.gguf ]; then
+              echo "Downloading model..."
+              curl -L -o /models/gemma3.gguf "https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf?download=true"
+            else
+              echo "Model already exists, skipping download."
+            fi
           volumeMounts:
             - name: models
               mountPath: /models
       containers:
         - name: llama-cpp
           image: ghcr.io/ggml-org/llama.cpp:server-intel
-          imagePullPolicy: Always
           args:
-            - "-m"
-            - "/models/gemma3.gguf"
-            - "--ctx-size"
-            - "4096"
-            - "--n-gpu-layers"
-            - "34"
-            - "--kv-offload"
-            - "--batch-size"
-            - "256"
-            - "--threads"
-            - "8"
-            - "--batch-threads"
-            - "8"
-            - "--port"
-            - "3000"
-            - "--host"
-            - "0.0.0.0"
+          - "-m"
+          - "/models/gemma3.gguf"
+          - "--port"
+          - "3000"
+          - "--host"
+          - "0.0.0.0"
+          - "--ctx-size"
+          - "4096"
+          - "--batch-size"
+          - "256"
+          - "--n-gpu-layers"
+          - "34"
+          - "--kv-offload"
+          - "--threads"
+          - "8"
+          - "--batch-threads"
+          - "8"
           ports:
             - containerPort: 3000
               protocol: TCP
           env:
-            - name: SYCL_DEVICE_FILTER
-              value: "level_zero:gpu"
-            - name: GGML_SYCL_PRIORITIZE_DMMV
-              value: "1"
-            - name: GGML_SYCL_FORCE_MMQ
-              value: "1"
-            - name: GGML_SYCL_DISABLE_GRAPH
-              value: "1"
-            - name: GGML_SYCL_DISABLE_OPT
-              value: "0"
-            - name: GGML_SYCL_DISABLE_DNN
-              value: "0"
-            - name: ZES_ENABLE_SYSMAN
-              value: "1"
-            - name: OMP_NUM_THREADS
-              value: "8"
-          resources:
-            requests:
-              cpu:    "2"
-              memory: "3Gi"
-              gpu.intel.com/i915: "1"
-            limits:
-              cpu:    "8"
-              memory: "6Gi"
-              gpu.intel.com/i915: "1"
+          - name: SYCL_DEVICE_FILTER
+            value: "level_zero:gpu"
+          - name: GGML_SYCL_DISABLE_GRAPH
+            value: "1"
+          - name: GGML_SYCL_FORCE_MMQ
+            value: "1"
+          - name: GGML_SYCL_DISABLE_OPT
+            value: "0"
+          - name: GGML_SYCL_PRIORITIZE_DMMV
+            value: "1"
+          - name: GGML_SYCL_DEBUG
+            value: "0"
+          - name: ZES_ENABLE_SYSMAN
+            value: "1"
           volumeMounts:
             - name: models
               mountPath: /models
+          resources:
+            requests:
+              cpu: "2"
+              memory: "2Gi"
+            limits:
+              cpu: "6"
+              memory: "6Gi"
+              gpu.intel.com/i915: "1"
       volumes:
         - name: models
           persistentVolumeClaim:
