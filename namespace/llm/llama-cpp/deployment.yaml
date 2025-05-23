@@ -47,7 +47,6 @@ spec:
           - "256"
           - "--n-gpu-layers"
           - "34"
-          - "--kv-offload"
           ports:
             - containerPort: 3000
               protocol: TCP
