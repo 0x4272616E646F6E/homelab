@@ -44,9 +44,9 @@ spec:
           - "--ctx-size"
           - "1024"
           - "--batch-size"
-          - "128"
+          - "256"
           - "--n-gpu-layers"
-          - "30"
+          - "34"
           ports:
             - containerPort: 3000
               protocol: TCP
