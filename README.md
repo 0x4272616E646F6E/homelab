@@ -59,8 +59,11 @@ The following resources are managed through Flux in this repository:
 - [x] **Jellystat**
 - [ ] **Kyverno**
 - [x] **Kubelet CSR Approver**
+- [x] **LlamaCPP**
 - [ ] **Loki**
 - [x] **NzbGet**
+- [ ] **OpenEvolve**
+- [x] **OptiLLM**
 - [x] **Prometheus**
 - [x] **Prowlarr**
 - [x] **Radarr**
@@ -75,6 +78,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Suwayomi**
 - [ ] **Syncthing**
 - [x] **Talos Debug**
+- [x] **Tdarr**
 - [ ] **Tempo**
 - [x] **Traefik**
 - [ ] **Trivy**

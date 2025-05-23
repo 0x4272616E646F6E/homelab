@@ -5,3 +5,5 @@ commonLabels:
 resources:
   - namespace.yaml
   - llama-cpp/
+  - optillm/
+  # - openevolve/
