@@ -44,7 +44,7 @@ spec:
           - "--ctx-size"
           - "2048"
           - "--batch-size"
-          - "256"
+          - "384"
           - "--n-gpu-layers"
           - "34"
           ports:
