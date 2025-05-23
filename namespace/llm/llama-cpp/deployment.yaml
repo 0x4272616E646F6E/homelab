@@ -53,6 +53,8 @@ spec:
           env:
           - name: SYCL_DEVICE_FILTER
             value: "level_zero:gpu"
+          - name: GGML_SYCL_PRIORITIZE_DMMV
+            value: "1"  
           - name: GGML_SYCL_DISABLE_GRAPH
             value: "1"
           - name: GGML_SYCL_FORCE_MMQ
