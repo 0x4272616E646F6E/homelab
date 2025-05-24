@@ -1,29 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: membarr
+  name: wizarr
   namespace: media
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: membarr
+      app: wizarr
   template:
     metadata:
       labels:
-        app: membarr
+        app: wizarr
     spec:
       runtimeClassName: youki
       containers:
-        - name: membarr
-          image: docker.io/yoruio/membarr:latest
+        - name: wizarr
+          image: ghcr.io/wizarrrr/wizarr:lates
           imagePullPolicy: Always
-          env:
-            - name: token
-              valueFrom:
-                secretKeyRef:
-                  name: membarr-secrets
-                  key: DISCORD_TOKEN
+          ports:
+            - containerPort: 5690
+              protocol: TCP
           resources:
             requests:
               cpu: "100m"
@@ -33,8 +30,8 @@ spec:
               memory: "1Gi"
           volumeMounts:
             - name: config
-              mountPath: /app/app/config
+              mountPath: /data
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: membarr-config
+            claimName: wizarr-config

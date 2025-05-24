@@ -83,6 +83,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Traefik**
 - [ ] **Trivy**
 - [x] **Vector**
+- [] **Wizarr**
 
 ## Runtimes
 

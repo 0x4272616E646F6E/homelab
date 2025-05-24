@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: membarr-config
+  name: wizarr-config
   namespace: media
 spec:
   accessModes:
