@@ -16,7 +16,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: wizarr
-          image: ghcr.io/wizarrrr/wizarr:lates
+          image: ghcr.io/wizarrrr/wizarr:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5690
