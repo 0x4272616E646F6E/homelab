@@ -19,6 +19,6 @@ resources:
   - jellystat/
   - janitorr/
   - requestrr/
-  - wizarr/
+  # - wizarr/
   - suwayomi/
   - emulatorjs/
