@@ -23,6 +23,8 @@ spec:
           env:
           - name: MINDSDB_APIS
             value: "http"
+          - name: MINDSDB_PORT
+            value: "47334"
           volumeMounts:
             - name: config
               mountPath: /root/mdb_storage
