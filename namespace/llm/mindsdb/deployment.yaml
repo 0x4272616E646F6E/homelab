@@ -24,7 +24,7 @@ spec:
               protocol: TCP
           env:
           - name: MINDSDB_APIS
-            value: "http"
+            value: "http,mcp"
           - name: MINDSDB_PORT
             value: "47334"
           volumeMounts:
