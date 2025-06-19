@@ -1,19 +1,19 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: llm-https
+  name: swe-agent-https
   namespace: llm
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`llm.oglesby.io`)
+    - match: Host(`swe.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: llama-cpp
+        - name: swe-agent
           port: 3000
   tls:
     secretName: oglesby-io-tls
@@ -21,13 +21,13 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: llm-http
+  name: swe-agent-http
   namespace: llm
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`llm.oglesby.io`)
+    - match: Host(`swe.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -35,5 +35,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: llama-cpp
+        - name: swe-agent
           port: 3000

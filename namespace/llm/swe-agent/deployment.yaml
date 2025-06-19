@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openhands
+  namespace: llm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openhands
+  template:
+    metadata:
+      labels:
+        app: openhands
+    spec:
+      containers:
+        - name: openhands
+          image: docker.all-hands.dev/all-hands-ai/openhands:0.39
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+          - name: LOG_ALL_EVENTS
+            value: "true"
+          - name: SANDBOX_RUNTIME_CONTAINER_IMAGE
+            value: "docker.all-hands.dev/all-hands-ai/runtime:0.39-nikolaik"
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
+            - name: config
+              mountPath: /.openhands-state
+          resources:
+            requests:
+              cpu: "1"
+              memory: "128Mi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          hostAliases:
+          - ip: "127.0.0.1"
+            hostnames:
+            - "host.docker.internal"
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+            type: Socket
+        - name: config
+          persistentVolumeClaim:
+            claimName: openhands-config

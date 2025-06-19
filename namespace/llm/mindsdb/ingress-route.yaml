@@ -1,33 +1,33 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: optillm-https
+  name: mindsdb-https
   namespace: llm
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`optillm.oglesby.io`)
+    - match: Host(`mindsdb.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: optillm
-          port: 8000
+        - name: mindsdb
+          port: 47334
   tls:
     secretName: oglesby-io-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: optillm-http
+  name: mindsdb-http
   namespace: llm
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`optillm.oglesby.io`)
+    - match: Host(`mindsdb.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -35,5 +35,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: optillm
-          port: 8000
+        - name: mindsdb
+          port: 47334

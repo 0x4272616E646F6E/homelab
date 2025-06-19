@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mindsdb
+  namespace: llm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mindsdb
+  template:
+    metadata:
+      labels:
+        app: mindsdb
+    spec:
+      containers:
+        - name: mindsdb
+          image: docker.io/mindsdb/mindsdb:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 47334
+              protocol: TCP
+          env:
+          - name: MINDSDB_APIS
+            value: "http"
+          volumeMounts:
+            - name: config
+              mountPath: /root/mdb_storage
+          resources:
+            requests:
+              cpu: "1"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: mindsdb-config
