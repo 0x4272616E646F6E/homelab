@@ -20,6 +20,8 @@ spec:
           ports:
             - containerPort: 47334
               protocol: TCP
+            - containerPort: 47337
+              protocol: TCP
           env:
           - name: MINDSDB_APIS
             value: "http"

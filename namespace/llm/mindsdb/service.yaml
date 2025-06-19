@@ -10,4 +10,7 @@ spec:
     - port: 47334
       targetPort: 47334
       protocol: TCP
+    - port: 47337
+      targetPort: 47337
+      protocol: TCP
   type: ClusterIP

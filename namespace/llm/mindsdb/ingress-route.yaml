@@ -37,3 +37,43 @@ spec:
       services:
         - name: mindsdb
           port: 47334
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mindsdb-https
+  namespace: llm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`mindsdb-mcp.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: mindsdb
+          port: 47337
+  tls:
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mindsdb-http
+  namespace: llm
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`mindsdb-mcp.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: redirect-https
+          namespace: traefik
+      services:
+        - name: mindsdb
+          port: 47337
