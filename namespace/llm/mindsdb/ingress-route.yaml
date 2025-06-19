@@ -41,7 +41,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: mindsdb-https
+  name: mindsdb-mcp-https
   namespace: llm
 spec:
   entryPoints:
@@ -61,7 +61,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: mindsdb-http
+  name: mindsdb-mcp-http
   namespace: llm
 spec:
   entryPoints:
