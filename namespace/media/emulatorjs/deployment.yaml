@@ -17,7 +17,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: emulatorjs
-          image: lscr.io/linuxserver/emulatorjs:latest
+          image: docker.io/linuxserver/emulatorjs:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
