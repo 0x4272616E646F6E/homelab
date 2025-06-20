@@ -53,7 +53,7 @@ spec:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: mindsdb
+        - name: mindsdb-mcp
           port: 47337
   tls:
     secretName: oglesby-io-tls
@@ -75,5 +75,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: mindsdb
+        - name: mindsdb-mcp
           port: 47337
