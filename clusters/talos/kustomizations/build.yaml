@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/nix2container"
+  path: "./namespace/build"
   prune: true
   sourceRef:
     kind: GitRepository
