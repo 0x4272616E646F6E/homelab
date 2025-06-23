@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: build-myapp-n2c
+  namespace: build                # keep build jobs isolated
+spec:
+  template:
+    spec:
+      containers:
+      - name: n2c
+        # tiny image with nix + skopeo + n2c pre-installed
+        image: ghcr.io/nlewo/nix2container:2025-05-15
+        env:
+        # Flux injects the Git SHA of the commit it just applied
+        - name: SOURCE_COMMIT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['kustomize.toolkit.fluxcd.io/revision']
+        - name: REGISTRY
+          value: registry.example.com/myapp
+        command:
+        - sh
+        - -c
+        - |
+          set -e
+          # Build the image derivation (defined in apps/myapp/flake.nix)
+          nix build --print-build-logs \
+            .#myappImage \
+            -o /tmp/result
+
+          # Push it – nix2container wraps skopeo under the attr `.copyToRegistry`
+          nix run .#myappImage.copyToRegistry \
+            -- \
+              --destination $REGISTRY:$SOURCE_COMMIT
+        volumeMounts:
+        - name: cache
+          mountPath: /nix
+      restartPolicy: Never
+      securityContext:
+        runAsUser: 1000
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: nix-store

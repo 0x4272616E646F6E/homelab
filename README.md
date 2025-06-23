@@ -52,6 +52,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Headlamp**
 - [x] **Heimdall**
 - [x] **Home Assistant**
+- [ ] **Huntarr**
 - [x] **Intel GPU Plugin**
 - [x] **Janitorr**
 - [x] **Jellyfin**
@@ -61,9 +62,10 @@ The following resources are managed through Flux in this repository:
 - [x] **Kubelet CSR Approver**
 - [x] **LlamaCPP**
 - [ ] **Loki**
+- [ ] **MCPMSH**
+- [x] **MindsDB**
+- [ ] **Nix2Container**
 - [x] **NzbGet**
-- [ ] **OpenEvolve**
-- [x] **OptiLLM**
 - [x] **Prometheus**
 - [x] **Prowlarr**
 - [x] **Radarr**
@@ -76,6 +78,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Sonarr**
 - [ ] **SonarQube**
 - [x] **Suwayomi**
+- [x] **SWE Agent**
 - [ ] **Syncthing**
 - [x] **Talos Debug**
 - [x] **Tdarr**
@@ -90,5 +93,6 @@ The following resources are managed through Flux in this repository:
 These are the runtimes used in this repository:
 
 - **Container Runtimes**
-  - **Default**: `runc` will be `youki` after release.
+  - **Default**: `runc`
+  - **Alternative** `youki`
   - **Security**: `kata`

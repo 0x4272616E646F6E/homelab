@@ -1,5 +1,6 @@
 # Ignore editor-specific files
 .vscode/
+.continue/
 
 # Ignore MacOS-specific files
 .DS_Store

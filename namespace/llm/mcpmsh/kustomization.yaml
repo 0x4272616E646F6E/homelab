@@ -3,7 +3,8 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - namespace.yaml
-  - llama-cpp/
-  - mindsdb/
-  # - mcpm-sh/
+  - mcpmsh-job.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress-route.yaml
