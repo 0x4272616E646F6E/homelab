@@ -1,36 +1,30 @@
 # Flux
 
-This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux continuously monitors this repository and automatically applies changes to your Kubernetes cluster.
+This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to your Kubernetes cluster.
 
 ## Table of Contents
 
-- [Flux](#flux)
-  - [Table of Contents](#table-of-contents)
-  - [Prerequisites](#prerequisites)
-  - [Flux Setup](#flux-setup)
-  - [Resources Managed](#resources-managed)
-  - [Runtimes](#runtimes)
+- [Prerequisites](#prerequisites)
+- [Flux Setup](#flux-setup)
+- [Resources Managed](#resources-managed)
+- [Runtimes](#runtimes)
 
 ## Prerequisites
 
-Before using this repository, ensure that you have the following:
+Before using this repository, ensure you have:
 
 - **Kubernetes Cluster**: A working Kubernetes cluster.
-- **Flux CLI**: Install the Flux CLI.
-- **Git**: You should have Git installed to clone and manage the repository.
-- **Kubectl**: To interact with the Kubernetes cluster.
+- **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/).
+- **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+- **Kubectl**: [Install kubectl](https://kubernetes.io/docs/tasks/tools/).
+- **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
 
 ## Flux Setup
 
-This repository uses Flux to manage the deployment of Kubernetes resources. Flux continuously watches this repository for changes and automatically applies them to the cluster. Here’s a breakdown of how Flux is set up in this repository:
+Flux manages the deployment of Kubernetes resources in this repository. Key resources:
 
-- GitRepository: A custom Flux resource that tells Flux where the Git repository is located, which branch to track, and the synchronization interval.
-- Kustomization: A Flux resource used to define what paths and resources to apply to the cluster.
-
-These resources are defined in the following files:
-
-- flux-system/flux-gitrepository.yaml - Defines the Git repository for Flux to track.
-- flux-system/flux-kustomization.yaml - Defines the Kustomization to apply the manifests located in this repository.
+- **GitRepository**: Specifies the Git repository, branch, and sync interval for Flux.
+- **Kustomization**: Defines which paths and resources Flux applies to the cluster.
 
 ## Resources Managed
 
@@ -39,11 +33,13 @@ The following resources are managed through Flux in this repository:
 - [x] **Actions Runner Controller**
 - [X] **Authentik**
 - [x] **Bazarr**
+- [x] **BuildKit**
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
 - [x] **Egress Gateway Helper**
 - [x] **EmulatorJS**
+- [ ] **Envoy Gateway**
 - [x] **Falco**
 - [ ] **Filebrowser**
 - [x] **Flaresolverr**
@@ -64,7 +60,7 @@ The following resources are managed through Flux in this repository:
 - [ ] **Loki**
 - [ ] **MCPMSH**
 - [x] **MindsDB**
-- [ ] **Nix2Container**
+- [x] **Nix2Container**
 - [x] **NzbGet**
 - [x] **Prometheus**
 - [x] **Prowlarr**
@@ -78,7 +74,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Sonarr**
 - [ ] **SonarQube**
 - [x] **Suwayomi**
-- [x] **SWE Agent**
 - [ ] **Syncthing**
 - [x] **Talos Debug**
 - [x] **Tdarr**
@@ -94,5 +89,5 @@ These are the runtimes used in this repository:
 
 - **Container Runtimes**
   - **Default**: `runc`
-  - **Alternative** `youki`
+  - **Experimental** `youki` (Experimental replacement for runc)
   - **Security**: `kata`

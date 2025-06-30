@@ -22,9 +22,9 @@ spec:
           - |
             apk add --no-cache curl && \
             echo "Checking if model exists..." && \
-            if [ ! -f /models/jan-nano.gguf ]; then
+            if [ ! -f /models/jan-nano-128k.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/jan-nano.gguf "https://huggingface.co/Menlo/Jan-nano-gguf/resolve/main/jan-nano-4b-Q4_K_M.gguf?download=true"
+              curl -L -o /models/jan-nano-128k.gguf "https://huggingface.co/Menlo/Jan-nano-128k-gguf/resolve/main/jan-nano-128k-Q4_K_M.gguf?download=true"
             else
               echo "Model already exists, skipping download."
             fi
@@ -36,7 +36,7 @@ spec:
           image: ghcr.io/ggml-org/llama.cpp:server-intel
           args:
           - "-m"
-          - "/models/jan-nano.gguf"
+          - "/models/jan-nano-128k.gguf"
           - "--port"
           - "3000"
           - "--host"
