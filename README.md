@@ -6,6 +6,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 - [Prerequisites](#prerequisites)
 - [Flux Setup](#flux-setup)
+- [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
 - [Resources Managed](#resources-managed)
 - [Runtimes](#runtimes)
@@ -26,6 +27,59 @@ Flux manages the deployment of Kubernetes resources in this repository. Key reso
 
 - **GitRepository**: Specifies the Git repository, branch, and sync interval for Flux.
 - **Kustomization**: Defines which paths and resources Flux applies to the cluster.
+
+## General Cluster Architecture
+
+```mermaid
+flowchart TD
+    subgraph GitOps
+        G1[Git Repository]
+        G2[Flux]
+        G1 --> G2
+    end
+
+    subgraph ControlPlane
+        G2 --> C1[Kubernetes API Server]
+        C1 --> C2[Controllers & CRDs]
+        C1 --> C3[(etcd)]
+        C1 --> C4[Kube Scheduler]
+        C1 --> C5[Kube Controller]
+        C2 --> C6[Talos Debug]
+    end
+
+
+    subgraph DataPlane
+        C2 --> D1[Cilium]
+        C2 --> D2[CoreDNS]
+        %% Node-level components
+        D3[Kubelet] -.-> D1
+        C1 -.-> D3[Kubelet]
+        D4[containerd] -.-> D3
+    end
+
+
+    subgraph Ingress
+        direction TB
+        C2 --> I1[Cloudflared]
+        C2 --> I2[Envoy]
+        D1 --> I1[Cloudflared]
+        D1 --> I2[Envoy]
+    end
+
+    subgraph Applications
+        direction TB
+        C2 --> A1[App]
+         I1 --> A1[App]
+         I2 --> A1[App]
+    end
+
+    subgraph Storage
+        direction TB
+        C2 --> S1[Rook]
+        A1 --> S1[Rook]
+    end
+
+```
 
 ## Hardware Specs
 
