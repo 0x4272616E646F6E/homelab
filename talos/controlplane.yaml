@@ -3,10 +3,10 @@ debug: false
 persist: true
 machine:
   type: controlplane
-  token: ${MACHINE_TOKEN}
+  token:
   ca:
-    crt: ${MACHINE_CA_CRT}
-    key: ${MACHINE_CA_KEY}
+    crt:
+    key:
   certSANs: []
   network:
     interfaces:
@@ -21,20 +21,21 @@ machine:
         addresses:
           - 10.72.127.202/32
         wireguard:
-          privateKey: ${MACHINE_NETWORK_INTERFACE_WG0_PRIVATEKEY}
+          privateKey:
           peers:
-            - publicKey: ${MACHINE_NETWORK_INTERFACE_WG0_PEERS_PUBLICKEY}
-              endpoint: 193.32.249.66:51820
+            - publicKey:
+              endpoint:
               allowedIPs:
                 - 0.0.0.0/0
                 - ::/0
               persistentKeepaliveInterval: 10s
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.32.3
+    image: ghcr.io/siderolabs/kubelet:v1.33.0
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraArgs:
       node-ip: 10.0.0.250
+      address: 0.0.0.0
       max-pods: "250"
       rotate-server-certificates: "true"
       event-qps: "0"
@@ -126,8 +127,8 @@ machine:
         endpoints:
           - https://ghcr.io
 cluster:
-  id: ${CLUSTER_ID}
-  secret: ${CLUSTER_SECRET}
+  id:
+  secret:
   controlPlane:
     endpoint: https://talos.oglesby.io:6443
     localAPIServerPort: 6443
@@ -140,20 +141,21 @@ cluster:
       - 10.96.0.0/12
     cni:
       name: none
-  token: ${MACHINE_TOKEN}
-  secretboxEncryptionSecret: ${CLUSTER_SECRETBOXENCRYPTIONSECRET}
+  token:
+  secretboxEncryptionSecret:
   ca:
-    crt: ${CLUSTER_CA_CRT}
-    key: ${CLUSTER_CA_KEY}
+    crt:
+    key:
   aggregatorCA:
-    crt: ${CLUSTER_AGGREGATOR_CA_CRT}
-    key: ${CLUSTER_AGGREGATOR_CA_KEY}
+    crt:
+    key:
   serviceAccount:
-    key: ${CLUSTER_SERVICE_ACCOUNT_KEY}
+    key:
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.32.3
+    image: registry.k8s.io/kube-apiserver:v1.33.0
     certSANs:
       - 10.0.0.250
+      - 127.0.0.1
     disablePodSecurityPolicy: true
     admissionControl:
       - name: PodSecurity
@@ -181,11 +183,11 @@ cluster:
       default-not-ready-toleration-seconds: "60"
       default-unreachable-toleration-seconds: "60"
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.32.3
+    image: registry.k8s.io/kube-controller-manager:v1.33.0
   proxy:
     disabled: true
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.32.3
+    image: registry.k8s.io/kube-scheduler:v1.33.0
   discovery:
     enabled: true
     registries:
@@ -194,8 +196,8 @@ cluster:
       service: {}
   etcd:
     ca:
-      crt: ${CLUSTER_ETCD_CA_CRT}
-      key: ${CLUSTER_ETCD_CA_KEY}
+      crt: 
+      key: 
   extraManifests: []
   inlineManifests: []
   allowSchedulingOnControlPlanes: true
