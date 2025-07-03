@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: envoy-helm
+      chart: gateway-helm
       version: 1.4.1
       sourceRef:
         kind: HelmRepository
