@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: gateway-helm
-      version: 1.4.1
+      version: 0.0.0-latest
       sourceRef:
         kind: HelmRepository
         name: envoy-gateway
