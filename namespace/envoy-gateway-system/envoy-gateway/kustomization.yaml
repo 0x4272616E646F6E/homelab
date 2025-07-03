@@ -4,4 +4,5 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - helmrelease.yaml
-  - envoy-gateway.yaml
+  - gateway-class.yaml
+  - gateway.yaml
