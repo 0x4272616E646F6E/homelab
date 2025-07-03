@@ -14,7 +14,7 @@ data:
           image: ${GatewayImage}
           # Specify image pull policy if default behavior isn't desired.
           # Default behavior: latest images will be Always else IfNotPresent.
-          pullPolicy: ${GatewayImagePullPolicy}
+          pullPolicy: IfNotPresent
           # List of secrets in the same namespace of the component that can be used to pull images from private repositories.
           pullSecrets: []
         ratelimit:
