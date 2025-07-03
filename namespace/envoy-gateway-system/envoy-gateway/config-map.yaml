@@ -7,11 +7,11 @@ data:
   values.yaml: |-
     service:
       type: LoadBalancer
-      loadBalancerIP: "10.0.0.249"
+      loadBalancerIP: "10.0.0.248"
       ports:
         - name: http
-          port: 8080
-          targetPort: 8080
+          port: 80
+          targetPort: 80
         - name: https
-          port: 8443
-          targetPort: 8443
+          port: 443
+          targetPort: 443
