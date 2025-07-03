@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envoy-gateway-config-map
+  namespace: envoy-gateway-system
+data:
+  values.yaml: |-
+    service:
+      type: LoadBalancer
+      ports:
+        - name: http
+          port: 8080
+          targetPort: 8080
+        - name: https
+          port: 8443
+          targetPort: 8443

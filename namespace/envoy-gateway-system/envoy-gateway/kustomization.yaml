@@ -3,6 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
+  - config-map.yaml
   - helmrelease.yaml
   - gateway-class.yaml
   - gateway.yaml

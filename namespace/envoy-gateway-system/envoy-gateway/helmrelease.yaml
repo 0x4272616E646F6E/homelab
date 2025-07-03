@@ -15,3 +15,7 @@ spec:
   interval: 15m
   timeout: 5m
   releaseName: envoy-gateway
+  valuesFrom:
+    - kind: ConfigMap
+      name: envoy-gateway-config-map
+      namespace: envoy-gateway-system
