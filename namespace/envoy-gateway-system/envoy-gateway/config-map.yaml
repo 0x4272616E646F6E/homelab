@@ -7,8 +7,7 @@ data:
   values.yaml: |-
     service:
       type: LoadBalancer
-      annotations:
-        io.cilium/lb-ipam-ips: "10.0.0.250"
+      loadBalancerIP: "10.0.0.249"
       ports:
         - name: http
           port: 8080
