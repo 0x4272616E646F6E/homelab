@@ -18,4 +18,3 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: envoy-gateway-config-map
-      namespace: envoy-gateway-system
