@@ -36,14 +36,14 @@ spec:
           namespace: authentik
           port: 9000
       path: "/outpost.goauthentik.io/auth/envoy"
-      headersToBackend:
+      headersToExtAuth:
         - X-Forwarded-For
         - X-Forwarded-Host
         - X-Forwarded-Proto
         - X-Forwarded-Uri
         - Cookie
         - Authorization
-      headersFromBackend:
+      headersToBackend:
         - X-authentik-username
         - X-authentik-groups
         - X-authentik-entitlements
