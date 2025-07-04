@@ -7,6 +7,9 @@ spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
+      sectionName: http
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
       sectionName: https
   hostnames:
     - "llm.oglesby.io"
