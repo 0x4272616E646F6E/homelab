@@ -3,6 +3,8 @@ kind: HTTPRoute
 metadata:
   name: sonarr-https-route
   namespace: media
+  labels:
+    auth.envoy.io/enabled: "true"
 spec:
   parentRefs:
     - name: envoy-gateway

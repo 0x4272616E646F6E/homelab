@@ -1,0 +1,42 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyExtension
+metadata:
+  name: authentik-auth
+  namespace: envoy-gateway-system
+spec:
+  filters:
+    - name: authentik-ext-authz
+      type: ext_authz
+      virtualHostApplyTo:
+        - ALL
+      routeApplyTo:
+        - ALL
+      config:
+        httpService:
+          authorizationRequest:
+            allowedHeaders:
+              patterns:
+                - exact: X-Forwarded-For
+                - exact: X-Forwarded-Host
+                - exact: X-Forwarded-Proto
+                - exact: X-Forwarded-Uri
+                - exact: Cookie
+                - exact: Authorization
+          authorizationResponse:
+            allowedUpstreamHeaders:
+              patterns:
+                - exact: X-authentik-username
+                - exact: X-authentik-groups
+                - exact: X-authentik-entitlements
+                - exact: X-authentik-email
+                - exact: X-authentik-name
+                - exact: X-authentik-uid
+                - exact: X-authentik-jwt
+                - exact: X-authentik-meta-jwks
+                - exact: X-authentik-meta-outpost
+                - exact: X-authentik-meta-provider
+                - exact: X-authentik-meta-app
+                - exact: X-authentik-meta-version
+          serverUri:
+            uri: http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/envoy
+            timeout: 5s
