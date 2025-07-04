@@ -30,19 +30,19 @@ spec:
       kind: HTTPRoute
       name: sonarr-https-route
   extAuth:
+    headersToExtAuth:
+      - X-Forwarded-For
+      - X-Forwarded-Host
+      - X-Forwarded-Proto
+      - X-Forwarded-Uri
+      - Cookie
+      - Authorization
     http:
       backendRefs:
         - name: ak-outpost-authentik-embedded-outpost
           namespace: authentik
           port: 9000
       path: "/outpost.goauthentik.io/auth/envoy"
-      headersToExtAuth:
-        - X-Forwarded-For
-        - X-Forwarded-Host
-        - X-Forwarded-Proto
-        - X-Forwarded-Uri
-        - Cookie
-        - Authorization
       headersToBackend:
         - X-authentik-username
         - X-authentik-groups
