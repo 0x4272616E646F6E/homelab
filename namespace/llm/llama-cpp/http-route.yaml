@@ -3,13 +3,8 @@ kind: HTTPRoute
 metadata:
   name: llama-cpp-https-route
   namespace: llm
-  annotations:
-    gateway.envoyproxy.io/redirect-to-https: "true"
 spec:
   parentRefs:
-    - name: envoy-gateway
-      namespace: envoy-gateway-system
-      sectionName: http
     - name: envoy-gateway
       namespace: envoy-gateway-system
       sectionName: https
@@ -23,3 +18,22 @@ spec:
       backendRefs:
         - name: llama-cpp
           port: 3000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llama-cpp-http-route
+  namespace: llm
+spec:
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - "llm.oglesby.io"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
