@@ -12,7 +12,7 @@ data:
         #   password: ""
     server:
       ingress:
-        ingressClassName: traefik
+        ingressClassName: envoy
         enabled: false
         hosts:
           - authentik.oglesby.io

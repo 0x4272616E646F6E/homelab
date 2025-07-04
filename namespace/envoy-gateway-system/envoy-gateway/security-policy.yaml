@@ -1,7 +1,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: ip-whitelist-policy
+  name: internal-access-policy-with-authentik
   namespace: envoy-gateway-system
 spec:
   targetRefs:
@@ -18,17 +18,6 @@ spec:
             - 172.16.0.0/12
             - 10.0.0.0/8
             - 127.0.0.0/8
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: authentik-auth-policy
-  namespace: envoy-gateway-system
-spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: sonarr-https-route
   extAuth:
     headersToExtAuth:
       - X-Forwarded-For
@@ -42,7 +31,7 @@ spec:
         - name: ak-outpost-authentik-embedded-outpost
           namespace: authentik
           port: 9000
-      path: "/outpost.goauthentik.io/auth/envoy"
+      path: /outpost.goauthentik.io/auth/envoy
       headersToBackend:
         - X-authentik-username
         - X-authentik-groups
