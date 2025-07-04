@@ -4,37 +4,35 @@ metadata:
   name: authentik-auth-policy
   namespace: envoy-gateway-system
 spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: sonarr-https-route
-      namespace: media
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: HTTPRoute
+    name: sonarr-https-route
   extAuth:
     http:
-      backendRefs:
-        - name: ak-outpost-authentik-embedded-outpost
-          namespace: authentik
-          port: 9000
-          weight: 1
-      requestHeadersToBackend:
-        - "X-Forwarded-For"
-        - "X-Forwarded-Host"
-        - "X-Forwarded-Proto"
-        - "X-Forwarded-Uri"
-        - "X-Envoy-Original-Path"
-        - "Cookie"
-        - "Authorization"
-      headersToBackend:
-        - "X-authentik-username"
-        - "X-authentik-groups"
-        - "X-authentik-entitlements"
-        - "X-authentik-email"
-        - "X-authentik-name"
-        - "X-authentik-uid"
-        - "X-authentik-jwt"
-        - "X-authentik-meta-jwks"
-        - "X-authentik-meta-outpost"
-        - "X-authentik-meta-provider"
-        - "X-authentik-meta-app"
-        - "X-authentik-meta-version"
-      uri: "http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/envoy"
+      backendRef:
+        name: ak-outpost-authentik-embedded-outpost
+        namespace: authentik
+        port: 9000
+      headersToUpstream:
+        - name: "X-authentik-username"
+        - name: "X-authentik-groups"
+        - name: "X-authentik-entitlements"
+        - name: "X-authentik-email"
+        - name: "X-authentik-name"
+        - name: "X-authentik-uid"
+        - name: "X-authentik-jwt"
+        - name: "X-authentik-meta-jwks"
+        - name: "X-authentik-meta-outpost"
+        - name: "X-authentik-meta-provider"
+        - name: "X-authentik-meta-app"
+        - name: "X-authentik-meta-version"
+      headersToExtAuth:
+        - name: "X-Forwarded-For"
+        - name: "X-Forwarded-Host"
+        - name: "X-Forwarded-Proto"
+        - name: "X-Forwarded-Uri"
+        - name: "X-Envoy-Original-Path"
+        - name: "Cookie"
+        - name: "Authorization"
+      authorizationEndpoint: "http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/envoy"
