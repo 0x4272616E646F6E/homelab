@@ -7,3 +7,4 @@ resources:
   - helmrelease.yaml
   - gateway-class.yaml
   - gateway.yaml
+  - security-policy.yaml
