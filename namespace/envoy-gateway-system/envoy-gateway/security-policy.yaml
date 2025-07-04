@@ -4,16 +4,20 @@ metadata:
   name: ip-whitelist-policy
   namespace: envoy-gateway-system
 spec:
-  targetRef:
-    group: gateway.networking.k8s.io
-    kind: HTTPRoute
-    name: sonarr-https-route
-  ipFilter:
-    allow:
-      - 192.168.0.0/16
-      - 172.16.0.0/12
-      - 10.0.0.0/8
-      - 127.0.0.0/8
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: sonarr-https-route
+  authorization:
+    defaultAction: Deny
+    rules:
+      - action: Allow
+        principal:
+          clientCIDRs:
+            - 192.168.0.0/16
+            - 172.16.0.0/12
+            - 10.0.0.0/8
+            - 127.0.0.0/8
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
