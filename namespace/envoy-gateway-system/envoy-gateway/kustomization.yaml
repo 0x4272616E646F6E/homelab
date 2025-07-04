@@ -6,4 +6,5 @@ resources:
   - config-map.yaml
   - helmrelease.yaml
   - gateway-class.yaml
+  - envoy-proxy.yaml
   - gateway.yaml
