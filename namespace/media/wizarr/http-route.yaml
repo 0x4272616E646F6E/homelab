@@ -1,13 +1,13 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: wizarr-http-route
+  name: wizarr-https-route
   namespace: media
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
-      sectionName: http
+      sectionName: https
   hostnames:
     - "wizarr.oglesby.io"
   rules:
@@ -18,3 +18,22 @@ spec:
       backendRefs:
         - name: wizarr
           port: 5690
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: wizarr-http-route
+  namespace: media
+spec:
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - "wizarr.oglesby.io"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

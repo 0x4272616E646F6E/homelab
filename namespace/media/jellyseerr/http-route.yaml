@@ -1,13 +1,13 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: jellyseerr-http-route
+  name: jellyseerr-https-route
   namespace: media
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
-      sectionName: http
+      sectionName: https
   hostnames:
     - "jellyseerr.oglesby.io"
   rules:
@@ -18,3 +18,22 @@ spec:
       backendRefs:
         - name: jellyseerr
           port: 5055
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: jellyseerr-http-route
+  namespace: media
+spec:
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - "jellyseerr.oglesby.io"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

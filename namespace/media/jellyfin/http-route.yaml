@@ -1,15 +1,16 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: jellyfin-http-route
+  name: jellyfin-https-route
   namespace: media
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
-      sectionName: http
+      sectionName: https
   hostnames:
     - "jellyfin.oglesby.io"
+    - "jellyfin.hosted.fail"
   rules:
     - matches:
         - path:
@@ -22,7 +23,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: jellyfin-public-http-route
+  name: jellyfin-http-route
   namespace: media
 spec:
   parentRefs:
@@ -30,12 +31,11 @@ spec:
       namespace: envoy-gateway-system
       sectionName: http
   hostnames:
+    - "jellyfin.oglesby.io"
     - "jellyfin.hosted.fail"
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: jellyfin
-          port: 8096
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

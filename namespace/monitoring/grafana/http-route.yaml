@@ -1,36 +1,36 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: bazarr-https-route
-  namespace: media
+  name: grafana-https-route
+  namespace: monitoring
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
       sectionName: https
   hostnames:
-    - "bazarr.oglesby.io"
+    - "grafana.oglesby.io"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: bazarr
-          port: 6767
+        - name: grafana
+          port: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: bazarr-http-route
-  namespace: media
+  name: grafana-http-route
+  namespace: monitoring
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
       sectionName: http
   hostnames:
-    - "bazarr.oglesby.io"
+    - "grafana.oglesby.io"
   rules:
     - filters:
         - type: RequestRedirect

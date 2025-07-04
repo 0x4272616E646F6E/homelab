@@ -1,13 +1,13 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: requestrr-http-route
+  name: requestrr-https-route
   namespace: media
 spec:
   parentRefs:
     - name: envoy-gateway
       namespace: envoy-gateway-system
-      sectionName: http
+      sectionName: https
   hostnames:
     - "requestrr.oglesby.io"
   rules:
@@ -18,3 +18,22 @@ spec:
       backendRefs:
         - name: requestrr
           port: 4545
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: requestrr-http-route
+  namespace: media
+spec:
+  parentRefs:
+    - name: envoy-gateway
+      namespace: envoy-gateway-system
+      sectionName: http
+  hostnames:
+    - "requestrr.oglesby.io"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
