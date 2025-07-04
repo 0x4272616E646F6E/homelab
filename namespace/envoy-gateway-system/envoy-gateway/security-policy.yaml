@@ -8,7 +8,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: sonarr-https-route
-      namespace: media
   extAuth:
     failOpen: false
     headersToExtAuth:
