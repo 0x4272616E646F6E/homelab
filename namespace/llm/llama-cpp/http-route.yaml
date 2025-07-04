@@ -3,6 +3,8 @@ kind: HTTPRoute
 metadata:
   name: llama-cpp-https-route
   namespace: llm
+  annotations:
+    gateway.envoyproxy.io/redirect-to-https: "true"
 spec:
   parentRefs:
     - name: envoy-gateway

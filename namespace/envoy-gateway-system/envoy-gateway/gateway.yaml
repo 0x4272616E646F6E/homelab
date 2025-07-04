@@ -3,8 +3,6 @@ kind: Gateway
 metadata:
   name: envoy-gateway
   namespace: envoy-gateway-system
-  annotations:
-    gateway.envoyproxy.io/http-to-https-redirect: "true"
 spec:
   gatewayClassName: envoy-gateway
   listeners:
