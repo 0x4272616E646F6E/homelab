@@ -61,9 +61,9 @@ flowchart TD
     subgraph Ingress
         direction TB
         C2 --> I1[Cloudflared]
-        C2 --> I2[Envoy]
+        C2 --> I2[Traefik]
         D1 --> I1[Cloudflared]
-        D1 --> I2[Envoy]
+        D1 --> I2[Traefik]
     end
 
     subgraph Applications
@@ -109,7 +109,6 @@ The following resources are managed through Flux in this repository:
 - [X] **Cloudflared**
 - [x] **Egress Gateway Helper**
 - [x] **EmulatorJS**
-- [ ] **Envoy Gateway**
 - [x] **Falco**
 - [ ] **Filebrowser**
 - [x] **Flaresolverr**

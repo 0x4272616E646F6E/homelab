@@ -6,4 +6,3 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress-route.yaml
-  - http-route.yaml
