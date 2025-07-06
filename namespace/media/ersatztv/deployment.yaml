@@ -13,6 +13,9 @@ spec:
       labels:
         app: ersatztv
     spec:
+      securityContext:
+        supplementalGroups:
+          - 44 
       automountServiceAccountToken: false
       containers:
         - name: ersatztv
