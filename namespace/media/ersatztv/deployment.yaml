@@ -32,13 +32,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: media
-              mountPath: /data
-              subPath: media
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: ersatztv-config
-        - name: media
-          persistentVolumeClaim:
-            claimName: media
