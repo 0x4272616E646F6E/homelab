@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ersatztv
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ersatztv
+  template:
+    metadata:
+      labels:
+        app: ersatztv
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: ersatztv
+          image: ghcr.io/ersatztv/ersatztv:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8409
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+              gpu.intel.com/i915: "1"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /data
+              subPath: media
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: ersatztv-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: media

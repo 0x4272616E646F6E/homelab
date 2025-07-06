@@ -24,7 +24,7 @@ data:
       # -- Schedules the job to run using cron notation
       schedule: '0 1 * * *'  # At 01:00 every day
       # -- You can specify a time zone for a CronJob by setting timeZone to the name of a valid time zone. (starting with k8s 1.27) <https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones>
-      timeZone: ''  # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for valid names
+      timeZone: 'America/Detroit'  # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for valid names
       # -- If it is set to true, all subsequent executions are suspended. This setting does not apply to already started executions.
       suspend: false
       # -- Annotations to set on the cronjob
@@ -32,15 +32,15 @@ data:
       # -- Labels to set on the cronjob
       labels: {}
       # -- "Allow" to allow concurrent runs, "Forbid" to skip new runs if a previous run is still running or "Replace" to replace the previous run
-      concurrencyPolicy: ''
+      concurrencyPolicy: 'Forbid'
       # -- "Number of successful completions is reached to mark the job as complete"
       completions: ''
       # -- "Where the jobs should be NonIndexed or Indexed"
       completionMode: ''
       # -- Amount of failed jobs to keep in history
-      failedJobsHistoryLimit: ''
+      failedJobsHistoryLimit: '1'
       # -- Amount of completed jobs to keep in history
-      successfulJobsHistoryLimit: ''
+      successfulJobsHistoryLimit: '3'
       # -- Set to Never to restart the job when the pod fails or to OnFailure to restart when a container fails
       jobRestartPolicy: Never
       # -- Time to keep the job after it finished before automatically deleting it
@@ -103,18 +103,14 @@ data:
       # -- Custom exiting global renovate config
       existingConfigFile: ''
       # -- Inline global renovate config.json
-      config: ''
+      # config: ''
       # See https://docs.renovatebot.com/self-hosted-configuration
-      # config: |
-      #   {
-      #     "platform": "gitlab",
-      #     "endpoint": "https://gitlab.example.com/api/v4",
-      #     "token": "your-gitlab-renovate-user-token",
-      #     "autodiscover": "false",
-      #     "dryRun": true,
-      #     "printConfig": true,
-      #     "repositories": ["username/repo", "orgname/repo"]
-      #   }
+      config: |
+        {
+          "platform": "github",
+          "repositories": ["your-org/your-repo"],
+          "logLevel": "info"
+        }
 
       # -- Use the Helm tpl function on your configuration. See README for how to use this value
       configEnableHelmTpl: false
