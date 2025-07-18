@@ -23,11 +23,11 @@ spec:
         - name: minecraft
           image: docker.io/itzg/minecraft-server:latest
           imagePullPolicy: Always
-          environment:
+          env:
             - name: ENABLE_ROLLING_LOGS
               value: "TRUE"
             - name: LOG_TIMESTAMP
-              value: TRUE
+              value: "TRUE"
             - name: TYPE
               value: "VANILLA"
             - name: EULA
