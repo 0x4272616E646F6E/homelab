@@ -108,7 +108,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Cilium**
 - [X] **Cloudflared**
 - [x] **Egress Gateway Helper**
-- [x] **EmulatorJS**
+- [ ] **Emissary**
 - [x] **Falco**
 - [ ] **Filebrowser**
 - [x] **Flaresolverr**

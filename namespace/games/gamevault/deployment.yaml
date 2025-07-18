@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gamevault
+  namespace: games
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gamevault
+  template:
+    metadata:
+      labels:
+        app: gamevault
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: gamevault
+          image: docker.io/phalcode/gamevault-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 25565
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+        - name: postgres
+          image: docker.io/postgres:17
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_USER
+              value: gamevault
+            - name: POSTGRES_PASSWORD
+              value: gamevaultpassword
+            - name: POSTGRES_DB
+              value: gamevaultdb
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: postgres
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: gamevault-config
+        - name: postgres
+          persistentVolumeClaim:
+            claimName: gamevault-postgres

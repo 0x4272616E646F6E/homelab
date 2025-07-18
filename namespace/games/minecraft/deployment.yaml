@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: games
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+  template:
+    metadata:
+      labels:
+        app: minecraft
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: minecraft
+          image: docker.io/itzg/minecraft-server:latest
+          imagePullPolicy: Always
+          environment:
+            - name: ENABLE_ROLLING_LOGS
+              value: "TRUE"
+            - name: LOG_TIMESTAMP
+              value: "TRUE"
+            - name: TYPE
+              value: "VANILLA"
+            - name: EULA
+              value: "TRUE"
+            - name: MOTD
+              value: "Welcome to the Minecraft Server!"
+            - name: DIFFICULTY
+              value: "NORMAL"
+            - name: MAX_PLAYERS
+              value: "50"
+            - name: FORCE_GAMEMODE
+              value: "TRUE"
+            - name: HARDCORE
+              value: "TRUE"
+            - name: MODE
+              value: "SURVIVAL"
+            - name: SERVER_NAME
+              value: "My Minecraft Server"
+            - name: PLAYER_IDLE_TIMEOUT
+              value: "15"
+            
+          ports:
+            - containerPort: 25565
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: minecraft-config

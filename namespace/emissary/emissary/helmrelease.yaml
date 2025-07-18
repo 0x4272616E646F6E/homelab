@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: emissary
+  namespace: emissary
+spec:
+  chart:
+    spec:
+      chart: emissary
+      version: 35.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: emissary
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: emissary
+  valuesFrom:
+  - kind: ConfigMap
+    name: emissary-config-map
+    valuesKey: values.yaml
