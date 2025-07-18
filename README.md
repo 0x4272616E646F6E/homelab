@@ -8,6 +8,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 - [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
+- [Applications](#applications)
 - [Resources Managed](#resources-managed)
 - [Runtimes](#runtimes)
 
@@ -95,6 +96,13 @@ Below is a description of the hardware this cluster runs on. This information ma
 - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
 - GPU: [Sparkle Intel Arc 310 Eco](https://www.sparkle.com.tw/en/products/view/f22F9bC73c50)
 - TPU: [Google Coral TPU M.2](https://coral.ai/products/m2-accelerator-bm)
+
+## Applications
+
+The following application code is made available for build and deployment into the cluster:
+
+- [x] **RSPS**
+- [x] **WoW Classic**
 
 ## Resources Managed
 
