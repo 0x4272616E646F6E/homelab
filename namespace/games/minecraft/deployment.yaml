@@ -27,7 +27,7 @@ spec:
             - name: ENABLE_ROLLING_LOGS
               value: "TRUE"
             - name: LOG_TIMESTAMP
-              value: "TRUE"
+              value: TRUE
             - name: TYPE
               value: "VANILLA"
             - name: EULA
