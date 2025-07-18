@@ -1,0 +1,82 @@
+name: Build Check
+
+on:
+  push:
+    branches:
+      - "*"
+
+env:
+  MYSQL_BIN_NAME: "mysql-8.0.41-winx64"
+  MYSQL_BASE_PREBUILD_ADR: "https://cdn.mysql.com/Downloads/MySQL-8.0/"
+  MYSQL_BIN_EXT: ".zip"
+  MYSQL_FINAL_SERVER_FOLDER: "mysql-server"
+  MYSQL_DEFAULT_ROOT: "cmangos"
+  CACHED_FOLDER: "${{github.workspace}}\\CachedFolder"
+  WORK_FOLDER: "${{github.workspace}}\\WorkFolder"
+
+jobs:
+  build-check:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - name: Setup Environment Variables
+        run: |
+          projectNames="${GITHUB_REPOSITORY#*/}"
+          expansion="${projectNames%-*}"
+          echo "EXPANSION_NAME=${expansion}" >> $GITHUB_ENV
+          echo "CORE_REPO="cmangos/mangos-${expansion} >> $GITHUB_ENV
+          echo "CORE_FOLDER="${{github.workspace}}/mangos-${expansion} >> $GITHUB_ENV
+          echo "DB_FOLDER="${{github.workspace}}/${expansion}-db >> $GITHUB_ENV
+
+      - name: Checkout DB
+        uses: actions/checkout@v4
+        with:
+          path: ${{env.DB_FOLDER}}
+
+      - name: Checkout CORE
+        uses: actions/checkout@v4
+        with:
+          repository: ${{env.CORE_REPO}}
+          path: ${{env.CORE_FOLDER}}
+
+      - name: Build ${{env.EXPANSION_NAME}}-db
+        run: |
+          sudo /etc/init.d/mysql start
+          cd ${{env.DB_FOLDER}}
+          ./InstallFullDB.sh -InstallAll root root DeleteAll
+          ./InstallFullDB.sh -Backup full
+          tar -czvf "${{github.workspace}}/${{env.EXPANSION_NAME}}-all-backups.tar.gz" -C backups --exclude=".gitignore" .
+          sudo /etc/init.d/mysql stop
+
+  notify-failure:
+    name: Send Notification to Discord on Failure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: none
+    if: failure()
+
+    steps:
+      - name: Set Environmental Variables
+        run: |
+          echo "GIT_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "GIT_SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+          projectNames="${GITHUB_REPOSITORY#*/}"
+          expansion="${projectNames%-*}"
+          echo "EXPANSION_NAME=${expansion}" >> $GITHUB_ENV
+
+      - name: Notify
+        uses: rjstone/discord-webhook-notify@v1.0.4
+        with:
+          severity: error
+          description: |
+            **${{env.EXPANSION_NAME}}-db Build Failed**
+          details: |
+            - **Branch:** ${{env.GIT_BRANCH}}
+            - **Pusher:** ${{github.event.pusher.name}}
+            - **Author:** ${{github.event.head_commit.author.name}}
+            - **Commit:** [${{github.repository}}/${{env.GIT_SHORT_SHA}}](${{github.server_url}}/${{ github.repository }}/commit/${{github.sha}})
+            - **Build Log:** [actions/runs/${{github.run_id}}](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+          footer: CMaNGOS Developers Notified!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

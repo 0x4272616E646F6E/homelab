@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: build-wow-classic-n2c
+  namespace: build
+spec:
+  template:
+    spec:
+      containers:
+      - name: n2c
+        image: ghcr.io/nlewo/nix2container:2025-05-15
+        env:
+        - name: SOURCE_COMMIT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['kustomize.toolkit.fluxcd.io/revision']
+        - name: REGISTRY
+          value: registry.example.com/wow-classic
+        command:
+        - sh
+        - -c
+        - |
+          set -e
+          # Build the image derivation (defined in apps/wow-classic/flake.nix)
+          nix build --print-build-logs \
+            .#wowClassicImage \
+            -o /tmp/result
+
+          # Push it using nix2container's copyToRegistry function
+          nix run .#wowClassicImage.copyToRegistry \
+            -- \
+              --destination $REGISTRY:$SOURCE_COMMIT
+        volumeMounts:
+        - name: cache
+          mountPath: /nix
+      restartPolicy: Never
+      securityContext:
+        runAsUser: 1000
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: nix-store
