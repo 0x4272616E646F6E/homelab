@@ -1,1 +1,0 @@
-# defines mcpmsh = nix2container.buildImage

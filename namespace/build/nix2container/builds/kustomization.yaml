@@ -4,4 +4,5 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - pvc.yaml
-  - mcpmsh/build.yaml
+  - rsps/build.yaml
+  - wow-classic/build.yaml
