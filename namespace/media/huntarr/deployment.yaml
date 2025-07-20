@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: huntarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: huntarr
+  template:
+    metadata:
+      labels:
+        app: huntarr
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: huntarr
+          image: docker.io/huntarr/huntarr:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9705
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: huntarr-config

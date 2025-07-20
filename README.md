@@ -125,7 +125,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Headlamp**
 - [x] **Heimdall**
 - [x] **Home Assistant**
-- [ ] **Huntarr**
+- [x] **Huntarr**
 - [x] **Intel GPU Plugin**
 - [x] **Janitorr**
 - [x] **Jellyfin**
