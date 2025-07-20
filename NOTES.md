@@ -7,7 +7,7 @@
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
- factory.talos.dev/nocloud-installer/bfb1501d927b860336d23e650a56364e3aee2abe15505b99a5cf5d94a1f01d42:v1.10.2
+factory.talos.dev/nocloud-installer/14941b6873384400733449e4b2f1ddae0efb50be8513f6c6ee6fc9df22766377:v1.10.5
 ```
 
 ### Extensions
