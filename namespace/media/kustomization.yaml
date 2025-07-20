@@ -17,8 +17,6 @@ resources:
   - ersatztv/
   - tdarr/
   - jellyseerr/
-  - jellystat/
-  - janitorr/
   - requestrr/
   - huntarr/
   - wizarr/
