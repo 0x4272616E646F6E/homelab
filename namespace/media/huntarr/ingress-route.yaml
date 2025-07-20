@@ -15,8 +15,8 @@ spec:
         - name: authentik
           namespace: traefik
       services:
-        - name: bazarr
-          port: 6767
+        - name: huntarr
+          port: 9705
   tls: 
     secretName: oglesby-io-tls
 ---
