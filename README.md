@@ -115,11 +115,13 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
+- [ ] **Coder**
 - [x] **Egress Gateway Helper**
 - [ ] **Emissary**
 - [x] **Falco**
 - [ ] **Filebrowser**
 - [x] **Flaresolverr**
+- [x] **Gamevault**
 - [x] **Grafana**
 - [X] **Harbor**
 - [x] **Headlamp**
@@ -133,7 +135,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Kubelet CSR Approver**
 - [x] **LlamaCPP**
 - [ ] **Loki**
-- [ ] **MCPMSH**
+- [x] **Minecraft Server**
 - [x] **MindsDB**
 - [x] **Nix2Container**
 - [x] **NzbGet**
@@ -145,6 +147,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Requestrr**
 - [ ] **Renovate**
 - [x] **Rook**
+- [ ] **RSPS**
 - [x] **rTorrent**
 - [x] **Sonarr**
 - [ ] **SonarQube**
@@ -156,7 +159,8 @@ The following resources are managed through Flux in this repository:
 - [x] **Traefik**
 - [ ] **Trivy**
 - [x] **Vector**
-- [ ] **Wizarr**
+- [x] **Wizarr**
+- [ ] **WoW Classic**
 
 ## Runtimes
 

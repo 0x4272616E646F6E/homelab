@@ -23,8 +23,21 @@ spec:
         - name: gamevault
           image: docker.io/phalcode/gamevault-backend:latest
           imagePullPolicy: Always
+          environment:
+            - name: DB_HOST
+              value: postgres
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: gamevault-secrets
+                  key: POSTGRES_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gamevault-secrets
+                  key: POSTGRES_PASSWORD
           ports:
-            - containerPort: 25565
+            - containerPort: 8080
               protocol: TCP
           resources:
             requests:
@@ -36,16 +49,28 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: config
+              mountPath: /media
+              subPath: media
+            - name: config
+              mountPath: /files
+              subPath: files
         - name: postgres
           image: docker.io/postgres:17
           imagePullPolicy: Always
           env:
             - name: POSTGRES_USER
-              value: gamevault
+              valueFrom:
+                secretKeyRef:
+                  name: gamevault-secrets
+                  key: POSTGRES_USERNAME
             - name: POSTGRES_PASSWORD
-              value: gamevaultpassword
+              valueFrom:
+                secretKeyRef:
+                  name: gamevault-secrets
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
-              value: gamevaultdb
+              value: gamevault
           ports:
             - containerPort: 5432
               protocol: TCP
@@ -57,12 +82,12 @@ spec:
               cpu: "1"
               memory: "1Gi"
           volumeMounts:
-            - name: postgres
+            - name: db
               mountPath: /var/lib/postgresql/data
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: gamevault-config
-        - name: postgres
+        - name: db
           persistentVolumeClaim:
-            claimName: gamevault-postgres
+            claimName: gamevault-db

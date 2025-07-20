@@ -3,8 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - namespace.yaml
-  - gamevault/
-  - minecraft/
-  # - rsps/
-  # - wow-classic/
+  - secrets.enc.yaml 
+  - configmap.yaml
+  - helmrelease.yaml
+  - ingress-route.yaml
