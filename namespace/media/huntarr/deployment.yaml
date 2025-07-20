@@ -23,6 +23,9 @@ spec:
         - name: huntarr
           image: docker.io/huntarr/huntarr:latest
           imagePullPolicy: Always
+          env:
+            - name: HUNTARR_PORT
+              value: "9705"
           ports:
             - containerPort: 9705
               protocol: TCP
