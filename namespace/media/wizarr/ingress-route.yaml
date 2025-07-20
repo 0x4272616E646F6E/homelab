@@ -12,8 +12,8 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: traefik
-        # - name: authentik
-        #   namespace: traefik
+        - name: authentik
+          namespace: traefik
       services:
         - name: wizarr
           port: 5690
