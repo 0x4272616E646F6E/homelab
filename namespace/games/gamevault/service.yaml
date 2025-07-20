@@ -12,3 +12,16 @@ spec:
       protocol: TCP
       name: gamevault
   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gamevault-postgres
+  namespace: games
+spec:
+  selector:
+    app: gamevault-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
