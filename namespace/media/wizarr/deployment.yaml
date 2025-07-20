@@ -33,7 +33,7 @@ spec:
               memory: "1Gi"
           volumeMounts:
             - name: config
-              mountPath: /data
+              mountPath: /data/database
       volumes:
         - name: config
           persistentVolumeClaim:
