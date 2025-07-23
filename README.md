@@ -1,4 +1,4 @@
-# Flux
+# Homelab
 
 This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to your Kubernetes cluster.
 
