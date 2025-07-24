@@ -1,3 +1,0 @@
-// 879
-[clientscript,boardgames_rank_runelink](component $component0)
-if_settext("Rank: <tostring(%var353)>", $component0);

@@ -1,3 +1,0 @@
-// 1496
-[clientscript,agilityarena_rewards_setgracefulbutton](component $component0, component $component1)
-~agilityarena_rewards_setgracefulbutton($component0, $component1);

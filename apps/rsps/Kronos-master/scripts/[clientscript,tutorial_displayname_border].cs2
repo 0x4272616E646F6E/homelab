@@ -1,3 +1,0 @@
-// 2572
-[clientscript,tutorial_displayname_border](component $component0, string $string0)
-~steelborder($component0, $string0, 1);

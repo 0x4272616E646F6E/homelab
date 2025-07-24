@@ -1,3 +1,0 @@
-// 2473
-[clientscript,model_transparent_init](component $component0)
-if_setmodeltransparent(true, $component0);

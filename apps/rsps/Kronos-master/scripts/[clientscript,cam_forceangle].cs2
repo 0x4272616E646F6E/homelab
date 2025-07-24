@@ -1,3 +1,0 @@
-// 143
-[clientscript,cam_forceangle](int $int0, int $int1)
-cam_forceangle($int0, $int1);

@@ -1,3 +1,0 @@
-// 2057
-[clientscript,skillmulti_quantitybutton_draw](boolean $boolean0, string $string0, component $component1)
-~skillmulti_quantitybutton_draw($boolean0, $string0, $component1);

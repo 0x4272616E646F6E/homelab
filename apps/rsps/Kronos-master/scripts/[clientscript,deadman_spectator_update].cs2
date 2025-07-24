@@ -1,4 +1,0 @@
-// 2071
-[clientscript,deadman_spectator_update](int $int0)
-~deadman_spectator_names($int0);
-~deadman_spectator_chat($int0);

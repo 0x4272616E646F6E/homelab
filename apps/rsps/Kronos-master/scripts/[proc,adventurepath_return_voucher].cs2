@@ -1,6 +1,0 @@
-// 2966
-[proc,adventurepath_return_voucher](int $int0)(int)
-if ($int0 < 32) {
-	return(testbit(%var2371, $int0));
-}
-return(^false);

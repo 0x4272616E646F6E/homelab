@@ -1,3 +1,0 @@
-// 2565
-[clientscript,membership_benefits_close_benefit]
-if_sethide(true, interface_275:14);

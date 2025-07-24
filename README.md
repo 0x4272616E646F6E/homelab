@@ -97,13 +97,6 @@ Below is a description of the hardware this cluster runs on. This information ma
 - GPU: [Sparkle Intel Arc 310 Eco](https://www.sparkle.com.tw/en/products/view/f22F9bC73c50)
 - TPU: [Google Coral TPU M.2](https://coral.ai/products/m2-accelerator-bm)
 
-## Applications
-
-The following application code is made available for build and deployment into the cluster:
-
-- [x] **RSPS**
-- [x] **WoW Classic**
-
 ## Resources Managed
 
 The following resources are managed through Flux in this repository:

@@ -1,3 +1,0 @@
-// 3126
-[clientscript,poh_board_validate_name](string $string0)
-resume_namedialog($string0);

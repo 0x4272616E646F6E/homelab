@@ -1,3 +1,0 @@
-// 1241
-[clientscript,forget_yellow_counter](component $component0)
-if_settext("x <tostring(%varbit861)>", $component0);

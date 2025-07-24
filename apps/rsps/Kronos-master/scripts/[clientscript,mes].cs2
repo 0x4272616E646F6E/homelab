@@ -1,3 +1,0 @@
-// 860
-[clientscript,mes](string $string0)
-mes($string0);

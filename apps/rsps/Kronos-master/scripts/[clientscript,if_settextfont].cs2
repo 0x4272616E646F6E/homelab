@@ -1,3 +1,0 @@
-// 135
-[clientscript,if_settextfont](component $component0, fontmetrics $fontmetrics1)
-if_settextfont($fontmetrics1, $component0);

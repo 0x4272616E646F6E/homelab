@@ -1,3 +1,0 @@
-// 917
-[clientscript,toplevel_mainmodal_background](int $colour0, int $int1)
-~toplevel_mainmodal_background($colour0, $int1);

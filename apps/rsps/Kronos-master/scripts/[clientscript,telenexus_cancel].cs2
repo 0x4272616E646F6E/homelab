@@ -1,3 +1,0 @@
-// 2661
-[clientscript,telenexus_cancel](component $component0)
-if_sethide(true, $component0);

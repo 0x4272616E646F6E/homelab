@@ -1,3 +1,0 @@
-// 878
-[clientscript,boardgames_rank_draughts](component $component0)
-if_settext("Rank: <tostring(%var354)>", $component0);

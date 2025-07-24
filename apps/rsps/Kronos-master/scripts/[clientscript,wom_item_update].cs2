@@ -1,3 +1,0 @@
-// 17
-[clientscript,wom_item_update](component $component0, component $component1)
-~wom_build_item_list($component0, $component1);

@@ -1,3 +1,0 @@
-// 339
-[clientscript,godwars_killcount_saradomin](component $component0)
-~godwars_killcount($component0, %varbit3972);

@@ -1,3 +1,0 @@
-// 2880
-[proc,clanwars_setup_smallbox_updatetext](enum $enum0)
-cc_settext(enum(int, string, $enum0, ~script572($enum0)));

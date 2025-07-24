@@ -1,3 +1,0 @@
-// 2397
-[clientscript,recurring_membership](int $int0)
-~recurring_membership($int0);

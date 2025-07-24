@@ -1,3 +1,0 @@
-// 700
-[clientscript,emote_update](component $component0)
-~emote_update($component0);

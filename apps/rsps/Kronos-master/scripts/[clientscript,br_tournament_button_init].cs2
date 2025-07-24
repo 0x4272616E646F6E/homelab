@@ -1,3 +1,0 @@
-// 3078
-[clientscript,br_tournament_button_init](component $component0, string $string0)
-~br_tournament_button_reset($component0, $string0);

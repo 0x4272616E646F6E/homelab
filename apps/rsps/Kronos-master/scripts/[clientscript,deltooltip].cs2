@@ -1,3 +1,0 @@
-// 40
-[clientscript,deltooltip](component $component0)
-~deltooltip_action($component0);

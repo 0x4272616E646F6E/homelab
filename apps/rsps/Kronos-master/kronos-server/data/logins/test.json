@@ -1,9 +1,0 @@
-{
-  "allowed_groups": [
-    "ADMINISTRATOR",
-    "DEVELOPER"
-  ],
-  "allowed_names": [
-  ],
-  "deny_response": "UPDATING"
-}

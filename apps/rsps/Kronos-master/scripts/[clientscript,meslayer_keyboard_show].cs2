@@ -1,5 +1,0 @@
-// 2727
-[clientscript,meslayer_keyboard_show]
-if (~on_mobile = true) {
-	~keyboard_show_string(%varcint215, %varcint216, %varcstring359);
-}

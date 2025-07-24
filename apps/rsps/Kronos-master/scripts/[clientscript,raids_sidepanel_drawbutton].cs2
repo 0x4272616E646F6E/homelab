@@ -1,3 +1,0 @@
-// 1541
-[clientscript,raids_sidepanel_drawbutton](boolean $boolean0, string $string0, component $component1)
-~raids_sidepanel_drawbutton($boolean0, $string0, $component1);

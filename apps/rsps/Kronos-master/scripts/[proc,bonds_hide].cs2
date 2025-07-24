@@ -1,6 +1,0 @@
-// 3325
-[proc,bonds_hide]()(int)
-if (((clienttype = ^clienttype_ios) | (clienttype = ^clienttype_android)) & (%varbit10247 = 1)) {
-	return(1);
-}
-return(0);

@@ -1,3 +1,0 @@
-// 45
-[clientscript,text_colour_swapper](component $component0, int $colour1)
-if_setcolour($colour1, $component0);

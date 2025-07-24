@@ -1,3 +1,0 @@
-// 3194
-[clientscript,league_relic_not_available]
-mes("You have already chosen a relic within this selection, and may not select another.");

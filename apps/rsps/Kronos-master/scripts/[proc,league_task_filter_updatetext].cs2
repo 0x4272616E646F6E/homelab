@@ -1,3 +1,0 @@
-// 3209
-[proc,league_task_filter_updatetext](enum $enum0)
-cc_settext(enum(int, string, $enum0, ~script3210($enum0)));

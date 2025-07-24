@@ -1,4 +1,0 @@
-// 710
-[clientscript,deadman_spectator_map_close]
-setshowloadingmessages(true);
-worldmap_disableelements(true);
