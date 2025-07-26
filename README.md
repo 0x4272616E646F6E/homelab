@@ -8,7 +8,6 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 - [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
-- [Applications](#applications)
 - [Resources Managed](#resources-managed)
 - [Runtimes](#runtimes)
 

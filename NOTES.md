@@ -29,7 +29,7 @@ customization:
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
-- **Version**: The version `v1.10.2` corresponds to a specific release of Talos. Ensure that all nodes in your cluster are using the same version to avoid compatibility issues.
+- **Version**: The version `v1.10.5` corresponds to a specific release of Talos. Ensure that all nodes in your cluster are using the same version to avoid compatibility issues.
 
 You can use this image to PXE boot or manually install Talos on your nodes.
 
