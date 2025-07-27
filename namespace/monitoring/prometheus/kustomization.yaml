@@ -3,6 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
+  - pvc.yaml
   - configmap.yaml
   - helmrelease.yaml
   - ingress-route.yaml

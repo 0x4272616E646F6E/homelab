@@ -14,7 +14,7 @@ spec:
           namespace: traefik
       services:
         - name: prometheus-server
-          port: 9090
+          port: 80
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -36,4 +36,4 @@ spec:
         namespace: traefik
       services:
         - name: prometheus-server
-          port: 9090
+          port: 80
