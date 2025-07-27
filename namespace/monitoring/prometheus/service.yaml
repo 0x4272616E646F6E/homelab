@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus-ui
+  name: prometheus-server
   namespace: monitoring
 spec:
   selector:
@@ -10,5 +10,5 @@ spec:
     - port: 9090
       targetPort: 9090
       protocol: TCP
-      name: prometheus-ui
+      name: prometheus-server
   type: ClusterIP

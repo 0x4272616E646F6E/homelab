@@ -13,7 +13,7 @@ spec:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: prometheus-ui
+        - name: prometheus-server
           port: 9090
   tls: 
     secretName: oglesby-io-tls
@@ -35,5 +35,5 @@ spec:
       - name: redirect-https
         namespace: traefik
       services:
-        - name: prometheus-ui
+        - name: prometheus-server
           port: 9090
