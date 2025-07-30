@@ -147,7 +147,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Tdarr**
 - [x] **Tempo**
 - [x] **Traefik**
-- [ ] **Trivy**
 - [x] **Vector**
 - [x] **Wizarr**
 - [ ] **WoW Classic**

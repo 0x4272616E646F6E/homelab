@@ -17,6 +17,7 @@ spec:
       containers:
         - name: egress-gw-helper
           image: alpine:edge
+          imagePullPolicy: Always
           securityContext:
             privileged: true
           command:

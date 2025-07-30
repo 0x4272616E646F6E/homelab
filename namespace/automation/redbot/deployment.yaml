@@ -17,6 +17,7 @@ spec:
       containers:
         - name: redbot
           image: docker.io/phasecorex/red-discordbot:core
+          imagePullPolicy: Always
           resources:
             requests:
               cpu: "100m"

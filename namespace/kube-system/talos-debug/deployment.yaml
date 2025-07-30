@@ -10,6 +10,7 @@ spec:
   containers:
   - name: talos-debug
     image: alpine:edge
+    imagePullPolicy: Always
     command: ["sh", "-c", "echo 'host debug pod ready'; sleep 36000"]
     securityContext:
       privileged: true

@@ -21,6 +21,7 @@ spec:
         initContainers:
         - name: init-config
           image: busybox:1.36
+          imagePullPolicy: Always
           command:
             - sh
             - -c
@@ -44,6 +45,7 @@ spec:
       containers:
         - name: filebrowser
           image: docker.io/filebrowser/filebrowser:s6
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
               protocol: TCP

@@ -16,6 +16,7 @@ spec:
       initContainers:
         - name: model-downloader
           image: alpine:latest
+          imagePullPolicy: Always
           command:
           - sh
           - -c
@@ -34,6 +35,7 @@ spec:
       containers:
         - name: llama-cpp
           image: ghcr.io/ggml-org/llama.cpp:server-intel
+          imagePullPolicy: Always
           args:
           - "-m"
           - "/models/jan-nano-128k.gguf"
