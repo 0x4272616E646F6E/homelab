@@ -25,7 +25,7 @@ spec:
             echo "Checking if model exists..." && \
             if [ ! -f /models/lucy-128k.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/lucy-128k.gguf "https://huggingface.co/Menlo/Lucy-128k-gguf/resolve/main/lucy_128k-Q4_K_M.gguf?download=true"
+              curl -L -o /models/lucy-128k.gguf "https://huggingface.co/Menlo/Lucy-128k-gguf/resolve/main/lucy_128k-Q8_0.gguf?download=true"
             else
               echo "Model already exists, skipping download."
             fi
