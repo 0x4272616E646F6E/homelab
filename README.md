@@ -127,7 +127,6 @@ The following resources are managed through Flux in this repository:
 - [x] **LlamaCPP**
 - [x] **Loki**
 - [x] **Minecraft Server**
-- [x] **MindsDB**
 - [x] **Nix2Container**
 - [x] **NzbGet**
 - [x] **Prometheus**

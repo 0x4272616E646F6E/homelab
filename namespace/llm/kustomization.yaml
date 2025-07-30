@@ -5,5 +5,3 @@ commonLabels:
 resources:
   - namespace.yaml
   - llama-cpp/
-  - mindsdb/
-  # - mcpm-sh/

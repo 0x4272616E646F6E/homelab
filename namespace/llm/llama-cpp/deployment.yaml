@@ -44,9 +44,16 @@ spec:
           - "--ctx-size"
           - "4096"
           - "--batch-size"
-          - "256"
+          - "128"
           - "--n-gpu-layers"
-          - "34"
+          - "28"
+          - "--low-vram"
+          - "--rope-scaling"
+          - "yarn"
+          - "--rope-scale"
+          - "3.2"
+          - "--yarn-orig-ctx"
+          - "40960"
           ports:
             - containerPort: 3000
               protocol: TCP
