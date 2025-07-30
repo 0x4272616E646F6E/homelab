@@ -9,7 +9,7 @@ resources:
   # - trivy/
   - vector/
   - prometheus/
-  # - loki/
+  - loki/
   # - tempo/
   - grafana/
   - headlamp/
