@@ -23,9 +23,9 @@ spec:
           - |
             apk add --no-cache curl && \
             echo "Checking if model exists..." && \
-            if [ ! -f /models/jan-nano-128k.gguf ]; then
+            if [ ! -f /models/lucy-128k.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/jan-nano-128k.gguf "https://huggingface.co/Menlo/Jan-nano-128k-gguf/resolve/main/jan-nano-128k-Q4_K_M.gguf?download=true"
+              curl -L -o /models/lucy-128k.gguf "https://huggingface.co/Menlo/Lucy-128k-gguf/resolve/main/lucy_128k-Q4_K_M.gguf?download=true"
             else
               echo "Model already exists, skipping download."
             fi
@@ -38,7 +38,7 @@ spec:
           imagePullPolicy: Always
           args:
           - "-m"
-          - "/models/jan-nano-128k.gguf"
+          - "/models/lucy-128k.gguf"
           - "--port"
           - "3000"
           - "--host"
@@ -46,9 +46,9 @@ spec:
           - "--ctx-size"
           - "4096"
           - "--batch-size"
-          - "128"
+          - "512"
           - "--n-gpu-layers"
-          - "28"
+          - "99"
           - "--rope-scaling"
           - "yarn"
           - "--rope-scale"
@@ -58,7 +58,7 @@ spec:
           - "--temp"
           - "0.7"
           - "--top-p"
-          - "0.8"
+          - "0.9"
           - "--top-k"
           - "20"
           - "--min-p"
