@@ -49,7 +49,6 @@ spec:
           - "128"
           - "--n-gpu-layers"
           - "28"
-          - "--low-vram"
           - "--rope-scaling"
           - "yarn"
           - "--rope-scale"
