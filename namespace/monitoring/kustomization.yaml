@@ -5,11 +5,8 @@ commonLabels:
 resources:
   - namespace.yaml
   - falco/
-  # - kyverno/
-  # - trivy/
   - vector/
   - prometheus/
   - loki/
-  # - tempo/
+  - tempo/
   - grafana/
-  - headlamp/

@@ -123,10 +123,9 @@ The following resources are managed through Flux in this repository:
 - [x] **Intel GPU Plugin**
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
-- [ ] **Kyverno**
 - [x] **Kubelet CSR Approver**
 - [x] **LlamaCPP**
-- [ ] **Loki**
+- [x] **Loki**
 - [x] **Minecraft Server**
 - [x] **MindsDB**
 - [x] **Nix2Container**
@@ -147,7 +146,7 @@ The following resources are managed through Flux in this repository:
 - [ ] **Syncthing**
 - [x] **Talos Debug**
 - [x] **Tdarr**
-- [ ] **Tempo**
+- [x] **Tempo**
 - [x] **Traefik**
 - [ ] **Trivy**
 - [x] **Vector**

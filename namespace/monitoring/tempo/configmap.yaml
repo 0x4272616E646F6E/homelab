@@ -47,31 +47,31 @@ data:
       #    cpu: 2000m
       #    memory: 6Gi
 
-      memBallastSizeMbs: 1024
+      memBallastSizeMbs: 512
       multitenancyEnabled: false
       # -- If true, Tempo will report anonymous usage data about the shape of a deployment to Grafana Labs
-      reportingEnabled: true
+      reportingEnabled: false
       metricsGenerator:
         # -- If true, enables Tempo's metrics generator (https://grafana.com/docs/tempo/next/metrics-generator/)
-        enabled: false
+        enabled: true
         remoteWriteUrl: "http://prometheus.monitoring:9090/api/v1/write"
       # -- Configuration options for the ingester.
       # Refers to: https://grafana.com/docs/tempo/latest/configuration/#ingester
-      ingester: {}
+      ingester:
       #  flush_check_period: 10s
       #  trace_idle_period: 10s
-      #  max_block_duration: 30m
-      #  complete_block_timeout: 1h
+        max_block_duration: 30m
+        complete_block_timeout: 1h
       # -- Configuration options for the querier.
       # Refers to: https://grafana.com/docs/tempo/latest/configuration/#querier
-      querier: {}
-      #  max_concurrent_queries: 20
+      querier:
+        max_concurrent_queries: 10
       # -- Configuration options for the query-fronted.
       # Refers to: https://grafana.com/docs/tempo/latest/configuration/#query-frontend
       queryFrontend: {}
       #  search:
       #    concurrent_jobs: 2000
-      retention: 24h
+      retention: 168h
       # -- The standard overrides configuration section. This can include a `defaults` object for applying to all tenants (not to be confused with the `global` property of the same name, which overrides `max_byte_per_trace` for all tenants). For an example on how to enable the metrics generator using the `overrides` object, see the 'Activate metrics generator' section below. Refer to [Standard overrides](https://grafana.com/docs/tempo/latest/configuration/#standard-overrides) for more details.
       overrides:
         # -- Default config values for all tenants, can be overridden by per-tenant overrides. If a tenant's specific overrides are not found in the `per_tenant_overrides` block, the values in this `default` block will be used. Configs inside this block should follow the new overrides indentation format
@@ -221,7 +221,7 @@ data:
       #   - myRegistryKeySecretName
 
       # -- if False the tempo-query container is not deployed
-      enabled: false
+      enabled: true
 
       service:
         port: 16686
@@ -323,17 +323,18 @@ data:
       targetPort: ""
 
     serviceMonitor:
-      enabled: false
-      interval: ""
-      additionalLabels: {}
+      enabled: true
+      interval: 30s
+      additionalLabels:
+        release: prometheus
       annotations: {}
       # scrapeTimeout: 10s
 
     persistence:
-      enabled: false
+      enabled: true
         # -- Enable StatefulSetAutoDeletePVC feature
       enableStatefulSetAutoDeletePVC: false
-      # storageClassName: local-path
+      storageClassName: rook-ceph-block
       accessModes:
         - ReadWriteOnce
       size: 10Gi
