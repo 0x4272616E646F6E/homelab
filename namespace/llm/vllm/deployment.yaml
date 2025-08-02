@@ -36,7 +36,7 @@ spec:
         - name: vllm
           image: docker.io/intel/vllm:latest
           imagePullPolicy: Always
-          command: ["python", "-m", "vllm.entrypoints.openai.api_server"]
+          command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
           args:
           - "--model"
           - "/models/qwen3-0.6b.gguf"
