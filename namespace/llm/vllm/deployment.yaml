@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm
+  namespace: llm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm
+  template:
+    metadata:
+      labels:
+        app: vllm
+    spec:
+      initContainers:
+        - name: model-downloader
+          image: alpine:latest
+          imagePullPolicy: Always
+          command:
+          - sh
+          - -c
+          - |
+            apk add --no-cache curl && \
+            echo "Checking if model exists..." && \
+            if [ ! -f /models/qwen3-0.6b.gguf ]; then
+              echo "Downloading model..."
+              curl -L -o /models/qwen3-0.6b.gguf "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf?download=true"
+            else
+              echo "Model already exists, skipping download."
+            fi
+          volumeMounts:
+            - name: models
+              mountPath: /models
+      containers:
+        - name: vllm
+          image: docker.io/intel/vllm:latest
+          imagePullPolicy: Always
+          command: ["python", "-m", "vllm.entrypoints.openai.api_server"]
+          args:
+          - "--model"
+          - "/models/qwen3-0.6b.gguf"
+          - "--port"
+          - "3000"
+          - "--host"
+          - "0.0.0.0"
+          - "--max-model-len"
+          - "4096"
+          - "--max-batch-size"
+          - "512"
+          - "--gpu-memory-utilization"
+          - "0.9"
+          - "--rope-scaling-type"
+          - "yarn"
+          - "--rope-scale"
+          - "3.2"
+          - "--base-model-max-context-length"
+          - "40960"
+          - "--temperature"
+          - "0.6"
+          - "--top-p"
+          - "0.95"
+          - "--top-k"
+          - "20"
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+          - name: SYCL_DEVICE_FILTER
+            value: "level_zero:gpu"
+          - name: ZES_ENABLE_SYSMAN
+            value: "1"
+          volumeMounts:
+            - name: models
+              mountPath: /models
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              gpu.intel.com/i915: "1"
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: vllm-models
