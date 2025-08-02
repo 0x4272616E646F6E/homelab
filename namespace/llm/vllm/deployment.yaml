@@ -15,7 +15,7 @@ spec:
     spec:
       initContainers:
         - name: model-downloader
-          image: alpine:latest
+          image: alpine:edge
           imagePullPolicy: Always
           command:
           - sh
@@ -65,23 +65,10 @@ spec:
           ports:
             - containerPort: 3000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 30
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 3000
-            initialDelaySeconds: 5
-            periodSeconds: 10
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
             runAsGroup: 1000
-            readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
             seccompProfile:
               type: RuntimeDefault
