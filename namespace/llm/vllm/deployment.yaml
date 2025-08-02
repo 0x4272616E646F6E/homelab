@@ -21,11 +21,17 @@ spec:
           - sh
           - -c
           - |
-            apk add --no-cache curl && \
-            echo "Checking if model exists..." && \
+            set -e
+            apk add --no-cache curl ca-certificates
+            echo "Checking if model exists..."
             if [ ! -f /models/qwen3-0.6b.gguf ]; then
               echo "Downloading model..."
-              curl -L -o /models/qwen3-0.6b.gguf "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf?download=true"
+              for i in 1 2 3; do
+                curl -fL --retry 3 --retry-all-errors -o /models/qwen3-0.6b.gguf \
+                  "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf?download=true" && break
+                echo "Retry $i failed, retrying in 5s..."; sleep 5
+              done
+              [ -s /models/qwen3-0.6b.gguf ] || { echo "Download failed"; exit 1; }
             else
               echo "Model already exists, skipping download."
             fi
@@ -35,15 +41,19 @@ spec:
       containers:
         - name: vllm
           image: docker.io/intel/vllm:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
           args:
           - "--model"
           - "/models/qwen3-0.6b.gguf"
-          - "--port"
-          - "3000"
+          - "--load-format"
+          - "gguf"
+          - "--device"
+          - "xpu"
           - "--host"
           - "0.0.0.0"
+          - "--port"
+          - "3000"
           - "--max-model-len"
           - "4096"
           - "--max-num-batched-tokens"
@@ -51,12 +61,30 @@ spec:
           - "--gpu-memory-utilization"
           - "0.9"
           - "--rope-scaling"
-          - "yarn"
-          - "--rope-theta"
-          - "40960"
+          - "type=yarn,factor=3.2"
           ports:
             - containerPort: 3000
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
           env:
           - name: SYCL_DEVICE_FILTER
             value: "level_zero:gpu"
@@ -76,4 +104,4 @@ spec:
       volumes:
         - name: models
           persistentVolumeClaim:
-            claimName: vllm-models
+            claimName: vllm
