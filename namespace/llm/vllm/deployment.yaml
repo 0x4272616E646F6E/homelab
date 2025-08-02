@@ -61,7 +61,7 @@ spec:
           - "--gpu-memory-utilization"
           - "0.9"
           - "--rope-scaling"
-          - "type=yarn,factor=3.2"
+          - '{"type":"yarn","factor":3.2}'
           ports:
             - containerPort: 3000
               protocol: TCP
