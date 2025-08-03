@@ -17,8 +17,9 @@ spec:
         - name: vllm
           image: docker.io/intel/vllm:latest
           imagePullPolicy: IfNotPresent
-          command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
+          command: ["vllm"]
           args:
+          - "serve"
           - "--model"
           - "unsloth/Qwen3-0.6B"
           - "--host"
@@ -28,10 +29,10 @@ spec:
           - "--enable-auto-tool-choice"
           - "--tool-call-parser"
           - "hermes"
-          - "--rope-scaling"
-          - '{"rope_type":"yarn","factor":3.2,"original_max_position_embeddings":40960}'
+          # - "--rope-scaling"
+          # - '{"rope_type":"yarn","factor":3.2,"original_max_position_embeddings":40960}'
           - "--max-model-len"
-          - "131072"
+          - "8192"
           - "--gpu-memory-utilization"
           - "0.9"
           - "--enable-reasoning"
