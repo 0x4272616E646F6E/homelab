@@ -57,6 +57,8 @@ spec:
           volumeMounts:
             - name: models
               mountPath: /models
+            - name: tmp
+              mountPath: /tmp
           resources:
             requests:
               cpu: "2"
@@ -69,3 +71,5 @@ spec:
         - name: models
           persistentVolumeClaim:
             claimName: vllm-models
+        - name: tmp
+          emptyDir: {}
