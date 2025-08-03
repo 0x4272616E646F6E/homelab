@@ -43,6 +43,8 @@ spec:
           - "8080"
           - "--host"
           - "0.0.0.0"
+          - "--allow-origin"
+          - "*"
           - "--ctx-size"
           - "4096"
           - "--batch-size"
