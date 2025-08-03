@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm
+  name: vllm-engine
   namespace: llm
 spec:
   selector:
-    app: vllm
+    app: vllm-engine
   ports:
     - port: 8000
       targetPort: 8000
