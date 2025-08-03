@@ -21,8 +21,6 @@ spec:
           args:
           - "--model"
           - "Menlo/Lucy-128k"
-          - "--device"
-          - "xpu"
           - "--host"
           - "0.0.0.0"
           - "--port"
