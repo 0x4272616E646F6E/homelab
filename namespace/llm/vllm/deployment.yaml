@@ -40,6 +40,8 @@ spec:
               value: "INFO"
             - name: VLLM_GPU_MEMORY_UTILIZATION
               value: "0.90"
+            - name: IPEX_FMHA_USE_SDP
+              value: "0"
           ports:
             - containerPort: 8000
               protocol: TCP
