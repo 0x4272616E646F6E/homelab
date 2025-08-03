@@ -21,8 +21,6 @@ spec:
           args:
           - "--model"
           - "Qwen/Qwen3-0.6B"
-          - "--device"
-          - "xpu"
           - "--host"
           - "0.0.0.0"
           - "--port"
@@ -34,7 +32,7 @@ spec:
           - "--gpu-memory-utilization"
           - "0.9"
           - "--rope-scaling"
-          - '{"type":"yarn","factor":3.2}'
+          - '{"rope_type":"yarn","factor":3.2}'
           ports:
             - containerPort: 3000
               protocol: TCP
