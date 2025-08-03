@@ -5,5 +5,4 @@ commonLabels:
 resources:
   - namespace.yaml
   - llama-cpp/
-  - vllm/
   - openwebui/
