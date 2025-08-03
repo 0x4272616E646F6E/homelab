@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: openwebui
-          image: ghcr.io/ggml-org/llama.cpp:server-intel
+          image: ghcr.io/open-webui/open-webui:main
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
