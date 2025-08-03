@@ -13,31 +13,6 @@ spec:
       labels:
         app: vllm
     spec:
-      initContainers:
-        - name: model-downloader
-          image: alpine:edge
-          imagePullPolicy: Always
-          command:
-          - sh
-          - -c
-          - |
-            set -e
-            apk add --no-cache curl ca-certificates
-            echo "Checking if model exists..."
-            if [ ! -f /models/qwen3-0.6b.gguf ]; then
-              echo "Downloading model..."
-              for i in 1 2 3; do
-                curl -fL --retry 3 --retry-all-errors -o /models/qwen3-0.6b.gguf \
-                  "https://huggingface.co/unsloth/Qwen3-0.6B-GGUF/resolve/main/Qwen3-0.6B-Q4_K_M.gguf?download=true" && break
-                echo "Retry $i failed, retrying in 5s..."; sleep 5
-              done
-              [ -s /models/qwen3-0.6b.gguf ] || { echo "Download failed"; exit 1; }
-            else
-              echo "Model already exists, skipping download."
-            fi
-          volumeMounts:
-            - name: models
-              mountPath: /models
       containers:
         - name: vllm
           image: docker.io/intel/vllm:latest
@@ -45,9 +20,7 @@ spec:
           command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
           args:
           - "--model"
-          - "/models/qwen3-0.6b.gguf"
-          - "--load-format"
-          - "gguf"
+          - "Qwen/Qwen3-0.6B"
           - "--device"
           - "xpu"
           - "--host"
