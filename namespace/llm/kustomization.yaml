@@ -5,4 +5,4 @@ commonLabels:
 resources:
   - namespace.yaml
   - llama-cpp/
-  - vllm/
+  # - vllm/
