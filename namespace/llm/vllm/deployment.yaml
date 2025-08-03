@@ -22,6 +22,8 @@ spec:
             - "unsloth/Qwen3-0.6B"
             - "--device"
             - "xpu"
+            - "--dtype"
+            - "half"
             - "--enable-auto-tool-choice"
             - "--tool-call-parser"
             - "hermes"
