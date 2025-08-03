@@ -42,6 +42,8 @@ spec:
               value: "0.90"
             - name: IPEX_FMHA_USE_SDP
               value: "0"
+            - name: VLLM_USE_IO_BOUND
+              value: "1"
           ports:
             - containerPort: 8000
               protocol: TCP
