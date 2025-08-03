@@ -24,7 +24,7 @@ spec:
           - "--host"
           - "0.0.0.0"
           - "--port"
-          - "3000"
+          - "8000"
           - "--enable-auto-tool-choice"
           - "--tool-call-parser"
           - "hermes"
@@ -35,7 +35,7 @@ spec:
           - "--gpu-memory-utilization"
           - "0.9"
           ports:
-            - containerPort: 3000
+            - containerPort: 8000
               protocol: TCP
           securityContext:
             runAsNonRoot: true

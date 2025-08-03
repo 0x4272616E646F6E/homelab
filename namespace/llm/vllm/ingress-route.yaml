@@ -14,7 +14,7 @@ spec:
           namespace: traefik
       services:
         - name: vllm
-          port: 3000
+          port: 8000
   tls:
     secretName: oglesby-io-tls
 ---
@@ -36,4 +36,4 @@ spec:
           namespace: traefik
       services:
         - name: vllm
-          port: 3000
+          port: 8000
