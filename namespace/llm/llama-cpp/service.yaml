@@ -7,7 +7,7 @@ spec:
   selector:
     app: llama-cpp
   ports:
-    - port: 3000
-      targetPort: 3000
+    - port: 8080
+      targetPort: 8080
       protocol: TCP
   type: ClusterIP

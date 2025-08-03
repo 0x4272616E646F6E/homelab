@@ -40,7 +40,7 @@ spec:
           - "-m"
           - "/models/lucy-128k.gguf"
           - "--port"
-          - "3000"
+          - "8080"
           - "--host"
           - "0.0.0.0"
           - "--ctx-size"
@@ -64,7 +64,7 @@ spec:
           - "--min-p"
           - "0.0"
           ports:
-            - containerPort: 3000
+            - containerPort: 8080
               protocol: TCP
           env:
           - name: SYCL_DEVICE_FILTER

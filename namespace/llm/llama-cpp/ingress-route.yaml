@@ -14,7 +14,7 @@ spec:
           namespace: traefik
       services:
         - name: llama-cpp
-          port: 3000
+          port: 8080
   tls:
     secretName: oglesby-io-tls
 ---
@@ -36,4 +36,4 @@ spec:
           namespace: traefik
       services:
         - name: llama-cpp
-          port: 3000
+          port: 8080
