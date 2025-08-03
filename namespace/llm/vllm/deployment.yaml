@@ -20,7 +20,7 @@ spec:
           command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
           args:
           - "--model"
-          - "Qwen/Qwen3-0.6B"
+          - "Menlo/Lucy-128k"
           - "--device"
           - "xpu"
           - "--host"
