@@ -52,6 +52,8 @@ spec:
             value: "level_zero:gpu"
           - name: ZES_ENABLE_SYSMAN
             value: "1"
+          - name: VLLM_PORT
+            value: "8000"
           volumeMounts:
             - name: models
               mountPath: /models
