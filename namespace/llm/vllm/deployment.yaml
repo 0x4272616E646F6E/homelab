@@ -25,7 +25,7 @@ spec:
             - "--dtype"
             - "half"
             - "--max-model-len"
-            - "8192"
+            - "4096"
             - "--enable-auto-tool-choice"
             - "--tool-call-parser"
             - "hermes"
