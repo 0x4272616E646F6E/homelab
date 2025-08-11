@@ -88,7 +88,10 @@ machine:
     - name: dm_mod
     - name: drm
     - name: gasket
-    - name: i915
+    - name: nvidia
+    - name: nvidia_uvm
+    - name: nvidia_drm
+    - name: nvidia_modeset
     - name: nfs
     - name: tun
     - name: uio_pci_generic
@@ -96,6 +99,8 @@ machine:
 
   sysctls:
     fs.inotify.max_user_instances: "8192"
+    kernel.unprivileged_userns_clone: "1" 
+    net.core.bpf_jit_harden: "1"
     net.core.rmem_max: "2500000"
     net.core.somaxconn: "65535"
     net.core.wmem_max: "16777216" 
@@ -115,6 +120,7 @@ machine:
     net.ipv4.tcp_rmem: "4096 87380 16777216"
     net.ipv4.tcp_tw_reuse: "1"
     net.ipv4.tcp_wmem: "4096 65536 16777216"
+    user.max_user_namespaces: "15000"
     vm.nr_hugepages: "1024"
 
   time:

@@ -3,11 +3,11 @@ customization:
         officialExtensions:
             - siderolabs/fuse3
             - siderolabs/gasket-driver
-            - siderolabs/i915
             - siderolabs/intel-ice-firmware
             - siderolabs/intel-ucode
-            - siderolabs/kata-containers
             - siderolabs/mei
+            - siderolabs/nonfree-kmod-nvidia-production
+            - siderolabs/nvidia-container-toolkit-production
             - siderolabs/qemu-guest-agent
             - siderolabs/util-linux-tools
             - siderolabs/youki

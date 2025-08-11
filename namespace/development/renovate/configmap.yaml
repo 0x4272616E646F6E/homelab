@@ -108,8 +108,9 @@ data:
       config: |
         {
           "platform": "github",
-          "repositories": ["your-org/your-repo"],
-          "logLevel": "info"
+          "autodiscover": true,
+          "logLevel": "info",
+          "onboarding": false
         }
 
       # -- Use the Helm tpl function on your configuration. See README for how to use this value
@@ -160,7 +161,7 @@ data:
     # -- Environment variables that should be referenced from a k8s secret, cannot be used when existingSecret is set
     secrets: {}
     # -- k8s secret to reference environment variables from. Overrides secrets if set
-    existingSecret: ''
+    existingSecret: 'renovate-secrets'
 
     # -- Additional configmaps. A generated configMap name is: "renovate.fullname" + "extra" + name(below) e.g. renovate-netrc-config
     extraConfigmaps: []

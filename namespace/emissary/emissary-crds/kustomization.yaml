@@ -5,5 +5,3 @@ commonLabels:
 resources:
   - configmap.yaml
   - helmrelease.yaml
-  - middlewares.yaml
-  - ingress-route.yaml
