@@ -1,0 +1,11 @@
+apiVersion: getambassador.io/v3alpha1
+kind: Mapping
+metadata:
+  name: emissary-mapping
+  namespace: faces
+spec:
+  hostname: "emissary.oglesby.io"
+  prefix: /
+  service: emissary-ui.emissary
+  rewrite: /
+  timeout_ms: 0
