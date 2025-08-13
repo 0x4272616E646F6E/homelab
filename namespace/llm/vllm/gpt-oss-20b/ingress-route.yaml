@@ -1,0 +1,41 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: open-oss-20b-https
+  namespace: llm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`open-oss-20b.llm.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: http-open-oss-20b
+          port: 80
+          passHostHeader: true
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: open-oss-20b-http
+  namespace: llm
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`open-oss-20b.llm.oglesby.io`)
+      kind: Rule
+      services:
+        - name: http-open-oss-20b
+          port: 80
+          passHostHeader: true
+      middlewares:
+      - name: internal-whitelist
+        namespace: traefik
+      - name: redirect-https
+        namespace: traefik

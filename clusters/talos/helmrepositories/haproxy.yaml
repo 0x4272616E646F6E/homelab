@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: headlamp
+  name: haproxy
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://kubernetes-sigs.github.io/headlamp/
+  url: https://haproxytech.github.io/helm-charts

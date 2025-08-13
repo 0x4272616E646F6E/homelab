@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: aqua
+  name: nvdp
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://aquasecurity.github.io/helm-charts/
+  url: https://nvidia.github.io/k8s-device-plugin

@@ -1,19 +1,19 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: sonarqube-https
+  name: coder-https
   namespace: development
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarqube.oglesby.io`)
+    - match: Host(`coder.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: sonarqube
+        - name: coder
           port: 80
   tls: 
     secretName: oglesby-io-tls
@@ -21,16 +21,16 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: sonarqube-http
+  name: coder-http
   namespace: development
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`sonarqube.oglesby.io`)
+    - match: Host(`coder.oglesby.io`)
       kind: Rule
       services:
-        - name: sonarqube
+        - name: coder
           port: 80
       middlewares:
       - name: internal-whitelist

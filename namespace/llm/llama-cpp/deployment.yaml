@@ -4,6 +4,7 @@ metadata:
   name: llama-cpp
   namespace: llm
 spec:
+  runtimeClassName: nvidia
   replicas: 1
   selector:
     matchLabels:
@@ -34,7 +35,7 @@ spec:
               mountPath: /models
       containers:
         - name: llama-cpp
-          image: ghcr.io/ggml-org/llama.cpp:server-intel
+          image: ghcr.io/ggml-org/llama.cpp:latest
           imagePullPolicy: Always
           args:
           - "-m"
@@ -89,7 +90,7 @@ spec:
             limits:
               cpu: "4"
               memory: "8Gi"
-              gpu.intel.com/i915: "1"
+              nvidia.com/gpu: "1"
       volumes:
         - name: models
           persistentVolumeClaim:
