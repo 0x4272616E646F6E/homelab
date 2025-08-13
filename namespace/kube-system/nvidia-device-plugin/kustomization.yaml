@@ -6,4 +6,3 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - runtimeclass.yaml
-  - cuda-time-slicing.yaml
