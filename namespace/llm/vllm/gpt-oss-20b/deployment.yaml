@@ -43,6 +43,8 @@ spec:
           value: compute,utility
         - name: NVIDIA_VISIBLE_DEVICES
           value: all
+        - name: VLLM_ATTENTION_BACKEND
+          value: TRITON_ATTN_VLLM_V1
         ports:
         - containerPort: 8000
           name: http
