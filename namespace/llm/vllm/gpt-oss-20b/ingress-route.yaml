@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`gpt-oss-20b.llm.oglesby.io`)
+    - match: Host(`gpt-oss-20b.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -28,7 +28,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`gpt-oss-20b.llm.oglesby.io`)
+    - match: Host(`gpt-oss-20b.oglesby.io`)
       kind: Rule
       services:
         - name: http-gpt-oss-20b
