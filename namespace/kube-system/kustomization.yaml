@@ -7,7 +7,7 @@ resources:
   - coredns/
   - cilium/
   - egress-gw-helper/daemonset.yaml
-  - gpu-operator/
+  - nvidia-device-plugin/
   - kubelet-csr-approver/
   - metrics-server/
   - talos-debug/deployment.yaml

@@ -135,7 +135,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Loki**
 - [x] **Minecraft Server**
 - [x] **Nix2Container**
-- [x] **Nvidia GPU Operator**
+- [x] **Nvidia Device Plugin**
 - [x] **NzbGet**
 - [x] **Prometheus**
 - [x] **Prowlarr**
