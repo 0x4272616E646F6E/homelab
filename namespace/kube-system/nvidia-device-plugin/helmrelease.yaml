@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: nvidia-device-plugin
+      chart: nvdp
       version: 0.17.1
       sourceRef:
         kind: HelmRepository
