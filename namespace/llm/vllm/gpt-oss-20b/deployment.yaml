@@ -8,12 +8,14 @@ spec:
   replicas: 1
   selector:
     matchLabels: { app: vllm-gpt-oss-20b }
+
+  strategy:
+    type: Recreate
+
   template:
     metadata:
       labels: { app: vllm-gpt-oss-20b }
     spec:
-      strategy:
-        type: Recreate
       runtimeClassName: nvidia
       initContainers:
       - name: cuda-check
@@ -28,6 +30,8 @@ spec:
         args:
           - --model
           - openai/gpt-oss-20b
+          - --device
+          - cuda
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
