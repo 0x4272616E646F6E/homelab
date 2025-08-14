@@ -4,5 +4,6 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - runtimeclass.yaml
+  - time-slicing-config.yaml
   - configmap.yaml
   - helmrelease.yaml

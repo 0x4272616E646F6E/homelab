@@ -1,21 +1,21 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: nvidia-device-plugin
+  name: gpu-operator
   namespace: kube-system
 spec:
   interval: 10m
   timeout: 5m
   targetNamespace: kube-system
-  releaseName: nvidia-device-plugin
+  releaseName: gpu-operator
   chart:
     spec:
-      chart: nvidia-device-plugin
+      chart: gpu-operator
       sourceRef:
         kind: HelmRepository
-        name: nvdp
+        name: nvidia
         namespace: flux-system
-      version: "0.17.3"
+      version: 25.3.2
   install:
     # createNamespace: true
     remediation:
@@ -25,5 +25,5 @@ spec:
       retries: 3
   valuesFrom:
   - kind: ConfigMap
-    name: nvidia-device-plugin-config-map
+    name: gpu-operator-config-map
     valuesKey: values.yaml
