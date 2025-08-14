@@ -1,0 +1,15 @@
+apiVersion: node.toolkit.fluxcd.io/v1
+kind: NodePatches
+metadata:
+  name: gpu-node-labels
+  namespace: kube-system
+spec:
+  patches:
+    - patch:
+        apiVersion: v1
+        kind: Node
+        name: "*"
+        operations:
+          - op: add
+            path: /metadata/labels/nvidia.com~1gpu.present
+            value: "true"

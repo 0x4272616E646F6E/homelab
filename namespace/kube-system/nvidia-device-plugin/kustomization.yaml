@@ -6,3 +6,4 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - runtimeclass.yaml
+  - node-patch.yaml
