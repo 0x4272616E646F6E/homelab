@@ -66,6 +66,7 @@ data:
       env: []
       args: []
       resources: {}
+      runtimeClass: nvidia
       plugin:
         env: []
 
