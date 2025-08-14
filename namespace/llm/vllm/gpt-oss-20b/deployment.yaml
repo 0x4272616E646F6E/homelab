@@ -3,12 +3,8 @@ kind: Deployment
 metadata:
   name: vllm-gpt-oss-20b
   namespace: llm
-  labels: { app: vllm-gpt-oss-20b }
 spec:
   replicas: 1
-  selector:
-    matchLabels: { app: vllm-gpt-oss-20b }
-
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,6 +16,7 @@ spec:
       labels: { app: vllm-gpt-oss-20b }
     spec:
       runtimeClassName: nvidia
+      terminationGracePeriodSeconds: 3600
 
       containers:
       - name: vllm
@@ -31,7 +28,7 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
-          - "0.95"
+          - "0.90"
           - --max-model-len
           - "8192"
         env:
@@ -60,27 +57,26 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /root/.cache/huggingface }
         - { name: shm,         mountPath: /dev/shm }
+
         readinessProbe:
           httpGet: { path: /health, port: http }
-          initialDelaySeconds: 60
+          initialDelaySeconds: 5
           periodSeconds: 5
-        livenessProbe:
+          failureThreshold: 60
+        startupProbe:
           httpGet: { path: /health, port: http }
-          initialDelaySeconds: 60
           periodSeconds: 10
+          failureThreshold: 540
+
         lifecycle:
           postStart:
             exec:
-              command:
-                - bash
-                - -lc
-                - |
-                  set -euo pipefail
-                  nvidia-smi || true
-                  ls -l /dev/nvidia* || true
+              command: ["bash","-lc","nvidia-smi || true; ls -l /dev/nvidia* || true"]
 
       volumes:
       - name: cache-volume
         persistentVolumeClaim: { claimName: gpt-oss-20b-pvc }
       - name: shm
-        emptyDir: { medium: Memory }
+        emptyDir:
+          medium: Memory
+          sizeLimit: "8Gi"
