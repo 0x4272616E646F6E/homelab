@@ -26,8 +26,6 @@ spec:
         args:
           - --model
           - openai/gpt-oss-20b
-          - --device
-          - cuda                   # <-- force CUDA so vLLM doesn’t “infer”
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
