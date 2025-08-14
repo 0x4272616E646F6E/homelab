@@ -24,10 +24,18 @@ data:
     image:
       repository: nvcr.io/nvidia/k8s-device-plugin
       pullPolicy: IfNotPresent
-      tag: ""  # set exact tag, e.g. v0.17.3
+      tag: "v0.17.3"
 
     updateStrategy:
       type: RollingUpdate
+
+    # Explicitly override any chart default affinity
+    affinity: {}
+    nodeSelector: {}
+    
+    # Add tolerations to handle any potential future taints
+    tolerations:
+    - operator: "Exists"  # Will tolerate any taint
 
     priorityClassName: system-node-critical
 
@@ -39,7 +47,4 @@ data:
     nfd:
       enableNodeFeatureApi: false
 
-
-    affinity: {}
-    nodeSelector: {}
     resources: {}
