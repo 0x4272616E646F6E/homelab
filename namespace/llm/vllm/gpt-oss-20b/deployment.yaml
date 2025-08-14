@@ -8,18 +8,19 @@ spec:
   replicas: 1
   selector:
     matchLabels: { app: vllm-gpt-oss-20b }
-
   strategy:
-    type: Recreate
+    type: Recreate   # prevents 2 pods during rollout
 
   template:
     metadata:
       labels: { app: vllm-gpt-oss-20b }
     spec:
       runtimeClassName: nvidia
+
       containers:
       - name: vllm
         image: vllm/vllm-openai:gptoss
+        imagePullPolicy: IfNotPresent
         args:
           - --model
           - openai/gpt-oss-20b
@@ -65,6 +66,16 @@ spec:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 60
           periodSeconds: 10
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - bash
+                - -lc
+                - |
+                  set -euo pipefail
+                  nvidia-smi || true
+                  ls -l /dev/nvidia* || true
 
       volumes:
       - name: cache-volume
