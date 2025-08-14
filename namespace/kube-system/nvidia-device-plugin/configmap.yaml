@@ -39,4 +39,7 @@ data:
     nfd:
       enableNodeFeatureApi: false
 
+
+    affinity: {}
+    nodeSelector: {}
     resources: {}
