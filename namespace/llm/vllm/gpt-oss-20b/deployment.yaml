@@ -5,8 +5,6 @@ metadata:
   namespace: llm
   labels: { app: vllm-gpt-oss-20b }
 spec:
-  strategy:
-      type: Recreate
   replicas: 1
   selector:
     matchLabels: { app: vllm-gpt-oss-20b }
@@ -14,6 +12,8 @@ spec:
     metadata:
       labels: { app: vllm-gpt-oss-20b }
     spec:
+      strategy:
+        type: Recreate
       runtimeClassName: nvidia
       initContainers:
       - name: cuda-check
