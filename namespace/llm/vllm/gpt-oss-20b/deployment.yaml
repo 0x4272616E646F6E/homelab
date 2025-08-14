@@ -3,25 +3,28 @@ kind: Deployment
 metadata:
   name: vllm-gpt-oss-20b
   namespace: llm
-  labels:
-    app: vllm-gpt-oss-20b
+  labels: { app: vllm-gpt-oss-20b }
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: vllm-gpt-oss-20b
+    matchLabels: { app: vllm-gpt-oss-20b }
   template:
     metadata:
-      labels:
-        app: vllm-gpt-oss-20b
+      labels: { app: vllm-gpt-oss-20b }
     spec:
+      runtimeClassName: nvidia
       containers:
-      - name: vllm-gpt-oss-20b
+      - name: vllm
         image: vllm/vllm-openai:gptoss
-        command: ["/bin/sh", "-c"]
-        args: [
-          "vllm serve unsloth/gpt-oss-20b"
-        ]
+        args:
+          - --model
+          - openai/gpt-oss-20b
+          - --tensor-parallel-size
+          - "1"
+          - --gpu-memory-utilization
+          - "0.95"
+          - --max-model-len
+          - "131072"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom:
@@ -30,32 +33,30 @@ spec:
               key: token
         ports:
         - containerPort: 8000
+          name: http
         resources:
           requests:
             cpu: "2"
-            memory: 6G
+            memory: "6Gi"
             nvidia.com/gpu: "1"
           limits:
             cpu: "4"
-            memory: 8G
+            memory: "8Gi"
             nvidia.com/gpu: "1"
         volumeMounts:
-        - mountPath: /root/.cache/huggingface
-          name: cache-volume
+        - name: cache-volume
+          mountPath: /root/.cache/huggingface
         - name: shm
           mountPath: /dev/shm
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8000
-          initialDelaySeconds: 60
-          periodSeconds: 10
         readinessProbe:
-          httpGet:
-            path: /health
-            port: 8000
+          httpGet: { path: /health, port: http }
           initialDelaySeconds: 60
           periodSeconds: 5
+        livenessProbe:
+          httpGet: { path: /health, port: http }
+          initialDelaySeconds: 60
+          periodSeconds: 10
+
       volumes:
       - name: cache-volume
         persistentVolumeClaim:
