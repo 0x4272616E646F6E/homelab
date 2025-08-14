@@ -33,7 +33,7 @@ spec:
           - --gpu-memory-utilization
           - "0.95"
           - --max-model-len
-          - "131072"
+          - "8192"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
