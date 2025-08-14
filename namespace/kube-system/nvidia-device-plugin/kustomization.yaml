@@ -3,7 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
+  - runtimeclass.yaml
   - configmap.yaml
   - helmrelease.yaml
-  - runtimeclass.yaml
   - node-patch.yaml

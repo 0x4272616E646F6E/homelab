@@ -48,3 +48,5 @@ data:
       enableNodeFeatureApi: false
 
     resources: {}
+
+    runtimeClassName: nvidia
