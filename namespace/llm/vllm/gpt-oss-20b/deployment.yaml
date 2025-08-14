@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: vllm-gpt-oss-20b
-        image: vllm/vllm-openai:latest
+        image: vllm/vllm-openai:gptoss
         command: ["/bin/sh", "-c"]
         args: [
           "vllm serve unsloth/gpt-oss-20b"
