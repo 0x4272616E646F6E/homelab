@@ -18,4 +18,3 @@ spec:
   dependsOn:
     - name: kube-system
     - name: rook-ceph
-    - name: build
