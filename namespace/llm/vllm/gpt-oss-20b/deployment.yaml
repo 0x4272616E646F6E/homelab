@@ -17,13 +17,6 @@ spec:
       labels: { app: vllm-gpt-oss-20b }
     spec:
       runtimeClassName: nvidia
-      initContainers:
-      - name: cuda-check
-        image: nvcr.io/nvidia/cuda:12.4.1-base-ubuntu22.04
-        command: ["bash","-lc","set -euo pipefail; nvidia-smi; ls -l /dev/nvidia*; echo OK"]
-        resources:
-          limits: { nvidia.com/gpu: 1 }
-
       containers:
       - name: vllm
         image: vllm/vllm-openai:gptoss
