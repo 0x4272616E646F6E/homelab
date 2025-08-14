@@ -244,6 +244,7 @@ data:
       args: []
       env: []
       resources: {}
+      runtimeClassName: nvidia 
       config:
         # Create a ConfigMap (default: false)
         create: false
