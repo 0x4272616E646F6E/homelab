@@ -29,11 +29,6 @@ data:
     updateStrategy:
       type: RollingUpdate
 
-    tolerations:
-      - key: nvidia.com/gpu
-        operator: Exists
-        effect: NoSchedule
-
     priorityClassName: system-node-critical
 
     devicePlugin:
