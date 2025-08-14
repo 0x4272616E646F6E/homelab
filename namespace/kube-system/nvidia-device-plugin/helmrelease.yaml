@@ -1,20 +1,28 @@
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: nvidia-device-plugin
-  namespace: kube-system
+  namespace: nvidia-device-plugin
 spec:
+  interval: 10m
+  timeout: 5m
+  targetNamespace: nvidia-device-plugin
+  releaseName: nvidia-device-plugin
   chart:
     spec:
-      chart: nvdp
-      version: 0.17.1
+      chart: nvidia-device-plugin
       sourceRef:
         kind: HelmRepository
         name: nvdp
         namespace: flux-system
-  interval: 15m
-  timeout: 5m
-  releaseName: nvidia-device-plugin
+      version: "0.17.*"
+  install:
+    # createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: nvidia-device-plugin-config-map
