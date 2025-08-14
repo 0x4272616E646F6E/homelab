@@ -13,12 +13,21 @@ spec:
       labels: { app: vllm-gpt-oss-20b }
     spec:
       runtimeClassName: nvidia
+      initContainers:
+      - name: cuda-check
+        image: nvcr.io/nvidia/cuda:12.4.1-base-ubuntu22.04
+        command: ["bash","-lc","set -euo pipefail; nvidia-smi; ls -l /dev/nvidia*; echo OK"]
+        resources:
+          limits: { nvidia.com/gpu: 1 }
+
       containers:
       - name: vllm
         image: vllm/vllm-openai:gptoss
         args:
           - --model
           - openai/gpt-oss-20b
+          - --device
+          - cuda                   # <-- force CUDA so vLLM doesn’t “infer”
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
@@ -27,10 +36,13 @@ spec:
           - "131072"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: vllm-secrets
-              key: token
+          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+        - name: VLLM_LOGGING_LEVEL
+          value: DEBUG
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: compute,utility
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: all
         ports:
         - containerPort: 8000
           name: http
@@ -44,10 +56,8 @@ spec:
             memory: "8Gi"
             nvidia.com/gpu: "1"
         volumeMounts:
-        - name: cache-volume
-          mountPath: /root/.cache/huggingface
-        - name: shm
-          mountPath: /dev/shm
+        - { name: cache-volume, mountPath: /root/.cache/huggingface }
+        - { name: shm,         mountPath: /dev/shm }
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 60
@@ -59,9 +69,6 @@ spec:
 
       volumes:
       - name: cache-volume
-        persistentVolumeClaim:
-          claimName: gpt-oss-20b-pvc
+        persistentVolumeClaim: { claimName: gpt-oss-20b-pvc }
       - name: shm
-        emptyDir:
-          medium: Memory
-          sizeLimit: "2Gi"
+        emptyDir: { medium: Memory, sizeLimit: "2Gi" }
