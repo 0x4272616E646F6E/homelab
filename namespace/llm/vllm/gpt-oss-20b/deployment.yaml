@@ -51,11 +51,11 @@ spec:
         resources:
           requests:
             cpu: "2"
-            memory: "6Gi"
+            memory: "4Gi"
             nvidia.com/gpu: "1"
           limits:
             cpu: "4"
-            memory: "8Gi"
+            memory: "20Gi"
             nvidia.com/gpu: "1"
         volumeMounts:
         - { name: cache-volume, mountPath: /root/.cache/huggingface }
