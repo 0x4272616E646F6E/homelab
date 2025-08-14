@@ -91,7 +91,7 @@ data:
       enabled: true
 
     gfd:
-      enabled: false
+      enabled: true
       nameOverride: gpu-feature-discovery
       namespaceOverride: ""
       noTimestamp: null
