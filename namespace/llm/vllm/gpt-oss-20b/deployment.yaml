@@ -8,8 +8,12 @@ spec:
   replicas: 1
   selector:
     matchLabels: { app: vllm-gpt-oss-20b }
+
   strategy:
-    type: Recreate   # prevents 2 pods during rollout
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
 
   template:
     metadata:
