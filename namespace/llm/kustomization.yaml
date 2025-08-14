@@ -4,5 +4,6 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - llama-cpp/
+  # - llama-cpp/
+  - vllm/
   - openwebui/
