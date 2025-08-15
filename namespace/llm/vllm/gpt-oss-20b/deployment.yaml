@@ -4,6 +4,9 @@ metadata:
   name: vllm-gpt-oss-20b
   namespace: llm
 spec:
+  selector:
+    matchLabels:
+      app: vllm-gpt-oss-20b
   replicas: 1
   strategy:
     type: RollingUpdate
