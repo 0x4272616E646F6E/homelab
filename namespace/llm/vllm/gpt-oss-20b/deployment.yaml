@@ -13,14 +13,13 @@ spec:
     rollingUpdate:
       maxSurge: 0
       maxUnavailable: 1
-
   template:
     metadata:
-      labels: { app: vllm-gpt-oss-20b }
+      labels:
+        app: vllm-gpt-oss-20b 
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
-
       containers:
       - name: vllm
         image: vllm/vllm-openai:gptoss
