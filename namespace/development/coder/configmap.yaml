@@ -34,23 +34,23 @@ data:
       #tls:
       #  secretNames:
       #    - my-tls-secret-name
-      service:
-        enable: true
-        type: ClusterIP
-        sessionAffinity: None
-        externalTrafficPolicy: Cluster
-        loadBalancerIP: ""
-        annotations: {}
-        httpNodePort: ""
-        httpsNodePort: ""
+    service:
+      enable: true
+      type: ClusterIP
+      sessionAffinity: None
+      externalTrafficPolicy: Cluster
+      loadBalancerIP: ""
+      annotations: {}
+      httpNodePort: ""
+      httpsNodePort: ""
 
-      ingress:
+    ingress:
+      enable: false
+      className: ""
+      host: ""
+      wildcardHost: ""
+      annotations: {}
+      tls:
         enable: false
-        className: ""
-        host: ""
-        wildcardHost: ""
-        annotations: {}
-        tls:
-          enable: false
-          secretName: ""
-          wildcardSecretName: ""
+        secretName: ""
+        wildcardSecretName: ""
