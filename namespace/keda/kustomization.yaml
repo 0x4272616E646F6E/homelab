@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/managed-by: flux
+resources:
+  - namespace.yaml
+  - keda-2.17.2-crds.yaml
+  - keda/

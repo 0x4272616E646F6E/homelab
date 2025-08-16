@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keda-config-map
+  namespace: keda
+data:
+  values.yaml: |-
