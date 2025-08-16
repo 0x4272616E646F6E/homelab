@@ -13,7 +13,7 @@ data:
     namespaceOverride: ''
 
     # Number of Ambassador replicas
-    replicaCount: 3
+    replicaCount: 1
     # If true, Create a DaemonSet. By default Deployment controller will be created
     daemonSet: false
     # If true, Create a bare Pod instead of a Deployment or DaemonSet; for
@@ -54,8 +54,8 @@ data:
     # daemonSet: true, autoscaling will be disabled
     autoscaling: # +doc-gen:break
       enabled: false
-      minReplicas: 2
-      maxReplicas: 5
+      minReplicas: 1
+      maxReplicas: 1
       metrics:
       - type: Resource
         resource:
@@ -76,7 +76,7 @@ data:
 
     namespace:
       # Explicitly set the AMBASSADOR_NAMESPACE environment variable
-      name:
+      name: "emissary"
 
     # Any additional environment variables for ambassador pods
     # Example:
@@ -171,6 +171,7 @@ data:
 
     service:
       type: LoadBalancer
+      loadBalancerIP: "10.0.0.248"
 
       # Note that target http ports need to match your ambassador configurations service_port
       # https://www.getambassador.io/reference/modules/#the-ambassador-module
@@ -221,7 +222,6 @@ data:
       # Annotations to apply to Ambassador admin service
       annotations: {}
       # IP address to assign (if cloud provider supports it)
-      loadBalancerIP: "10.0.0.248"
       # Passed to cloud provider load balancer if created (e.g: AWS ELB)
       loadBalancerSourceRanges:
 

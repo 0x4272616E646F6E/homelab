@@ -27,7 +27,9 @@ kind: Host
 metadata:
   name: wildcard-host
 spec:
-  hostname: "*"
+  hostname: "*.oglesby.io"
+  tlsSecret:
+    name: oglesby-io-tls
   requestPolicy:
     insecure:
-      action: Route
+      action: Redirect
