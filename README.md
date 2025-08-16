@@ -131,6 +131,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Jellyfin**
 - [x] **Jellyseerr**
 - [ ] **KEDA**
+- [ ] **Kestra**
 - [x] **Kubelet CSR Approver**
 - [x] **LlamaCPP**
 - [x] **Loki**
