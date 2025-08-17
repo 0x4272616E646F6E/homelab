@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kestra-https
+  namespace: development
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`kestra.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: kestra
+          port: 8080
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kestra-http
+  namespace: development
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`kestra.oglesby.io`)
+      kind: Rule
+      services:
+        - name: kestra
+          port: 8080
+      middlewares:
+      - name: internal-whitelist
+        namespace: traefik
+      - name: redirect-https
+        namespace: traefik
