@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: qwen3-4b-thinking-2507-pvc
+  name: lucy-128k-pvc
   namespace: llm
 spec:
   accessModes:
