@@ -30,20 +30,29 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
-          - "0.90"
+          - "0.95"
           - --max-model-len
           - "8192"
+          - --async-scheduling
+          - --max-parallel-loading-workers
+          - "2"  
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
         - name: VLLM_ATTENTION_BACKEND
           value: TRITON_ATTN_VLLM_V1
         - name: VLLM_LOGGING_LEVEL
-          value: DEBUG
-        - name: NVIDIA_DRIVER_CAPABILITIES
-          value: compute,utility
-        - name: NVIDIA_VISIBLE_DEVICES
-          value: all
+          value: INFO
+        - name: PYTORCH_CUDA_ALLOC_CONF
+          value: "expandable_segments:True"
+        - name: NCCL_P2P_DISABLE
+          value: "1"
+        - name: NCCL_IB_DISABLE
+          value: "1"
+        - name: HF_HUB_ENABLE_HF_TRANSFER
+          value: "1"
+        - name: TORCH_CUDA_ARCH_LIST
+          value: ">=8.9"
         ports:
         - containerPort: 8000
           name: http
@@ -81,4 +90,4 @@ spec:
       - name: shm
         emptyDir:
           medium: Memory
-          sizeLimit: "8Gi"
+          sizeLimit: "16Gi"
