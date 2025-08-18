@@ -51,8 +51,6 @@ spec:
           value: "1"
         - name: HF_HUB_ENABLE_HF_TRANSFER
           value: "1"
-        - name: VLLM_ATTENTION_BACKEND
-          value: FLASH_ATTN_V2
         ports:
         - containerPort: 8000
           name: http

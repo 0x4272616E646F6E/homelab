@@ -34,10 +34,13 @@ spec:
           - --async-scheduling
           - --max-parallel-loading-workers
           - "2"
-          - "--enable-auto-tool-choice"
-          - "--tool-call-parser hermes"
-          - "--rope-scaling '{'rope_type':'yarn','factor':3.2,'original_max_position_embeddings':40960}'"
-          - "--max-model-len 131072"
+          - --enable-auto-tool-choice
+          - --tool-call-parser
+          - hermes
+          - --rope-scaling
+          - '{"rope_type":"yarn","factor":3.2,"original_max_position_embeddings":40960}'
+          - --max-model-len
+          - "131072"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
