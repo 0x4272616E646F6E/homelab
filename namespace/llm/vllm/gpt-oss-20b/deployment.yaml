@@ -51,8 +51,6 @@ spec:
           value: "1"
         - name: HF_HUB_ENABLE_HF_TRANSFER
           value: "1"
-        - name: TORCH_CUDA_ARCH_LIST
-          value: ">=8.9"
         ports:
         - containerPort: 8000
           name: http
