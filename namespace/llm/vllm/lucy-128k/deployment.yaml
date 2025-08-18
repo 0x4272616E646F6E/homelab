@@ -45,7 +45,7 @@ spec:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
         - name: VLLM_ATTENTION_BACKEND
-          value: FLASH_ATTN_V2
+          value: TRITON_ATTN_VLLM_V1
         - name: VLLM_LOGGING_LEVEL
           value: INFO
         - name: PYTORCH_CUDA_ALLOC_CONF
