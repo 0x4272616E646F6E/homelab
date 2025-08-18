@@ -32,7 +32,7 @@ spec:
           - --gpu-memory-utilization
           - "0.90"
           - --max-model-len
-          - "8192"
+          - "4096"
           - --async-scheduling
           - --max-parallel-loading-workers
           - "2"  
@@ -51,6 +51,8 @@ spec:
           value: "1"
         - name: HF_HUB_ENABLE_HF_TRANSFER
           value: "1"
+        - name: VLLM_ATTENTION_BACKEND
+          value: FLASH_ATTN_V2
         ports:
         - containerPort: 8000
           name: http
@@ -66,7 +68,6 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /root/.cache/huggingface }
         - { name: shm,         mountPath: /dev/shm }
-
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 5
@@ -76,12 +77,10 @@ spec:
           httpGet: { path: /health, port: http }
           periodSeconds: 10
           failureThreshold: 540
-
         lifecycle:
           postStart:
             exec:
               command: ["bash","-lc","nvidia-smi || true; ls -l /dev/nvidia* || true"]
-
       volumes:
       - name: cache-volume
         persistentVolumeClaim: { claimName: gpt-oss-20b-pvc }
