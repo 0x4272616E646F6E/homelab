@@ -42,7 +42,7 @@ spec:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
         - name: VLLM_ATTENTION_BACKEND
-          value: TRITON_ATTN_VLLM_V1
+          value: FLASH_ATTN_V2
         - name: VLLM_LOGGING_LEVEL
           value: INFO
         - name: PYTORCH_CUDA_ALLOC_CONF
@@ -53,8 +53,6 @@ spec:
           value: "1"
         - name: HF_HUB_ENABLE_HF_TRANSFER
           value: "1"
-        - name: VLLM_ATTENTION_BACKEND
-          value: FLASH_ATTN_V2
         ports:
         - containerPort: 8000
           name: http
