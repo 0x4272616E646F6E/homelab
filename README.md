@@ -122,6 +122,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Filebrowser**
 - [x] **Flaresolverr**
 - [x] **Gamevault**
+- [x] **Glance**
 - [x] **Grafana**
 - [x] **HA Proxy**
 - [X] **Harbor**
