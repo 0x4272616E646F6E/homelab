@@ -30,7 +30,7 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
-          - "0.90"
+          - "0.92"
           - --async-scheduling
           - --max-parallel-loading-workers
           - "2"
