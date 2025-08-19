@@ -13,6 +13,7 @@ spec:
       labels:
         app: comfyui
     spec:
+      runtimeClassName: nvidia
       containers:
         - name: comfyui
           image: docker.io/yanwk/comfyui-boot:cu128-slim
