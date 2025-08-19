@@ -43,6 +43,14 @@ spec:
               value: "7"
             - name: nodeName
               value: "InternalNode"
+            - name: auth
+              value: "false"
+            - name: openBrowser
+              value: "true"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              values: "all"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
           resources:
             requests:
               cpu: "100m"
@@ -53,7 +61,11 @@ spec:
               nvidia.com/gpu: "1"
           volumeMounts:
             - name: config
-              mountPath: /app
+              mountPath: /app/configs
+            - name: server
+              mountPath: /app/server
+            - name: logs
+              mountPath: /app/logs
             - name: media
               mountPath: /media
               subPath: media
@@ -63,6 +75,12 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: tdarr-config
+        - name: server
+          persistentVolumeClaim:
+            claimName: tdarr-server
+        - name: logs
+          persistentVolumeClaim:
+            claimName: tdarr-logs
         - name: media
           persistentVolumeClaim:
             claimName: media
