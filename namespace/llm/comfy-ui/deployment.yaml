@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comfyui
+  namespace: llm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comfyui
+  template:
+    metadata:
+      labels:
+        app: comfyui
+    spec:
+      containers:
+        - name: comfyui
+          image: docker.io/yanwk/comfyui-boot:cu128-slim
+          imagePullPolicy: Always
+          env:
+          - name: CLI_ARGS
+            value: ""
+          ports:
+            - containerPort: 8188
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /root
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+              nvidia.com/gpu: "1"
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: comfyui-config

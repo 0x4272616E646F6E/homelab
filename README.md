@@ -115,6 +115,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Cilium**
 - [X] **Cloudflared**
 - [x] **Coder**
+- [x] **Comfy-UI**
 - [x] **Egress Gateway Helper**
 - [x] **Emissary**
 - [x] **Falco**
@@ -133,7 +134,6 @@ The following resources are managed through Flux in this repository:
 - [ ] **KEDA**
 - [ ] **Kestra**
 - [x] **Kubelet CSR Approver**
-- [x] **LlamaCPP**
 - [x] **Loki**
 - [x] **Minecraft Server**
 - [x] **Nix2Container**
@@ -157,6 +157,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Tempo**
 - [x] **Traefik**
 - [x] **Vector**
+- [x] **VLLM**
 - [x] **Wizarr**
 
 ## Runtimes

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: llama-cpp
+  name: comfyui
   namespace: llm
 spec:
   selector:
-    app: llama-cpp
+    app: comfyui
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 80
+      targetPort: 8188
       protocol: TCP
   type: ClusterIP
