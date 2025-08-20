@@ -9,7 +9,7 @@ data:
     pages:
       - name: Home
         columns:
-          - size: full
+          - size: small
             widgets:
               - type: calendar
                 first-day-of-week: monday
@@ -21,7 +21,7 @@ data:
                   - url: https://selfh.st/rss/
                     title: selfh.st
                     limit: 4
-          - size: full
+          - size: small
             widgets:
               - type: vertical-list
                 widgets:
