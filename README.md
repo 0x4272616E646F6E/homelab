@@ -126,8 +126,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Grafana**
 - [x] **HA Proxy**
 - [X] **Harbor**
-- [x] **Headlamp**
-- [x] **Heimdall**
 - [x] **Home Assistant**
 - [x] **Huntarr**
 - [x] **Jellyfin**

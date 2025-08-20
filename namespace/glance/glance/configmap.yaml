@@ -13,14 +13,59 @@ data:
             widgets:
               - type: calendar
                 first-day-of-week: monday
-              - type: rss
-                limit: 10
-                collapse-after: 3
-                cache: 12h
-                feeds:
-                  - url: https://selfh.st/rss/
-                    title: selfh.st
-                    limit: 4
+              - type: bookmarks
+                groups:
+                  - links:
+                      - title: Authentik
+                        url: https://authentik.oglesby.io/
+                      - title: Bazarr
+                        url: https://bazarr.oglesby.io/
+                      - title: ComfyUI
+                        url: https://comfyui.oglesby.io/
+                      - title: Grafana
+                        url: https://grafana.oglesby.io/
+                      - title: Harbor
+                        url: https://harbor.oglesby.io/
+                      - title: Home Assistant
+                        url: https://homeassistant.oglesby.io/
+                      - title: Huntarr
+                        url: https://huntarr.oglesby.io/
+                      - title: Jellyfin
+                        url: https://jellyfin.oglesby.io/
+                      - title: JellySeerr
+                        url: https://jellyseerr.oglesby.io/
+                      - title: NzbGet
+                        url: https://nzbget.oglesby.io/
+                      - title: OpenWebUI
+                        url: https://openwebui.oglesby.io/
+                      - title: Prometheus
+                        url: https://prometheus.oglesby.io/
+                      - title: Prowlarr
+                        url: https://prowlarr.oglesby.io/
+                      - title: Proxmox Backup Server
+                        url: https://pve.oglesby.io:8007/
+                      - title: Proxmox VE
+                        url: https://pve.oglesby.io:8006/
+                      - title: Radarr
+                        url: https://radarr.oglesby.io/
+                      - title: Requestrr
+                        url: https://requestrr.oglesby.io/
+                      - title: Rook
+                        url: https://rook.oglesby.io/
+                      - title: rTorrent
+                        url: https://rtorrent.oglesby.io/
+                      - title: Sonarr
+                        url: https://sonarr.oglesby.io/
+                      - title: SonarQube
+                        url: https://sonarqube.oglesby.io/
+                      - title: Suwayomi
+                        url: https://suwayomi.oglesby.io/
+                      - title: Traefik
+                        url: https://traefik.oglesby.io/
+                      - title: Unifi
+                        url: https://unifi.oglesby.io/
+                      - title: Wizarr
+                        url: https://wizarr.oglesby.io/
           - size: full
             widgets:
               - type: hacker-news
@@ -41,15 +86,17 @@ data:
                 location: Edgewater, Florida, United States
                 units: imperial
                 hour-format: 24h
-              - type: bookmarks
-                groups:
-                  - links:
-                      - title: Proxmox VE
-                        url: https://pve.oglesby.io:8006/
-                      - title: Proxmox Backup Server
-                        url: https://pve.oglesby.io:8007/
-                      - title: Unifi
-                        url: https://unifi.oglesby.io/
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 12h
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
+                  - url: https://distrowatch.com/news/news-headlines.xml
+                    title: Distrowatch
+                    limit: 4
               - type: releases
                 cache: 1d
                 repositories:
