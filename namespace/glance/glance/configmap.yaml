@@ -110,6 +110,7 @@ data:
                 units: imperial
                 hour-format: 24h
               - type: releases
+                collapse-after: 99
                 cache: 1d
                 repositories:
                   - cilium/cilium
