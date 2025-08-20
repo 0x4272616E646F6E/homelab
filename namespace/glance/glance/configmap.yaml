@@ -73,22 +73,35 @@ data:
                 collapse-after: 3
                 cache: 12h
                 feeds:
-                  - url: https://selfh.st/rss/
-                    title: selfh.st
+                  - url: https://deepmind.com/blog/feed/basic
+                    title: DeepMind
                     limit: 4
                   - url: https://distrowatch.com/news/news-headlines.xml
                     title: Distrowatch
                     limit: 4
+                  - url: http://news.ycombinator.com/rss
+                    title: Hacker News
+                    limit: 4
+                  - url: https://kubernetes.io/feed.xml
+                    title: Kubernetes
+                    limit: 4
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
               - type: videos
                 channels:
+                  - UC2WHjPDvbE6O328n17ZGcfg # Forrest Knight
+                  - UC8butISFwT-Wl7EV0hUK0BQ # Free Code Camp
+                  - UCCMi6F5Ac3kQDfffWXQGZDw # Guided Hacking
                   - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+                  - UClcE-kVhqyiHCcjYwcpfj9w # Live Overflow
               - type: split-column
                 widgets:
                   - type: reddit
-                    subreddit: selfhosted
+                    subreddit: localllama
                     show-thumbnails: true
                   - type: reddit
-                    subreddit: localllama
+                    subreddit: selfhosted
                     show-thumbnails: true
           - size: small
             widgets:
@@ -99,6 +112,11 @@ data:
               - type: releases
                 cache: 1d
                 repositories:
-                  - siderolabs/talos
+                  - cilium/cilium
+                  - fluxcd/flux2
+                  - helm/helm
                   - kubernetes/kubernetes
-                  
+                  - NixOS/nix
+                  - rook/rook
+                  - siderolabs/talos
+                  - torvalds/linux
