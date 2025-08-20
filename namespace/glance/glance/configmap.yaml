@@ -5,7 +5,7 @@ metadata:
   name: glance-config
   namespace: glance
 data:
-  config.yaml: |
+  glance.yaml: |
     pages:
       - name: Home
         columns:
