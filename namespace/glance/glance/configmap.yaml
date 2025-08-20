@@ -23,9 +23,7 @@ data:
                     limit: 4
           - size: full
             widgets:
-              - type: vertical-list
-                widgets:
-                  - type: hacker-news
+              - type: hacker-news
               - type: videos
                 channels:
                   - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
