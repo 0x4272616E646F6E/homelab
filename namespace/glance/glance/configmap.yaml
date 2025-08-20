@@ -27,16 +27,14 @@ data:
               - type: videos
                 channels:
                   - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-              - type: group
+              - type: split-column
                 widgets:
-                  - type: split-column
-                    widgets:
-                      - type: reddit
-                        subreddit: selfhosted
-                        show-thumbnails: true
-                      - type: reddit
-                        subreddit: localllama
-                        show-thumbnails: true
+                  - type: reddit
+                    subreddit: selfhosted
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: localllama
+                    show-thumbnails: true
           - size: small
             widgets:
               - type: weather
