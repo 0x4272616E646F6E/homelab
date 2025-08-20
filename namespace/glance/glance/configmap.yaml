@@ -9,7 +9,7 @@ data:
     pages:
       - name: Home
         columns:
-          - size: small
+          - size: full
             widgets:
               - type: calendar
                 first-day-of-week: monday
@@ -26,7 +26,6 @@ data:
               - type: group
                 widgets:
                   - type: hacker-news
-                  - type: lobsters
               - type: videos
                 channels:
                   - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
