@@ -23,14 +23,14 @@ data:
                     limit: 4
           - size: full
             widgets:
-              - type: group
+              - type: vertical-list
                 widgets:
                   - type: hacker-news
               - type: videos
                 channels:
                   - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
                   - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-              - type: group
+              - type: split-column
                 widgets:
                   - type: reddit
                     subreddit: selfhosted
