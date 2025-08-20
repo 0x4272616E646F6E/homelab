@@ -33,8 +33,8 @@ spec:
             - name: config
               mountPath: /app/config
             - name: config-file
-              mountPath: /app/config/glance.yaml
-              subPath: glance.yaml
+              mountPath: /app/config/glance.yml
+              subPath: glance.yml
               readOnly: true
       volumes:
         - name: config
@@ -44,5 +44,5 @@ spec:
           configMap:
             name: glance-config
             items:
-              - key: glance.yaml
-                path: glance.yaml
+              - key: glance.yml
+                path: glance.yml
