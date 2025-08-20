@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glance-config
+  namespace: glance
+data:
+  config.yaml: |
+    pages:
+      - name: Home
+        columns:
+          - size: small
+            widgets:
+              - type: calendar
+                first-day-of-week: monday
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 12h
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
+          - size: full
+            widgets:
+              - type: group
+                widgets:
+                  - type: hacker-news
+                  - type: lobsters
+              - type: videos
+                channels:
+                  - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+                  - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+              - type: group
+                widgets:
+                  - type: reddit
+                    subreddit: selfhosted
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: localllama
+                    show-thumbnails: true
+          - size: small
+            widgets:
+            - type: bookmarks
+              groups:
+                - links:
+                    - title: Proxmox VE
+                      url: https://pve.oglesby.io:8006/
+                    - title: Proxmox Backup Server
+                      url: https://pve.oglesby.io:8007/
+                    - title: Unifi
+                      url: https://unifi.oglesby.io/
+              - type: weather
+                location: Edgewater, Florida, United States
+                units: imperial
+                hour-format: 24h
+              - type: markets
+                markets:
+                  - symbol: SPY
+                    name: S&P 500
+                  - symbol: BTC-USD
+                    name: Bitcoin
+                  - symbol: NVDA
+                    name: NVIDIA
+              - type: releases
+                cache: 1d
+                repositories:
+                  - siderolabs/talos

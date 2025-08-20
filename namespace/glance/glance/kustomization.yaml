@@ -4,6 +4,7 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - pvc.yaml
+  - configmap.yaml
   - deployment.yaml
   - service.yaml
   - ingress-route.yaml
