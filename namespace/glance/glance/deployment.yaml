@@ -30,17 +30,11 @@ spec:
               cpu: "1"
               memory: "1Gi"
           volumeMounts:
-            - name: config
+            - name: glance-config
               mountPath: /app/config
-            - name: config-file
-              mountPath: /app/config/glance.yml
-              subPath: glance.yml
               readOnly: true
       volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: glance-config
-        - name: config-file
+        - name: glance-config
           configMap:
             name: glance-config
             items:
