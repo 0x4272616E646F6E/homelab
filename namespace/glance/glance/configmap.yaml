@@ -41,15 +41,15 @@ data:
                     show-thumbnails: true
           - size: small
             widgets:
-            - type: bookmarks
-              groups:
-                - links:
-                    - title: Proxmox VE
-                      url: https://pve.oglesby.io:8006/
-                    - title: Proxmox Backup Server
-                      url: https://pve.oglesby.io:8007/
-                    - title: Unifi
-                      url: https://unifi.oglesby.io/
+              - type: bookmarks
+                groups:
+                  - links:
+                      - title: Proxmox VE
+                        url: https://pve.oglesby.io:8006/
+                      - title: Proxmox Backup Server
+                        url: https://pve.oglesby.io:8007/
+                      - title: Unifi
+                        url: https://unifi.oglesby.io/
               - type: weather
                 location: Edgewater, Florida, United States
                 units: imperial
