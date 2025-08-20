@@ -68,7 +68,17 @@ data:
                         url: https://wizarr.oglesby.io/
           - size: full
             widgets:
-              - type: hacker-news
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 12h
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
+                  - url: https://distrowatch.com/news/news-headlines.xml
+                    title: Distrowatch
+                    limit: 4
               - type: videos
                 channels:
                   - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
@@ -86,18 +96,9 @@ data:
                 location: Edgewater, Florida, United States
                 units: imperial
                 hour-format: 24h
-              - type: rss
-                limit: 10
-                collapse-after: 3
-                cache: 12h
-                feeds:
-                  - url: https://selfh.st/rss/
-                    title: selfh.st
-                    limit: 4
-                  - url: https://distrowatch.com/news/news-headlines.xml
-                    title: Distrowatch
-                    limit: 4
               - type: releases
                 cache: 1d
                 repositories:
                   - siderolabs/talos
+                  - kubernetes/kubernetes
+                  
