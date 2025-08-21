@@ -59,7 +59,7 @@ data:
     # - SingleBinary<->SimpleScalable: Migrate from SingleBinary to SimpleScalable (or vice versa)
     # - SimpleScalable<->Distributed: Migrate from SimpleScalable to Distributed (or vice versa)
     # Note: SimpleScalable and Distributed REQUIRE the use of object storage.
-    deploymentMode: SimpleScalable
+    deploymentMode: SingleBinary
     ######################################################################################################################
     #
     # Base Loki Configs including kubernetes configurations and configurations for Loki itself,
