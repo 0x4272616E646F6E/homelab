@@ -2,7 +2,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Mapping
 metadata:
   name: emissary-mapping
-  namespace: faces
+  namespace: emissary
 spec:
   hostname: "emissary.oglesby.io"
   prefix: /

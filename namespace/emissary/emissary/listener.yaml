@@ -2,6 +2,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Listener
 metadata:
   name: ambassador-https-listener
+  namespace: emissary
 spec:
   port: 443
   protocol: HTTPS
@@ -14,6 +15,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Listener
 metadata:
   name: ambassador-http-listener
+  namespace: emissary
 spec:
   port: 80
   protocol: HTTP
@@ -26,6 +28,7 @@ apiVersion: getambassador.io/v3alpha1
 kind: Host
 metadata:
   name: wildcard-host
+  namespace: emissary
 spec:
   hostname: "*.oglesby.io"
   tlsSecret:
