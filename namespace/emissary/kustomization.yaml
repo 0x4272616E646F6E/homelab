@@ -4,5 +4,5 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - emissary-crds/
+  - emissary-crds.yaml
   - emissary/
