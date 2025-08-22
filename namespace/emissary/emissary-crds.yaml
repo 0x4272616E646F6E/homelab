@@ -5732,7 +5732,7 @@ spec:
       app.kubernetes.io/instance: emissary-apiext
       app.kubernetes.io/name: emissary-apiext
       app.kubernetes.io/part-of: emissary-apiext
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
