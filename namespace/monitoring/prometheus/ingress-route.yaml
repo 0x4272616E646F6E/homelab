@@ -13,8 +13,8 @@ spec:
         - name: internal-whitelist
           namespace: traefik
       services:
-        - name: prometheus-prometheus-pushgateway
-          port: 9091
+        - name: prometheus-kube-state-metrics
+          port: 8080
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -35,5 +35,5 @@ spec:
       - name: redirect-https
         namespace: traefik
       services:
-        - name: prometheus-prometheus-pushgateway
-          port: 9091
+        - name: prometheus-kube-state-metrics
+          port: 8080
