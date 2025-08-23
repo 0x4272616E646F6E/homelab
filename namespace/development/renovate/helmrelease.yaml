@@ -6,7 +6,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: renovate
+      chart: renovatebot/renovate
       version: 43.21.5
       sourceRef:
         kind: HelmRepository
