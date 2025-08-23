@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://docs.renovatebot.com/helm-charts
+  url: https://mend.github.io/renovate-ce-ee

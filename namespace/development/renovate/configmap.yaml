@@ -5,319 +5,397 @@ metadata:
   namespace: development
 data:
   values.yaml: |-
-    global:
-      # -- Additional labels to be set on all renovate resources
-      commonLabels: {}
-      compatibility:
-        openshift:
-          # --  Adapt the securityContext sections of the deployment to make them compatible with Openshift restricted-v2 SCC: remove runAsUser, runAsGroup and fsGroup and let the platform use their allowed default IDs. Possible values: `auto` (apply if the detected running cluster is Openshift), `force` (perform the adaptation always), `disabled` (do not perform adaptation)
-          adaptSecurityContext: 'auto'
-
-    # -- Override the name of the chart
-    nameOverride: ''
-    # -- Override the fully qualified app name
-    fullnameOverride: ''
-    # -- Annotations to add to secret
-    secretAnnotations: {}
-
-    cronjob:
-      # -- Schedules the job to run using cron notation
-      schedule: '0 1 * * *'  # At 01:00 every day
-      # -- You can specify a time zone for a CronJob by setting timeZone to the name of a valid time zone. (starting with k8s 1.27) <https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/#time-zones>
-      timeZone: 'America/Detroit'  # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for valid names
-      # -- If it is set to true, all subsequent executions are suspended. This setting does not apply to already started executions.
-      suspend: false
-      # -- Annotations to set on the cronjob
-      annotations: {}
-      # -- Labels to set on the cronjob
-      labels: {}
-      # -- "Allow" to allow concurrent runs, "Forbid" to skip new runs if a previous run is still running or "Replace" to replace the previous run
-      concurrencyPolicy: 'Forbid'
-      # -- "Number of successful completions is reached to mark the job as complete"
-      completions: ''
-      # -- "Where the jobs should be NonIndexed or Indexed"
-      completionMode: ''
-      # -- Amount of failed jobs to keep in history
-      failedJobsHistoryLimit: '1'
-      # -- Amount of completed jobs to keep in history
-      successfulJobsHistoryLimit: '3'
-      # -- Set to Never to restart the job when the pod fails or to OnFailure to restart when a container fails
-      jobRestartPolicy: Never
-      # -- Time to keep the job after it finished before automatically deleting it
-      ttlSecondsAfterFinished: ''
-      # -- Deadline for the job to finish
-      activeDeadlineSeconds: ''
-      # -- Number of times to retry running the pod before considering the job as being failed
-      jobBackoffLimit: ''
-      # -- Maximal number of failures per index
-      backoffLimitPerIndex: ''
-      # -- Maximal number of failed indexes before terminating the Job execution
-      maxFailedIndexes: ''
-      # -- Deadline to start the job, skips execution if job misses it's configured deadline
-      startingDeadlineSeconds: ''
-      # -- Additional initContainers that can be executed before renovate
-      initContainers: []
-      # initContainers:
-      # - name: INIT_CONTAINER_NAME
-      #   image: INIT_CONTAINER_IMAGE
-      # -- Number of pods to run in parallel
-      parallelism: ''
-      # -- Custom command to run in the container
-      commandOverride: []
-      # -- Custom arguments to run in the container
-      argsOverride: []
-      # -- Prepend shell commands before renovate runs
-      preCommand: ''
-      # preCommand: |
-      #   echo hello
-      #   echo world
-
-      # -- Append shell commands after renovate runs
-      postCommand: ''
-      # postCommand: |
-      #   echo hello
-      #   echo world
-
-    pod:
-      # -- Annotations to set on the pod
-      annotations: {}
-      # -- Labels to set on the pod
-      labels: {}
-
     image:
-      # -- Registry to pull image from
-      registry: ghcr.io
-      # -- Image name to pull
-      repository: renovatebot/renovate
-      # -- Renovate image tag to pull
-      tag: 40.1.3
-      # -- "IfNotPresent" to pull the image if no image with the specified tag exists on the node, "Always" to always pull the image or "Never" to try and use pre-pulled images
+      repository: ghcr.io/mend/renovate-ce
+      tag: 11.1.0
+      useFull: true
       pullPolicy: IfNotPresent
-      # -- Set `true` to use the full image. See https://docs.renovatebot.com/getting-started/running/#the-full-image
-      useFull: false
 
-    # -- Secret to use to pull the image from the repository
-    imagePullSecrets: {}
+    nameOverride: ""
+    fullnameOverride: ""
 
     renovate:
-      # -- Custom exiting global renovate config
-      existingConfigFile: ''
-      # -- Inline global renovate config.json
-      # config: ''
-      # See https://docs.renovatebot.com/self-hosted-configuration
+      # Additional env vars
+      extraEnvVars: [ ]
+
+      # You must accept the Mend Terms of Service to use the image.
+      # Please read https://www.mend.io/terms-of-service/
+      # Set this value to 'y' to consent.
+      mendRnvAcceptTos: "y"
+
+      # Provide a valid license key for Renovate Community Edition.
+      # Use this key for up to 10 repos: eyJsaW1pdCI6IjEwIn0=.30440220457941b71ea8eb345c729031718b692169f0ce2cf020095fd328812f4d7d5bc1022022648d1a29e71d486f89f27bdc8754dfd6df0ddda64a23155000a61a105da2a1
+      # For a free unrestricted repo Community Edition license key register at https://www.mend.io/renovate-community/
+      mendRnvLicenseKey: "eyJsaW1pdCI6IjEwIn0=.30440220457941b71ea8eb345c729031718b692169f0ce2cf020095fd328812f4d7d5bc1022022648d1a29e71d486f89f27bdc8754dfd6df0ddda64a23155000a61a105da2a1"
+
+      # Which platform Mend Renovate will connect to.
+      # valid values: "bitbucket-server", "github" or "gitlab"
+      mendRnvPlatform: "github"
+
+      # API endpoint, include trailing slash. Examples: https://api.github.com/, https://gitlab.com/api/v4/
+      mendRnvEndpoint: "https://api.github.com/"
+
+      # Personal Access Token for bot account (GitLab only)
+      mendRnvGitlabPat:
+
+      # The GitHub App ID provided when you provisioned the Mend Renovate app. Force string format by quoting value.
+      mendRnvGithubAppId:
+
+      # Optional: The GitHub bot user ID that can be found by calling `https://api.github.com/users/{appName}[bot]` under the `id` key.
+      #  Force string format by quoting value.
+      mendRnvGithubBotUserId:
+
+      # A string representation of the private key provided by GitHub Enterprise when you provisioned Mend Renovate
+      mendRnvGithubAppKey:
+
+      # Renovate Bot user account (Bitbucket "User" access only)
+      mendRnvBitbucketUser:
+
+      # BitBucket access token for the bot user
+      mendRnvBitbucketPat:
+
+      # Optional: The URL of the Renovate Server plus '/webhook' suffix.
+      # Must be accessible to receive incoming calls from BitBucket Data Center.
+      mendRnvWebhookURL:
+
+      # Optional: A token used for searching/adding/removing repository webhooks.
+      # required if MEND_RNV_WEBHOOK_URL is set.
+      mendRnvAdminToken:
+
+      # Optional: Provide a path to persist the SQLite database (eg. '/db/renovate-ce.sqlite', where 'db' is defined as a volume)
+      # If you set cachePersistence.enabled to true, the default value for this setting will persist the SQLite database automatically
+      mendRnvSqliteFilePath: '/tmp/renovate/renovate-ce.sqlite'
+
+      # Optional: Set User Agent Mend Renovate-ce will use to query the registries, Defaults to 'mend-renovate'
+      mendRnvUserAgent:
+
+      # Required if Admin APIs are enabled.
+      mendRnvServerApiSecret:
+
+      # Optional: Set to 'true' to enable Admin APIs. Defaults to 'false'.
+      #
+      # deprecated: use mendRnvApiEnabled instead.
+      mendRnvAdminApiEnabled:
+
+      # Optional: Set to 'true' to enable APIs. Defaults to 'false'.
+      mendRnvApiEnabled:
+
+      # Optional: Set to 'true' to enable system APIs. Defaults to 'false'.
+      mendRnvSystemApiEnabled:
+
+      # Optional: Set to 'true' to enable jobs APIs. Defaults to 'false'.
+      mendRnvJobsApiEnabled:
+
+      # Optional: Set to 'true' to enable Reporting APIs. Defaults to 'false'.
+      #
+      # deprecated: use mendRnvReportingApiEnabled instead.
+      mendRnvReportingEnabled:
+
+      # Optional: Set to 'true' to enable Reporting APIs. Defaults to 'false'.
+      mendRnvReportingApiEnabled:
+
+      # Optional, defaults to 'renovate'
+      mendRnvWebhookSecret:
+
+      # Optional: Controls whether to enqueue webhook based jobs for disabled repositories.
+      # Accepted values:
+      #   "full":     Always enqueue jobs.
+      #   "minimal":  Don’t enqueue jobs for disabled repositories. Default.
+      #
+      # Note: Scheduled and API based jobs will still be triggered for these repositories.
+      mendRnvWebhookSkipDisabledRepoJobs:
+
+      # Personal Access Token for github.com (used for retrieving changelogs)
+      githubComToken:
+
+      # PIP index url to get packages from. Will be mounted as a secret
+      pipIndexUrl:
+
+      # Existing secret with secret values with the following keys:
+      #   mendRnvLicenseKey:
+      #   mendRnvGitlabPat:
+      #   mendRnvGithubAppId:
+      #   mendRnvGithubAppKey:
+      #   mendRnvWebhookSecret:
+      #   mendRnvServerApiSecret:
+      #   githubComToken:
+      #   pipIndexUrl:
+      existingSecret: "renovate-secrets"
+
+      # Optional, defaults to '0 * * * *' (hourly)
+      mendRnvCronJobSchedulerAll:
+
+      # Optional, defaults to '0 0,4,8,12,16,20 * * *' (every 4 hours)
+      mendRnvCronAppSync:
+
+      # defaults to 'true'
+      mendRnvSyncOnStartup:
+
+      # defaults to 'bulk'
+      # GitHub users only: can be set to 'batch'
+      mendRnvSyncMode:
+
+      # Optional. Format: s3://bucket/dir1/dir2. Defines S3 storage location for saving job logs
+      mendRnvLogHistoryS3:
+
+      # Optional, a string of a comma separated values. (e.g. `org1/*, org2/test*, org2/test*`). Same behavior as Renovate cli 'autodiscoverFilter' feature
+      # Warning: The Renovate CLI 'autodiscover' configuration option is disabled.
+      # Repository filtering should solely rely on server-side filtering using 'mendRnvAutoDiscoverFilter'.
+      mendRnvAutoDiscoverFilter:
+
+      # Optional. Accepted values: 'enabled', 'discovered', and 'disabled'. Defaults to 'discovered'.
+      mendRnvEnqueueJobsOnStartup:
+
+      # Optional. Specify a directory path to save Renovate job log files.
+      # It is recommended to use an external volume to preserve history.
+      mendRnvLogHistoryDir:
+
+      # Optional: The number of days to save log files. Defaults to 30.
+      mendRnvLogHistoryTTLDays:
+
+      # Optional: Specifies a 5-part cron schedule. Defaults to `0 0 * * *` (every midnight).
+      # This cron job cleans up log history in the directory defined by `mendRnvLogHistoryDir`.
+      # It deletes any log file that exceeds the `mendRnvLogHistoryTTLDays` value.
+      mendRnvLogHistoryCleanupCron:
+
+      # Optional. valid values: 'disabled', 'enabled', 'managed' and default to unset (see documentation)
+      mendRnvForksProcessing:
+
+      # Optional: Sets the maximum execution duration of a Renovate CLI scan in minutes. Defaults to 60.
+      mendRnvWorkerExecutionTimeout:
+
+      # optional: valid values are 'off', 'always', a cron (example: '0 0 * * *' daily at midnight)
+      mendRnvWorkerCleanup: off
+
+      # defaults to: '/tmp/renovate/cache, /tmp/renovate/repos, /home/ubuntu'
+      # Note: setting this value will override the default value
+      mendRnvWorkerCleanupDirs:
+
+      # optional: A numeric percentage threshold for disk storage warnings. The default to 70
+      # note: setting the value to zero "0" will turn off this feature
+      mendRnvDiskUsageWarnThreshold:
+
+      # optional: A comma-separated list of regex or glob patterns for matching device paths. Default is /dev/**
+      mendRnvDiskUsageFilter:
+
+      # optional: mainly added to allow support for the '--security-revert=CVE-2023-46809' value
+      mendRnvWorkerNodeArgs:
+
+      # Optional. Set to 'true' to enable Prometheus /metrics endpoint. Defaults to 'false'.
+      mendRnvPrometheusMetricsEnabled:
+
+      # Optional. Set to 'true' to disable GlobalProxyAgent. Defaults to 'false'.
+      mendRnvDisableGlobalAgent:
+
+      # Optional. Set to 'true' to enable HTTP/2 support. Defaults to 'false'.
+      mendRnvEnableHttp2:
+
+      # Optional. Set to 'true' to ensure that non-secure requests are rejected.
+      mendRnvHttpServerDisabled:
+
+      # TLS server config (YAML format, stringified to JSON in template).
+      # Takes precedence over 'mendRnvServerHttpsConfigPath'.
+      #
+      # https://github.com/mend/renovate-ce-ee/blob/main/docs/tls.md#https-server-configuration
+      mendRnvServerHttpsConfig:
+      #    SNIConfig:
+      #      domain1.com:
+      #        key: "file:///path/to/key.pem"      # or "base64://..." or plain string
+      #        cert: "file:///path/to/cert.pem"    # or "base64://..." or plain string
+      #    baseConfig:
+      #      key: "file:///default/key.pem"
+      #      cert: "file:///default/cert.pem"
+      #      maxVersion: "TLSv1.3",
+      #      minVersion: "TLSv1.2"
+
+      # Path to the TLS server config.
+      mendRnvServerHttpsConfigPath:
+
+      # Self-hosted renovate configuration file, will be mounted as a config map
       config: |
-        {
-          "platform": "github",
-          "autodiscover": true,
-          "logLevel": "info",
-          "onboarding": false
+        module.exports = {
+          // Enter self-hosted configuration options here.
+          // https://docs.renovatebot.com/self-hosted-configuration/
         }
 
-      # -- Use the Helm tpl function on your configuration. See README for how to use this value
-      configEnableHelmTpl: false
+      #  # Npmrc file. Will be mounted as a secret
+      #  npmrc: |
+      #    //registry.npmjs.org/:_authToken=xxxxxx
 
-      # -- Use this to create the renovate-config as a secret instead of a configmap
-      configIsSecret: false
+      # Existing secret with npmrc configuration with key:
+      #   .npmrc:
+      npmrcExistingSecret:
 
-      # -- Use this to create a config.js instead of a config.json
-      configIsJavaScript: false
+      # Disable NodeJS SSL verify (do not use for production)
+      noNodeTlsVerify: false
 
-      # -- Renovate Container-level security-context
-      securityContext: {}
+      # Disable GIT SSL verify (do not use for production)
+      noGitTlsVerify: false
 
-      # Instead of a file system cache, it is highly recommended to use the redis subchart.
-      # Alternatively, SQLite is also a good choice.
-      # Take a look at https://github.com/renovatebot/renovate/discussions/30525 for more information.
-      # -- Options related to persistence
-      persistence:
-        cache:
-          # -- Allow the cache to persist between runs
-          enabled: false
-          # -- Storage class of the cache PVC
-          storageClass: ""
-          # -- Storage size of the cache PVC
-          storageSize: "512Mi"
-          # -- Existing volume, enables binding the pvc to an existing volume
-          volumeName: ""
-          # -- Labels to set on the cache PVC
-          labels: {}
+      # Set User Agent Mend Renovate will use to query the registries
+      # defaults to https://github.com/renovatebot/renovate
+      renovateUserAgent:
 
-    ssh_config:
-      # -- Whether to enable the use and creation of a secret containing .ssh files
+      # Set log level, defaults to 'info'. Allowed values: fatal, error, warn, info, debug, trace
+      logLevel: info
+
+      # Set log format, defaults to pretty format. Allowed values: undefined or 'json'
+      logFormat: json
+
+    postgresql:
+      # if to use PostgreSQL, if set to 'false' SQLite will be used instead
+      enabled: false
+      host:
+      port:
+      database:
+      user:
+      password:
+
+
+    disableCacheVolume: false
+
+    ## Cache Persistence Parameters
+    ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+    ##
+    cachePersistence:
+      ## Enable persistence using Persistent Volume Claims
+      enabled: false
+      ## Persistent Volume storage class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
+      storageClass: ""
+      ## @param Persistent Volume access modes
+      accessModes:
+        - ReadWriteOnce
+      ## Persistent Volume size
+      size: 1Gi
+      ## The name of an existing PVC to use for persistence
+      existingClaim: ""
+
+    ## Cache in Memory
+    ## ref: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+    ## cachePersistence.enabled takes precedence, make sure its disabled
+    ##
+    cacheInMemory:
+      ## Place the cache in memory (tmpfs)
       enabled: false
 
-      # Provide .ssh config file contents
-      # -- Contents of the id_rsa file
-      id_rsa: ''
-      # -- Contents of the id_rsa_pub file
-      id_rsa_pub: ''
-      # -- Contents of the config file
-      config: ''
+    service:
+      type: ClusterIP
+      ports:
+        http: 80
+        https: 443
+      annotations: { }
+      # cloud.google.com/load-balancer-type: "Internal"
 
-      # or provide the name of an existing secret to be read instead.
-      # -- Name of the existing secret containing a valid .ssh configuration
-      existingSecret: ''
+    ingress:
+      enabled: false
 
-    # -- Environment variables that should be referenced from a k8s secret, cannot be used when existingSecret is set
-    secrets: {}
-    # -- k8s secret to reference environment variables from. Overrides secrets if set
-    existingSecret: 'renovate-secrets'
+      # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
+      # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
+      # ingressClassName: nginx
 
-    # -- Additional configmaps. A generated configMap name is: "renovate.fullname" + "extra" + name(below) e.g. renovate-netrc-config
-    extraConfigmaps: []
-    # extraConfigmaps:
-    #   - name: netrc-config
-    #     data:
-    #       .netrc: |-
-    #         machine gitlab.example.com
-    #         login gitlab-ci-token
-    #         password some-pass
-    #   - name: yet-another-config
-    #     data:
-    #       ya-config.yaml: |-
-    #         "key"="value"
-    #         "key1"="value1"
-
-    # -- Additional volumes to the pod
-    extraVolumes: []
-    # extraVolumes:
-    #   - name: netrc-config
-    #     configMap:
-    #       name: renovate-extra-netrc-config
-
-    # -- Additional volumeMounts to the container
-    extraVolumeMounts: []
-    # extraVolumeMounts:
-    #   - name: netrc-config
-    #     mountPath: /home/ubuntu/.netrc
-    #     subPath: .netrc
-
-    # -- Additional containers to the pod
-    extraContainers: []
-    # extraContainers:
-    #   - name: vault-agent
-    #     image: vault:1.6.2
-    #     args:
-    #     - agent
-    #     - -config
-    #     - /vault/config/config.hcl
-    #     env:
-    #     - name: VAULT_ADDR
-    #       value: https://vault:8200
-    #     - name: VAULT_SKIP_VERIFY
-    #       value: "false"
-    #     - name: VAULT_CACERT
-    #       value: /vault/tls/ca.crt
+      annotations: { }
+      # kubernetes.io/tls-acme: "true"
+      hosts:
+        { }
+        # mend-renovate.local:
+        #   paths:
+        #     - path: "/"
+        #       pathType: ImplementationSpecific
+      tls: [ ]
+      #  - secretName: mend-renovate-tls
+      #    hosts:
+      #      - mend-renovate.local
 
     serviceAccount:
-      # -- Specifies whether a service account should be created
       create: false
-      # -- Annotations to add to the service account
-      annotations: {}
-      # -- The name of the service account to use
-      # If not set and create is true, a name is generated using the fullname template
-      name: ''
+      existingName:
+      annotations: { }
 
-    # -- Specify resource limits and requests for the renovate container
-    resources: {}
-      # We usually recommend not to specify default resources and to leave this as a conscious
-      # choice for the user. This also increases chances charts run on environments with little
-      # resources, such as Minikube. If you do want to specify resources, uncomment the following
-      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-      # limits:
-      #  cpu: 100m
-      #  memory: 128Mi
-      # requests:
-      #  cpu: 100m
-      #  memory: 128Mi
+    resources: { }
 
-    # -- Environment variables to add from existing secrets/configmaps. Uses the keys as variable name
-    envFrom: []
-    # envFrom:
-    #   - secretRef:
-    #       name: env-secrets
-    #   - configMapRef:
-    #       name: env-configmap
+    annotations: { }
 
-    # -- Environment variables to set on the renovate container
-    env: {}
-    # env:
-    #   VARIABLE_NAME: "value"
+    labels:
+      pods: { }
 
-    # -- Additional env. Helpful too if you want to use anything other than a `value` source.
-    envList: []
-    # envList:
-    #   - name: POD_NAME
-    #     valueFrom:
-    #       fieldRef:
-    #         fieldPath: metadata.name
+    nodeSelector: { }
 
-    redis:
-      # Configuration for a Redis subchart. Additional documentation at
-      # https://github.com/bitnami/charts/tree/master/bitnami/redis
+    tolerations: [ ]
 
-      # -- Enable the Redis subchart?
-      enabled: false
+    affinity: { }
 
-      # -- Override the prefix of the redisHost
-      nameOverride: ''
+    podSecurityContext: { }
+    #   runAsNonRoot: true
+    #   seccompProfile:
+    #     type: RuntimeDefault
 
-      # -- Disable replication by default
-      architecture: standalone
+    containerSecurityContext: { }
+    #   allowPrivilegeEscalation: false
+    #   readOnlyRootFilesystem: true
+    #   capabilities:
+    #     drop:
+    #       - ALL
 
-      auth:
-        # -- Don't require a password by default
-        enabled: false
+    initContainers: [ ]
 
-      # -- Override Kubernetes version for redis chart
-      kubeVersion: ''
+    # name of the image pull secret
+    imagePullSecrets: ""
 
-    # -- Override hostname resolution
-    hostAliases: []
-    # See: https://kubernetes.io/docs/tasks/network/customize-hosts-file-for-pods/
-    # hostAliases:
-    #   - ip: "your-ip"
-    #     hostnames:
-    #       - "your-hostname"
+    # This allows renovate to finish running for a repo and then gracefully exit
+    terminationGracePeriodSeconds: 60
 
-    # -- Pod-level security-context
-    securityContext: {}
+    livenessProbe:
+      initialDelaySeconds: 2
+      httpGet:
+        path: /health
+        port: http
+      periodSeconds: 10
+      timeoutSeconds: 1
+      failureThreshold: 3
+      successThreshold: 1
 
-    # -- Select the node using labels to specify where the cronjob pod should run on
-    nodeSelector: {}
-    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
-    # renovate: true
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: http
+      periodSeconds: 10
+      timeoutSeconds: 1
+      failureThreshold: 3
+      successThreshold: 1
 
-    # -- Configure the pod(Anti)Affinity and/or node(Anti)Affinity
-    affinity: {}
-    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+    # Extra ConfigMaps to be created by the chart
+    # These are full Kubernetes ConfigMap definitions
+    extraConfigMaps: [ ]
+    #  - apiVersion: v1
+    #    kind: ConfigMap
+    #    metadata:
+    #      name: my-extra-config-map
+    #    data:
+    #      MY_ENV_VAR: "my-value"
+    #      ANOTHER_VAR: "123"
 
-    # -- Configure which node taints the pod should tolerate
-    tolerations: []
-    # See: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
+    # List of ConfigMaps to be loaded as environment variables
+    # Ref: https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps-as-environment-variables
+    extraEnvFromConfigMaps: [ ]
+    #  - name: my-extra-config
 
-    # -- Create extra manifests via values. Would be passed through `tpl` for templating
-    extraObjects: []
-    # extraObjects:
-    #   - apiVersion: external-secrets.io/v1beta1
-    #     kind: ExternalSecret
-    #     metadata:
-    #       name: '{{ include "renovate.fullname" . }}-token'
-    #     spec:
-    #       secretStoreRef:
-    #         name: default
-    #       data:
-    #         - secretKey: token
-    #           remoteRef:
-    #             key: github-token
-    #   - |
-    #     apiVersion: v1
-    #     kind: ConfigMap
-    #     metadata:
-    #       name: {{ include "renovate.fullname" . }}-config
-    #     data:
-    #       config.json: |
-    #         {
-    #           "platform": "github",
-    #           "repositories": ["username/repo", "orgname/repo"]
-    #         }
+    extraVolumes: [ ]
+    #  - name: secrets-store-inline
+    #    csi:
+    #      driver: secrets-store.csi.k8s.io
+    #      readOnly: true
+    #      volumeAttributes:
+    #      secretProviderClass: "some-secret-store"
+    #  - name: my-extra-config-map-volume
+    #    configMap:
+    #      name: my-extra-config
+
+    extraVolumeMounts: [ ]
+    #  - name: secrets-store-inline
+    #    mountPath: "/mnt/secrets-store"
+    #    readOnly: true
+    #  - name: my-extra-config-map-volume
+    #    mountPath: /path
