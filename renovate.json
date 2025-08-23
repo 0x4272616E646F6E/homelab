@@ -1,3 +1,84 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json"
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "dependencyDashboard": true,
+  "prHourlyLimit": 6,
+  "prConcurrentLimit": 10,
+  "rangeStrategy": "replace",
+  "rebaseWhen": "behind-base-branch",
+  "ignorePaths": [
+    "clusters/**/flux-system/**"
+  ],
+
+  "enabledManagers": ["kubernetes", "helm-values", "regex"],
+
+  "kubernetes": {
+    "fileMatch": [
+      "(^|/)namespace/.+\\.ya?ml$",
+      "(^|/)clusters/.+\\.ya?ml$",
+      "(^|/)talos/.+\\.ya?ml$",
+      "(^|/).+\\.ya?ml$"
+    ]
+  },
+
+  "helmValues": {
+    "fileMatch": [
+      "(^|/)values\\.ya?ml$"
+    ]
+  },
+
+  "regexManagers": [
+    {
+      "description": "Bump Flux HelmRelease chart versions (requires a registryUrl comment)",
+      "fileMatch": [
+        "(^|/)namespace/.+\\.ya?ml$",
+        "(^|/)clusters/.+\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:\\s*registryUrl=(?<registryUrl>\\S+)[\\s\\S]*?kind:\\s*HelmRelease[\\s\\S]*?chart:[\\s\\S]*?spec:[\\s\\S]*?chart:\\s*(?<depName>[^\\s]+)[\\s\\S]*?version:\\s*(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "helm",
+      "depNameTemplate": "{{depName}}",
+      "registryUrlTemplate": "{{registryUrl}}",
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks",
+      "fileMatch": [
+        "(^|/)namespace/.+/configmap\\.ya?ml$"
+      ],
+      "matchStrings": [
+        "repository:\\s*(?<depName>[-\\w./:]+)\\s*\\n\\s*tag:\\s*(?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "{{depName}}",
+      "versioningTemplate": "semver"
+    }
+  ],
+
+  "packageRules": [
+    { "matchManagers": ["kubernetes"], "labels": ["deps", "container"] },
+    { "matchManagers": ["helm-values"], "labels": ["deps", "container"] },
+    { "matchManagers": ["regex"], "labels": ["deps", "helm"] },
+
+    { "matchManagers": ["kubernetes"], "matchUpdateTypes": ["patch"], "automerge": true },
+    { "matchManagers": ["regex"], "matchUpdateTypes": ["patch"], "automerge": false },
+
+    { "description": "Pin image digests in Kubernetes manifests",
+      "matchManagers": ["kubernetes"],
+      "matchDatasources": ["docker"],
+      "pinDigests": true,
+      "labels": ["deps", "container", "digest"]
+    },
+    { "description": "Auto-merge digest refreshes (safe, no tag change)",
+      "matchManagers": ["kubernetes"],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "automerge": true
+    }
+  ]
 }
