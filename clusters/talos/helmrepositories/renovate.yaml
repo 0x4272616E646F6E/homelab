@@ -1,8 +1,9 @@
-apiVersion: source.toolkit.fluxcd.io/v1
+apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
   name: renovate
   namespace: flux-system
 spec:
-  interval: 1h
-  url: https://docs.renovatebot.com/helm-charts
+  type: oci
+  url: oci://ghcr.io/renovatebot/helm-charts
+  interval: 60m
