@@ -19,12 +19,13 @@ data:
 
     postgresql:
       enabled: true
-      image:
-        registry: docker.io
-        repository: postgres
-        tag: "15.8-bookworm"
-      volumePermissions:
-        enabled: true
+      auth: {}
+      global:
+        postgresql:
+          auth: {}
+          image:
+            repository: postgres
+            tag: "15.8-bookworm"
         # auth:
         # password: ""
 
