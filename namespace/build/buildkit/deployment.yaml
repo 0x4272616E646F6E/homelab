@@ -19,7 +19,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: buildkitd
-        image: moby/buildkit:v0.23.1-rootless@sha256:6d65d4ed00cc9e9183da5f3e5ecbe033ed6409e557785eac11c14c5f11048731
+        image: moby/buildkit:v0.23.2-rootless@sha256:cab936745de5d673465948f1e93ff4d6e372bbe33f218afd3314eba45a6f85a9
         args:
         - "--addr"
         - "tcp://0.0.0.0:1234"
