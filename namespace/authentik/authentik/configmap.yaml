@@ -24,9 +24,6 @@ data:
               name: authentik-secrets
               key: POSTGRES_PASSWORD
         name: authentik
-    # These environment variables will override the ones set by the Helm chart
-    env:
-      AUTHENTIK_POSTGRESQL__HOST: authentik-postgres-15
     server:
       ingress:
         ingressClassName: envoy
