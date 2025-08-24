@@ -14,16 +14,17 @@ data:
       error_reporting:
         enabled: false
       
-      # Database configuration
+      # Configure external database
       postgresql:
         host: authentik-postgres-15
+        port: 5432
         user: authentik
+        name: authentik
         password:
           valueFrom:
             secretKeyRef:
               name: authentik-secrets
               key: POSTGRES_PASSWORD
-        name: authentik
     server:
       ingress:
         ingressClassName: envoy
