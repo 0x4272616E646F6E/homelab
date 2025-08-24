@@ -22,7 +22,7 @@ spec:
       terminationGracePeriodSeconds: 3600
       containers:
       - name: vllm
-        image: vllm/vllm-openai:v0.10.0@sha256:05a31dc4185b042e91f4d2183689ac8a87bd845713d5c3f987563c5899878271
+        image: vllm/vllm-openai:v0.10.1@sha256:c62343ee72f094ef574ab3af2717d0c60fec5e0808b238f19ac4c0d22fd152f7
         imagePullPolicy: IfNotPresent
         args:
           - --model
