@@ -17,6 +17,8 @@ data:
             key: SECRET_KEY
       error_reporting:
         enabled: false
+      
+      # Database configuration
       postgresql:
         host: authentik-postgres-15
         user: authentik
@@ -26,14 +28,15 @@ data:
               name: authentik-secrets
               key: POSTGRES_PASSWORD
         name: authentik
-    
+    # These environment variables will override the ones set by the Helm chart
+    env:
+      AUTHENTIK_POSTGRESQL__HOST: authentik-postgres-15
     server:
       ingress:
         ingressClassName: envoy
         enabled: false
         hosts:
           - authentik.oglesby.io
-
     # Disable the built-in PostgreSQL
     postgresql:
       enabled: false
