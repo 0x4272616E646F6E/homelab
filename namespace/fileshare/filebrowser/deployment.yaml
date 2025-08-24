@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
         initContainers:
         - name: init-config
-          image: busybox:1.36@sha256:303337d3d52898b33018796d760d3a01c2dcc87973dd66ec22fe78ae1e8429c9
+          image: busybox:1.37@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
           imagePullPolicy: Always
           command:
             - sh
