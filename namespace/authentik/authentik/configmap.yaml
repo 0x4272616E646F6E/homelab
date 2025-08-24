@@ -20,7 +20,9 @@ data:
     postgresql:
       enabled: true
       image:
-        tag: "15"
+        registry: docker.io
+        repository: bitnami/postgresql
+        tag: "15.7.0"
       volumePermissions:
         enabled: true
         # auth:
