@@ -6,25 +6,9 @@ metadata:
 data:
   values.yaml: |-
     authentik:
-      secret_key:
-        valueFrom:
-          secretKeyRef:
-            name: authentik-secrets
-            key: SECRET_KEY
       error_reporting:
         enabled: false
-      
-      # Configure external database
-      postgresql:
-        host: authentik-postgres-15
-        port: 5432
-        user: authentik
-        name: authentik
-        password:
-          valueFrom:
-            secretKeyRef:
-              name: authentik-secrets
-              key: POSTGRES_PASSWORD
+
     server:
       ingress:
         ingressClassName: envoy
