@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentik-postgres-15
+  namespace: authentik
+  labels:
+    app: authentik-postgres-15
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentik-postgres-15
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: authentik-postgres-15
+    spec:
+      securityContext:
+        fsGroup: 999
+      containers:
+      - name: postgres
+        image: postgres:15.8-bookworm
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "authentik"
+        - name: POSTGRES_USER
+          value: "authentik"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: authentik-secrets
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: 200m
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: data-authentik-postgresql-0

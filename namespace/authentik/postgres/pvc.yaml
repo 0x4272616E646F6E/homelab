@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-authentik-postgresql-0
+  namespace: authentik
+  labels:
+    app: authentik-postgres-15
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: rook-ceph-block
+  volumeMode: Filesystem

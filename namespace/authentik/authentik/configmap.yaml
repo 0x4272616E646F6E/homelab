@@ -10,10 +10,24 @@ data:
       pullPolicy: IfNotPresent
     
     authentik:
+      secret_key:
+        valueFrom:
+          secretKeyRef:
+            name: authentik-secrets
+            key: SECRET_KEY
       error_reporting:
         enabled: false
-        # postgresql:
-        #   password: ""
+      # Configure Authentik to use our external PostgreSQL
+      postgresql:
+        host: authentik-postgres-15
+        user: authentik
+        password:
+          valueFrom:
+            secretKeyRef:
+              name: authentik-secrets
+              key: POSTGRES_PASSWORD
+        name: authentik
+    
     server:
       ingress:
         ingressClassName: envoy
@@ -21,15 +35,9 @@ data:
         hosts:
           - authentik.oglesby.io
 
+    # Disable the built-in PostgreSQL
     postgresql:
-      enabled: true
-      image:
-        registry: docker.io
-        repository: postgres
-        tag: "15.8-bookworm"
-      # Keep auth and other parameters
-      # auth:
-      # password: ""
+      enabled: false
 
     redis:
       enabled: true
