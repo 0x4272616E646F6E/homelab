@@ -5,6 +5,10 @@ metadata:
   namespace: authentik
 data:
   values.yaml: |-
+    image:
+      tag: "2025.8.1"
+      pullPolicy: IfNotPresent
+    
     authentik:
       error_reporting:
         enabled: false
@@ -19,15 +23,13 @@ data:
 
     postgresql:
       enabled: true
-      auth: {}
-      global:
-        postgresql:
-          auth: {}
-          image:
-            repository: postgres
-            tag: "15.8-bookworm"
-        # auth:
-        # password: ""
+      image:
+        registry: docker.io
+        repository: postgres
+        tag: "15.8-bookworm"
+      # Keep auth and other parameters
+      # auth:
+      # password: ""
 
     redis:
       enabled: true
@@ -45,3 +47,15 @@ data:
           - ""
           - --appendonly
           - "no"
+          
+    # Tell Flux to force re-deploy to pick up value changes  
+    postRenderers:
+      - kustomize:
+          patches:
+            - target:
+                kind: StatefulSet
+                name: authentik-postgresql
+              patch: |
+                - op: replace
+                  path: /spec/template/spec/containers/0/image
+                  value: docker.io/postgres:15.8-bookworm
