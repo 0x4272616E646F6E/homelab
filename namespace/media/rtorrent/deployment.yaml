@@ -16,7 +16,7 @@ spec:
       runtimeClassName: youki
       initContainers:
         - name: init-rtorrent
-          image: busybox:latest
+          image: busybox:latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
           imagePullPolicy: Always
           command:
             - /bin/sh
@@ -48,7 +48,7 @@ spec:
             value: "1"
       containers:
         - name: rtorrent
-          image: docker.io/crazymax/rtorrent-rutorrent:latest
+          image: docker.io/crazymax/rtorrent-rutorrent:latest@sha256:d11888723fd5fbf73253e3757935f75e92028e44b67a203dd2833ef95fcd0529
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

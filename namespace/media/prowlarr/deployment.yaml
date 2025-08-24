@@ -16,7 +16,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest
+          image: lscr.io/linuxserver/prowlarr:latest@sha256:4f2a6d597845b2f3e19284b1d982b3e0b4bd7c22472c2979c956aa198b83f472
           imagePullPolicy: Always
           ports:
             - containerPort: 9696

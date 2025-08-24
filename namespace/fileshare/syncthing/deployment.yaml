@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: syncthing
-          image: lscr.io/linuxserver/syncthing:latest
+          image: lscr.io/linuxserver/syncthing:latest@sha256:70a0c3e654e5867c2e5775b9b3ec22b8f8e2b45069289dffc63f8f3cbeb550da
           imagePullPolicy: Always
           ports:
             - containerPort: 8384

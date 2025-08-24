@@ -19,7 +19,7 @@ spec:
           - 44 
       containers:
         - name: tdarr
-          image: ghcr.io/haveagitgat/tdarr:latest
+          image: ghcr.io/haveagitgat/tdarr:latest@sha256:69d28aff66318ecc1c9496717c1731fbdbbfb8c0c4664a90bbb36747fbf279fe
           imagePullPolicy: Always
           ports:
             - containerPort: 8265

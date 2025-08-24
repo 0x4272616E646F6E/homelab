@@ -20,7 +20,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ersatztv
-          image: ghcr.io/ersatztv/ersatztv:latest
+          image: ghcr.io/ersatztv/ersatztv:latest@sha256:5464348e1989be72161e1e6ef197cf1a1c403efed8090474ce1ffe501a375c37
           imagePullPolicy: Always
           ports:
             - containerPort: 8409

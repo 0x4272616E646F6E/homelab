@@ -24,7 +24,7 @@ data:
       # If true, Create test Pod to verify the Ambassador service works correctly (Only created on helm test)
       enabled: false
       # Image to use for the test Pod
-      image: busybox
+      image: busybox@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
 
     canary:
       # Creates a Canary deployment and service using the following canary settings. Other settings inherited from main deployment

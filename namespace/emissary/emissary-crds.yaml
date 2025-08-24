@@ -5744,7 +5744,7 @@ spec:
       serviceAccountName: emissary-apiext
       containers:
         - name: emissary-apiext
-          image: docker.io/emissaryingress/emissary:3.10.0
+          image: docker.io/emissaryingress/emissary:3.10.0@sha256:bb703743b2287489293ff3f3eb1036bc142c13567556df687be56f8b4953686a
           imagePullPolicy: IfNotPresent
           command: [ "apiext", "emissary-apiext" ]
           args: ["--crd-label-selector", "app.kubernetes.io/part-of=emissary-apiext"]

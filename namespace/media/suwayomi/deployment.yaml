@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: suwayomi
-          image: ghcr.io/suwayomi/tachidesk:latest
+          image: ghcr.io/suwayomi/tachidesk:latest@sha256:acad9ea1cbb968bc95477a69e32dbc682b710a00ed6e7b06f0eb167caf382e81
           imagePullPolicy: Always
           ports:
             - containerPort: 4567

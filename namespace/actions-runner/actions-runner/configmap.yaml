@@ -360,7 +360,7 @@ data:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/actions/actions-runner:latest
+            image: ghcr.io/actions/actions-runner:latest@sha256:db0dcae6d28559e54277755a33aba7d0665f255b3bd2a66cdc5e132712f155e0
             command: ["/home/runner/run.sh"]
     ## Optional controller service account that needs to have required Role and RoleBinding
     ## to operate this gha-runner-scale-set installation.

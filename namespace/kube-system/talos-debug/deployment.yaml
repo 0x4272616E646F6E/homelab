@@ -9,7 +9,7 @@ spec:
     runAsUser: 0
   containers:
   - name: talos-debug
-    image: alpine:edge
+    image: alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
     command: ["sh", "-c", "echo 'host debug pod ready'; sleep 36000"]
     securityContext:
       privileged: true
