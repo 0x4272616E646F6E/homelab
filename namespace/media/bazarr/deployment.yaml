@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bazarr
-          image: lscr.io/linuxserver/bazarr:latest
+          image: lscr.io/linuxserver/bazarr:latest@sha256:d37a88fb1751c7b9a9fc4d134b8e96c1e32821ee38630770e6a9112cf47fbe55
           imagePullPolicy: Always
           ports:
             - containerPort: 6767

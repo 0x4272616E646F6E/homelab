@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     ### Image
     image:
-      image: kestra/kestra
+      image: kestra/kestra@sha256:a95bf9fe032e030a08441b6da65b24c0788224f87d12b1b450430c9801ed9f8b
       pullPolicy: Always
       # The tag of the image is taken from AppVersion by default.
       # If you want to use a specific tag, add image.tag below.
@@ -157,7 +157,7 @@ data:
     dind:
       enabled: true
       image:
-        image: docker
+        image: docker@sha256:c0872aae4791ff427e6eda52769afa04f17b5cf756f8267e0d52774c99d5c9de
         tag: dind-rootless
         pullPolicy: IfNotPresent
       socketPath: /dind/

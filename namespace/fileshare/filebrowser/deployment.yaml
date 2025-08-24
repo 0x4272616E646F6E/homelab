@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
         initContainers:
         - name: init-config
-          image: busybox:1.36
+          image: busybox:1.36@sha256:303337d3d52898b33018796d760d3a01c2dcc87973dd66ec22fe78ae1e8429c9
           imagePullPolicy: Always
           command:
             - sh
@@ -44,7 +44,7 @@ spec:
               mountPath: /config
       containers:
         - name: filebrowser
-          image: docker.io/filebrowser/filebrowser:s6
+          image: docker.io/filebrowser/filebrowser:s6@sha256:d3a20347e4d0cc567089d0734dee8c3dd47f540c4e2f4a9364e20a4f33ee2b09
           imagePullPolicy: Always
           ports:
             - containerPort: 80

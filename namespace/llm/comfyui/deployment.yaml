@@ -16,7 +16,7 @@ spec:
       runtimeClassName: nvidia
       containers:
         - name: comfyui
-          image: docker.io/yanwk/comfyui-boot:cu128-slim
+          image: docker.io/yanwk/comfyui-boot:cu128-slim@sha256:00896696d3f6377d13eee4c61fe036cab93ab82c9d36a1eff6bf8736364703fa
           imagePullPolicy: Always
           env:
           - name: CLI_ARGS

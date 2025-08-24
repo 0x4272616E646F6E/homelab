@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: huntarr
-          image: docker.io/huntarr/huntarr:latest
+          image: docker.io/huntarr/huntarr:latest@sha256:93edb4a72b3e7753a720baeed0b05c77a676920f9b90d4f6f5aea09cd3f1d2b4
           imagePullPolicy: Always
           env:
             - name: HUNTARR_PORT

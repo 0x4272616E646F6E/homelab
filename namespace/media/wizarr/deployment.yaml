@@ -16,7 +16,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: wizarr
-          image: ghcr.io/wizarrrr/wizarr:latest
+          image: ghcr.io/wizarrrr/wizarr:latest@sha256:ba051d632ae12eb1d6d61bfa02bf7ae743c7fc1ec56910c302dbee0f6e705afe
           imagePullPolicy: Always
           env:
             - name: DISABLE_BUILTIN_AUTH
