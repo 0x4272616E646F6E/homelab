@@ -19,6 +19,10 @@ data:
 
     postgresql:
       enabled: true
+      image:
+        tag: "15"
+      volumePermissions:
+        enabled: true
         # auth:
         # password: ""
 
