@@ -21,8 +21,8 @@ data:
       enabled: true
       image:
         registry: docker.io
-        repository: bitnami/postgresql
-        tag: "15.7.0"
+        repository: postgres
+        tag: "15.8-bookworm"
       volumePermissions:
         enabled: true
         # auth:
