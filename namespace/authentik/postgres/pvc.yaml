@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data-authentik-postgresql-0
+  name: authentik-postgres-pvc
   namespace: authentik
   labels:
     app: authentik-postgres-15
