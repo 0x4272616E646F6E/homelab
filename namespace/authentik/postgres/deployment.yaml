@@ -21,7 +21,7 @@ spec:
         fsGroup: 999
       containers:
       - name: postgres
-        image: postgres:15.8-bookworm
+        image: postgres:15.14-bookworm@sha256:3d5e4acc07c2222ebe9066c56db50fe4f116315ed31c39bb2d1a6d349eecc8c6
         ports:
         - containerPort: 5432
           name: postgres
