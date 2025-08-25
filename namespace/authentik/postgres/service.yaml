@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: authentik-postgres-15
+  name: authentik-postgres-17
   namespace: authentik
   labels:
-    app: authentik-postgres-15
+    app: authentik-postgres-17
 spec:
   ports:
   - port: 5432
     targetPort: postgres
   selector:
-    app: authentik-postgres-15
+    app: authentik-postgres-17
