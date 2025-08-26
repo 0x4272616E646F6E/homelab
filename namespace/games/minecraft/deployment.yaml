@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: minecraft
-          image: docker.io/itzg/minecraft-server:latest@sha256:12f8fb81f470f8c45aff07da73b7c6008f78b0271fdc6d7b13d0b511dd16d6ae
+          image: docker.io/itzg/minecraft-server:latest@sha256:ae3f5ef505ff60ec134e43faa54b41b8efbb05bbd602b6f2ba989f54ff756596
           imagePullPolicy: Always
           env:
             - name: ENABLE_ROLLING_LOGS
