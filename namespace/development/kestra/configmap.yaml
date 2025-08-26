@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     ### Image
     image:
-      image: kestra/kestra@sha256:a95bf9fe032e030a08441b6da65b24c0788224f87d12b1b450430c9801ed9f8b
+      image: kestra/kestra@sha256:1ddf40f49ebdb6f318d774a309919da02a7bfdc3ea2046b62d511f51f09b6e00
       pullPolicy: Always
       # The tag of the image is taken from AppVersion by default.
       # If you want to use a specific tag, add image.tag below.
