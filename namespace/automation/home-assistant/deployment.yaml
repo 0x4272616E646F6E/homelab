@@ -16,7 +16,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: homeassistant
-          image: lscr.io/linuxserver/homeassistant:latest@sha256:117ee74e0e7da4e932d2dcf0760ed064cd0ca80efe4865cc7c09a59ff9233337
+          image: lscr.io/linuxserver/homeassistant:latest@sha256:d8ac1f32b671afa50bdd3af0617be37e7d7bb1191f8d2fa80aebe08aecbbd5e7
           imagePullPolicy: Always
           ports:
             - containerPort: 8123
