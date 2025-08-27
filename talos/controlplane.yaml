@@ -193,7 +193,7 @@ cluster:
   proxy:
     disabled: true
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.33.4@sha256:71533e5a960e2955a54164905e92dac516ec874a23e0bf31304db82650101a4a
+    image: registry.k8s.io/kube-scheduler:v1.34.0@sha256:8fbe6d18415c8af9b31e177f6e444985f3a87349e083fe6eadd36753dddb17ff
   discovery:
     enabled: true
     registries:
