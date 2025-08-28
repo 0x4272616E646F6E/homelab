@@ -35,7 +35,7 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
-          - "0.90"
+          - "0.50"
           - --async-scheduling
           - --max-parallel-loading-workers
           - "2"
@@ -45,7 +45,7 @@ spec:
           - --rope-scaling
           - '{"rope_type":"yarn","factor":3.2,"original_max_position_embeddings":40960}'
           - --max-model-len
-          - "65536"
+          - "32768"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
