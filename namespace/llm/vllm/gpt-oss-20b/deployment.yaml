@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vllm-gpt-oss-20b
+      app.kubernetes.io/managed-by: flux
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -20,6 +21,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: vllm-gpt-oss-20b 
+        app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
