@@ -3,19 +3,30 @@ kind: Pod
 metadata:
   name: talos-debug
   namespace: kube-system
+  labels:
+    app.kubernetes.io/name: talos-debug
+    app.kubernetes.io/managed-by: flux
 spec:
   nodeName: talos-4m3-8nj
   securityContext:
     runAsUser: 0
   containers:
   - name: talos-debug
-    image: alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
+  # renovate: datasource=docker depName=docker.io/alpine
+    image: docker.io/alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
     command: ["sh", "-c", "echo 'host debug pod ready'; sleep 36000"]
     securityContext:
       privileged: true
     volumeMounts:
     - name: hostroot
       mountPath: /host
+    resources:
+      requests:
+        cpu: "1"
+        memory: "1Gi"
+      limits:
+        cpu: "2"
+        memory: "2Gi"
   volumes:
   - name: hostroot
     hostPath:

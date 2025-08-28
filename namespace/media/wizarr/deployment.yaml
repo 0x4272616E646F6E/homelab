@@ -3,21 +3,25 @@ kind: Deployment
 metadata:
   name: wizarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: wizarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: wizarr
+      app.kubernetes.io/name: wizarr
   template:
     metadata:
       labels:
-        app: wizarr
+        app.kubernetes.io/name: wizarr
     spec:
       runtimeClassName: youki
       containers:
         - name: wizarr
+        # renovate: datasource=docker depName=ghcr.io/wizarrrr/wizarr
           image: ghcr.io/wizarrrr/wizarr:latest@sha256:ba051d632ae12eb1d6d61bfa02bf7ae743c7fc1ec56910c302dbee0f6e705afe
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: DISABLE_BUILTIN_AUTH
               value: "true"

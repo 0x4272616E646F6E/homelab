@@ -3,10 +3,13 @@ kind: Deployment
 metadata:
   name: vllm-gpt-oss-20b
   namespace: llm
+  labels:
+    app.kubernetes.io/name: vllm-gpt-oss-20b
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app: vllm-gpt-oss-20b
+      app.kubernetes.io/name: vllm-gpt-oss-20b
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -16,13 +19,14 @@ spec:
   template:
     metadata:
       labels:
-        app: vllm-gpt-oss-20b 
+        app.kubernetes.io/name: vllm-gpt-oss-20b 
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
       containers:
       - name: vllm
-        image: vllm/vllm-openai:gptoss@sha256:23c3feefba723be97ff9e9bd769aed7d165839a79bc042eb8f3a13dd2a469e1c
+      # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
+        image: docker.io/vllm/vllm-openai:gptoss@sha256:23c3feefba723be97ff9e9bd769aed7d165839a79bc042eb8f3a13dd2a469e1c
         imagePullPolicy: IfNotPresent
         args:
           - --model

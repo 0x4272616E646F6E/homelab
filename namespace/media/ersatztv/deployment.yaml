@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: ersatztv
   namespace: media
+  labels:
+    app.kubernetes.io/name: ersatztv
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ersatztv
+      app.kubernetes.io/name: ersatztv
   template:
     metadata:
       labels:
-        app: ersatztv
+        app.kubernetes.io/name: ersatztv
     spec:
       runtimeClassName: nvidia
       securityContext:
@@ -20,8 +23,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: ersatztv
+        # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
           image: ghcr.io/ersatztv/ersatztv:latest@sha256:5464348e1989be72161e1e6ef197cf1a1c403efed8090474ce1ffe501a375c37
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8409
               protocol: TCP

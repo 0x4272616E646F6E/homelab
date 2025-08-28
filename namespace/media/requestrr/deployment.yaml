@@ -3,21 +3,25 @@ kind: Deployment
 metadata:
   name: requestrr
   namespace: media
+  labels:
+    app.kubernetes.io/name: requestrr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: requestrr
+      app.kubernetes.io/name: requestrr
   template:
     metadata:
       labels:
-        app: requestrr
+        app.kubernetes.io/name: requestrr
     spec:
       runtimeClassName: youki
       containers:
         - name: requestrr
+        # renovate: datasource=docker depName=docker.io/thomst08/requestrr
           image: docker.io/thomst08/requestrr:latest@sha256:e91cf44a769277ea10cc62ed148b1cd46126de2c6316dbc33aebe4de8bd094db
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4545
               protocol: TCP

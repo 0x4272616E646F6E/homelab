@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subgen
+  namespace: media
+  labels:
+    app.kubernetes.io/name: subgen
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 600
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: subgen
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: subgen
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      runtimeClassName: nvidia
+      containers:
+        - name: subgen
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          # renovate: datasource=docker depName=docker.io/mccloud/subgen
+          image: docker.io/mccloud/subgen:latest@sha256:881be89d23302b4b7b9faaba85405db939da86f4a24434ea9e819fc1b9684670
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: WHISPER_MODEL
+              value: "large-v3-turbo"
+            - name: WHISPER_THREADS
+              value: "4"
+            - name: PROCADDEDMEDIA
+              value: "True"
+            - name: PROCMEDIAONPLAY
+              value: "False"
+            - name: NAMESUBLANG 
+              value: "aa"
+            - name: SKIPIFINTERNALSUBLANG
+              value: "eng"
+            - name: PLEXTOKEN
+              value: ""
+            - name: PLEXSERVER
+              value: ""
+            - name: JELLYFINTOKEN
+              valueFrom: { secretKeyRef: { name: subgen-secrets, key: JELLYFINTOKEN } }
+            - name: JELLYFINSERVER
+              value: "http://jellyfin:8096"
+            - name: WEBHOOKPORT
+              value: "9000"
+            - name: CONCURRENT_TRANSCRIPTIONS
+              value: "2"
+            - name: WORD_LEVEL_HIGHLIGHT
+              value: "False"
+            - name: DEBUG
+              value: "True"
+            - name: USE_PATH_MAPPING
+              value: "False"
+            - name: PATH_MAPPING_FROM
+              value: "/tv"
+            - name: PATH_MAPPING_TO
+              value: "/Volumes/TV"
+            - name: TRANSCRIBE_DEVICE
+              value: "gpu"
+            - name: CLEAR_VRAM_ON_COMPLETE
+              value: "True"
+            - name: MODEL_PATH
+              value: "/models"
+            - name: UPDATE
+              value: "False"
+            - name: APPEND
+              value: "False"
+            - name: USE_MODEL_PROMPT
+              value: "False"
+            - name: CUSTOM_MODEL_PROMPT
+              value: ""
+            - name: LRC_FOR_AUDIO_FILES
+              value: "True"
+            - name: CUSTOM_REGROUP
+              value: "cm_sl=84_sl=42++++++1"
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          volumeMounts:
+            - name: models
+              mountPath: /models
+            - name: media
+              mountPath: /tv
+              subPath: media/tv
+            - name: media
+              mountPath: /movies
+              subPath: media/movies
+          resources:
+            requests:
+              cpu: "2"
+              memory: "8Gi"
+              nvidia.com/gpu: "1"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              nvidia.com/gpu: "1"
+          startupProbe:
+            tcpSocket:
+              port: 9000
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: models
+          persistentVolumeClaim:
+            claimName: subgen-models
+        - name: media
+          persistentVolumeClaim:
+            claimName: media

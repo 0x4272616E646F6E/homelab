@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: flaresolverr
   namespace: media
+  labels:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: flaresolverr
+      app.kubernetes.io/name: flaresolverr
   template:
     metadata:
       labels:
-        app: flaresolverr
+        app.kubernetes.io/name: flaresolverr
     spec:
       runtimeClassName: youki
       dnsPolicy: None
@@ -24,8 +27,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: flaresolverr
+        # renovate: datasource=docker depName=docker.io/flaresolverr/flaresolverr
           image: docker.io/flaresolverr/flaresolverr:latest@sha256:ab535d1fef5d7f1654c2756949798442ae4bbecee99d4338128aa137fd8eca0e
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8191
               protocol: TCP

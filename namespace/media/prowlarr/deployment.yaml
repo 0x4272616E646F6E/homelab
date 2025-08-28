@@ -3,21 +3,25 @@ kind: Deployment
 metadata:
   name: prowlarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: prowlarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: prowlarr
+      app.kubernetes.io/name: prowlarr
   template:
     metadata:
       labels:
-        app: prowlarr
+        app.kubernetes.io/name: prowlarr
     spec:
       runtimeClassName: youki
       containers:
         - name: prowlarr
+        # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
           image: lscr.io/linuxserver/prowlarr:latest@sha256:4f2a6d597845b2f3e19284b1d982b3e0b4bd7c22472c2979c956aa198b83f472
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9696
               protocol: TCP

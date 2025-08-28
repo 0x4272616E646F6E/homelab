@@ -3,21 +3,25 @@ kind: DaemonSet
 metadata:
   name: egress-gw-helper
   namespace: kube-system
+  labels:
+    app.kubernetes.io/name: egress-gw-helper
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app: egress-gw-helper
+      app.kubernetes.io/name: egress-gw-helper
   template:
     metadata:
       labels:
-        app: egress-gw-helper
+        app.kubernetes.io/name: egress-gw-helper
     spec:
       hostNetwork: true
       hostPID: true
       containers:
         - name: egress-gw-helper
-          image: alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
-          imagePullPolicy: Always
+        # renovate: datasource=docker depName=docker.io/alpine
+          image: docker.io/alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
+          imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
           command:

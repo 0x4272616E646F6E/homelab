@@ -3,21 +3,25 @@ kind: Deployment
 metadata:
   name: rtorrent
   namespace: media
+  labels:
+    app.kubernetes.io/name: rtorrent
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rtorrent
+      app.kubernetes.io/name: rtorrent
   template:
     metadata:
       labels:
-        app: rtorrent
+        app.kubernetes.io/name: rtorrent
     spec:
       runtimeClassName: youki
       initContainers:
         - name: init-rtorrent
-          image: busybox:latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
-          imagePullPolicy: Always
+          # renovate: datasource=docker depName=docker.io/busybox
+          image: docker.io/busybox:latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
+          imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -c
@@ -49,7 +53,7 @@ spec:
       containers:
         - name: rtorrent
           image: docker.io/crazymax/rtorrent-rutorrent:latest@sha256:d11888723fd5fbf73253e3757935f75e92028e44b67a203dd2833ef95fcd0529
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
             - containerPort: 8000

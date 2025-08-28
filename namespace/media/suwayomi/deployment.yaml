@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: suwayomi
   namespace: media
+  labels:
+    app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: suwayomi
+      app.kubernetes.io/name: suwayomi
   template:
     metadata:
       labels:
-        app: suwayomi
+        app.kubernetes.io/name: suwayomi
     spec:
       runtimeClassName: youki
       securityContext:
@@ -20,8 +23,9 @@ spec:
         fsGroup: 1000
       containers:
         - name: suwayomi
+        # renovate: datasource=docker depName=ghcr.io/suwayomi/tachidesk
           image: ghcr.io/suwayomi/tachidesk:latest@sha256:acad9ea1cbb968bc95477a69e32dbc682b710a00ed6e7b06f0eb167caf382e81
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4567
               protocol: TCP

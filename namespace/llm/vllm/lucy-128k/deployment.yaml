@@ -3,10 +3,13 @@ kind: Deployment
 metadata:
   name: vllm-lucy-128k
   namespace: llm
+  labels:
+    app.kubernetes.io/name: vllm-lucy-128k
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app: vllm-lucy-128k
+      app.kubernetes.io/name: vllm-lucy-128k
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -16,13 +19,14 @@ spec:
   template:
     metadata:
       labels:
-        app: vllm-lucy-128k
+        app.kubernetes.io/name: vllm-lucy-128k
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
       containers:
       - name: vllm
-        image: vllm/vllm-openai:v0.10.1@sha256:c62343ee72f094ef574ab3af2717d0c60fec5e0808b238f19ac4c0d22fd152f7
+      # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
+        image: docker.io/vllm/vllm-openai:v0.10.1@sha256:c62343ee72f094ef574ab3af2717d0c60fec5e0808b238f19ac4c0d22fd152f7
         imagePullPolicy: IfNotPresent
         args:
           - --model
@@ -30,7 +34,7 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --gpu-memory-utilization
-          - "0.92"
+          - "0.90"
           - --async-scheduling
           - --max-parallel-loading-workers
           - "2"
@@ -40,7 +44,7 @@ spec:
           - --rope-scaling
           - '{"rope_type":"yarn","factor":3.2,"original_max_position_embeddings":40960}'
           - --max-model-len
-          - "131072"
+          - "65536"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
@@ -62,11 +66,11 @@ spec:
         resources:
           requests:
             cpu: "2"
-            memory: "24Gi"
+            memory: "16Gi"
             nvidia.com/gpu: "1"
           limits:
             cpu: "4"
-            memory: "24Gi"
+            memory: "16Gi"
             nvidia.com/gpu: "1"
         volumeMounts:
         - { name: cache-volume, mountPath: /root/.cache/huggingface }

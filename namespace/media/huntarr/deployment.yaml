@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: huntarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: huntarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: huntarr
+      app.kubernetes.io/name: huntarr
   template:
     metadata:
       labels:
-        app: huntarr
+        app.kubernetes.io/name: huntarr
     spec:
       runtimeClassName: youki
       securityContext:
@@ -21,8 +24,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: huntarr
+        # renovate: datasource=docker depName=docker.io/huntarr/huntarr
           image: docker.io/huntarr/huntarr:latest@sha256:b5a47c2b43806165f433d308d69a21e74a687ce59f4fcccb612d6a7acb3af6d7
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: HUNTARR_PORT
               value: "9705"

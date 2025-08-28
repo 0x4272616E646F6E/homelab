@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: subgen
+  namespace: media
+spec:
+  selector:
+    app: subgen
+  ports:
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+  type: ClusterIP

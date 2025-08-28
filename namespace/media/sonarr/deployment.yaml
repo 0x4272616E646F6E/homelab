@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: sonarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: sonarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sonarr
+      app.kubernetes.io/name: sonarr
   template:
     metadata:
       labels:
-        app: sonarr
+        app.kubernetes.io/name: sonarr
     spec:
       runtimeClassName: youki
       securityContext:
@@ -20,8 +23,9 @@ spec:
         fsGroup: 1000
       containers:
         - name: sonarr
+        # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
           image: lscr.io/linuxserver/sonarr:latest@sha256:1a90192952c30f9420994b2e2171083ea8cae100357de5e9eb25890efa90a6ce
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8989
               protocol: TCP

@@ -3,21 +3,26 @@ kind: Deployment
 metadata:
   name: homeassistant
   namespace: automation
+  labels:
+    app.kubernetes.io/name: homeassistant
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: homeassistant
+      app.kubernetes.io/name: homeassistant
   template:
     metadata:
       labels:
-        app: homeassistant
+        app.kubernetes.io/name: homeassistant
     spec:
       runtimeClassName: youki
       containers:
         - name: homeassistant
-          image: lscr.io/linuxserver/homeassistant:latest@sha256:d8ac1f32b671afa50bdd3af0617be37e7d7bb1191f8d2fa80aebe08aecbbd5e7
-          imagePullPolicy: Always
+        # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
+          image: lscr.io/linuxserver/homeassistant:latest@sha256:117ee74e0e7da4e932d2dcf0760ed064cd0ca80efe4865cc7c09a59ff9233337
+          imagePullPolicy: IfNotPresent
+
           ports:
             - containerPort: 8123
               protocol: TCP
