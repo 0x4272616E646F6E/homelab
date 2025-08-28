@@ -3,21 +3,24 @@ kind: Deployment
 metadata:
   name: jellyseerr
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyseerr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jellyseerr
+      app.kubernetes.io/name: jellyseerr
   template:
     metadata:
       labels:
-        app: jellyseerr
+        app.kubernetes.io/name: jellyseerr
     spec:
       runtimeClassName: youki
       containers:
         - name: jellyseerr
+        # renovate: datasource=docker depName=docker.io/fallenbagel/jellyseerr
           image: docker.io/fallenbagel/jellyseerr:latest@sha256:4538137bc5af902dece165f2bf73776d9cf4eafb6dd714670724af8f3eb77764
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5055
               protocol: TCP

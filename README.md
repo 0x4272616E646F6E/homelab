@@ -149,6 +149,7 @@ The following resources are managed through Flux in this repository:
 - [x] **rTorrent**
 - [x] **Sonarr**
 - [x] **SonarQube**
+- [x] **Subgen**
 - [x] **Suwayomi**
 - [x] **Syncthing**
 - [x] **Talos Debug**

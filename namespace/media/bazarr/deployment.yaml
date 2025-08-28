@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: bazarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bazarr
+      app.kubernetes.io/name: bazarr
   template:
     metadata:
       labels:
-        app: bazarr
+        app.kubernetes.io/name: bazarr
     spec:
       runtimeClassName: youki
       securityContext:
@@ -21,8 +24,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bazarr
+        # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
           image: lscr.io/linuxserver/bazarr:latest@sha256:f9cb78eaec1d77017f5c3e5b7aa07106fe4433a77fd902d01e91213f7c991499
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6767
               protocol: TCP

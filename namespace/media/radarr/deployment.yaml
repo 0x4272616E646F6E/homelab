@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: radarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: radarr
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: radarr
+      app.kubernetes.io/name: radarr
   template:
     metadata:
       labels:
-        app: radarr
+        app.kubernetes.io/name: radarr
     spec:
       runtimeClassName: youki
       securityContext:
@@ -20,8 +23,9 @@ spec:
         fsGroup: 1000
       containers:
         - name: radarr
+        # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
           image: lscr.io/linuxserver/radarr:latest@sha256:7eb64f5af8bbe48e79bc55c0c37ca8db89b2f073a9ff0094f603916ae1df9de8
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7878
               protocol: TCP

@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: nzbget
   namespace: media
+  labels:
+    app.kubernetes.io/name: nzbget
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nzbget
+      app.kubernetes.io/name: nzbget
   template:
     metadata:
       labels:
-        app: nzbget
+        app.kubernetes.io/name: nzbget
     spec:
       runtimeClassName: youki
       securityContext:
@@ -20,8 +23,9 @@ spec:
         fsGroup: 1000
       initContainers:
         - name: init-nzbget
-          image: busybox:latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
-          imagePullPolicy: Always
+          # renovate: datasource=docker depName=docker.io/busybox
+          image: docker.io/busybox:latest@sha256:ab33eacc8251e3807b85bb6dba570e4698c3998eca6f0fc2ccb60575a563ea74
+          imagePullPolicy: IfNotPresent
           command: ["sh","-c"]
           args:
             - |
@@ -38,8 +42,9 @@ spec:
               mountPath: /init
       containers:
         - name: nzbget
+        # renovate: datasource=docker depName=lscr.io/linuxserver/nzbget
           image: lscr.io/linuxserver/nzbget:latest@sha256:45b47bb96b560b46ce968735f27d2ce6b9df31b2ec4eda331eefc87a1d53bbae
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: PUID
               value: "1000"

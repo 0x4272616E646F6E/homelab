@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: jellyfin
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: jellyfin
+      app.kubernetes.io/name: jellyfin
   template:
     metadata:
       labels:
-        app: jellyfin
+        app.kubernetes.io/name: jellyfin
     spec:
       runtimeClassName: nvidia
       securityContext:
@@ -19,8 +22,9 @@ spec:
           - 44 
       containers:
         - name: jellyfin
+        # renovate: datasource=docker depName=lscr.io/linuxserver/jellyfin
           image: lscr.io/linuxserver/jellyfin:latest@sha256:104ca69d833f1b9bc0efe55f56e8202b7b374f1b38431da91757e551e26ca96e
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7359
               protocol: UDP

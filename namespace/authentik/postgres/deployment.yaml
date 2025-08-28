@@ -4,24 +4,25 @@ metadata:
   name: authentik-postgres-17
   namespace: authentik
   labels:
-    app: authentik-postgres-17
+    app.kubernetes.io/name: authentik-postgres-17
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authentik-postgres-17
+      app.kubernetes.io/name: authentik-postgres-17
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: authentik-postgres-17
+        app.kubernetes.io/name: authentik-postgres-17
     spec:
       securityContext:
         fsGroup: 999
       containers:
       - name: postgres
-        image: postgres:17@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
+      # renovate: datasource=docker depName=docker.io/postgres
+        image: docker.io/postgres:17@sha256:29e0bb09c8e7e7fc265ea9f4367de9622e55bae6b0b97e7cce740c2d63c2ebc0
         ports:
         - containerPort: 5432
           name: postgres

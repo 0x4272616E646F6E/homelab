@@ -22,7 +22,7 @@ spec:
       containers:
         - name: minecraft
           image: docker.io/itzg/minecraft-server:latest@sha256:ae3f5ef505ff60ec134e43faa54b41b8efbb05bbd602b6f2ba989f54ff756596
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 25565
               protocol: TCP

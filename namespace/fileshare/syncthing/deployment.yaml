@@ -3,15 +3,18 @@ kind: Deployment
 metadata:
   name: syncthing
   namespace: fileshare
+  labels:
+    app.kubernetes.io/name: syncthing
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: syncthing
+      app.kubernetes.io/name: syncthing
   template:
     metadata:
       labels:
-        app: syncthing
+        app.kubernetes.io/name: syncthing
     spec:
       runtimeClassName: youki
       securityContext:
@@ -21,8 +24,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: syncthing
+        # renovate: datasource=docker depName=lscr.io/linuxserver/syncthing
           image: lscr.io/linuxserver/syncthing:latest@sha256:70a0c3e654e5867c2e5775b9b3ec22b8f8e2b45069289dffc63f8f3cbeb550da
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8384
               protocol: TCP

@@ -3,19 +3,23 @@ kind: Deployment
 metadata:
   name: buildkit
   namespace: build
+  labels:
+    app.kubernetes.io/name: buildkit
+    app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: buildkit
+      app.kubernetes.io/name: buildkit
   template:
     metadata:
       labels:
-        app: buildkit
+        app.kubernetes.io/name: buildkit
     spec:
       containers:
       - name: buildkitd
-        image: moby/buildkit:v0.23.2@sha256:ddd1ca44b21eda906e81ab14a3d467fa6c39cd73b9a39df1196210edcb8db59e
+      # renovate: datasource=docker depName=docker.io/moby/buildkit
+        image: docker.io/moby/buildkit:v0.23.2@sha256:ddd1ca44b21eda906e81ab14a3d467fa6c39cd73b9a39df1196210edcb8db59e
         securityContext:
           privileged: true
           allowPrivilegeEscalation: true
