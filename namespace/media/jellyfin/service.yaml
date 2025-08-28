@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: jellyfin
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
 spec:
   selector:
-    app: jellyfin
+    app.kubernetes.io/name: jellyfin
   ports:
     - port: 7359
       targetPort: 7359

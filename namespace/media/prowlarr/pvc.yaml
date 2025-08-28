@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: prowlarr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: prowlarr
 spec:
   accessModes:
     - ReadWriteOnce

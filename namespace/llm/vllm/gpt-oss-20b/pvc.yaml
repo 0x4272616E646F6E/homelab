@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: gpt-oss-20b-pvc
   namespace: llm
+  labels:
+    app.kubernetes.io/name: gpt-oss-20b
 spec:
   accessModes:
     - ReadWriteOnce

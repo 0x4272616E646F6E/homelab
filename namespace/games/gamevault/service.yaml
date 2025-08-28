@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: gamevault
   namespace: games
+  labels:
+    app.kubernetes.io/name: gamevault
 spec:
   selector:
-    app: gamevault
+    app.kubernetes.io/name: gamevault
   ports:
     - port: 8080
       targetPort: 8080
@@ -18,9 +20,11 @@ kind: Service
 metadata:
   name: gamevault-postgres
   namespace: games
+  labels:
+    app.kubernetes.io/name: gamevault-postgres
 spec:
   selector:
-    app: gamevault-postgres
+    app.kubernetes.io/name: gamevault-postgres
   ports:
     - port: 5432
       targetPort: 5432

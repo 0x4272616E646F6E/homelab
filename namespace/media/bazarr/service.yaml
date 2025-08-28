@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: bazarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: bazarr
 spec:
   selector:
-    app: bazarr
+    app.kubernetes.io/name: bazarr
   ports:
     - port: 6767
       targetPort: 6767

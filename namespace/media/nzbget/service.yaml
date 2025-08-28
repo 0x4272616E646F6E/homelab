@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: nzbget
   namespace: media
+  labels:
+    app.kubernetes.io/name: nzbget
 spec:
   selector:
-    app: nzbget
+    app.kubernetes.io/name: nzbget
   ports:
     - port: 6789
       targetPort: 6789

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: flaresolverr
   namespace: media
+  labels:
+    app.kubernetes.io/name: flaresolverr
 spec:
   selector:
-    app: flaresolverr
+    app.kubernetes.io/name: flaresolverr
   ports:
     - port: 8191
       targetPort: 8191

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: comfyui
   namespace: llm
+  labels:
+    app.kubernetes.io/name: comfyui
 spec:
   selector:
-    app: comfyui
+    app.kubernetes.io/name: comfyui
   ports:
     - port: 80
       targetPort: 8188

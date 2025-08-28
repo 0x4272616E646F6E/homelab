@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: minecraft-config
   namespace: games
+  labels:
+    app.kubernetes.io/name: minecraft
 spec:
   accessModes:
     - ReadWriteOnce

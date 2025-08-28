@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: buildkit
   namespace: build
+  labels:
+    app.kubernetes.io/name: buildkit
 spec:
   selector:
-    app: buildkit
+    app.kubernetes.io/name: buildkit
   ports:
   - port: 1234
     targetPort: 1234

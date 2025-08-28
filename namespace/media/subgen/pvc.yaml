@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: subgen-models
   namespace: media
+  labels:
+    app.kubernetes.io/name: subgen
 spec:
   accessModes:
     - ReadWriteOnce

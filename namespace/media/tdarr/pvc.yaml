@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: tdarr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: tdarr
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,6 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: tdarr-server
   namespace: media
+  labels:
+    app.kubernetes.io/name: tdarr
 spec:
   accessModes:
     - ReadWriteOnce
@@ -29,6 +33,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: tdarr-logs
   namespace: media
+  labels:
+    app.kubernetes.io/name: tdarr
 spec:
   accessModes:
     - ReadWriteOnce
@@ -42,6 +48,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: tdarr-temp
   namespace: media
+  labels:
+    app.kubernetes.io/name: tdarr
 spec:
   accessModes:
     - ReadWriteOnce

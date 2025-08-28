@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: huntarr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: huntarr
 spec:
   accessModes:
     - ReadWriteOnce

@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: jellyseerr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyseerr
 spec:
   accessModes:
     - ReadWriteOnce

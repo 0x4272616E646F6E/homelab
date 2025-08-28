@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: syncthing-config
   namespace: fileshare
+  labels:
+    app.kubernetes.io/name: syncthing
 spec:
   accessModes:
     - ReadWriteOnce

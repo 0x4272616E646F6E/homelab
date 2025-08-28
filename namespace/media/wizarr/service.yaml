@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: wizarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: wizarr
 spec:
   selector:
-    app: wizarr
+    app.kubernetes.io/name: wizarr
   ports:
     - port: 5690
       targetPort: 5690

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: filebrowser
   namespace: media
+  labels:
+    app.kubernetes.io/name: filebrowser
 spec:
   selector:
-    app: filebrowser
+    app.kubernetes.io/name: filebrowser
   ports:
     - port: 80
       targetPort: 80

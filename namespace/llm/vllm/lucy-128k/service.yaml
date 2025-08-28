@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: http-lucy-128k
   namespace: llm
+  labels:
+    app.kubernetes.io/name: lucy-128k
 spec:
   ports:
   - name: http-lucy-128k
@@ -10,6 +12,6 @@ spec:
     protocol: TCP
     targetPort: 8000
   selector:
-    app: vllm-lucy-128k
+    app.kubernetes.io/name: vllm-lucy-128k
   sessionAffinity: None
   type: ClusterIP

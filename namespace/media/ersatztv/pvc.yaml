@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: ersatztv-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: ersatztv
 spec:
   accessModes:
     - ReadWriteOnce

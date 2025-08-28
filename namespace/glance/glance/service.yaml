@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: glance
   namespace: glance
+  labels:
+    app.kubernetes.io/name: glance
 spec:
   selector:
-    app: glance
+    app.kubernetes.io/name: glance
   ports:
     - port: 80
       targetPort: 8080

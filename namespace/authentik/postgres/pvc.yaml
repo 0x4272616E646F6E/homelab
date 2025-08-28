@@ -4,7 +4,7 @@ metadata:
   name: authentik-postgres-pvc
   namespace: authentik
   labels:
-    app: authentik-postgres-15
+    app.kubernetes.io/name: authentik-postgres-17
 spec:
   accessModes:
     - ReadWriteOnce

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: suwayomi
   namespace: media
+  labels:
+    app.kubernetes.io/name: suwayomi
 spec:
   selector:
-    app: suwayomi
+    app.kubernetes.io/name: suwayomi
   ports:
     - port: 4567
       targetPort: 4567

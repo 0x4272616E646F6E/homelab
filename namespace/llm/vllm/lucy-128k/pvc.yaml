@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: lucy-128k-pvc
   namespace: llm
+  labels:
+    app.kubernetes.io/name: lucy-128k
 spec:
   accessModes:
     - ReadWriteOnce

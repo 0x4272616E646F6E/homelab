@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: requestrr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: requestrr
 spec:
   accessModes:
     - ReadWriteOnce

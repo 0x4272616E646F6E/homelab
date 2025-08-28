@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: suwayomi-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: suwayomi
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,6 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: suwayomi-media
   namespace: media
+  labels:
+    app.kubernetes.io/name: suwayomi
 spec:
   accessModes:
     - ReadWriteOnce

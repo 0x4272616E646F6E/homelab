@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: wizarr-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: wizarr
 spec:
   accessModes:
     - ReadWriteOnce

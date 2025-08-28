@@ -4,10 +4,10 @@ metadata:
   name: authentik-postgres-17
   namespace: authentik
   labels:
-    app: authentik-postgres-17
+    app.kubernetes.io/name: authentik-postgres-17
 spec:
   ports:
   - port: 5432
     targetPort: postgres
   selector:
-    app: authentik-postgres-17
+    app.kubernetes.io/name: authentik-postgres-17

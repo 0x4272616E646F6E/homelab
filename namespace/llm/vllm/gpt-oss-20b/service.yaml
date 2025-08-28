@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: http-gpt-oss-20b
   namespace: llm
+  labels:
+    app.kubernetes.io/name: gpt-oss-20b
 spec:
   ports:
   - name: http-gpt-oss-20b
@@ -10,6 +12,6 @@ spec:
     protocol: TCP
     targetPort: 8000
   selector:
-    app: vllm-gpt-oss-20b
+    app.kubernetes.io/name: vllm-gpt-oss-20b
   sessionAffinity: None
   type: ClusterIP

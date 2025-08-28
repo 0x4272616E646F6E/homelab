@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: huntarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: huntarr
 spec:
   selector:
-    app: huntarr
+    app.kubernetes.io/name: huntarr
   ports:
     - port: 9705
       targetPort: 9705

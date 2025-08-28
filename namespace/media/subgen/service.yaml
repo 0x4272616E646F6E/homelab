@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: subgen
   namespace: media
+  labels:
+    app.kubernetes.io/name: subgen
 spec:
   selector:
-    app: subgen
+    app.kubernetes.io/name: subgen
   ports:
     - port: 9000
       targetPort: 9000

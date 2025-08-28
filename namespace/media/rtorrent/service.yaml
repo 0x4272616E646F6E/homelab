@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: rtorrent
   namespace: media
+  labels:
+    app.kubernetes.io/name: rtorrent
 spec:
   selector:
-    app: rtorrent
+    app.kubernetes.io/name: rtorrent
   ports:
     - port: 8080
       targetPort: 8080

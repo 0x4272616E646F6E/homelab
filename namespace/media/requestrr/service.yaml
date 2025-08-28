@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: requestrr
   namespace: media
+  labels:
+    app.kubernetes.io/name: requestrr
 spec:
   selector:
-    app: requestrr
+    app.kubernetes.io/name: requestrr
   ports:
     - port: 4545
       targetPort: 4545

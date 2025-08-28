@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: openwebui
   namespace: llm
+  labels:
+    app.kubernetes.io/name: openwebui
 spec:
   selector:
-    app: openwebui
+    app.kubernetes.io/name: openwebui
   ports:
     - port: 8080
       targetPort: 8080

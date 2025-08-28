@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: nzbget-config
   namespace: media
+  labels:
+    app.kubernetes.io/name: nzbget
 spec:
   accessModes:
     - ReadWriteOnce

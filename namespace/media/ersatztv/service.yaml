@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: ersatztv
   namespace: media
+  labels:
+    app.kubernetes.io/name: ersatztv
 spec:
   selector:
-    app: ersatztv
+    app.kubernetes.io/name: ersatztv
   ports:
     - port: 8409
       targetPort: 8409

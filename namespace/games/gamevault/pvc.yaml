@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: gamevault-config
   namespace: games
+  labels:
+    app.kubernetes.io/name: gamevault
 spec:
   accessModes:
     - ReadWriteOnce
@@ -16,6 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: gamevault-db
   namespace: games
+  labels:
+    app.kubernetes.io/name: gamevault
 spec:
   accessModes:
     - ReadWriteOnce

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: radarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: radarr
 spec:
   selector:
-    app: radarr
+    app.kubernetes.io/name: radarr
   ports:
     - port: 7878
       targetPort: 7878

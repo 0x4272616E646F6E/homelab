@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: syncthing-ui
   namespace: fileshare
+  labels:
+    app.kubernetes.io/name: syncthing
 spec:
   selector:
-    app: syncthing
+    app.kubernetes.io/name: syncthing
   ports:
     - port: 8384
       targetPort: 8384
@@ -18,9 +20,11 @@ kind: Service
 metadata:
   name: syncthing
   namespace: fileshare
+  labels:
+    app.kubernetes.io/name: syncthing
 spec:
   selector:
-    app: syncthing
+    app.kubernetes.io/name: syncthing
   ports:
     - port: 22000
       targetPort: 22000

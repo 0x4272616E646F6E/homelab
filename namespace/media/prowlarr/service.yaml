@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: prowlarr
   namespace: media
+  labels:
+    app.kubernetes.io/name: prowlarr
 spec:
   selector:
-    app: prowlarr
+    app.kubernetes.io/name: prowlarr
   ports:
     - port: 9696
       targetPort: 9696

@@ -3,9 +3,11 @@ kind: Service
 metadata:
   name: jellyseerr
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyseerr
 spec:
   selector:
-    app: jellyseerr
+    app.kubernetes.io/name: jellyseerr
   ports:
     - port: 5055
       targetPort: 5055
