@@ -30,7 +30,7 @@ machine:
                 - ::/0
               persistentKeepaliveInterval: 10s
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.33.4@sha256:8f1bf07e37743fa0bf2bb8844a42e1672a5872fd3a26456ea36a3c491ded8040
+    image: ghcr.io/siderolabs/kubelet:v1.34.0@sha256:a74edb92f8edb68740af2c00c5b571076aaccfff1dfb5c00db16af57cbbcd70f
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraArgs:
