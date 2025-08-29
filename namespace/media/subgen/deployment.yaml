@@ -39,7 +39,7 @@ spec:
             capabilities:
               drop: ["ALL"]
           # renovate: datasource=docker depName=docker.io/mccloud/subgen
-          image: docker.io/mccloud/subgen:latest@sha256:881be89d23302b4b7b9faaba85405db939da86f4a24434ea9e819fc1b9684670
+          image: docker.io/mccloud/subgen:latest@sha256:ca46f40be028d1c1def436d06ef63dd01a04ecba5417c177dec78a2ce0c3bf92
           imagePullPolicy: IfNotPresent
           env:
             - name: WHISPER_MODEL
