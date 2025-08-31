@@ -21,7 +21,7 @@ spec:
       containers:
         - name: wizarr
         # renovate: datasource=docker depName=ghcr.io/wizarrrr/wizarr
-          image: ghcr.io/wizarrrr/wizarr:latest@sha256:ba051d632ae12eb1d6d61bfa02bf7ae743c7fc1ec56910c302dbee0f6e705afe
+          image: ghcr.io/wizarrrr/wizarr:latest@sha256:eaee83fbca5feb0fb3141ff7cc35bc68c3ff1fa9efcfb951c06c8451db995bc2
           imagePullPolicy: IfNotPresent
           env:
             - name: DISABLE_BUILTIN_AUTH
