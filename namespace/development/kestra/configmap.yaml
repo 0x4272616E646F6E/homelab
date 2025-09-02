@@ -157,7 +157,7 @@ data:
     dind:
       enabled: true
       image:
-        image: docker@sha256:283bf33800bbe1a787ae956d2bf0790621e69b24cd6df51e9876d74046f9780c
+        image: docker@sha256:a56b3bdde89315ed2cc0e4906e582b5033d93bf20d9cb9510c2cdd4e7f7690b1
         tag: dind-rootless
         pullPolicy: IfNotPresent
       socketPath: /dind/
