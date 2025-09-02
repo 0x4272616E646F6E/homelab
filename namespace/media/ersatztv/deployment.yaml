@@ -25,7 +25,7 @@ spec:
       containers:
         - name: ersatztv
         # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
-          image: ghcr.io/ersatztv/ersatztv:latest@sha256:5464348e1989be72161e1e6ef197cf1a1c403efed8090474ce1ffe501a375c37
+          image: ghcr.io/ersatztv/ersatztv:latest@sha256:57a3b759878afd2d297a80464004c4285dacaeed587b1b6c4310e6161dc7763f
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8409
