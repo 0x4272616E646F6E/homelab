@@ -1,0 +1,4 @@
+language: java
+app:  mvn exec:java -Dexec.mainClass="io.oglesby.talos.Main"
+imports:
+  - k8s

@@ -2,6 +2,7 @@
 ![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white)
 ![Proxmox](https://img.shields.io/badge/proxmox-proxmox?style=for-the-badge&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
 ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Java](https://img.shields.io/badge/Java-2b2a33?style=for-the-badge&logo=openjdk&logoColor=F80000)
 
 # Homelab
 
@@ -10,6 +11,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
+- [CDK8s](#cdk8s)
 - [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
@@ -21,11 +23,24 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 Before using this repository, ensure you have:
 
 - **Kubernetes Cluster**: A working Kubernetes cluster.
+- **CDK8s**: [Install CDK8s](https://cdk8s.io/docs/latest/cli/installation/)
 - **Cilium CLI**: [Install Cilium](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
 - **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
 - **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - **Kubectl**: [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
+
+## CDK8s
+
+CDK8s (Cloud Development Kit for Kubernetes) allows defining Kubernetes manifests using familiar programming languages instead of YAML.
+
+This repo uses **Java** with CDK8s to generate Kubernetes manifests that are then managed by Flux.
+
+**Workflow:**
+1. Write Kubernetes applications in Java using CDK8s constructs
+2. Run `cdk8s synth` to generate standard Kubernetes YAML manifests
+3. Commit generated manifests to this repository
+4. Flux automatically applies changes to the cluster
 
 ## Flux Setup
 

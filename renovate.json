@@ -5,6 +5,8 @@
     ":semanticCommits",
     ":semanticCommitTypeAll(chore)"
   ],
+  "reviewersFromCodeOwners": true,
+  "assigneesFromCodeOwners": true,
   "dependencyDashboard": true,
   "prHourlyLimit": 6,
   "prConcurrentLimit": 10,
