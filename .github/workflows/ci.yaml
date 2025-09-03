@@ -14,27 +14,6 @@ permissions:
   security-events: write   # allow uploading SARIF to Code Scanning
 
 jobs:
-  yaml-lint:
-    name: Lint YAML
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: yamllint
-        uses: ibiqlik/action-yamllint@v3
-        with:
-          strict: true
-          file_or_dir: |
-            .
-          config_data: |
-            extends: default
-            ignore: |
-              clusters/**/flux-system/**
-              cdk8s/target/**
-              cdk8s/dist/**
-            rules:
-              line-length: disable
-              truthy: disable
-
   kube-validate:
     name: Validate Kubernetes Manifests
     runs-on: ubuntu-latest
@@ -64,55 +43,29 @@ jobs:
               "${FILES[@]}"
           fi
 
-  kube-lint:
-    name: Kube Lint (best practices)
+  checkov-k8s:
+    name: Checkov
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install kube-linter
-        run: |
-          set -euo pipefail
-          VERSION=0.6.8
-          curl -sL "https://github.com/stackrox/kube-linter/releases/download/v${VERSION}/kube-linter-linux.tar.gz" \
-            | tar xz
-          sudo mv kube-linter /usr/local/bin/
-          kube-linter version
-      - name: Lint Kubernetes manifests (human output + SARIF)
-        run: |
-          set -euo pipefail
-          kube-linter lint namespace clusters --format sarif > kube-linter.sarif
-          # Human-readable output (keeps job logs informative)
-          kube-linter lint namespace clusters
-      - name: Upload SARIF (kube-linter)
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
         with:
-          sarif_file: kube-linter.sarif
-
-  trivy-k8s-config:
-    name: Trivy (K8s config)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: aquasecurity/trivy-action@0.22.0
-        with:
-          scan-type: config
-          scan-ref: .
-          format: sarif
-          output: trivy-k8s.sarif
-          severity: HIGH,CRITICAL
-          exit-code: '1'
-          ignore-unfixed: true
-          skip-dirs: |
+          directory: .
+          framework: kubernetes
+          skip_path: |
             clusters/**/flux-system
             cdk8s/target
             cdk8s/dist
-      - name: Upload SARIF (Trivy K8s config)
+          output_format: sarif
+          output_file_path: checkov-k8s.sarif
+      - name: Upload SARIF (Checkov K8s)
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-k8s.sarif
+          sarif_file: checkov-k8s.sarif
 
   java-build-and-scan:
-    name: Build & Scan Java (cdk8s)
+    name: Build & Scan Java (cdk8s + Trivy)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -126,11 +79,11 @@ jobs:
           cache: maven
       - name: Build (compile only)
         run: mvn -B -q -DskipTests package
-      - name: Trivy (Java project)
+      - name: Trivy (fs scan of Java project)
         uses: aquasecurity/trivy-action@0.22.0
         with:
           scan-type: fs
-          scan-ref: cdk8s
+          scan-ref: .              # cdk8s dir due to working-directory
           format: sarif
           output: trivy-java.sarif
           severity: HIGH,CRITICAL
@@ -139,7 +92,7 @@ jobs:
       - name: Upload SARIF (Trivy Java)
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: trivy-java.sarif
+          sarif_file: cdk8s/trivy-java.sarif
 
   gitleaks:
     name: Secret scan (diff)

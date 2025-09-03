@@ -1,7 +1,8 @@
-![Intel](https://img.shields.io/badge/intel-%230068B5%20.svg?style=for-the-badge&logo=intel&logoColor=white)
-![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white)
-![Proxmox](https://img.shields.io/badge/proxmox-proxmox?style=for-the-badge&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
-![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+![Intel](https://img.shields.io/badge/Intel-%230068B5%20.svg?style=flat-square&logo=intel&logoColor=white)
+![nVIDIA](https://img.shields.io/badge/Nvidia-%2376B900.svg?style=flat-square&logo=nVIDIA&logoColor=white)
+![Proxmox](https://img.shields.io/badge/Proxmox-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
+![Terraform](https://img.shields.io/badge/Terraform-623CE4?style=flat-square&logo=terraform&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white)
 
 # Homelab
 [![CI](https://github.com/0x4272616E646F6E/homelab/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/0x4272616E646F6E/homelab/actions/workflows/ci.yaml)
@@ -12,6 +13,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
+- [Terraform](#terraform)
 - [CDK8s](#cdk8s)
 - [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
@@ -23,16 +25,33 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 Before using this repository, ensure you have:
 
+- **Kubernetes Cluster**: A working Kubernetes cluster.
 - **CDK8s**: [Install CDK8s](https://cdk8s.io/docs/latest/cli/installation/)
 - **Cilium CLI**: [Install Cilium](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
 - **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
 - **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - **Kubectl**: [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
+- **OpenTofu** [Install OpenTofu](https://opentofu.org/docs/intro/install/)
 - **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
 
 Or use nix.
 
 - **Nix**: [Install Nix](https://github.com/DeterminateSystems/nix-installer)
+
+## Terraform
+Terraform defines and provisions infrastructure as code. In this repo, we run Terraform via OpenTofu to provision the underlying pieces the Kubernetes cluster depends on, while Flux manages the in-cluster manifests.
+
+Layout:
+- `terraform/main.tf` wires stacks
+- `terraform/modules/` holds reusable modules
+
+How to run with OpenTofu:
+```sh
+cd terraform
+tofu init
+tofu plan -var-file=homelab.tfvars
+tofu apply -var-file=homelab.tfvars
+```
 
 ## CDK8s
 
