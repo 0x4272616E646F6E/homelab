@@ -29,6 +29,10 @@ Before using this repository, ensure you have:
 - **Kubectl**: [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
 
+Or use nix.
+
+- **Nix**: [Install Nix](https://github.com/DeterminateSystems/nix-installer)
+
 ## CDK8s
 
 CDK8s (Cloud Development Kit for Kubernetes) allows defining Kubernetes manifests using familiar programming languages instead of YAML.
