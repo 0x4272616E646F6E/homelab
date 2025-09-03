@@ -31,7 +31,8 @@ Before using this repository, ensure you have:
 - **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
 - **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - **Kubectl**: [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
-- **OpenTofu** [Install OpenTofu](https://opentofu.org/docs/intro/install/)
+- **OpenTofu**: [Install OpenTofu](https://opentofu.org/docs/intro/install/)
+- **SOPS**: [Install SOPS](https://getsops.io/docs/#download)
 - **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
 
 Or use nix.
