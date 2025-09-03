@@ -1,0 +1,155 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  security-events: write   # allow uploading SARIF to Code Scanning
+
+jobs:
+  yaml-lint:
+    name: Lint YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          strict: true
+          file_or_dir: |
+            .
+          config_data: |
+            extends: default
+            ignore: |
+              clusters/**/flux-system/**
+              cdk8s/target/**
+              cdk8s/dist/**
+            rules:
+              line-length: disable
+              truthy: disable
+
+  kube-validate:
+    name: Validate Kubernetes Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kubeconform
+        run: |
+          set -euo pipefail
+          KUBECONFORM_VERSION=0.6.7
+          curl -sL "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin kubeconform
+          kubeconform -v
+      - name: Validate manifests with kubeconform
+        run: |
+          set -euo pipefail
+          mapfile -t FILES < <(git ls-files \
+            'namespace/**/*.y*ml' \
+            'clusters/**/*.y*ml' \
+            'talos/**/*.y*ml' \
+            ':!:clusters/**/flux-system/**')
+          if [ ${#FILES[@]} -eq 0 ]; then
+            echo "No manifests to validate."
+          else
+            kubeconform -summary -strict -ignore-missing-schemas -kubernetes-version 1.30.0 \
+              -schema-location default \
+              -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}-standalone/{{.ResourceKind}}.json' \
+              "${FILES[@]}"
+          fi
+
+  kube-lint:
+    name: Kube Lint (best practices)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kube-linter
+        run: |
+          set -euo pipefail
+          VERSION=0.6.8
+          curl -sL "https://github.com/stackrox/kube-linter/releases/download/v${VERSION}/kube-linter-linux.tar.gz" \
+            | tar xz
+          sudo mv kube-linter /usr/local/bin/
+          kube-linter version
+      - name: Lint Kubernetes manifests (human output + SARIF)
+        run: |
+          set -euo pipefail
+          kube-linter lint namespace clusters --format sarif > kube-linter.sarif
+          # Human-readable output (keeps job logs informative)
+          kube-linter lint namespace clusters
+      - name: Upload SARIF (kube-linter)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: kube-linter.sarif
+
+  trivy-k8s-config:
+    name: Trivy (K8s config)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@0.22.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-k8s.sarif
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          ignore-unfixed: true
+          skip-dirs: |
+            clusters/**/flux-system
+            cdk8s/target
+            cdk8s/dist
+      - name: Upload SARIF (Trivy K8s config)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-k8s.sarif
+
+  java-build-and-scan:
+    name: Build & Scan Java (cdk8s)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cdk8s
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build (compile only)
+        run: mvn -B -q -DskipTests package
+      - name: Trivy (Java project)
+        uses: aquasecurity/trivy-action@0.22.0
+        with:
+          scan-type: fs
+          scan-ref: cdk8s
+          format: sarif
+          output: trivy-java.sarif
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          ignore-unfixed: true
+      - name: Upload SARIF (Trivy Java)
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-java.sarif
+
+  gitleaks:
+    name: Secret scan (diff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: '--verbose --redact --staged'
