@@ -26,7 +26,7 @@ spec:
       containers:
         - name: syncthing
         # renovate: datasource=docker depName=lscr.io/linuxserver/syncthing
-          image: lscr.io/linuxserver/syncthing:latest@sha256:c20393197f3d5cf37c2f201b3f98cfec6bbca9d0fbfc09ced468a11343de95ef
+          image: lscr.io/linuxserver/syncthing:latest@sha256:4a3c70baf87c9252d5d0f28905dcad4203879409215a7baac7a3557c37212bdf
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8384
