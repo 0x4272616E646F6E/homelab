@@ -23,7 +23,6 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 Before using this repository, ensure you have:
 
-- **Kubernetes Cluster**: A working Kubernetes cluster.
 - **CDK8s**: [Install CDK8s](https://cdk8s.io/docs/latest/cli/installation/)
 - **Cilium CLI**: [Install Cilium](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
 - **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
