@@ -14,7 +14,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 - [Prerequisites](#prerequisites)
 - [Terraform](#terraform)
-- [CDK8s](#cdk8s)
+- [CDK](#cdk)
 - [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
@@ -54,17 +54,33 @@ tofu plan -var-file=homelab.tfvars
 tofu apply -var-file=homelab.tfvars
 ```
 
-## CDK8s
+## CDK
+- CDK8s generates Kubernetes manifests from Java code, which Flux then applies.
+- CDKTF models infrastructure as code in Java, synthesizes Terraform JSON, and is applied with OpenTofu.
 
-CDK8s (Cloud Development Kit for Kubernetes) allows defining Kubernetes manifests using familiar programming languages instead of YAML.
+This repo uses Java for both CDK8s and CDKTF.
 
-This repo uses **Java** with CDK8s to generate Kubernetes manifests that are then managed by Flux.
+**CDK8s** (Kubernetes, Java)
+- Write Kubernetes apps in Java using CDK8s constructs
+- Generate YAML and commit for Flux to apply
 
-**Workflow:**
-1. Write Kubernetes applications in Java using CDK8s constructs
-2. Run `cdk8s synth` to generate standard Kubernetes YAML manifests
-3. Commit generated manifests to this repository
-4. Flux automatically applies changes to the cluster
+Workflow:
+1. cd cdk/cdk8s
+2. mvn -q compile
+3. cdk8s synth
+4. Commit generated manifests and Flux will reconcile
+
+**CDKTF** (Terraform, Java)
+- Define infra stacks in Java; synth produces Terraform JSON in cdktf.out/stacks/<stack-name>
+- Apply with OpenTofu or `cdktf deploy`
+
+Workflow:
+1. cd cdk/cdktf
+2. ./gradlew build
+3. cdktf get
+4. cdktf synth
+5. cd cdktf.out/stacks/<stack-name>
+6. tofu init && tofu plan && tofu apply
 
 ## Flux Setup
 

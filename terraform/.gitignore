@@ -1,0 +1,41 @@
+# Terraform working directories
+.terraform/
+.terraform/**
+
+# State files (Terraform/OpenTofu)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+crash.*.log
+
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+# Keep examples in git
+!*.tfvars.example
+!*.auto.tfvars.example
+
+*.plan
+*.tfplan
+
+.terraformrc
+terraform.rc
+
+# Editor/OS noise
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+.terragrunt-cache/
+
+!.terraform.lock.hcl
