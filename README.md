@@ -27,6 +27,7 @@ Before using this repository, ensure you have:
 
 - **Kubernetes Cluster**: A working Kubernetes cluster.
 - **CDK8s**: [Install CDK8s](https://cdk8s.io/docs/latest/cli/installation/)
+- **CDKTF**: [Install CDKTF](https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-install)
 - **Cilium CLI**: [Install Cilium](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
 - **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
 - **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
@@ -55,10 +56,10 @@ tofu apply -var-file=homelab.tfvars
 ```
 
 ## CDK
+The Cloud Development Kit (CDK) is an open-source software framework that let you define cloud and infrastructure resources using familiar programming languages instead of raw YAML or JSON. This repository uses Java-based CDK variants for Kubernetes and Terraform.
+
 - CDK8s generates Kubernetes manifests from Java code, which Flux then applies.
 - CDKTF models infrastructure as code in Java, synthesizes Terraform JSON, and is applied with OpenTofu.
-
-This repo uses Java for both CDK8s and CDKTF.
 
 **CDK8s** (Kubernetes, Java)
 - Write Kubernetes apps in Java using CDK8s constructs
