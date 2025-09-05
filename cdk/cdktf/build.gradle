@@ -5,7 +5,7 @@ plugins {
 }
 apply plugin : "java" 
 ext {
-   javaMainClass = "com.mycompany.app.Main"
+   javaMainClass = "io.oglesby.homelab.Main"
 }
 
 application {
@@ -26,7 +26,7 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.0"
 }
 
-group = "com.mycompany.app"
+group = "io.oglesby.homelab"
 version = "0.1"
 description = "cdktf"
 java.sourceCompatibility = JavaVersion.VERSION_1_8

@@ -1,4 +1,4 @@
-package com.mycompany.app;
+package io.oglesby.homelab;
 
 import software.constructs.Construct;
 
