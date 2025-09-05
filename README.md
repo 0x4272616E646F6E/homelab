@@ -200,6 +200,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Redbot**
 - [x] **Reflector**
 - [x] **Requestrr**
+- [ ] **Reloader**
 - [x] **Renovate**
 - [x] **Rook**
 - [x] **rTorrent**
