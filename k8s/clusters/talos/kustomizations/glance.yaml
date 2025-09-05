@@ -1,13 +1,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kube-system
+  name: glance
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/kube-system"
+  path: "./k8s/namespaces/glance"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   timeout: 2m
+  dependsOn:
+    - name: kube-system
+    - name: rook-ceph

@@ -13,7 +13,7 @@
   "rangeStrategy": "replace",
   "rebaseWhen": "behind-base-branch",
   "ignorePaths": [
-    "clusters/**/flux-system/**"
+    "k8s/clusters/**/flux-system/**"
   ],
   "enabledManagers": [
     "kubernetes",
@@ -22,7 +22,7 @@
   ],
   "kubernetes": {
     "managerFilePatterns": [
-      "/(^|/)namespace/.+\\.ya?ml$/",
+      "/(^|/)namespaces/.+\\.ya?ml$/",
       "/(^|/)clusters/.+\\.ya?ml$/",
       "/(^|/)talos/.+\\.ya?ml$/",
       "/(^|/).+\\.ya?ml$/"
@@ -38,7 +38,7 @@
       "customType": "regex",
       "description": "Bump Flux HelmRelease chart versions (requires a registryUrl comment)",
       "managerFilePatterns": [
-        "/(^|/)namespace/.+\\.ya?ml$/",
+        "/(^|/)namespaces/.+\\.ya?ml$/",
         "/(^|/)clusters/.+\\.ya?ml$/"
       ],
       "matchStrings": [
@@ -53,7 +53,7 @@
       "customType": "regex",
       "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks",
       "managerFilePatterns": [
-        "/(^|/)namespace/.+/configmap\\.ya?ml$/"
+        "/(^|/)namespaces/.+/configmap\\.ya?ml$/"
       ],
       "matchStrings": [
         "repository:\\s*(?<depName>[-\\w./:]+)\\s*\\n\\s*tag:\\s*(?<currentValue>[^\\s]+)"

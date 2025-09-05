@@ -1,20 +1,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudflared
+  name: haproxy
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/cloudflared"
+  path: "./k8s/namespaces/haproxy"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   timeout: 2m
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
   dependsOn:
     - name: kube-system
     - name: rook-ceph
+    - name: cert-manager
+    - name: reflector

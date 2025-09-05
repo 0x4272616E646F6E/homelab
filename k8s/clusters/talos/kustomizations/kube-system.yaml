@@ -1,18 +1,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: traefik
+  name: kube-system
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/traefik"
+  path: "./k8s/namespaces/kube-system"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   timeout: 2m
-  dependsOn:
-    - name: kube-system
-    - name: rook-ceph
-    - name: cert-manager
-    - name: reflector

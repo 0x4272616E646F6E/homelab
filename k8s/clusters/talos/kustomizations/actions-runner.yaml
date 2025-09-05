@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: authentik
+  name: actions-runner
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/authentik"
+  path: "./k8s/namespaces/actions-runner"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -17,4 +17,4 @@ spec:
       name: sops-age
   dependsOn:
     - name: kube-system
-    - name: rook-ceph
+    - name: actions-runner-controller

@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: monitoring
+  name: games
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./namespace/monitoring"
+  path: "./k8s/namespaces/games"
   prune: true
   sourceRef:
     kind: GitRepository
