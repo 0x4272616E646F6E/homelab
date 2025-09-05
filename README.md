@@ -214,6 +214,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Tempo**
 - [x] **Traefik**
 - [x] **Vector**
+- [ ] **Vertical Pod Autoscaler**
 - [x] **VLLM**
 - [x] **Wizarr**
 
