@@ -59,8 +59,8 @@ spec:
             - name: PGID
               value: "1000"
           ports:
-            - containerPort: 25565
-              protocol: TCP
+            - containerPort: 19132
+              protocol: UDP
           resources:
             requests:
               cpu: "100m"
@@ -70,7 +70,7 @@ spec:
               memory: "1Gi"
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /data
       volumes:
         - name: config
           persistentVolumeClaim:

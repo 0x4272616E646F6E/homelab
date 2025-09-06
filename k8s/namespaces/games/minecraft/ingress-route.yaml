@@ -16,7 +16,7 @@ spec:
           namespace: traefik
       services:
         - name: minecraft
-          port: 25565
+          port: 19132
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -38,4 +38,4 @@ spec:
           namespace: traefik
       services:
         - name: minecraft
-          port: 25565
+          port: 19132

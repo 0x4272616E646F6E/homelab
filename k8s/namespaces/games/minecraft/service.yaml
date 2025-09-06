@@ -9,8 +9,8 @@ spec:
   selector:
     app.kubernetes.io/name: minecraft
   ports:
-    - port: 25565
-      targetPort: 25565
-      protocol: TCP
+    - port: 19132
+      targetPort: 19132
+      protocol: UDP
       name: minecraft
   type: ClusterIP
