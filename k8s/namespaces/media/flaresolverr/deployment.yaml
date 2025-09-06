@@ -29,7 +29,7 @@ spec:
       containers:
         - name: flaresolverr
         # renovate: datasource=docker depName=docker.io/flaresolverr/flaresolverr
-          image: docker.io/flaresolverr/flaresolverr:latest@sha256:ab535d1fef5d7f1654c2756949798442ae4bbecee99d4338128aa137fd8eca0e
+          image: docker.io/flaresolverr/flaresolverr:v3.4.0@sha256:7b6aa120eee587a5c148ee9535892fcd5584bcc2cbb8ddeb6e891359a74841fc
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8191

@@ -27,8 +27,7 @@ spec:
       containers:
       - name: vllm
       # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
-        image: docker.io/vllm/vllm-openai:v0.10.1@sha256:c62343ee72f094ef574ab3af2717d0c60fec5e0808b238f19ac4c0d22fd152f7
-        imagePullPolicy: IfNotPresent
+        image: docker.io/vllm/vllm-openai:v0.10.1.1@sha256:d731ee65c044ae0977421eed3d93f931d4b7d79614394184c939db35b8f28fc2
         args:
           - --model
           - Menlo/Lucy-128k

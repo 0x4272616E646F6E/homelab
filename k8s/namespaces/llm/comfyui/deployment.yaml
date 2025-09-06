@@ -21,7 +21,7 @@ spec:
       containers:
         - name: comfyui
         # renovate: datasource=docker depName=docker.io/yanwk/comfyui-boot
-          image: docker.io/yanwk/comfyui-boot:cu128-slim@sha256:a61ad9bd07a4136f5949c7873f8973a94e5ba1991a5e38a94be407db093424f6
+          image: docker.io/yanwk/comfyui-boot:cu129-slim-20250901@sha256:47ec608e67fa8cb7e5dc2fb90947e9a9bad8b232132d595ee3a4571a44b2eb1e
           imagePullPolicy: IfNotPresent
           env:
           - name: CLI_ARGS

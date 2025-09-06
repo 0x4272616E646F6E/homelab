@@ -27,7 +27,7 @@ spec:
       containers:
         - name: gamevault
         # renovate: datasource=docker depName=docker.io/phalcode/gamevault-backend
-          image: docker.io/phalcode/gamevault-backend:latest@sha256:636cca1429f9c33c4ac277dcd0f8acf58d4c7bb7d27d83b361d7f055f9a115a8
+          image: docker.io/phalcode/gamevault-backend:15.0.2@sha256:636cca1429f9c33c4ac277dcd0f8acf58d4c7bb7d27d83b361d7f055f9a115a8
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_HOST

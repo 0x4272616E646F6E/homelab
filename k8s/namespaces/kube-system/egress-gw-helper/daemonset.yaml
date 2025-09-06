@@ -22,7 +22,7 @@ spec:
       containers:
         - name: egress-gw-helper
         # renovate: datasource=docker depName=docker.io/alpine
-          image: docker.io/alpine:edge@sha256:115729ec5cb049ba6359c3ab005ac742012d92bbaa5b8bc1a878f1e8f62c0cb8
+          image: docker.io/alpine:3.22.1@sha256:eafc1edb577d2e9b458664a15f23ea1c370214193226069eb22921169fc7e43f
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
