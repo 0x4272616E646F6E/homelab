@@ -24,7 +24,7 @@ spec:
       containers:
         - name: jellyfin
         # renovate: datasource=docker depName=lscr.io/linuxserver/jellyfin
-          image: lscr.io/linuxserver/jellyfin:10.10.7@sha256:cfb0de2ed95ef688901e7cfae810aa38a82f8874f02627f84fdfdb45c3f1a77d
+          image: lscr.io/linuxserver/jellyfin:2021.12.16@sha256:3d8c7f2afd1a5b73a45991dd20153e56b17240415a67ca2e9fc0c99f0b440fa9
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7359
