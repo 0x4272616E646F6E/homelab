@@ -5,10 +5,12 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: suwayomi
+      app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
     - Egress
@@ -17,6 +19,10 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 4567
+          protocol: TCP
+    - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: media

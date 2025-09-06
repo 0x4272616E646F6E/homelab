@@ -10,7 +10,7 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: tdarr
-      app.kubernetes.io/instance: tdarr
+      app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
     - Egress
@@ -19,6 +19,12 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 8265
+          protocol: TCP
+        - port: 8266
+          protocol: TCP
+    - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: media

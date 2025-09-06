@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: jellyserr
+  name: jellyseerr
   namespace: media
   labels:
-    app.kubernetes.io/name: jellyserr
+    app.kubernetes.io/name: jellyseerr
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: jellyserr
+      app.kubernetes.io/name: jellyseerr
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
@@ -19,6 +19,10 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 5055
+          protocol: TCP
+    - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: media

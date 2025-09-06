@@ -19,6 +19,26 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: traefik
+      ports:
+        - port: 8080
+          protocol: TCP
+        - port: 8080
+          protocol: UDP
+        - port: 8000
+          protocol: TCP
+        - port: 8000
+          protocol: UDP
+        - port: 9000
+          protocol: TCP
+        - port: 9000
+          protocol: UDP
+        - port: 50000
+          protocol: TCP
+        - port: 50000
+          protocol: UDP
+        - port: 6881
+          protocol: UDP
+    - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: media
