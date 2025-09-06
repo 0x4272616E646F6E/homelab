@@ -23,8 +23,6 @@ spec:
     spec:
       runtimeClassName: youki
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
@@ -44,8 +42,13 @@ spec:
             limits:
               cpu: "1"
               memory: "1Gi"
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           securityContext:
-            runAsNonRoot: true
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
