@@ -1,35 +1,40 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: wizarr-https
+  name: flaresolverr-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`wizarr.oglesby.io`)
+    - match: Host(`flaresolverr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
-        - name: authentik
-          namespace: traefik
       services:
-        - name: wizarr
-          port: 5690
+        - name: flaresolverr
+          port: 8191
   tls: 
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: wizarr-http
+  name: flaresolverr-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`wizarr.oglesby.io`)
+    - match: Host(`flaresolverr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -37,5 +42,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: wizarr
-          port: 5690
+        - name: flaresolverr
+          port: 8191

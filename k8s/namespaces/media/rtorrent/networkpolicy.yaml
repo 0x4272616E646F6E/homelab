@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: rtorrent
+  namespace: media
+  labels:
+    app.kubernetes.io/name: rtorrent
+    app.kubernetes.io/managed-by: flux
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: rtorrent
+      app.kubernetes.io/managed-by: flux
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: media
+      ports:
+        - port: 8080
+          protocol: TCP
+        - port: 8080
+          protocol: UDP
+        - port: 8000
+          protocol: TCP
+        - port: 8000
+          protocol: UDP
+        - port: 9000
+          protocol: TCP
+        - port: 9000
+          protocol: UDP
+        - port: 50000
+          protocol: TCP
+        - port: 50000
+          protocol: UDP
+        - port: 6881
+          protocol: UDP
+  egress:
+    - {}

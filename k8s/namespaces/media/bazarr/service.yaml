@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 6767
       targetPort: 6767

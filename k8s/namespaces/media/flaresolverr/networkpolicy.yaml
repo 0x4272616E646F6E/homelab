@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: flaresolverr
+  namespace: media
+  labels:
+    app.kubernetes.io/name: flaresolverr
+    app.kubernetes.io/managed-by: flux
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: flaresolverr
+      app.kubernetes.io/managed-by: flux
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: traefik
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: media
+      ports:
+        - port: 8191
+          protocol: TCP
+  egress:
+    - {}

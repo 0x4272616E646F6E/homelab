@@ -1,13 +1,16 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: sonarr-https
+  name: bazarr-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarr.oglesby.io`)
+    - match: Host(`bazarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -15,21 +18,25 @@ spec:
         - name: authentik
           namespace: traefik
       services:
-        - name: sonarr
-          port: 8989
+        - name: bazarr
+          port: 6767
   tls: 
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: sonarr-http
+  name: bazarr-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`sonarr.oglesby.io`)
+    - match: Host(`bazarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -37,5 +44,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: sonarr
-          port: 8989
+        - name: bazarr
+          port: 6767

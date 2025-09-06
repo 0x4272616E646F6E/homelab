@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: prowlarr
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: prowlarr
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 9696
       targetPort: 9696

@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 7359
       targetPort: 7359

@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: wizarr
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: wizarr
+    app.kubernetes.io/instance: wizarr
   ports:
     - port: 5690
       targetPort: 5690

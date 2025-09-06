@@ -1,3 +1,4 @@
+# checkov:skip=CKV_K8S_40: Bazarr requires UID/GID 1000 to match permissions on mounted volumes
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,6 +7,9 @@ metadata:
   labels:
     app.kubernetes.io/name: bazarr
     app.kubernetes.io/managed-by: flux
+  annotations:
+    checkov.io/skip: |
+      CKV_K8S_40=Bazarr requires UID/GID 1000 to match permissions on mounted volumes
 spec:
   replicas: 1
   selector:
@@ -22,11 +26,13 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: bazarr
-        # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
-          image: lscr.io/linuxserver/bazarr:latest@sha256:f9cb78eaec1d77017f5c3e5b7aa07106fe4433a77fd902d01e91213f7c991499
+          # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
+          image: lscr.io/linuxserver/bazarr:1.5.2@sha256:f9cb78eaec1d77017f5c3e5b7aa07106fe4433a77fd902d01e91213f7c991499
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6767
@@ -38,12 +44,43 @@ spec:
             limits:
               cpu: "1"
               memory: "1Gi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 6767
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6767
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /config
             - name: media
               mountPath: /media
               subPath: media
+            - name: tmp
+              mountPath: /tmp
+            - name: run
+              mountPath: /run
+            - name: run
+              mountPath: /var/run
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -51,3 +88,7 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
+        - name: tmp
+          emptyDir: {}
+        - name: run
+          emptyDir: {}

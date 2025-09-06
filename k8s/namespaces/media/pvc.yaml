@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: media
   namespace: media
+  labels:
+    app.kubernetes.io/name: media
+    app.kubernetes.io/managed-by: flux
 spec:
   accessModes:
     - ReadWriteMany

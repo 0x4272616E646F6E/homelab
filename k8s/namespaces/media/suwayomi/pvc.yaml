@@ -5,6 +5,7 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
 spec:
   accessModes:
     - ReadWriteOnce
@@ -12,6 +13,7 @@ spec:
   resources:
     requests:
       storage: 8Gi
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,6 +22,7 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
 spec:
   accessModes:
     - ReadWriteOnce

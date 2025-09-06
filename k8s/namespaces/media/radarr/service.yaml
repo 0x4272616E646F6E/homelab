@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: radarr
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: radarr
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 7878
       targetPort: 7878

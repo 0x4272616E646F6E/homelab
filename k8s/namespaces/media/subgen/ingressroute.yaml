@@ -1,35 +1,40 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: prowlarr-https
+  name: subgen-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: subgen
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`prowlarr.oglesby.io`)
+    - match: Host(`subgen.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
-        - name: authentik
-          namespace: traefik
       services:
-        - name: prowlarr
-          port: 9696
-  tls: 
+        - name: subgen
+          port: 9000
+  tls:
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: prowlarr-http
+  name: subgen-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: subgen
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`prowlarr.oglesby.io`)
+    - match: Host(`subgen.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -37,5 +42,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: prowlarr
-          port: 9696
+        - name: subgen
+          port: 9000

@@ -3,6 +3,9 @@ kind: IngressRoute
 metadata:
   name: jellyfin-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
@@ -17,12 +20,16 @@ spec:
           port: 8096
   tls: 
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: jellyfin-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web

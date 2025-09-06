@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: ersatztv
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: ersatztv
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 8409
       targetPort: 8409

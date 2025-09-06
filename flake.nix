@@ -26,8 +26,10 @@
             wget
 
             # Homelab packages
+            checkov
             nodePackages_latest.cdk8s-cli
             fluxcd
+            kubeconform
             kubectl
             kustomize
             openjdk21

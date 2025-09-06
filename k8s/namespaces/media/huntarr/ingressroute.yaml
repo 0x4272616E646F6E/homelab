@@ -1,13 +1,16 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: radarr-https
+  name: huntarr-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: huntarr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`radarr.oglesby.io`)
+    - match: Host(`huntarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -15,21 +18,25 @@ spec:
         - name: authentik
           namespace: traefik
       services:
-        - name: radarr
-          port: 7878
+        - name: huntarr
+          port: 9705
   tls: 
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: radarr-http
+  name: huntarr-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: huntarr
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`radarr.oglesby.io`)
+    - match: Host(`huntarr.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -37,5 +44,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: radarr
-          port: 7878
+        - name: huntarr
+          port: 9705

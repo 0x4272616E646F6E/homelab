@@ -1,33 +1,42 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: flaresolverr-https
+  name: nzbget-https
   namespace: media
+  labels:
+    app.kubernetes.io/name: nzbget
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`flaresolverr.oglesby.io`)
+    - match: Host(`nzbget.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: traefik
+        - name: authentik
+          namespace: traefik
       services:
-        - name: flaresolverr
-          port: 8191
+        - name: nzbget
+          port: 6789
   tls: 
     secretName: oglesby-io-tls
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: flaresolverr-http
+  name: nzbget-http
   namespace: media
+  labels:
+    app.kubernetes.io/name: nzbget
+    app.kubernetes.io/managed-by: flux
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`flaresolverr.oglesby.io`)
+    - match: Host(`nzbget.oglesby.io`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -35,5 +44,5 @@ spec:
         - name: redirect-https
           namespace: traefik
       services:
-        - name: flaresolverr
-          port: 8191
+        - name: nzbget
+          port: 6789

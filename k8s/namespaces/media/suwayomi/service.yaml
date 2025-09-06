@@ -5,9 +5,11 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
 spec:
   selector:
     app.kubernetes.io/name: suwayomi
+    app.kubernetes.io/managed-by: flux
   ports:
     - port: 4567
       targetPort: 4567

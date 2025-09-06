@@ -5,6 +5,7 @@ metadata:
   namespace: media
   labels:
     app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
 spec:
   accessModes:
     - ReadWriteOnce
