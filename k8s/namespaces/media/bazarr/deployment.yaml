@@ -57,21 +57,24 @@ spec:
                 - MKNOD
                 - AUDIT_WRITE
                 - SETFCAP
-          livenessProbe:
-            httpGet:
-              path: /
+          startupProbe:
+            tcpSocket:
               port: 6767
-              scheme: HTTP
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 18
+          livenessProbe:
+            tcpSocket:
+              port: 6767
+            initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 5
-            failureThreshold: 3
+            failureThreshold: 5
           readinessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: 6767
-              scheme: HTTP
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 3
             failureThreshold: 3

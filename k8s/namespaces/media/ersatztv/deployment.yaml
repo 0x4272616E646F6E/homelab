@@ -44,12 +44,15 @@ spec:
               memory: "1Gi"
               nvidia.com/gpu: "1"
           securityContext:
-            runAsNonRoot: true
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
               drop:
-                - ALL
+                - NET_RAW
+                - MKNOD
+                - AUDIT_WRITE
+                - SETFCAP
           livenessProbe:
             httpGet:
               path: /
@@ -71,7 +74,11 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: ersatztv-config
+        - name: tmp
+          emptyDir: {}
