@@ -21,7 +21,7 @@ spec:
       containers:
         - name: jellyseerr
         # renovate: datasource=docker depName=docker.io/fallenbagel/jellyseerr
-          image: docker.io/fallenbagel/jellyseerr:2.7.3@sha256:499fbe958fa4a0c93172a231c14898986556bb28bd5cd569a0f41dbf887b04d7
+          image: docker.io/fallenbagel/jellyseerr:2.7.3@sha256:4538137bc5af902dece165f2bf73776d9cf4eafb6dd714670724af8f3eb77764
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5055
