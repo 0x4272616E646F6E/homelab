@@ -29,6 +29,27 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       automountServiceAccountToken: false
+      initContainers:
+        - name: setup-run
+          image: busybox:1.36
+          command: ['sh', '-c']
+          args:
+            - |
+              mkdir -p /run/s6
+              chown -R 1000:1000 /run
+              chmod 755 /run
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+          volumeMounts:
+            - name: run
+              mountPath: /run
       containers:
         - name: bazarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
@@ -75,6 +96,10 @@ spec:
             - name: media
               mountPath: /media
               subPath: media
+            - name: tmp
+              mountPath: /tmp
+            - name: run
+              mountPath: /run
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -82,3 +107,7 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
+        - name: tmp
+          emptyDir: {}
+        - name: run
+          emptyDir: {}
