@@ -15,9 +15,9 @@ spec:
     spec:
       runtimeClassName: youki
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: postgres
@@ -37,8 +37,6 @@ spec:
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               value: coder
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
           ports:
             - containerPort: 5432
               protocol: TCP
@@ -49,6 +47,23 @@ spec:
             limits:
               cpu: "1"
               memory: "1Gi"
+          startupProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 24  # ~2 minutes
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB" -h 127.0.0.1 -p 5432
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 6
           volumeMounts:
             - name: db
               mountPath: /var/lib/postgresql/data
