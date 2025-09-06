@@ -30,7 +30,7 @@ clusters/**             -linguist-vendored -linguist-generated
 # Mark generated/build outputs so they don't skew stats
 cdk8s/dist/**           linguist-generated=true
 cdk8s/target/**         linguist-generated=true
-cdk8s/imports/**        linguist-generated=true  # cdk8s generated bindings
+cdk8s/imports/**        linguist-generated=true
 cdktf/cdktf.out/**      linguist-generated=true
 cdktf/target/**         linguist-generated=true
 terraform/.terraform/** linguist-generated=true
