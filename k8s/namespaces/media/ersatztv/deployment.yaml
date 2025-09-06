@@ -19,12 +19,17 @@ spec:
     spec:
       runtimeClassName: nvidia
       securityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
         supplementalGroups:
-          - 44 
+          - 44  # video group for GPU access
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: ersatztv
-        # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
+          # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
           image: ghcr.io/ersatztv/ersatztv:latest@sha256:57a3b759878afd2d297a80464004c4285dacaeed587b1b6c4310e6161dc7763f
           imagePullPolicy: IfNotPresent
           ports:
@@ -38,10 +43,47 @@ spec:
               cpu: "1"
               memory: "1Gi"
               nvidia.com/gpu: "1"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8409
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8409
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: tmp
+              mountPath: /tmp
+            - name: var-tmp
+              mountPath: /var/tmp
+            - name: app-tmp
+              mountPath: /app/tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: ersatztv-config
+        - name: tmp
+          emptyDir: {}
+        - name: var-tmp
+          emptyDir: {}
+        - name: app-tmp
+          emptyDir: {}
