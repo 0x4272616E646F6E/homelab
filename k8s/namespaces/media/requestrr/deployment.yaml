@@ -21,7 +21,7 @@ spec:
       containers:
         - name: requestrr
         # renovate: datasource=docker depName=docker.io/thomst08/requestrr
-          image: docker.io/thomst08/requestrr:v2.1.8@sha256:ca87049c937aff1426f7a7ff2b898641de73a959b18e4c7c26ca803ec90e2659
+          image: docker.io/thomst08/requestrr:v2.1.8@sha256:e1a46220133ae6a92ca3da749b882dcea14279600849cf4c41b4c7c140fde777
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4545
