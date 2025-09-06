@@ -25,7 +25,7 @@ spec:
       containers:
         - name: suwayomi
         # renovate: datasource=docker depName=ghcr.io/suwayomi/tachidesk
-          image: ghcr.io/suwayomi/tachidesk:v2.1.1910@sha256:140bb90b48ba3ab28036ce08964d8bb5cd5eb1bb52b528a631d7b3a8b26d7c7f
+          image: ghcr.io/suwayomi/tachidesk:v2.1.1910@sha256:c1be93b214551c407b3c4e6fee2b1c65ffef288fe546fcd15e230a73f9383f27
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4567
