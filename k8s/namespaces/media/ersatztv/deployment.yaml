@@ -71,19 +71,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: tmp
-              mountPath: /tmp
-            - name: var-tmp
-              mountPath: /var/tmp
-            - name: app-tmp
-              mountPath: /app/tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: ersatztv-config
-        - name: tmp
-          emptyDir: {}
-        - name: var-tmp
-          emptyDir: {}
-        - name: app-tmp
-          emptyDir: {}

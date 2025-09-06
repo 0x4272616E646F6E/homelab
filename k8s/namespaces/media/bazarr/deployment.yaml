@@ -75,8 +75,6 @@ spec:
             - name: media
               mountPath: /media
               subPath: media
-            - name: tmp
-              mountPath: /tmp
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -84,5 +82,3 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
-        - name: tmp
-          emptyDir: {}
