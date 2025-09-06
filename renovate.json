@@ -50,15 +50,6 @@
       "versioningTemplate": "semver"
     },
     {
-      "description": "Keep lscr.io/linuxserver/jellyfin on semver tags; ignore non-semver/date-style tags",
-      "matchManagers": ["kubernetes", "custom.regex"],
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "lscr.io/linuxserver/jellyfin"
-      ],
-      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(?:[-.+].*)?$/"
-    },
-    {
       "customType": "regex",
       "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks",
       "managerFilePatterns": [
@@ -99,6 +90,15 @@
         "deps",
         "helm"
       ]
+    },
+    {
+      "description": "Keep lscr.io/linuxserver/jellyfin on semver tags; ignore non-semver/date-style tags",
+      "matchManagers": ["kubernetes", "custom.regex"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "lscr.io/linuxserver/jellyfin"
+      ],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(?:[-.+].*)?$/"
     },
     {
       "description": "Keep lscr.io/linuxserver/nzbget on versioned + YYYYMMDD tags; ignore legacy 2021.* date tags",
