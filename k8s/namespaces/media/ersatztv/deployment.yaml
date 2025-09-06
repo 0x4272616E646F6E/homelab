@@ -19,11 +19,9 @@ spec:
     spec:
       runtimeClassName: nvidia
       securityContext:
-        runAsUser: 10001
-        runAsGroup: 10001
-        fsGroup: 10001
+        fsGroup: 1000
         supplementalGroups:
-          - 44  # video group for GPU access
+          - 44
         seccompProfile:
           type: RuntimeDefault
       automountServiceAccountToken: false
@@ -32,6 +30,11 @@ spec:
           # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
           image: ghcr.io/ersatztv/ersatztv:latest@sha256:57a3b759878afd2d297a80464004c4285dacaeed587b1b6c4310e6161dc7763f
           imagePullPolicy: IfNotPresent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
           ports:
             - containerPort: 8409
               protocol: TCP
@@ -74,11 +77,15 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: transcode
+              mountPath: /transcode
             - name: tmp
               mountPath: /tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: ersatztv-config
+        - name: transcode
+          emptyDir: {}
         - name: tmp
           emptyDir: {}
