@@ -1,36 +1,11 @@
-# Treat K8s manifests as first-class code (not vendored/generated)
-k8s/**                  -linguist-vendored -linguist-generated
-namespace/**            -linguist-vendored -linguist-generated
-clusters/**             -linguist-vendored -linguist-generated
-
-# YAML classification
-**/*.yaml               linguist-language=YAML
-**/*.yml                linguist-language=YAML
-.github/**              -linguist-vendored linguist-language=YAML
-
-# Terraform classification
-**/*.tf                 linguist-language=Terraform
-**/*.tfvars             linguist-language=Terraform
-**/*.tf.json            linguist-language=Terraform
-**/*.tfvars.json        linguist-language=Terraform
-
-# Nix
-**/*.nix                linguist-language=Nix
-
-# Java build ecosystem
-**/*.gradle             linguist-language=Groovy
-**/*.kts                linguist-language=Kotlin
-**/pom.xml              linguist-language=XML
-
-# Docker and shell
-**/Dockerfile           linguist-language=Dockerfile
-**/*.Dockerfile         linguist-language=Dockerfile
-**/*.sh                 linguist-language=Shell
-
-# Mark generated/build outputs so they don't skew stats
-cdk8s/dist/**           linguist-generated=true
-cdk8s/target/**         linguist-generated=true
-cdk8s/imports/**        linguist-generated=true
-cdktf/cdktf.out/**      linguist-generated=true
-cdktf/target/**         linguist-generated=true
-terraform/.terraform/** linguist-generated=true
+* text=auto eol=lf
+*.env linguist-detectable linguist-language=SHELL
+*.json linguist-detectable linguist-language=JSON
+*.json5 linguist-detectable linguist-language=JSON5
+*.md linguist-detectable linguist-language=MARKDOWN
+*.sh linguist-detectable linguist-language=SHELL
+*.toml linguist-detectable linguist-language=TOML
+*.yml linguist-detectable linguist-language=YAML
+*.yaml linguist-detectable linguist-language=YAML
+*.hcl linguist-detectable linguist-language=HCL
+*.tf linguist-detectable linguist-language=HCL
