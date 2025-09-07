@@ -12,6 +12,8 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: traefik
+        - name: authentik
+          namespace: traefik
       services:
         - name: code-server
           port: 8080
@@ -29,11 +31,11 @@ spec:
   routes:
     - match: Host(`vscode.oglesby.io`)
       kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+        - name: redirect-https
+          namespace: traefik
       services:
         - name: code-server
           port: 8080
-      middlewares:
-      - name: internal-whitelist
-        namespace: traefik
-      - name: redirect-https
-        namespace: traefik
