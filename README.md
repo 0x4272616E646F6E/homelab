@@ -1,13 +1,9 @@
-![Intel](https://img.shields.io/badge/Intel-%230068B5%20.svg?style=flat-square&logo=intel&logoColor=white)
-![nVIDIA](https://img.shields.io/badge/Nvidia-%2376B900.svg?style=flat-square&logo=nVIDIA&logoColor=white)
 ![Proxmox](https://img.shields.io/badge/Proxmox-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
 ![Ansible](https://img.shields.io/badge/Ansible-%23EE0000.svg?style=flat-square&logo=ansible&logoColor=white)
 ![Terraform](https://img.shields.io/badge/Terraform-623CE4?style=flat-square&logo=terraform&logoColor=white)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white)
 
 # Homelab
-[![CI](https://github.com/0x4272616E646F6E/homelab/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/0x4272616E646F6E/homelab/actions/workflows/ci.yaml)
-
 
 This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to your Kubernetes cluster.
 
