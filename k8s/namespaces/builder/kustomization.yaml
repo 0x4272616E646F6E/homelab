@@ -5,4 +5,3 @@ commonLabels:
 resources:
   - namespace.yaml
   - buildkit/
-  - nix2container/

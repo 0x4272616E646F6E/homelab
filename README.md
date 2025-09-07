@@ -132,7 +132,6 @@ The following resources are managed through Flux in this repository:
 - [x] **Kubelet CSR Approver**
 - [x] **Loki**
 - [x] **Minecraft Server**
-- [x] **Nix2Container**
 - [x] **Nvidia Device Plugin**
 - [x] **NzbGet**
 - [x] **Prometheus**
