@@ -10,13 +10,9 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-- [Terraform](#terraform)
-- [CDK](#cdk)
-- [Flux Setup](#flux-setup)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
 - [Resources Managed](#resources-managed)
-- [Runtimes](#runtimes)
 
 ## Prerequisites
 
@@ -36,57 +32,6 @@ Before using this repository, ensure you have:
 Or use nix.
 
 - **Nix**: [Install Nix](https://github.com/DeterminateSystems/nix-installer)
-
-## Terraform
-Terraform defines and provisions infrastructure as code. In this repo, we run Terraform via OpenTofu to provision the underlying pieces the Kubernetes cluster depends on, while Flux manages the in-cluster manifests.
-
-Layout:
-- `terraform/main.tf` wires stacks
-- `terraform/modules/` holds reusable modules
-
-How to run with OpenTofu:
-```sh
-cd terraform
-tofu init
-tofu plan -var-file=homelab.tfvars
-tofu apply -var-file=homelab.tfvars
-```
-
-## CDK
-The Cloud Development Kit (CDK) is an open-source software framework that let you define cloud and infrastructure resources using familiar programming languages instead of raw YAML or JSON. This repository uses Java-based CDK variants for Kubernetes and Terraform.
-
-- CDK8s generates Kubernetes manifests from Java code, which Flux then applies.
-- CDKTF models infrastructure as code in Java, synthesizes Terraform JSON, and is applied with OpenTofu.
-
-**CDK8s** (Kubernetes, Java)
-- Write Kubernetes apps in Java using CDK8s constructs
-- Generate YAML and commit for Flux to apply
-
-Workflow:
-1. cd cdk/cdk8s
-2. mvn -q compile
-3. cdk8s synth
-4. Commit generated manifests and Flux will reconcile
-
-**CDKTF** (Terraform, Java)
-- Define infra stacks in Java; synth produces Terraform JSON in cdktf.out/stacks/<stack-name>
-- Apply with OpenTofu or `cdktf deploy`
-
-Workflow:
-1. cd cdk/cdktf
-2. ./gradlew build
-3. cdktf get
-4. cdktf synth
-5. cd cdktf.out/stacks/<stack-name>
-6. tofu init && tofu plan && tofu apply
-
-## Flux Setup
-
-Flux manages the deployment of Kubernetes resources in this repository. Key resources:
-
-- **GitRepository**: Specifies the Git repository, branch, and sync interval for Flux.
-- **HelmRepository**: Specifies the helm repository, type, and interval for Flux.
-- **Kustomization**: Defines which paths and resources Flux applies to the cluster.
 
 ## General Cluster Architecture
 
@@ -156,7 +101,7 @@ Below is a description of the hardware this cluster runs on. This information ma
 - GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
 - TPU: [Google Coral TPU M.2](https://coral.ai/products/m2-accelerator-bm)
 
-## Resources Managed
+## Cluster Resources
 
 The following resources are managed through Flux in this repository:
 
@@ -214,11 +159,3 @@ The following resources are managed through Flux in this repository:
 - [x] **VLLM**
 - [x] **Wizarr**
 
-## Runtimes
-
-These are the runtimes used in this cluster:
-
-- **Container Runtimes**
-  - **Default**: `runc`
-  - **Alternative** `youki`
-  - **GPU** `nvidia`
