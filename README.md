@@ -167,7 +167,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Cert Manager**
 - [x] **Cilium**
 - [X] **Cloudflared**
-- [x] **Coder**
+- [x] **Code-Server**
 - [x] **Comfy-UI**
 - [x] **Egress Gateway Helper**
 - [x] **Emissary**
@@ -196,7 +196,7 @@ The following resources are managed through Flux in this repository:
 - [x] **Redbot**
 - [x] **Reflector**
 - [x] **Requestrr**
-- [ ] **Reloader**
+- [x] **Reloader**
 - [x] **Renovate**
 - [x] **Rook**
 - [x] **rTorrent**
