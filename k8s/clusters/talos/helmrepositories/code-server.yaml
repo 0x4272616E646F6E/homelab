@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://github.com/coder/code-server
+  url: https://github.com/coder/code-server/ci/helm-chart
