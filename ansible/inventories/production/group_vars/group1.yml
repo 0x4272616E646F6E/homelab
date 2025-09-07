@@ -1,0 +1,6 @@
+---
+# The variables file used by the playbooks in the group1 group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+group_var1: group1_var1_value1
+group_var2: group1_var2_value2

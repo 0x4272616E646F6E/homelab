@@ -1,0 +1,17 @@
+---
+# file: playbook_group1.yml
+- name: Read data files
+  ansible.builtin.import_playbook: data.yml
+
+- name: Running play on group1
+  hosts: group1 # change this as required
+  gather_facts: false # change this as required
+  roles:
+    - role: my-role
+      tags: my-tag
+      vars:
+        play_var: play_var_value1
+  vars:
+    my_var: "{{ config.my_dict.key }}"
+  tags:
+    - tag-group1

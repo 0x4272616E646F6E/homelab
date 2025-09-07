@@ -1,0 +1,5 @@
+---
+role_var: role-var-value
+config:
+  my_dict:
+    key: role-key-value

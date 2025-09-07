@@ -1,0 +1,15 @@
+{
+    "config": {
+        "my_list": [
+            {
+                "key": "my-precious1"
+            },
+            {
+                "key": "my-precious2"
+            }
+        ],
+        "my_dict": {
+            "key": "my-precious"
+        }
+    }
+}

@@ -1,0 +1,8 @@
+---
+# Variables here are applicable to all host groups.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+all_var1: all_var1_value1
+all_var2: all_var2_value2
+data_path: data
+my_environment: production

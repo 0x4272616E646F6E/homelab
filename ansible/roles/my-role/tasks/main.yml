@@ -1,0 +1,34 @@
+---
+- name: Access and use hostvars on {{ inventory_hostname }}
+  ansible.builtin.debug:
+    msg:
+      - "host_var1 is of type: {{ host_var1 | type_debug }}"
+      - "host_var1 is        : {{ host_var1 }}"
+  tags: my-tag1
+
+- name: Access and use groupvars on {{ inventory_hostname }}
+  ansible.builtin.debug:
+    msg:
+      - "my_environment is of type: {{ my_environment | type_debug }}"
+      - "my_environment is        : {{ my_environment }}"
+      - "all_var1 is of type      : {{ all_var1 | type_debug }}"
+      - "all_var1 is              : {{ all_var1 }}"
+      - "group_var1 is of type    : {{ group_var1 | type_debug }}"
+      - "group_var1 is            : {{ group_var1 }}"
+  tags: my-tag1
+
+- name: Access and custom config vars on {{ inventory_hostname }}
+  ansible.builtin.debug:
+    msg:
+      - "my_var is of type  : {{ my_var | type_debug }}"
+      - "my_var is          : {{ my_var }}"
+      - "play_var is of type: {{ play_var | type_debug }}"
+      - "play_var is        : {{ play_var }}"
+  tags: my-tag2
+
+- name: Access default role vars on {{ inventory_hostname }}
+  ansible.builtin.debug:
+    msg:
+      - "role_var is of type: {{ role_var | type_debug }}"
+      - "role_var is        : {{ role_var }}"
+  tags: my-tag2
