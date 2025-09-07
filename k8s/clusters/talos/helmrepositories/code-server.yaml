@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: code-server
-  namespace: flux-system
-spec:
-  interval: 1h
-  url: https://github.com/coder/code-server/ci/helm-chart
