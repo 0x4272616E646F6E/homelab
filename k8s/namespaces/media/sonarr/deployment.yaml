@@ -25,7 +25,7 @@ spec:
       containers:
         - name: sonarr
         # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
-          image: lscr.io/linuxserver/sonarr:4.0.15@sha256:f376b64eca9f53b19bc4a6851cc7e64b72975627829a85d975ac2dcba56e1acd
+          image: lscr.io/linuxserver/sonarr:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8989

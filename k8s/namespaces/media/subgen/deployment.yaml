@@ -39,7 +39,7 @@ spec:
             capabilities:
               drop: ["ALL"]
           # renovate: datasource=docker depName=docker.io/mccloud/subgen
-          image: docker.io/mccloud/subgen:2025.08.8@sha256:588431b4cb26c0747dfb028ffc1102f3ffdb7d3d9815a91b22ab95bf1ee67903
+          image: docker.io/mccloud/subgen:latest
           env:
             - name: WHISPER_MODEL
               value: "large-v3-turbo"
