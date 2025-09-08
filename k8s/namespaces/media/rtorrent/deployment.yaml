@@ -53,7 +53,7 @@ spec:
             value: "1"
       containers:
         - name: rtorrent
-          image: docker.io/crazymax/rtorrent-rutorrent:latest
+          image: docker.io/crazymax/rtorrent-rutorrent:latest@sha256:d11888723fd5fbf73253e3757935f75e92028e44b67a203dd2833ef95fcd0529
           ports:
             - containerPort: 8080
             - containerPort: 8000

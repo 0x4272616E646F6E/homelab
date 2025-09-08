@@ -22,7 +22,7 @@ spec:
       containers:
         - name: glance
         # renovate: datasource=docker depName=docker.io/glanceapp/glance
-          image: docker.io/glanceapp/glance:latest
+          image: docker.io/glanceapp/glance:latest@sha256:6df86a7e8868d1eda21f35205134b1962c422957e42a0c44d4717c8e8f741b1a
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
