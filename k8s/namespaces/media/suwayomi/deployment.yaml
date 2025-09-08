@@ -22,6 +22,45 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      initContainers:
+        - name: init-fix-config-and-kcef
+          image: alpine:3.20
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -eu
+              DATA_ROOT="/home/suwayomi/.local/share/Tachidesk"
+              CONF_FILE="$DATA_ROOT/server.conf"
+              # If the config exists and the koreaderSyncPercentageTolerance is quoted as a string, convert to a number.
+              if [ -f "$CONF_FILE" ]; then
+                cp "$CONF_FILE" "$CONF_FILE.bak" || true
+                # Replace values like "1.0E" or "1.0" in quotes with an unquoted numeric value (defaults to 1.0 if ambiguous)
+                if grep -Eq '"koreaderSyncPercentageTolerance"\s*:\s*"[0-9.+-Ee]+"' "$CONF_FILE"; then
+                  # Extract numeric and write back without quotes
+                  NUM=$(grep -Eo '"koreaderSyncPercentageTolerance"\s*:\s*"[0-9.+-Ee]+"' "$CONF_FILE" | sed -r 's/.*:\s*"([0-9.+-Ee]+)"/\1/')
+                  # Fallback to 1.0 if extraction fails
+                  [ -n "$NUM" ] || NUM="1.0"
+                  # If NUM ends with bare E/e, append 0 to make it valid scientific notation
+                  case "$NUM" in
+                    *[Ee]) NUM="${NUM}0" ;;
+                  esac
+                  sed -r -i "s/(\"koreaderSyncPercentageTolerance\"\s*:\s*)\"[0-9.+-Ee]+\"/\1${NUM}/" "$CONF_FILE"
+                fi
+              fi
+              # Ensure kcef path is a directory (some older runs may have created a file here)
+              KCEF_PATH="$DATA_ROOT/bin/kcef"
+              if [ -e "$KCEF_PATH" ] && [ ! -d "$KCEF_PATH" ]; then
+                rm -f "$KCEF_PATH"
+              fi
+              mkdir -p "$KCEF_PATH"
+              # Ensure ownership is correct for runtime user
+              chown -R 1000:1000 "$KCEF_PATH" || true
+              [ -f "$CONF_FILE" ] && chown 1000:1000 "$CONF_FILE" || true
+              [ -f "$CONF_FILE.bak" ] && chown 1000:1000 "$CONF_FILE.bak" || true
+          volumeMounts:
+            - name: config
+              mountPath: /home/suwayomi/.local/share/Tachidesk
       containers:
         - name: suwayomi
         # renovate: datasource=docker depName=ghcr.io/suwayomi/tachidesk
@@ -30,6 +69,26 @@ spec:
           ports:
             - containerPort: 4567
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 4567
+            periodSeconds: 2
+            failureThreshold: 30
+            timeoutSeconds: 2
+          readinessProbe:
+            tcpSocket:
+              port: 4567
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 4567
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
           resources:
             requests:
               cpu: "100m"
