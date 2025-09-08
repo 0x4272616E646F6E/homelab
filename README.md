@@ -105,56 +105,56 @@ Below is a description of the hardware this cluster runs on. This information ma
 
 The following resources are managed through Flux in this repository:
 
-- [x] **Actions Runner Controller**
-- [X] **Authentik**
-- [x] **Bazarr**
-- [x] **BuildKit**
-- [x] **Cert Manager**
-- [x] **Cilium**
-- [X] **Cloudflared**
-- [x] **Code-Server**
-- [x] **Comfy-UI**
-- [x] **Egress Gateway Helper**
-- [x] **Emissary**
-- [x] **Falco**
-- [x] **Filebrowser**
-- [x] **Flaresolverr**
-- [x] **Glance**
-- [x] **Grafana**
-- [x] **HA Proxy**
-- [X] **Harbor**
-- [x] **Home Assistant**
-- [x] **Huntarr**
-- [x] **Jellyfin**
-- [x] **Jellyseerr**
-- [ ] **KEDA**
-- [ ] **Kestra**
-- [x] **Kubelet CSR Approver**
-- [x] **Loki**
-- [x] **Minecraft Server**
-- [x] **Nvidia Device Plugin**
-- [x] **NzbGet**
-- [x] **Prometheus**
-- [x] **Prowlarr**
-- [x] **Radarr**
-- [x] **Redbot**
-- [x] **Reflector**
-- [x] **Requestrr**
-- [x] **Reloader**
-- [x] **Renovate**
-- [x] **Rook**
-- [x] **rTorrent**
-- [x] **Sonarr**
-- [x] **SonarQube**
-- [x] **Subgen**
-- [x] **Suwayomi**
-- [x] **Syncthing**
-- [x] **Talos Debug**
-- [x] **Tdarr**
-- [x] **Tempo**
-- [x] **Traefik**
-- [x] **Vector**
-- [ ] **Vertical Pod Autoscaler**
-- [x] **VLLM**
-- [x] **Wizarr**
+- **Actions Runner Controller**
+- **Alpine (Talos Debug)**
+- **Authentik**
+- **Bazarr**
+- **BuildKit**
+- **Cert Manager**
+- **Cilium**
+- **Cloudflared**
+- **Code-Server**
+- **Comfy-UI**
+- **Egress Gateway Helper**
+- **Emissary**
+- **Falco**
+- **Filebrowser**
+- **Flaresolverr**
+- **Glance**
+- **Grafana**
+- **HA Proxy**
+- **Harbor**
+- **Home Assistant**
+- **Huntarr**
+- **Jellyfin**
+- **Jellyseerr**
+- **KEDA**
+- **Kestra**
+- **Kubelet CSR Approver**
+- **Loki**
+- **Minecraft Server**
+- **Nvidia Device Plugin**
+- **NzbGet**
+- **Prometheus**
+- **Prowlarr**
+- **Radarr**
+- **Redbot**
+- **Reflector**
+- **Requestrr**
+- **Reloader**
+- **Renovate**
+- **Rook**
+- **rTorrent**
+- **Sonarr**
+- **SonarQube**
+- **Subgen**
+- **Suwayomi**
+- **Syncthing**
+- **Tdarr**
+- **Tempo**
+- **Traefik**
+- **Vector**
+- **Vertical Pod Autoscaler**
+- **VLLM**
+- **Wizarr**
 
