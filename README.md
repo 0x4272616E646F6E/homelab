@@ -12,7 +12,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 - [Prerequisites](#prerequisites)
 - [General Cluster Architecture](#general-cluster-architecture)
 - [Hardware Specs](#hardware-specs)
-- [Resources Managed](#resources-managed)
+- [Cluster Resources](#cluster-resources)
 
 ## Prerequisites
 
