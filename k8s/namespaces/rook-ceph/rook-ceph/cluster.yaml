@@ -8,8 +8,6 @@ spec:
   cephVersion:
     image: quay.io/ceph/ceph:v19@sha256:af0c5903e901e329adabe219dfc8d0c3efc1f05102a753902f33ee16c26b6cee
     allowUnsupported: true
-  network:
-    provider: host
   mon:
     count: 1
     allowMultiplePerNode: true
@@ -42,7 +40,7 @@ spec:
     all: system-node-critical
     mgr: system-cluster-critical
   disruptionManagement:
-    managePodBudgets: false
+    managePodBudgets: true
   cephConfig:
     global:
       osd_pool_default_size: "1"
@@ -50,9 +48,6 @@ spec:
       bdev_flock_retry: "20"
       bluefs_buffered_io: "false"
       mon_data_avail_warn: "10"
-      # Prefer modern messenger v2 and disable legacy msgr1 (port 6789)
-      ms_bind_msgr2: "true"
-      ms_bind_msgr1: "false"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
@@ -83,7 +78,7 @@ spec:
   preserveFilesystemOnDelete: false
   metadataServer:
     activeCount: 1
-    activeStandby: false
+    activeStandby: true
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystemSubVolumeGroup
@@ -108,8 +103,6 @@ parameters:
   pool: rbd
   imageFormat: "2"
   imageFeatures: layering
-  # Use userspace NBD mounter to avoid kernel rbd module requirement on Talos
-  mounter: rbd-nbd
   csi.storage.k8s.io/fstype: ext4
   csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
   csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
@@ -130,17 +123,12 @@ parameters:
   clusterID: rook-ceph
   fsName: myfs
   subvolumegroup: csi
-  # Force CephFS FUSE client to avoid missing kernel cephfs module on Talos
-  mounter: fuse
   csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
   csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
   csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
   csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
   csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
   csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-mountOptions:
-  # Prefer msgr2 secure mode for CephFS FUSE client
-  - ms_mode=secure
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: Immediate
