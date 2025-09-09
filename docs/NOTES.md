@@ -4,9 +4,14 @@
 
 **Drain Node**
 ```bash
-kubectl drain <node-name> \
+kubectl drain talos-4m3-8nj \
   --ignore-daemonsets \
   --delete-emptydir-data
+```
+
+**Uncordon Node**
+```bash
+kubectl uncordon talos-4m3-8nj
 ```
 
 ## Talos
@@ -51,6 +56,16 @@ talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0 --dry-run
 
 # Run
 talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0
+```
+
+**ETCD Backup**
+```bash
+talosctl -n 10.0.0.250 etcd snapshot etcd.snapshot
+```
+
+**ETCD Restore**
+```bash
+talosctl -n 10.0.0.250 bootstrap --recover-from ./etcd.snapshot
 ```
 
 ## SOPS
