@@ -7,6 +7,6 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - toolbox.yaml
-  - drivers.yaml
   - cluster.yaml
+  - volumesnapshotclass.yaml
   - ingress-route.yaml
