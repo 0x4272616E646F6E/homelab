@@ -1,5 +1,14 @@
 # Notes
 
+## Kubernetes
+
+**Drain Node**
+```bash
+kubectl drain <node-name> \
+  --ignore-daemonsets \
+  --delete-emptydir-data
+```
+
 ## Talos
 **Installer Image**
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
