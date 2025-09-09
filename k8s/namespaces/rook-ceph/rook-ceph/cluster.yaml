@@ -83,7 +83,7 @@ spec:
   preserveFilesystemOnDelete: false
   metadataServer:
     activeCount: 1
-    activeStandby: true
+    activeStandby: false
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystemSubVolumeGroup
