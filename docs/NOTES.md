@@ -1,12 +1,12 @@
 # Notes
 
 ## Talos
-*Installer Image**
+**Installer Image**
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
- factory.talos.dev/nocloud-installer/12bae1aaa19d63f5ec5f1f2bc316cedfede9506f2b79e7935d563da195e240d1:v1.10.6
-```
+ factory.talos.dev/nocloud-installer/12bae1aaa19d63f5ec5f1f2bc316cedfede9506f2b79e7935d563da195e240d1:v1.11.1 
+ ```
 
 **Extensions**
 ```bash
@@ -26,9 +26,23 @@ customization:
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
-- **Version**: The version `v1.10.6` corresponds to a specific release of Talos. Ensure that all nodes in your cluster are using the same version to avoid compatibility issues.
+- **Version**: The version `v1.11.1` corresponds to a specific release of Talos. Ensure that all nodes in your cluster are using the same version to avoid compatibility issues.
 
 You can use this image to PXE boot or manually install Talos on your nodes.
+
+**Talos Image Upgrade**
+```bash
+talosctl upgrade -n ${NODE_IP} --image factory.talos.dev/nocloud-installer/${IMAGE_HASH}:${IMAGE_VERSION}
+```
+
+**Talos Kubernetes Upgrade**
+```bash
+# Validate
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0 --dry-run
+
+# Run
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0
+```
 
 ## SOPS
 **Encrypting Secrets with SOPS**
