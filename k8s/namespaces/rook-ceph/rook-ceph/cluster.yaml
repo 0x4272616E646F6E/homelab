@@ -13,14 +13,16 @@ spec:
   mon:
     count: 1
     allowMultiplePerNode: true
-    requests: { cpu: "200m", memory: "1Gi" }
-    limits:   { cpu: "2000m", memory: "2Gi" }
+    resource:
+      requests: { cpu: "200m", memory: "1Gi" }
+      limits:   { cpu: "2000m", memory: "2Gi" }
   skipUpgradeChecks: true
   mgr:
     count: 1
     allowMultiplePerNode: true
-    requests: { cpu: "200m", memory: "1Gi" }
-    limits:   { cpu: "2000m", memory: "3Gi" }
+    resource:
+      requests: { cpu: "200m", memory: "1Gi" }
+      limits:   { cpu: "2000m", memory: "3Gi" }
     modules:
       - name: rook
         enabled: true
