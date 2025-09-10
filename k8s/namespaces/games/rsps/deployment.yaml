@@ -21,7 +21,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: minecraft
-          image: docker.io/itzg/minecraft-server:latest@sha256:c123ad9e300c6db2e008b37f9559a6b1a52d13423264147b09f91c5c37928d41
+          image: docker.io/itzg/minecraft-server:latest@sha256:0b06668a8ee2089c94547147bc30cd6d89e655028b63123285c00ea0283b216b
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 25565
