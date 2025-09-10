@@ -48,6 +48,9 @@ spec:
       bdev_flock_retry: "20"
       bluefs_buffered_io: "false"
       mon_data_avail_warn: "10"
+      osd_memory_target: "4294967296"
+      osd_max_backfills: "1"
+      osd_recovery_max_active: "1"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
