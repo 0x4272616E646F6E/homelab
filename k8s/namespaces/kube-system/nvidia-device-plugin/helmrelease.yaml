@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: nvdp
         namespace: flux-system
-      version: 0.17.3
+      version: 0.17.4
   install:
     # createNamespace: true
     remediation:
