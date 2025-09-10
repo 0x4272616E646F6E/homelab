@@ -2,8 +2,8 @@
 ![Proxmox](https://img.shields.io/badge/Proxmox%209.0.6-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
 ![Ansible](https://img.shields.io/badge/Ansible%202.18.8-%23EE0000.svg?style=flat-square&logo=ansible&logoColor=white)
 ![OpenTofu](https://img.shields.io/badge/OpenTofu%201.10.6-623CE4?style=flat-square&logo=opentofu&logoColor=white)
-![Talos](https://img.shields.io/badge/Talos%20Linux%201.10.6-%23F36D00?style=flat-square&logo=talos&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes%201.33.0-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white)
+![Talos](https://img.shields.io/badge/Talos%20Linux%201.11.1-%23F36D00?style=flat-square&logo=talos&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes%201.34.1-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white)
 ![Nix](https://img.shields.io/badge/Nix%2025.05-5277C3?style=flat-square&logo=nixos&logoColor=white)
 
 This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to your Kubernetes cluster.

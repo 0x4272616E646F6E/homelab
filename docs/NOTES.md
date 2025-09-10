@@ -19,19 +19,16 @@ kubectl uncordon talos-4m3-8nj
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
- factory.talos.dev/nocloud-installer/12bae1aaa19d63f5ec5f1f2bc316cedfede9506f2b79e7935d563da195e240d1:v1.11.1 
- ```
+ factory.talos.dev/nocloud-installer/00cd01c7b8612cfd0c5e4394a20fe0c12b1c398ddbf6b554d909179411659e6a:v1.11.1 
+```
 
 **Extensions**
 ```bash
 customization:
     systemExtensions:
         officialExtensions:
-            - siderolabs/fuse3
+            - siderolabs/crun
             - siderolabs/gasket-driver
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/qemu-guest-agent
@@ -52,10 +49,10 @@ talosctl upgrade -n ${NODE_IP} --image factory.talos.dev/nocloud-installer/${IMA
 **Talos Kubernetes Upgrade**
 ```bash
 # Validate
-talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0 --dry-run
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.1 --dry-run
 
 # Run
-talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.0
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.1
 ```
 
 **ETCD Backup**
@@ -141,5 +138,5 @@ These are the runtimes used in this cluster:
 
 - **Container Runtimes**
   - **Default**: `runc`
-  - **Alternative** `youki`
+  - **Alternatives** `crun` & `youki`
   - **GPU** `nvidia`
