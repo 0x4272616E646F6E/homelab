@@ -4,6 +4,8 @@ metadata:
   name: ceph-cluster
   namespace: rook-ceph
 spec:
+  network:
+    provider: host
   dataDirHostPath: /var/lib/rook
   cephVersion:
     image: quay.io/ceph/ceph:v19@sha256:af0c5903e901e329adabe219dfc8d0c3efc1f05102a753902f33ee16c26b6cee
@@ -11,10 +13,14 @@ spec:
   mon:
     count: 1
     allowMultiplePerNode: true
+    requests: { cpu: "200m", memory: "1Gi" }
+    limits:   { cpu: "2000m", memory: "2Gi" }
   skipUpgradeChecks: true
   mgr:
     count: 1
     allowMultiplePerNode: true
+    requests: { cpu: "200m", memory: "1Gi" }
+    limits:   { cpu: "2000m", memory: "3Gi" }
     modules:
       - name: rook
         enabled: true
@@ -40,7 +46,7 @@ spec:
     all: system-node-critical
     mgr: system-cluster-critical
   disruptionManagement:
-    managePodBudgets: true
+    managePodBudgets: false
   cephConfig:
     global:
       osd_pool_default_size: "1"
@@ -48,9 +54,10 @@ spec:
       bdev_flock_retry: "20"
       bluefs_buffered_io: "false"
       mon_data_avail_warn: "10"
-      osd_memory_target: "4294967296"
+      osd_memory_target: "8589934592"
       osd_max_backfills: "1"
       osd_recovery_max_active: "1"
+      osd_recovery_sleep: "0.1"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
@@ -81,7 +88,7 @@ spec:
   preserveFilesystemOnDelete: false
   metadataServer:
     activeCount: 1
-    activeStandby: true
+    activeStandby: false
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystemSubVolumeGroup
