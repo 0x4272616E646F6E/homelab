@@ -46,3 +46,23 @@ spec:
       services:
         - name: wizarr
           port: 5690
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: wizarr-external-https
+  namespace: media
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`wizarr.hosted.fail`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: traefik
+      services:
+        - name: wizarr
+          port: 5690
+  tls: 
+    secretName: oglesby-io-tls
