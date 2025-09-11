@@ -18,6 +18,8 @@ spec:
         app.kubernetes.io/name: code-server
         app.kubernetes.io/managed-by: flux
     spec:
+      # Explicitly use the default runc runtime
+      runtimeClassName: runc
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -30,7 +32,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PATH
-              value: "/home/coder/.local/bin:/usr/local/bin:/usr/bin:/bin"
+              value: "/nix/var/nix/profiles/default/bin:/home/coder/.local/bin:/usr/local/bin:/usr/bin:/bin"
           lifecycle:
             postStart:
               exec:
@@ -63,19 +65,28 @@ spec:
                     fi
                     
                     # Install Nix if not already installed
-                    if [ ! -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+                    if [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
                       mkdir -p $HOME/.local/bin
                       
                       # Install Nix using Determinate Systems installer with --init none
-                      curl -fsSL https://get.determinate.systems/nix/installer/script.sh | \
-                        bash -s -- install --no-confirm --init none
+                      # This works better in containers without systemd
+                      for i in 1 2 3; do
+                        curl -fsSL https://get.determinate.systems/nix/installer/script.sh | \
+                          bash -s -- install --no-confirm --init none && break
+                        echo "Nix installer download failed (attempt $i), retrying..." >&2
+                        sleep 3
+                      done
                       
                       # Source nix settings
-                      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+                      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+                        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+                      fi
                       
-                      # Add nix channel
-                      nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-                      nix-channel --update
+                      # Set up flakes
+                      mkdir -p $HOME/.config/nix
+                      if ! grep -qs 'experimental-features *= *.*nix-command.*flakes' "$HOME/.config/nix/nix.conf" 2>/dev/null; then
+                        echo "experimental-features = nix-command flakes" >> $HOME/.config/nix/nix.conf
+                      fi
                     fi
                     
                     # Add .local/bin to PATH
