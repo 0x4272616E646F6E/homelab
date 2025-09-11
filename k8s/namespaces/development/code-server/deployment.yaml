@@ -27,23 +27,31 @@ spec:
 
       initContainers:
         - name: install-nix
-          image: curlimages/curl:8.7.1
+          image: docker.io/alpine:latest
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
             - -lc
             - |
               set -euxo pipefail
+              # Ensure required tools are present for the Nix installer
+              apk add --no-cache curl xz tar bash ca-certificates coreutils su-exec
+              update-ca-certificates || true
+
               export HOME=/home/coder
+              mkdir -p /nix "$HOME"
+              # Make sure user 1000 can write to /nix and $HOME
+              chown -R 1000:1000 /nix "$HOME"
+
               if [ ! -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
-                echo "Installing Nix (no-daemon) into $HOME and /nix ..."
-                curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon
+                echo "Installing Nix (no-daemon) into $HOME and /nix as uid 1000..."
+                su-exec 1000:1000 sh -lc 'export HOME=/home/coder; curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon'
               else
                 echo "Nix already installed, skipping."
               fi
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 0
+            runAsGroup: 0
           volumeMounts:
             - name: config
               mountPath: /home/coder
