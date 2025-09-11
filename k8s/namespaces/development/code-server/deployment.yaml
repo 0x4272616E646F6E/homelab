@@ -24,51 +24,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       automountServiceAccountToken: false
-
-      initContainers:
-        - name: install-nix
-          image: docker.io/alpine:latest
-          imagePullPolicy: IfNotPresent
-          command:
-            - /bin/sh
-            - -lc
-            - |
-              set -euxo pipefail
-              # Ensure required tools are present for the Nix installer
-              apk add --no-cache curl xz tar bash ca-certificates coreutils su-exec
-              update-ca-certificates || true
-
-              export HOME=/home/coder
-              mkdir -p /nix "$HOME"
-              # Make sure user 1000 can write to /nix and $HOME
-              chown -R 1000:1000 /nix "$HOME"
-
-              if [ ! -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
-                echo "Installing Nix (no-daemon) into $HOME and /nix as uid 1000 (safe untar)..."
-                TMPDIR="$HOME/.nix-tmp-$(date +%s)-$$"
-                su-exec 1000:1000 mkdir -p "$TMPDIR"
-                ver=2.31.1
-                # Download binary tarball
-                curl -fsSL -o "$TMPDIR/nix.tar.xz" "https://releases.nixos.org/nix/nix-${ver}/nix-${ver}-x86_64-linux.tar.xz"
-                # Extract without trying to apply ownership/permissions (rootless-friendly)
-                su-exec 1000:1000 sh -lc "cd $TMPDIR && tar --no-same-owner --no-same-permissions -xJf nix.tar.xz"
-                # Create minimal nix.conf with sandbox disabled (container-friendly)
-                su-exec 1000:1000 sh -lc 'mkdir -p "$HOME/.config/nix"; echo "sandbox = false" > "$HOME/.config/nix/nix.conf"'
-                # Run bundled installer from the extracted tree
-                su-exec 1000:1000 sh -lc "cd $TMPDIR/nix-${ver}-x86_64-linux && HOME=$HOME sh install --no-daemon"
-                rm -rf "$TMPDIR"
-              else
-                echo "Nix already installed, skipping."
-              fi
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-          volumeMounts:
-            - name: config
-              mountPath: /home/coder
-            - name: nix-store
-              mountPath: /nix
-
       containers:
         - name: code-server
         # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
@@ -76,9 +31,53 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: PATH
-              value: "/home/coder/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-            - name: NIX_PROFILES
-              value: "/home/coder/.nix-profile"
+              value: "/home/coder/.local/bin:/usr/local/bin:/usr/bin:/bin"
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - bash
+                  - -c
+                  - |
+                    mkdir -p $HOME/.nixpkgs
+                    cat > $HOME/.nixpkgs/config.nix << 'EOL'
+                    {
+                      allowUnfree = true;
+                    }
+                    EOL
+                    
+                    # Set up bash profile for Nix
+                    if ! grep -q "Setup Bash Profile" $HOME/.bashrc; then
+                      cat >> $HOME/.bashrc << 'EOF'
+                      
+                    # Set up nix-shell with direnv for project-specific environments
+                    if command -v nix-shell &> /dev/null; then
+                      alias nixify='echo "use nix" > .envrc && direnv allow'
+                      alias flakify='echo "use flake" > .envrc && direnv allow'
+                    fi
+                    EOF
+                    fi
+                    
+                    # Download nix-portable directly
+                    mkdir -p $HOME/.local/bin
+                    if [ ! -e $HOME/.local/bin/nix-portable ]; then
+                      curl -L https://github.com/DavHau/nix-portable/releases/download/v008/nix-portable -o $HOME/.local/bin/nix-portable
+                      chmod +x $HOME/.local/bin/nix-portable
+                    fi
+                    
+                    # Create convenience aliases
+                    for cmd in nix nix-build nix-shell nix-env nix-store nix-collect-garbage nix-channel; do
+                      cat > $HOME/.local/bin/$cmd << EOF
+                    #!/bin/bash
+                    exec $HOME/.local/bin/nix-portable $cmd "\$@"
+                    EOF
+                      chmod +x $HOME/.local/bin/$cmd
+                    done
+                    
+                    # Add .local/bin to PATH
+                    if ! grep -q ".local/bin" $HOME/.bashrc; then
+                      echo 'export PATH=$HOME/.local/bin:$PATH' >> $HOME/.bashrc
+                    fi
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -92,11 +91,12 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/coder
-            - name: nix-store
-              mountPath: /nix
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: code-server-config
-        - name: nix-store
-          emptyDir: {}
+        - name: tmp
+          emptyDir: 
+            medium: Memory
