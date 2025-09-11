@@ -45,7 +45,8 @@ spec:
 
               if [ ! -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
                 echo "Installing Nix (no-daemon) into $HOME and /nix as uid 1000 (safe untar)..."
-                TMPDIR=$(mktemp -d)
+                TMPDIR="$HOME/.nix-tmp-$(date +%s)-$$"
+                su-exec 1000:1000 mkdir -p "$TMPDIR"
                 ver=2.31.1
                 # Download binary tarball
                 curl -fsSL -o "$TMPDIR/nix.tar.xz" "https://releases.nixos.org/nix/nix-${ver}/nix-${ver}-x86_64-linux.tar.xz"
