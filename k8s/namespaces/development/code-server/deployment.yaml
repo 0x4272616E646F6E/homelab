@@ -18,7 +18,6 @@ spec:
         app.kubernetes.io/name: code-server
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: youki
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -47,9 +46,14 @@ spec:
                     EOL
                     
                     # Set up bash profile for Nix
-                    if ! grep -q "Setup Bash Profile" $HOME/.bashrc; then
+                    if ! grep -q "Nix setup" $HOME/.bashrc; then
                       cat >> $HOME/.bashrc << 'EOF'
                       
+                    # Nix setup
+                    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+                      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+                    fi
+                    
                     # Set up nix-shell with direnv for project-specific environments
                     if command -v nix-shell &> /dev/null; then
                       alias nixify='echo "use nix" > .envrc && direnv allow'
@@ -58,21 +62,21 @@ spec:
                     EOF
                     fi
                     
-                    # Download nix-portable directly
-                    mkdir -p $HOME/.local/bin
-                    if [ ! -e $HOME/.local/bin/nix-portable ]; then
-                      curl -L https://github.com/DavHau/nix-portable/releases/download/v008/nix-portable -o $HOME/.local/bin/nix-portable
-                      chmod +x $HOME/.local/bin/nix-portable
+                    # Install Nix if not already installed
+                    if [ ! -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+                      mkdir -p $HOME/.local/bin
+                      
+                      # Install Nix using Determinate Systems installer with --init none
+                      curl -fsSL https://get.determinate.systems/nix/installer/script.sh | \
+                        bash -s -- install --no-confirm --init none
+                      
+                      # Source nix settings
+                      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+                      
+                      # Add nix channel
+                      nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+                      nix-channel --update
                     fi
-                    
-                    # Create convenience aliases
-                    for cmd in nix nix-build nix-shell nix-env nix-store nix-collect-garbage nix-channel; do
-                      cat > $HOME/.local/bin/$cmd << EOF
-                    #!/bin/bash
-                    exec $HOME/.local/bin/nix-portable $cmd "\$@"
-                    EOF
-                      chmod +x $HOME/.local/bin/$cmd
-                    done
                     
                     # Add .local/bin to PATH
                     if ! grep -q ".local/bin" $HOME/.bashrc; then
@@ -93,6 +97,8 @@ spec:
               mountPath: /home/coder
             - name: tmp
               mountPath: /tmp
+            - name: nix-store
+              mountPath: /nix
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -100,3 +106,6 @@ spec:
         - name: tmp
           emptyDir: 
             medium: Memory
+        - name: nix-store
+          persistentVolumeClaim:
+            claimName: code-server-nix-store
