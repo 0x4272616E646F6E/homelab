@@ -44,8 +44,18 @@ spec:
               chown -R 1000:1000 /nix "$HOME"
 
               if [ ! -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
-                echo "Installing Nix (no-daemon) into $HOME and /nix as uid 1000..."
-                su-exec 1000:1000 sh -lc 'export HOME=/home/coder; curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon'
+                echo "Installing Nix (no-daemon) into $HOME and /nix as uid 1000 (safe untar)..."
+                TMPDIR=$(mktemp -d)
+                ver=2.31.1
+                # Download binary tarball
+                curl -fsSL -o "$TMPDIR/nix.tar.xz" "https://releases.nixos.org/nix/nix-${ver}/nix-${ver}-x86_64-linux.tar.xz"
+                # Extract without trying to apply ownership/permissions (rootless-friendly)
+                su-exec 1000:1000 sh -lc "cd $TMPDIR && tar --no-same-owner --no-same-permissions -xJf nix.tar.xz"
+                # Create minimal nix.conf with sandbox disabled (container-friendly)
+                su-exec 1000:1000 sh -lc 'mkdir -p "$HOME/.config/nix"; echo "sandbox = false" > "$HOME/.config/nix/nix.conf"'
+                # Run bundled installer from the extracted tree
+                su-exec 1000:1000 sh -lc "cd $TMPDIR/nix-${ver}-x86_64-linux && HOME=$HOME sh install --no-daemon"
+                rm -rf "$TMPDIR"
               else
                 echo "Nix already installed, skipping."
               fi
