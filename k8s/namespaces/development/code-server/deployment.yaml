@@ -24,25 +24,60 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
       automountServiceAccountToken: false
+
+      initContainers:
+        - name: install-nix
+          image: curlimages/curl:8.7.1
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -lc
+            - |
+              set -euxo pipefail
+              export HOME=/home/coder
+              if [ ! -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+                echo "Installing Nix (no-daemon) into $HOME and /nix ..."
+                curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon
+              else
+                echo "Nix already installed, skipping."
+              fi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          volumeMounts:
+            - name: config
+              mountPath: /home/coder
+            - name: nix-store
+              mountPath: /nix
+
       containers:
         - name: code-server
         # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
           image: docker.io/codercom/code-server:latest@sha256:f9ed058d6b1a4aa80846f77902d344bd97e450aec69201a0f8939baf58b18a5f
           imagePullPolicy: IfNotPresent
+          env:
+            - name: PATH
+              value: "/home/coder/.nix-profile/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            - name: NIX_PROFILES
+              value: "/home/coder/.nix-profile"
           ports:
             - containerPort: 8080
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "1"
+              memory: "2Gi"
             limits:
               cpu: "2"
               memory: "4Gi"
           volumeMounts:
             - name: config
               mountPath: /home/coder
+            - name: nix-store
+              mountPath: /nix
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: code-server-config
+        - name: nix-store
+          emptyDir: {}
