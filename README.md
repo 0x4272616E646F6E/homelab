@@ -1,5 +1,5 @@
 # Homelab
-![Proxmox](https://img.shields.io/badge/Proxmox%209.0.6-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
+![Proxmox](https://img.shields.io/badge/Proxmox%209.0.9-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
 ![Ansible](https://img.shields.io/badge/Ansible%202.18.8-%23EE0000.svg?style=flat-square&logo=ansible&logoColor=white)
 ![OpenTofu](https://img.shields.io/badge/OpenTofu%201.10.6-623CE4?style=flat-square&logo=opentofu&logoColor=white)
 ![Talos](https://img.shields.io/badge/Talos%20Linux%201.11.1-%23F36D00?style=flat-square&logo=talos&logoColor=white)
