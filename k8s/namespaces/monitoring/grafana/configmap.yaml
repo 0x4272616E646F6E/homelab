@@ -194,7 +194,7 @@ data:
         # -- The Docker registry
         registry: docker.io
         repository: curlimages/curl
-        tag: 8.15.0
+        tag: 8.16.0
         sha: ""
         pullPolicy: IfNotPresent
 
