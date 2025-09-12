@@ -18,8 +18,7 @@ spec:
         app.kubernetes.io/name: code-server
         app.kubernetes.io/managed-by: flux
     spec:
-      # Explicitly use the default runc runtime
-      runtimeClassName: runc
+      runtimeClassName: youki
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -30,69 +29,6 @@ spec:
         # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
           image: docker.io/codercom/code-server:latest@sha256:f9ed058d6b1a4aa80846f77902d344bd97e450aec69201a0f8939baf58b18a5f
           imagePullPolicy: IfNotPresent
-          env:
-            - name: PATH
-              value: "/nix/var/nix/profiles/default/bin:/home/coder/.local/bin:/usr/local/bin:/usr/bin:/bin"
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - bash
-                  - -c
-                  - |
-                    mkdir -p $HOME/.nixpkgs
-                    cat > $HOME/.nixpkgs/config.nix << 'EOL'
-                    {
-                      allowUnfree = true;
-                    }
-                    EOL
-                    
-                    # Set up bash profile for Nix
-                    if ! grep -q "Nix setup" $HOME/.bashrc; then
-                      cat >> $HOME/.bashrc << 'EOF'
-                      
-                    # Nix setup
-                    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-                      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-                    fi
-                    
-                    # Set up nix-shell with direnv for project-specific environments
-                    if command -v nix-shell &> /dev/null; then
-                      alias nixify='echo "use nix" > .envrc && direnv allow'
-                      alias flakify='echo "use flake" > .envrc && direnv allow'
-                    fi
-                    EOF
-                    fi
-                    
-                    # Install Nix if not already installed
-                    if [ ! -x /nix/var/nix/profiles/default/bin/nix ]; then
-                      mkdir -p $HOME/.local/bin
-                      
-                      # Install Nix using Determinate Systems installer with --init none
-                      # This works better in containers without systemd
-                      for i in 1 2 3; do
-                        curl -fsSL https://get.determinate.systems/nix/installer/script.sh | \
-                          bash -s -- install --no-confirm --init none && break
-                        echo "Nix installer download failed (attempt $i), retrying..." >&2
-                        sleep 3
-                      done
-                      
-                      # Source nix settings
-                      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-                        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-                      fi
-                      
-                      # Set up flakes
-                      mkdir -p $HOME/.config/nix
-                      if ! grep -qs 'experimental-features *= *.*nix-command.*flakes' "$HOME/.config/nix/nix.conf" 2>/dev/null; then
-                        echo "experimental-features = nix-command flakes" >> $HOME/.config/nix/nix.conf
-                      fi
-                    fi
-                    
-                    # Add .local/bin to PATH
-                    if ! grep -q ".local/bin" $HOME/.bashrc; then
-                      echo 'export PATH=$HOME/.local/bin:$PATH' >> $HOME/.bashrc
-                    fi
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -106,17 +42,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/coder
-            - name: tmp
-              mountPath: /tmp
-            - name: nix-store
-              mountPath: /nix
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: code-server-config
-        - name: tmp
-          emptyDir: 
-            medium: Memory
-        - name: nix-store
-          persistentVolumeClaim:
-            claimName: code-server-nix-store
