@@ -454,6 +454,11 @@ data:
     # Set annotations for pods
     annotations: {}
 
+    ## Environment variables to attach to the pods
+    env:
+      - name: SONAR_SEARCH_JAVAOPTS
+        value: "-Des.enforce.bootstrap.checks=false"
+
     ## We usually don't make specific resource recommendations, as they are heavily dependant on
     ## the usage of SonarQube and the surrounding infrastructure.
     ## Those default are based on the default Web -Xmx1G -Xms128m and CE -Xmx2G -Xms128m and Search -Xmx2G -Xms2G settings of SQ sub processes
