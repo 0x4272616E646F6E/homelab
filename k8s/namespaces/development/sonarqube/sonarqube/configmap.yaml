@@ -74,7 +74,7 @@ data:
     # Set security context for sonarqube pod.
     # The current section contains the default values set in a generic Kubernetes cluster. If you are using OpenShift, you should not set any specific fsGroup.
     securityContext:
-      fsGroup: 0
+      fsGroup: 1000
 
     # Set security context for sonarqube container.
     # The current section contains the default values set in a generic Kubernetes cluster. If you are using OpenShift, you should not set any specific UID or GID to be used for the execution.
@@ -84,7 +84,7 @@ data:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
       runAsUser: 1000
-      runAsGroup: 0
+      runAsGroup: 1000
       seccompProfile:
         type: RuntimeDefault
       capabilities:
@@ -285,7 +285,7 @@ data:
         allowPrivilegeEscalation: false
         runAsNonRoot: true
         runAsUser: 1000
-        runAsGroup: 0
+        runAsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
         capabilities:
@@ -324,7 +324,7 @@ data:
       #   path: my-certificate.crt
 
     initSysctl:
-      enabled: true
+      enabled: false
       vmMaxMapCount: 524288
       fsFileMax: 131072
       nofile: 131072
@@ -341,7 +341,7 @@ data:
 
     # This should not be required anymore, used to chown/chmod folder created by faulty CSI driver that are not applying properly POSIX fsgroup.
     initFs:
-      enabled: true
+      enabled: false
       # all initContainers use SonarQube image by default, but you can override it by setting the image field (ex image: ubuntu:24.04)
       # image:
       # Compatible with podSecurity standard baseline.
@@ -487,7 +487,7 @@ data:
       accessMode: ReadWriteOnce
       size: 5Gi
       uid: 1000
-      guid: 0
+    guid: 1000
 
       ## DEPRECATED please use root level extraVolumes value
       ## Specify extra volumes. Refer to ".spec.volumes" specification : https://kubernetes.io/fr/docs/concepts/storage/volumes/
@@ -610,7 +610,7 @@ data:
         enabled: true
         accessMode: ReadWriteOnce
         size: 20Gi
-        storageClass:
+        storageClass: "rook-ceph-block"
       securityContext:
         enabled: true
         # fsGroup specification below are not applied if enabled=false. enabled=false is the required setting for OpenShift "restricted SCC" to work successfully.
@@ -649,7 +649,7 @@ data:
 
     tests:
       image: ""
-      enabled: true
+      enabled: false
       resources:
         requests:
           cpu: 500m
