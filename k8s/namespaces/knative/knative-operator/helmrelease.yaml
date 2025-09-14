@@ -1,22 +1,22 @@
- # renovate: registryUrl=https://kedacore.github.io/charts
+ # renovate: registryUrl=https://knative.github.io/operator
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: keda
-  namespace: keda
+  name: knative-operator
+  namespace: knative
 spec:
   chart:
     spec:
-      chart: keda
-      version: 2.17.2
+      chart: knative-operator
+      version: 1.19.2
       sourceRef:
         kind: HelmRepository
-        name: kedacore
+        name: knative-operator
         namespace: flux-system
   interval: 15m
   timeout: 5m
-  releaseName: keda
+  releaseName: knative-operator
   valuesFrom:
   - kind: ConfigMap
-    name: keda-config-map
+    name: knative-config-map
     valuesKey: values.yaml

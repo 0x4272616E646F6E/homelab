@@ -1,8 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: kedacore
+  name: knative-operator
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://kedacore.github.io/charts
+  url: https://knative.github.io/operator

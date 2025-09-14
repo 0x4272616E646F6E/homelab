@@ -4,5 +4,4 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - keda-2.17.2-crds.yaml
-  - keda/
+  - knative-operator/
