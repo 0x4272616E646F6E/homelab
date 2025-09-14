@@ -129,9 +129,11 @@ The following resources are managed through Flux in this repository:
 - **Huntarr**
 - **Jellyfin**
 - **Jellyseerr**
-- **KEDA**
 - **Kestra**
+- **Knative**
+- **Kserve**
 - **Kubelet CSR Approver**
+- **Lazy Librarian**
 - **Loki**
 - **Minecraft Server**
 - **Nvidia Device Plugin**

@@ -10,8 +10,8 @@ data:
     # Declare variables to be passed into your templates.
 
     # (DEPRECATED) If the deployment Type is set to Deployment SonarQube is deployed as a replica set.
-    # This will be removed in a future release.
-    deploymentType: "StatefulSet"
+    # StatefulSet will be removed in a future release in favor of Deployment. Default to StatefulSet for backwards compatibility.
+    deploymentType: "Deployment"
 
     # There should not be more than 1 SonarQube instance connected to the same database. Please set this value to 1 or 0 (in case you need to scale down programmatically).
     replicaCount: 1
@@ -61,7 +61,7 @@ data:
     # Set the chart to use the latest released SonarQube Community Build
     community:
       enabled: true
-      buildNumber: "25.1.0.102122"
+      buildNumber: "25.9.0.112764"
 
     image:
       repository: sonarqube
@@ -483,7 +483,7 @@ data:
       ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
       ##   GKE, AWS & OpenStack)
       ##
-      storageClass:
+      storageClass: "rook-ceph-block"
       accessMode: ReadWriteOnce
       size: 5Gi
       uid: 1000
@@ -495,6 +495,13 @@ data:
       ## DEPRECATED please use root level extraVolumeMounts value
       ## Specify extra mounts. Refer to ".spec.containers.volumeMounts" specification : https://kubernetes.io/fr/docs/concepts/storage/volumes/
       mounts: []
+
+      # In case you want to specify hostPath for to storage into the host.
+      # hostPath:
+      #   # Path where the data will be stored.
+      #   path: /data/sonarqube/
+      #   # Type of volume. Must be one of: DirectoryOrCreate, Directory, FileOrCreate, File, Socket, CharDevice, BlockDevice.
+      #   type: DirectoryOrCreate
 
     # In case you want to specify different resources for emptyDir than {}
     emptyDir: {}
@@ -523,18 +530,18 @@ data:
       # (DEPRECATED) Please use jdbcOverwrite.enabled instead
       # enable: false
       # If enable the JDBC Overwrite, make sure to set `postgresql.enabled=false`
-      enabled: false
+      enabled: true
       # The JDBC url of the external DB
-      jdbcUrl: "jdbc:postgresql://myPostgress/myDatabase"
+      jdbcUrl: "jdbc:postgresql://sonarqube-postgres-17/sonarqube"
       # The DB user that should be used for the JDBC connection
-      jdbcUsername: "sonarUser"
+      jdbcUsername: "sonarqube"
       # Use this if you don't mind the DB password getting stored in plain text within the values file
       # (DEPRECATED) Please use `jdbcOverwrite.jdbcSecretName` along with `jdbcOverwrite.jdbcSecretPasswordKey` instead
-      jdbcPassword: "sonarPass"
+      # jdbcPassword: ""
       ## Alternatively, use a pre-existing k8s secret containing the DB password
-      # jdbcSecretName: "sonarqube-jdbc"
+      jdbcSecretName: "sonarqube-postgres-secrets"
       ## and the secretValueKey of the password found within that secret
-      # jdbcSecretPasswordKey: "jdbc-password"
+      jdbcSecretPasswordKey: "POSTGRES_PASSWORD"
       # To install the oracle JDBC driver, set the following URL (in this example, we set the URL for the Oracle 11 driver. Please update it to your target driver URL.).
       # If downloading the driver requires authentication, please set the .netrc secret file with a key "netrc" to use basic auth.
       # oracleJdbcDriver:
@@ -545,14 +552,38 @@ data:
     ## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/README.md
     postgresql:
       # Enable to deploy the bitnami PostgreSQL chart
-      enabled: true
+      enabled: false
       ## postgresql Chart global settings
       # global:
       #   imageRegistry: ''
       #   imagePullSecrets: ''
       ## bitnami/postgres image tag
-      # image:
-      #   tag: 11.7.0-debian-10-r9
+      image:
+        repository: "bitnamilegacy/postgresql"
+        tag: 11.14.0
+      # Set the readiness probe to avoid that the initialization scripts' are not completed before marking the pod as ready.
+      readinessProbe:
+        enabled: false
+      customReadinessProbe:
+        exec:
+          command:
+            - /bin/sh
+            - -c
+            - -e
+            - |
+              {{- if (include "postgresql.database" .) }}
+              exec pg_isready -U {{ include "postgresql.username" . | quote }} -d "dbname={{ include "postgresql.database" . }} {{- if .Values.tls.enabled }} sslcert={{ include "postgresql.tlsCert" . }} sslkey={{ include "postgresql.tlsCertKey" . }}{{- end }}" -h 127.0.0.1 -p {{ .Values.containerPorts.postgresql }}
+              {{- else }}
+              exec pg_isready -U {{ include "postgresql.username" . | quote }} {{- if .Values.tls.enabled }} -d "sslcert={{ include "postgresql.tlsCert" . }} sslkey={{ include "postgresql.tlsCertKey" . }}"{{- end }} -h 127.0.0.1 -p {{ .Values.containerPorts.postgresql }}
+              {{- end }}
+              {{- if contains "bitnamilegacy/" .Values.image.repository }}
+              [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+              {{- end }}
+        failureThreshold: 6
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
       # existingSecret Name of existing secret to use for PostgreSQL passwords
       # The secret has to contain the keys postgresql-password which is the password for postgresqlUsername when it is
       # different of postgres, postgresql-postgres-password which will override postgresqlPassword,
@@ -678,7 +709,6 @@ data:
     #      memory: 128Mi
     #  image:
     #  annotations: {}
-
 
     # (DEPRECATED) please use setAdminPassword instead
     # account:
