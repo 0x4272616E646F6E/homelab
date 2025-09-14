@@ -95,7 +95,7 @@ data:
     elasticsearch:
       # (DEPRECATED) Use initSysctl.enabled instead
       configureNode: false
-      bootstrapChecks: true
+      bootstrapChecks: false
 
     service:
       type: ClusterIP
