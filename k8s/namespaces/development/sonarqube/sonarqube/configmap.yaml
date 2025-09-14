@@ -470,38 +470,15 @@ data:
 
     persistence:
       enabled: false
-      ## Set annotations on pvc
       annotations: {}
-
-      ## Specify an existing volume claim instead of creating a new one.
-      ## When using this option all following options like storageClass, accessMode and size are ignored.
       # existingClaim:
-
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is
-      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-      ##   GKE, AWS & OpenStack)
-      ##
       storageClass: "rook-ceph-block"
       accessMode: ReadWriteOnce
       size: 5Gi
       uid: 1000
       guid: 1000
-
-      ## DEPRECATED please use root level extraVolumes value
-      ## Specify extra volumes. Refer to ".spec.volumes" specification : https://kubernetes.io/fr/docs/concepts/storage/volumes/
       volumes: []
-      ## DEPRECATED please use root level extraVolumeMounts value
-      ## Specify extra mounts. Refer to ".spec.containers.volumeMounts" specification : https://kubernetes.io/fr/docs/concepts/storage/volumes/
       mounts: []
-
-      # In case you want to specify hostPath for to storage into the host.
-      # hostPath:
-      #   # Path where the data will be stored.
-      #   path: /data/sonarqube/
-      #   # Type of volume. Must be one of: DirectoryOrCreate, Directory, FileOrCreate, File, Socket, CharDevice, BlockDevice.
-      #   type: DirectoryOrCreate
 
     # In case you want to specify different resources for emptyDir than {}
     emptyDir: {}
