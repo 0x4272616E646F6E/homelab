@@ -14,8 +14,16 @@ spec:
         name: sonarqube
         namespace: flux-system
   interval: 15m
-  timeout: 5m
+  timeout: 20m
   releaseName: sonarqube
+  install:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+  upgrade:
+    remediation:
+      retries: 3
+    timeout: 20m
   valuesFrom:
   - kind: ConfigMap
     name: sonarqube-config-map

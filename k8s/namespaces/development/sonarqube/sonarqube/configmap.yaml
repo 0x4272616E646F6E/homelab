@@ -263,9 +263,9 @@ data:
       # sonarWebContext: /
 
     startupProbe:
-      initialDelaySeconds: 30
+      initialDelaySeconds: 60
       periodSeconds: 10
-      failureThreshold: 24
+      failureThreshold: 90
       # Note that timeoutSeconds was not respected before Kubernetes 1.20 for exec probes
       timeoutSeconds: 1
       # If an ingress *path* other than the root (/) is defined, it should be reflected here
