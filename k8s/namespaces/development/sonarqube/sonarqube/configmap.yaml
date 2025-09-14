@@ -497,6 +497,8 @@ data:
     #   sonar.log.level: DEBUG
     #   sonar.security.realm: LDAP
     #   ldap.url: ldaps://organization.com
+    sonarProperties:
+      sonar.search.javaOpts: "-Des.enforce.bootstrap.checks=false"
 
     # Additional sonar properties to load from a secret with a key "secret.properties" (must be a string)
     # sonarSecretProperties:
