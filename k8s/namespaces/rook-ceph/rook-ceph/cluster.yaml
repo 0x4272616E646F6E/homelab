@@ -12,7 +12,7 @@ spec:
     allowUnsupported: true
   mon:
     count: 1
-    allowMultiplePerNode: true
+    allowMultiplePerNode: false
   skipUpgradeChecks: true
   mgr:
     count: 1
