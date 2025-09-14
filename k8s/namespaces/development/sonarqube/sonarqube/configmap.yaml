@@ -439,8 +439,8 @@ data:
     # not setting the monitoring passcode will result in a deployment that will never be ready
     # monitoringPasscode: "define_it"
     # Alternatively, you can define the passcode loading it from an existing secret specifying the right key
-    # monitoringPasscodeSecretName: "pass-secret-name"
-    # monitoringPasscodeSecretKey: "pass-key"
+    monitoringPasscodeSecretName: "sonarqube-secrets"
+    monitoringPasscodeSecretKey: "MONITORING_PASSCODE"
 
     ## Environment variables to attach to the pods
     ##
