@@ -539,7 +539,7 @@ data:
       # (DEPRECATED) Please use `jdbcOverwrite.jdbcSecretName` along with `jdbcOverwrite.jdbcSecretPasswordKey` instead
       # jdbcPassword: ""
       ## Alternatively, use a pre-existing k8s secret containing the DB password
-      jdbcSecretName: "sonarqube-postgres-secrets"
+      jdbcSecretName: "sonarqube-secrets"
       ## and the secretValueKey of the password found within that secret
       jdbcSecretPasswordKey: "POSTGRES_PASSWORD"
       # To install the oracle JDBC driver, set the following URL (in this example, we set the URL for the Oracle 11 driver. Please update it to your target driver URL.).

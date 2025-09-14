@@ -34,7 +34,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: sonarqube-postgres-secrets
+              name: sonarqube-secrets
               key: POSTGRES_PASSWORD
         volumeMounts:
         - name: postgres-data
