@@ -81,7 +81,7 @@ data:
       runAsGroup: 2016
       capabilities:
         drop: ["ALL"]
-        add: ["NET_RAW"]
+        add: ["NET_RAW", "NET_ADMIN", "SYS_ADMIN"]
     # -- If true, loop devices are allowed to be used for osds in test clusters
     allowLoopDevices: false
 

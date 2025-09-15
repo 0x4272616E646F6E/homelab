@@ -20,3 +20,23 @@ spec:
   - kind: ConfigMap
     name: rook-ceph-config-map
     valuesKey: values.yaml
+  postRenderers:
+  - kustomize:
+      patches:
+      - target:
+          kind: Deployment
+          labelSelector: app=rook-ceph-osd
+        patch: |-
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: rook-ceph-osd
+            namespace: rook-ceph
+          spec:
+            template:
+              spec:
+                containers:
+                - name: osd
+                  securityContext:
+                    capabilities:
+                      drop: []
