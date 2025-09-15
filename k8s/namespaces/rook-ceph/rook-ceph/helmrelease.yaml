@@ -20,3 +20,30 @@ spec:
   - kind: ConfigMap
     name: rook-ceph-config-map
     valuesKey: values.yaml
+  postRenderers:
+    - kustomize:
+        patchesStrategicMerge:
+          - |
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
+              namespace: rook-ceph
+            spec:
+              strategy:
+                type: RollingUpdate
+                rollingUpdate:
+                  maxSurge: 0
+                  maxUnavailable: 1
+          - |
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
+              namespace: rook-ceph
+            spec:
+              strategy:
+                type: RollingUpdate
+                rollingUpdate:
+                  maxSurge: 0
+                  maxUnavailable: 1
