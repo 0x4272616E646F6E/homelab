@@ -22,17 +22,12 @@ spec:
     valuesKey: values.yaml
   postRenderers:
     - kustomize:
-        patchesStrategicMerge:
-          - apiVersion: apps/v1
-            kind: Deployment
-            metadata:
+        patches:
+          - target:
+              kind: Deployment
               name: rook-ceph-osd-0
               namespace: rook-ceph
-            spec:
-              template:
-                spec:
-                  containers:
-                  - name: osd
-                    securityContext:
-                      capabilities:
-                        drop: []
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/securityContext/capabilities/drop
+                value: []
