@@ -40,3 +40,56 @@ spec:
                   securityContext:
                     capabilities:
                       drop: []
+                    privileged: true
+                    runAsUser: 0
+                initContainers:
+                - name: cephx-keyring-update
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0
+                - name: chown-container-data-dir
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0
+                - name: activate
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0
+                - name: expand-bluefs
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0
+      - target:
+          kind: Deployment
+          labelSelector: app=rook-ceph-mgr
+        patch: |-
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: rook-ceph-mgr
+            namespace: rook-ceph
+          spec:
+            template:
+              spec:
+                containers:
+                - name: mgr
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0
+                initContainers:
+                - name: chown-container-data-dir
+                  securityContext:
+                    capabilities:
+                      drop: []
+                    privileged: true
+                    runAsUser: 0

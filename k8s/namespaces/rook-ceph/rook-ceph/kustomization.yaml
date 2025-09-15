@@ -9,6 +9,3 @@ resources:
   - toolbox.yaml
   - cluster.yaml
   - ingress-route.yaml
-  - patch-osd.yaml
-patchesStrategicMerge:
-  - patch-osd.yaml
