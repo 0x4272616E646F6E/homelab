@@ -44,14 +44,12 @@ spec:
   disruptionManagement:
     managePodBudgets: false
   network:
-    hostNetwork: false
+    hostNetwork: true
   cephConfig:
     global:
       osd_pool_default_size: "1"
       mon_warn_on_pool_no_redundancy: "false"
-      # Explicitly scope Ceph to the pod network
-      public_network: "10.244.0.0/16"
-      cluster_network: "10.244.0.0/16"
+      # No need to specify networks when using hostNetwork
       ms_bind_ipv4: "true"
       ms_bind_ipv6: "false"
       ms_learn_addr_from_peer: "true"

@@ -89,11 +89,36 @@ spec:
                     maxUnavailable: 1
           - target:
               kind: Deployment
-              name: rook-ceph-osd-0
+              name: rook-ceph-operator
               namespace: rook-ceph
             patch: |
-              - op: remove
-                path: /spec/template/spec/containers/0/args/12
-              - op: replace
-                path: /spec/template/spec/containers/0/args/12
-                value: --ms-learn-addr-from-peer=true
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph-operator
+              spec:
+                replicas: 1
+                template:
+                  spec:
+                    containers:
+                    - name: rook-ceph-operator
+                      env:
+                      - name: ROOK_CSI_ENABLE_HOST_NETWORK
+                        value: "true"
+                      - name: ROOK_ENABLE_FLEX_DRIVER
+                        value: "false"
+          - target:
+              kind: Deployment
+              namespace: rook-ceph
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                namespace: rook-ceph
+              spec:
+                template:
+                  spec:
+                    containers:
+                    - name: osd
+                      args:
+                      - --ms-learn-addr-from-peer=true
