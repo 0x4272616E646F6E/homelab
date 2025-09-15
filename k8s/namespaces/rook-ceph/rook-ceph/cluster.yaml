@@ -8,6 +8,15 @@ spec:
   cephVersion:
     image: quay.io/ceph/ceph:v19@sha256:af0c5903e901e329adabe219dfc8d0c3efc1f05102a753902f33ee16c26b6cee
     allowUnsupported: true
+  placement:
+    all:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
   mon:
     count: 1
     allowMultiplePerNode: true
