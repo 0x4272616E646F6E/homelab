@@ -31,8 +31,6 @@ spec:
           ms_learn_addr_from_peer: "true"
     allowDeviceClassUpdate: true
     allowOsdCrushWeightUpdate: false
-    config:
-      ms_learn_addr_from_peer: "true"
   monitoring:
     enabled: false
   healthCheck:
