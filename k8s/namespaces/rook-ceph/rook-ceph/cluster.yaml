@@ -42,15 +42,15 @@ spec:
   disruptionManagement:
     managePodBudgets: false
   network:
-    hostNetwork: true
+    hostNetwork: false
   cephConfig:
     global:
       osd_pool_default_size: "1"
       mon_warn_on_pool_no_redundancy: "false"
       ms_learn_addr_from_peer: "true"
-      # Explicitly scope Ceph to the host network for single-node setup
-      public_network: "10.0.0.0/8"
-      cluster_network: "10.0.0.0/8"
+      # Explicitly scope Ceph to the pod network
+      public_network: "10.244.0.0/16"
+      cluster_network: "10.244.0.0/16"
       ms_bind_ipv4: "true"
       ms_bind_ipv6: "false"
       bdev_flock_retry: "20"
