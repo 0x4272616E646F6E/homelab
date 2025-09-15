@@ -95,10 +95,10 @@ data:
     # needed
     csi:
       # -- Enable Ceph CSI RBD driver
-      # Temporarily disabled to fix issues
+      # Completely disabled to fix issues
       enableRbdDriver: false
       # -- Enable Ceph CSI CephFS driver
-      # Temporarily disabled to fix issues
+      # Completely disabled to fix issues
       enableCephfsDriver: false
       # -- Disable the CSI driver.
       disableCsiDriver: "true"

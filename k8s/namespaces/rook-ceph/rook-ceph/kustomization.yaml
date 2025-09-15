@@ -9,3 +9,6 @@ resources:
   - toolbox.yaml
   - cluster.yaml
   - ingress-route.yaml
+  - operator-patch.yaml
+patchesStrategicMerge:
+  - operator-patch.yaml
