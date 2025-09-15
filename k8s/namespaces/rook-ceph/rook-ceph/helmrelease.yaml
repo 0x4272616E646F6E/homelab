@@ -25,6 +25,38 @@ spec:
         patches:
           - target:
               kind: Deployment
+              name: rook-ceph-csi-rbd-provisioner
+              namespace: rook-ceph
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph-csi-rbd-provisioner
+                namespace: rook-ceph
+              spec:
+                strategy:
+                  type: RollingUpdate
+                  rollingUpdate:
+                    maxSurge: 0
+                    maxUnavailable: 1
+          - target:
+              kind: Deployment
+              name: rook-ceph-csi-cephfs-provisioner
+              namespace: rook-ceph
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph-csi-cephfs-provisioner
+                namespace: rook-ceph
+              spec:
+                strategy:
+                  type: RollingUpdate
+                  rollingUpdate:
+                    maxSurge: 0
+                    maxUnavailable: 1
+          - target:
+              kind: Deployment
               name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
               namespace: rook-ceph
             patch: |

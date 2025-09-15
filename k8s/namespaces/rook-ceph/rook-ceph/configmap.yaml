@@ -97,7 +97,7 @@ data:
       # -- Enable host networking for CSI CephFS and RBD nodeplugins. This may be necessary
       # in some network configurations where the SDN does not provide access to an external cluster or
       # there is significant drop in read/write performance
-      enableCSIHostNetwork: true
+    enableCSIHostNetwork: false
       # -- Enable Snapshotter in CephFS provisioner pod
       enableCephfsSnapshotter: true
       # -- Enable Snapshotter in NFS provisioner pod
@@ -312,7 +312,7 @@ data:
         - name : csi-cephfsplugin
           resource:
             requests: { cpu: "100m", memory: "256Mi" }
-            limits:   { cpu: "1000m", memory: "512Mi" }``
+            limits:   { cpu: "1000m", memory: "512Mi" }
         - name : liveness-prometheus
           resource:
             requests: { cpu: "100m", memory: "128Mi" }
