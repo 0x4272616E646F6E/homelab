@@ -582,7 +582,7 @@ data:
     hostpathRequiresPrivileged: false
 
     # -- Whether to create all Rook pods to run on the host network, for example in environments where a CNI is not enabled
-    enforceHostNetwork: false
+    enforceHostNetwork: true
 
     # -- Disable automatic orchestration when new devices are discovered.
     disableDeviceHotplug: false
