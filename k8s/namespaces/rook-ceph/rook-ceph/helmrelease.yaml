@@ -22,109 +22,18 @@ spec:
     valuesKey: values.yaml
   postRenderers:
     - kustomize:
-        patches:
-          - target:
-              kind: Deployment
-              name: rook-ceph-csi-rbd-provisioner
-              namespace: rook-ceph
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: rook-ceph-csi-rbd-provisioner
-                namespace: rook-ceph
-              spec:
-                strategy:
-                  type: RollingUpdate
-                  rollingUpdate:
-                    maxSurge: 0
-                    maxUnavailable: 1
-          - target:
-              kind: Deployment
-              name: rook-ceph-csi-cephfs-provisioner
-              namespace: rook-ceph
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: rook-ceph-csi-cephfs-provisioner
-                namespace: rook-ceph
-              spec:
-                strategy:
-                  type: RollingUpdate
-                  rollingUpdate:
-                    maxSurge: 0
-                    maxUnavailable: 1
-          - target:
-              kind: Deployment
-              name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
-              namespace: rook-ceph
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
-                namespace: rook-ceph
-              spec:
-                strategy:
-                  type: RollingUpdate
-                  rollingUpdate:
-                    maxSurge: 0
-                    maxUnavailable: 1
-          - target:
-              kind: Deployment
-              name: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
-              namespace: rook-ceph
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
-                namespace: rook-ceph
-              spec:
-                strategy:
-                  type: RollingUpdate
-                  rollingUpdate:
-                    maxSurge: 0
-                    maxUnavailable: 1
-          - target:
-              kind: Deployment
-              name: rook-ceph-operator
-              namespace: rook-ceph
-            patch: |
-              apiVersion: apps/v1
-              kind: Deployment
-              metadata:
-                name: rook-ceph-operator
-              spec:
-                replicas: 1
-                template:
-                  spec:
-                    containers:
-                    - name: rook-ceph-operator
-                      env:
-                      - name: ROOK_CSI_ENABLE_HOST_NETWORK
-                        value: "true"
-                      - name: ROOK_ENABLE_FLEX_DRIVER
-                        value: "false"
-          - target:
-              kind: Deployment
+        patchesStrategicMerge:
+          - |
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
               name: rook-ceph-osd-0
               namespace: rook-ceph
-            patch: |
-              - op: replace
-                path: /spec/template/spec/containers/0/args/12
-                value: --ms-learn-addr-from-peer=true
-          - target:
-              kind: Deployment
-              name: rook-ceph-osd-0
-              namespace: rook-ceph
-            patch: |
-              spec:
-                template:
-                  spec:
-                    containers:
-                    - name: osd
-                      securityContext:
-                        capabilities:
-                          drop: []
+            spec:
+              template:
+                spec:
+                  containers:
+                  - name: osd
+                    securityContext:
+                      capabilities:
+                        drop: []
