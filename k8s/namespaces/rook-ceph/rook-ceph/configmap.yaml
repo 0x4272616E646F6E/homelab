@@ -14,7 +14,7 @@ data:
       repository: docker.io/rook/ceph
       # -- Image tag
       # @default -- `master`
-      tag: master
+      tag: v1.18.2
       # -- Image pull policy
       pullPolicy: IfNotPresent
 
@@ -97,7 +97,7 @@ data:
       # -- Enable host networking for CSI CephFS and RBD nodeplugins. This may be necessary
       # in some network configurations where the SDN does not provide access to an external cluster or
       # there is significant drop in read/write performance
-    enableCSIHostNetwork: false
+      enableCSIHostNetwork: false
       # -- Enable Snapshotter in CephFS provisioner pod
       enableCephfsSnapshotter: true
       # -- Enable Snapshotter in NFS provisioner pod
