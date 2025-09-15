@@ -27,6 +27,8 @@ spec:
     useAllDevices: false
     devices:
       - name: "sdb"
+        config:
+          ms_learn_addr_from_peer: "true"
     allowDeviceClassUpdate: true
     allowOsdCrushWeightUpdate: false
     config:
