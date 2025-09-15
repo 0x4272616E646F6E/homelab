@@ -109,19 +109,17 @@ spec:
                         value: "false"
           - target:
               kind: Deployment
+              name: rook-ceph-osd-0
               namespace: rook-ceph
             patch: |
-              apiVersion: apps/v1
+              - op: replace
+                path: /spec/template/spec/containers/0/args/12
+                value: --ms-learn-addr-from-peer=true
+          - target:
               kind: Deployment
-              metadata:
-                namespace: rook-ceph
-              spec:
-                template:
-                  spec:
-                    containers:
-                    - name: osd
-                      args:
-                      - --ms-learn-addr-from-peer=true
-                      securityContext:
-                        capabilities:
-                          drop: []
+              name: rook-ceph-osd-0
+              namespace: rook-ceph
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext/capabilities/drop
+                value: []
