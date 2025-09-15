@@ -79,6 +79,9 @@ machine:
     disk: /dev/sda
   disks:
     - device: /dev/sdb
+    - device: /dev/sdc
+      partitions:
+        - mountpoint: /var/mnt/storage
   kernel:
     modules:
     - name: apex

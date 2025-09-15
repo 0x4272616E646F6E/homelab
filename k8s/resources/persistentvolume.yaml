@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rwo-hostpath
+  labels:
+    type: local
+    access-mode: rwo
+spec:
+  capacity:
+    storage: 40Ti
+  accessModes: ["ReadWriteOnce"]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: rwo-hostpath
+  hostPath:
+    path: /var/mnt/storage/rwo
+    type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rwx-hostpath
+  labels:
+    type: local
+    access-mode: rwx
+spec:
+  capacity:
+    storage: 40Ti
+  accessModes: ["ReadWriteMany"]
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: rwx-hostpath
+  hostPath:
+    path: /var/mnt/storage/rwx
+    type: DirectoryOrCreate
