@@ -97,4 +97,3 @@ spec:
               - op: replace
                 path: /spec/template/spec/containers/0/args/15
                 value: --ms-learn-addr-from-peer=true
-            patchType: json
