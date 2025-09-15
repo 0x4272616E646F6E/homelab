@@ -42,7 +42,13 @@ data:
     #  disktype: ssd
 
     # -- List of Kubernetes [`tolerations`](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) to add to the Deployment.
-    tolerations: []
+    tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
 
     # -- Delay to use for the `node.kubernetes.io/unreachable` pod failure toleration to override
     # the Kubernetes default of 5 minutes
