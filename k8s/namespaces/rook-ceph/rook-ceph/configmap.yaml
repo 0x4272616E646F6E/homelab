@@ -95,12 +95,12 @@ data:
     # needed
     csi:
       # -- Enable Ceph CSI RBD driver
-      # Completely disabled to fix issues
+      # Completely disabled to fix issues in single-node clusters
       enableRbdDriver: false
       # -- Enable Ceph CSI CephFS driver
-      # Completely disabled to fix issues
+      # Completely disabled to fix issues in single-node clusters
       enableCephfsDriver: false
-      # -- Disable the CSI driver.
+      # -- Disable the CSI driver entirely
       disableCsiDriver: "true"
 
       # -- Enable host networking for CSI CephFS and RBD nodeplugins. This may be necessary
