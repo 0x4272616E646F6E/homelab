@@ -20,7 +20,6 @@ spec:
   mon:
     count: 1
     allowMultiplePerNode: true
-    hostNetwork: true
   skipUpgradeChecks: true
   mgr:
     count: 1
