@@ -22,28 +22,36 @@ spec:
     valuesKey: values.yaml
   postRenderers:
     - kustomize:
-        patchesStrategicMerge:
-          - |
-            apiVersion: apps/v1
-            kind: Deployment
-            metadata:
+        patches:
+          - target:
+              kind: Deployment
               name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
               namespace: rook-ceph
-            spec:
-              strategy:
-                type: RollingUpdate
-                rollingUpdate:
-                  maxSurge: 0
-                  maxUnavailable: 1
-          - |
-            apiVersion: apps/v1
-            kind: Deployment
-            metadata:
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph.rbd.csi.ceph.com-ctrlplugin
+                namespace: rook-ceph
+              spec:
+                strategy:
+                  type: RollingUpdate
+                  rollingUpdate:
+                    maxSurge: 0
+                    maxUnavailable: 1
+          - target:
+              kind: Deployment
               name: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
               namespace: rook-ceph
-            spec:
-              strategy:
-                type: RollingUpdate
-                rollingUpdate:
-                  maxSurge: 0
-                  maxUnavailable: 1
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph.cephfs.csi.ceph.com-ctrlplugin
+                namespace: rook-ceph
+              spec:
+                strategy:
+                  type: RollingUpdate
+                  rollingUpdate:
+                    maxSurge: 0
+                    maxUnavailable: 1
