@@ -120,6 +120,6 @@ spec:
               name: rook-ceph-osd-0
               namespace: rook-ceph
             patch: |
-              - op: add
+              - op: replace
                 path: /spec/template/spec/containers/0/securityContext/capabilities/drop
                 value: []
