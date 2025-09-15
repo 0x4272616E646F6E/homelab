@@ -60,6 +60,8 @@ spec:
       osd_max_backfills: "1"
       osd_recovery_max_active: "1"
       osd_recovery_sleep: "0.1"
+    osd:
+      ms_learn_addr_from_peer: "true"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
