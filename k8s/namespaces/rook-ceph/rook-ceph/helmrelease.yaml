@@ -120,5 +120,11 @@ spec:
               name: rook-ceph-osd-0
               namespace: rook-ceph
             patch: |
-              - op: remove
-                path: /spec/template/spec/containers/0/securityContext/capabilities/drop
+              spec:
+                template:
+                  spec:
+                    containers:
+                    - name: osd
+                      securityContext:
+                        capabilities:
+                          drop: []
