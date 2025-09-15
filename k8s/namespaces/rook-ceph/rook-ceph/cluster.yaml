@@ -52,6 +52,7 @@ spec:
       cluster_network: "10.244.0.0/16"
       ms_bind_ipv4: "true"
       ms_bind_ipv6: "false"
+      ms_learn_addr_from_peer: "true"
       bdev_flock_retry: "20"
       bluefs_buffered_io: "false"
       mon_data_avail_warn: "10"
