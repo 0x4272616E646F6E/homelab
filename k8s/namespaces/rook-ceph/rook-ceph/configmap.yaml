@@ -160,6 +160,10 @@ data:
       # Set to false for single-node clusters to allow pods to be scheduled on the same node.
       provisionerEnableAntiAffinity: false
 
+      # -- Disable anti-affinity rules for controller plugins (important for single-node clusters)
+      cephFSControllerPluginEnableAntiAffinity: false
+      rbdControllerPluginEnableAntiAffinity: false
+
       # -- Cluster name identifier to set as metadata on the CephFS subvolume and RBD images. This will be useful
       # in cases like for example, when two container orchestrator clusters (Kubernetes/OCP) are using a single ceph cluster
       clusterName:
