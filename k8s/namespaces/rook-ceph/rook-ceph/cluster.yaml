@@ -32,12 +32,12 @@ spec:
   crashCollector:
     disable: true
   storage:
-    useAllNodes: true
+    useAllNodes: false
     useAllDevices: false
-    devices:
-      - name: "sdb"
-        config:
-          ms_learn_addr_from_peer: "true"
+    nodes:
+      - name: "talos-4m3-8nj"
+        devices:
+          - name: "sdb"
     allowDeviceClassUpdate: true
     allowOsdCrushWeightUpdate: false
   monitoring:
@@ -58,18 +58,9 @@ spec:
     global:
       osd_pool_default_size: "1"
       mon_warn_on_pool_no_redundancy: "false"
-      ms_bind_ipv4: "true"
-      ms_bind_ipv6: "false"
-      ms_learn_addr_from_peer: "true"
-      bdev_flock_retry: "20"
-      bluefs_buffered_io: "false"
-      mon_data_avail_warn: "10"
       osd_memory_target: "8589934592"
       osd_max_backfills: "1"
       osd_recovery_max_active: "1"
-      osd_recovery_sleep: "0.1"
-    osd:
-      ms_learn_addr_from_peer: "true"
 ---
 apiVersion: ceph.rook.io/v1
 kind: CephBlockPool
