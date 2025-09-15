@@ -93,7 +93,7 @@ spec:
               namespace: rook-ceph
             patch: |
               - op: remove
-                path: /spec/template/spec/containers/0/args/15
+                path: /spec/template/spec/containers/0/args/12
               - op: replace
-                path: /spec/template/spec/containers/0/args/15
+                path: /spec/template/spec/containers/0/args/12
                 value: --ms-learn-addr-from-peer=true
