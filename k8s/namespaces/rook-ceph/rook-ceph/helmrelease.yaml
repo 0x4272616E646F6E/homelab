@@ -1,4 +1,4 @@
- # renovate: registryUrl=https://charts.rook.io/release
+# renovate: registryUrl=https://charts.rook.io/release
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -87,3 +87,35 @@ spec:
                   rollingUpdate:
                     maxSurge: 0
                     maxUnavailable: 1
+          - target:
+              kind: Deployment
+              name: rook-ceph-osd-0
+              namespace: rook-ceph
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: rook-ceph-osd-0
+                namespace: rook-ceph
+              spec:
+                template:
+                  spec:
+                    containers:
+                    - name: osd
+                      args:
+                      - --foreground
+                      - --id
+                      - "0"
+                      - --fsid
+                      - 26bfaa84-60c8-4854-9642-ae7211fc7081
+                      - --setuser
+                      - ceph
+                      - --setgroup
+                      - ceph
+                      - --crush-location=root=default host=talos-4m3-8nj
+                      - --default-log-to-stderr=true
+                      - --default-err-to-stderr=true
+                      - --default-mon-cluster-log-to-stderr=true
+                      - '--default-log-stderr-prefix=debug '
+                      - --default-mon-cluster-log-to-file=false
+                      - --ms-learn-addr-from-peer=true
