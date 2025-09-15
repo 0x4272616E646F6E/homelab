@@ -18,3 +18,42 @@ data:
       enableRbdDriver: true
       enableCephfsDriver: true
       enableCSIHostNetwork: false
+
+    # Disable NET_RAW capability drop for OSD containers
+    csi:
+      csiRBDProvisionerResource: |
+        spec:
+          template:
+            spec:
+              containers:
+              - name: csi-provisioner
+                securityContext:
+                  capabilities:
+                    drop: []
+      csiRBDPluginResource: |
+        spec:
+          template:
+            spec:
+              containers:
+              - name: csi-rbdplugin
+                securityContext:
+                  capabilities:
+                    drop: []
+      csiCephFSProvisionerResource: |
+        spec:
+          template:
+            spec:
+              containers:
+              - name: csi-provisioner
+                securityContext:
+                  capabilities:
+                    drop: []
+      csiCephFSPluginResource: |
+        spec:
+          template:
+            spec:
+              containers:
+              - name: csi-cephfsplugin
+                securityContext:
+                  capabilities:
+                    drop: []
