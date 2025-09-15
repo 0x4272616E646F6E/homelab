@@ -385,11 +385,12 @@ data:
       pluginNodeAffinity: ""
 
       # -- Enable Ceph CSI Liveness sidecar deployment
+      # Disable liveness probe to avoid port conflicts in single-node clusters
       enableLiveness: false
 
       # -- CSI CephFS driver metrics port
       # @default -- `9081`
-      cephfsLivenessMetricsPort:
+      cephfsLivenessMetricsPort: 9091
 
       # -- CSI Addons server port
       # @default -- `9070`
@@ -408,7 +409,7 @@ data:
 
       # -- Ceph CSI RBD driver metrics port
       # @default -- `8080`
-      rbdLivenessMetricsPort:
+      rbdLivenessMetricsPort: 9090
 
       serviceMonitor:
         # -- Enable ServiceMonitor for Ceph CSI drivers
