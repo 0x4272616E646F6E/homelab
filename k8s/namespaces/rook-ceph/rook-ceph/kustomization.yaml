@@ -9,4 +9,3 @@ resources:
   - toolbox.yaml
   - cluster.yaml
   - ingress-route.yaml
-  - security-patch.yaml
