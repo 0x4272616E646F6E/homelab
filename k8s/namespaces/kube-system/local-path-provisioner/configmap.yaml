@@ -17,7 +17,7 @@ data:
     # Storage class for RWO claims (default)
     storageClass:
       create: true
-      name: local-path
+      name: local-path-rwo
       defaultClass: true
       defaultVolumeType: hostPath
       reclaimPolicy: Retain
