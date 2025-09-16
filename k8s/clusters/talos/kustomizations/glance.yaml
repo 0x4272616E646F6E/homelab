@@ -13,4 +13,3 @@ spec:
   timeout: 2m
   dependsOn:
     - name: kube-system
-    - name: rook-ceph

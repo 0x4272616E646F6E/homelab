@@ -17,5 +17,4 @@ spec:
       name: sops-age
   dependsOn:
     - name: kube-system
-    - name: rook-ceph
     - name: harbor
