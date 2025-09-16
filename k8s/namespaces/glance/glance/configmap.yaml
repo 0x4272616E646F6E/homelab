@@ -50,8 +50,6 @@ data:
                         url: https://radarr.oglesby.io/
                       - title: Requestrr
                         url: https://requestrr.oglesby.io/
-                      - title: Rook
-                        url: https://rook.oglesby.io/
                       - title: rTorrent
                         url: https://rtorrent.oglesby.io/
                       - title: Sonarr
@@ -118,6 +116,5 @@ data:
                   - helm/helm
                   - kubernetes/kubernetes
                   - NixOS/nix
-                  - rook/rook
                   - siderolabs/talos
                   - torvalds/linux
