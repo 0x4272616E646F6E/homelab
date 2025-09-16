@@ -827,7 +827,7 @@ data:
         existingClaim: ""
         accessMode: ReadWriteOnce
         size: 128Mi
-        storageClass: "rwo-hostpath"
+        storageClass: "local-path-rwo"
         volumeName: ""
         path: /data
         annotations: {}

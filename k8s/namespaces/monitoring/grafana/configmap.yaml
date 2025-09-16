@@ -422,7 +422,7 @@ data:
       persistence:
         type: pvc
         enabled: true
-        storageClassName: rwo-hostpath
+        storageClassName: local-path-rwo
         accessModes:
           - ReadWriteOnce
         size: 10Gi

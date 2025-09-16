@@ -477,7 +477,7 @@ data:
       enabled: false
       annotations: {}
       # existingClaim:
-      storageClass: "rwo-hostpath"
+      storageClass: "local-path-rwo"
       accessMode: ReadWriteOnce
       size: 5Gi
       uid: 1000
@@ -594,7 +594,7 @@ data:
         enabled: true
         accessMode: ReadWriteOnce
         size: 20Gi
-        storageClass: "rwo-hostpath"
+        storageClass: "local-path-rwo"
       securityContext:
         enabled: true
         # fsGroup specification below are not applied if enabled=false. enabled=false is the required setting for OpenShift "restricted SCC" to work successfully.

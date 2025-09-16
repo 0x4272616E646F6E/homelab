@@ -334,7 +334,7 @@ data:
       enabled: true
         # -- Enable StatefulSetAutoDeletePVC feature
       enableStatefulSetAutoDeletePVC: false
-      storageClassName: rwo-hostpath
+      storageClassName: local-path-rwo
       accessModes:
         - ReadWriteOnce
       size: 10Gi

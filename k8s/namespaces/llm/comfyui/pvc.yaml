@@ -8,7 +8,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   resources:
     requests:
       storage: 8Gi

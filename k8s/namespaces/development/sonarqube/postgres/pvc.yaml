@@ -11,5 +11,5 @@ spec:
   resources:
     requests:
       storage: 8Gi
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   volumeMode: Filesystem

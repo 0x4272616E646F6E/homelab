@@ -9,7 +9,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   resources:
     requests:
       storage: 8Gi
@@ -26,7 +26,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   resources:
     requests:
       storage: 8Gi
@@ -43,7 +43,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   resources:
     requests:
       storage: 8Gi
@@ -60,7 +60,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rwo-hostpath
+  storageClassName: local-path-rwo
   resources:
     requests:
       storage: 500Gi
