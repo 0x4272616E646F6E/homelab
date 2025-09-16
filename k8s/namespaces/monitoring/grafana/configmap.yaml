@@ -422,7 +422,7 @@ data:
       persistence:
         type: pvc
         enabled: true
-        storageClassName: rook-ceph-block
+        storageClassName: rwo-hostpath
         accessModes:
           - ReadWriteOnce
         size: 10Gi

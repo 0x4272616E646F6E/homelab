@@ -146,7 +146,6 @@ The following resources are managed through Flux in this repository:
 - **Requestrr**
 - **Reloader**
 - **Renovate**
-- **Rook**
 - **rTorrent**
 - **Sonarr**
 - **SonarQube**

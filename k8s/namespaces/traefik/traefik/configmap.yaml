@@ -827,7 +827,7 @@ data:
         existingClaim: ""
         accessMode: ReadWriteOnce
         size: 128Mi
-        storageClass: "rook-ceph-block"
+        storageClass: "rwo-hostpath"
         volumeName: ""
         path: /data
         annotations: {}

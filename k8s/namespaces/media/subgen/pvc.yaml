@@ -9,7 +9,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rook-ceph-block
+  storageClassName: rwo-hostpath
   resources:
     requests:
       storage: 16Gi

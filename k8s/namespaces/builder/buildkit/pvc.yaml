@@ -11,4 +11,4 @@ spec:
   resources:
     requests:
       storage: 32Gi
-  storageClassName: rook-cephfs
+  storageClassName: rwx-hostpath

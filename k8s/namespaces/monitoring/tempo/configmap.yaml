@@ -334,7 +334,7 @@ data:
       enabled: true
         # -- Enable StatefulSetAutoDeletePVC feature
       enableStatefulSetAutoDeletePVC: false
-      storageClassName: rook-ceph-block
+      storageClassName: rwo-hostpath
       accessModes:
         - ReadWriteOnce
       size: 10Gi
