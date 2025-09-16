@@ -14,14 +14,9 @@ data:
       repository: busybox
       tag: "1.36.1"
 
-    # Storage class for RWO claims (default)
+    # Disable the single default SC. define both classes below
     storageClass:
-      create: true
-      name: local-path-rwo
-      defaultClass: true
-      defaultVolumeType: hostPath
-      reclaimPolicy: Retain
-      volumeBindingMode: WaitForFirstConsumer
+      create: false
 
     # Where volumes live on the node
     nodePathMap:
@@ -29,8 +24,21 @@ data:
         paths:
           - /var/mnt/storage/local-path-provisioner
 
-    # Storage class for RWX claims
     storageClassConfigs:
+      local-path-rwo:
+        storageClass:
+          create: true
+          name: local-path-rwo
+          defaultClass: true
+          defaultVolumeType: hostPath
+          reclaimPolicy: Retain
+          volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
+        nodePathMap:
+          - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+            paths:
+              - /var/mnt/storage/local-path-provisioner
+
       local-path-rwx:
         storageClass:
           create: true
@@ -38,16 +46,17 @@ data:
           defaultClass: false
           defaultVolumeType: hostPath
           reclaimPolicy: Retain
-          # If you later switch to a shared FS mounted on all nodes,
-          # flip this class to volumeBindingMode: Immediate and use sharedFileSystemPath instead of nodePathMap.
           volumeBindingMode: WaitForFirstConsumer
+          allowVolumeExpansion: true
         nodePathMap:
           - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
             paths:
               - /var/mnt/storage/local-path-provisioner
-        # sharedFileSystemPath: /srv/nfs/rwx   # <-- use this (and remove nodePathMap) for a shared FS
+        # Switch to a real shared FS
+        # sharedFileSystemPath: /srv/nfs/rwx
+        # nodePathMap: []
 
-    # Schedule on Talos' tainted control-plane
+    # Talos control-plane taint tolerance (single-node)
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
@@ -58,7 +67,7 @@ data:
 
     podSecurityContext: {}
 
-    # The controller reads these scripts via its own config map
+    # setup/teardown scripts ConfigMap used by the controller
     configmap:
       name: local-path-config
       setup: |-
@@ -70,7 +79,7 @@ data:
         set -eu
         rm -rf "$VOL_DIR"
       helperPod:
-        namespaceOverride: ""
         name: "helper-pod"
+        namespaceOverride: ""
         annotations: {}
         tolerations: []
