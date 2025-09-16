@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     knative_operator:
       knative_operator:
-        image: gcr.io/knative-releases/knative.dev/operator/cmd/operator
+        image: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256:cd5aeea3b122264b5e3f1ee207149c947d882be33c62f6bec6748bbdd509a2cb
         tag: {{ tag }}
         affinity: {}
         tolerations: []
@@ -23,7 +23,7 @@ data:
             cpu: 1000m
             memory: 1000Mi
       operator_webhook:
-        image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook
+        image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:9201cfb8d2b86b798916d7c87d3c766d150c3975ba245e581afe7d8b246de2e7
         tag: {{ tag }}
         affinity:
           # To avoid node becoming SPOF, spread our replicas to different nodes.
