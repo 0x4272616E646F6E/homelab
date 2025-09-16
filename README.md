@@ -6,7 +6,7 @@
 ![Kubernetes](https://img.shields.io/badge/Kubernetes%201.34.1-%23326ce5.svg?style=flat-square&logo=kubernetes&logoColor=white)
 ![Nix](https://img.shields.io/badge/Nix%2025.05-5277C3?style=flat-square&logo=nixos&logoColor=white)
 
-This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to your Kubernetes cluster.
+This repository contains Kubernetes manifests for deploying and managing resources using **Flux** in a GitOps workflow. Flux automatically applies changes from this repository to the Kubernetes cluster.
 
 ## Table of Contents
 
@@ -22,8 +22,8 @@ Before using this repository, ensure you have:
 - **Kubernetes Cluster**: A working Kubernetes cluster.
 - **CDK8s**: [Install CDK8s](https://cdk8s.io/docs/latest/cli/installation/)
 - **CDKTF**: [Install CDKTF](https://developer.hashicorp.com/terraform/tutorials/cdktf/cdktf-install)
-- **Cilium CLI**: [Install Cilium](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
-- **Flux CLI**: [Install the Flux CLI](https://fluxcd.io/docs/installation/)
+- **Cilium CLI**: [Install Cilium CLI](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
+- **Flux CLI**: [Install Flux CLI](https://fluxcd.io/docs/installation/)
 - **Git**: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - **Kubectl**: [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
 - **OpenTofu**: [Install OpenTofu](https://opentofu.org/docs/intro/install/)
@@ -112,7 +112,7 @@ flowchart TD
 
 ## Hardware Specs
 
-Below is a description of the hardware this cluster runs on. This information may be useful if you want to build a similar setup or understand resource utilization in relation to this deployment.
+Below is a description of the hardware this cluster runs on:
 
 - Chassis: [SuperMicro SuperChassis 216](https://www.supermicro.com/en/products/chassis/2u/216/sc216be2c-r609jbod)
 - PSU (2x): [SuperMicro 920W Platinum Super Quiet](https://store.supermicro.com/media/wysiwyg/productspecs/PWS-920P-SQ/PWS-920P-SQ_quick_spec.pdf)
