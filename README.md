@@ -63,7 +63,7 @@ flowchart TD
     FLUX[Flux Controllers]
   end
 
-  GIT --> FLUX
+  GIT <--> FLUX
   FLUX --> APIS
 
   %% Nodes / Data Plane

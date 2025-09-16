@@ -10,11 +10,13 @@ spec:
     - podSelector:
         matchExpressions:
           - {key: app, operator: In, values: [flaresolverr, qbittorrent, sabnzbd, rtorrent, nzbget]}
-          - {key: io.kubernetes.pod.namespace, operator: In, values: [media]}
+      namespaceSelector:
+        matchLabels:
+          name: media
   destinationCIDRs:
-    - 0.0.0.0/0
+    - "0.0.0.0/0"
   egressGateway:
     nodeSelector:
       matchLabels:
-        kubernetes.io/hostname: "talos-4m3-8nj"
+        egress-gw: wg0
     interface: wg0
