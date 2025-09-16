@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://rancher.github.io/local-path-provisioner/
+  url: https://charts.containeroo.ch
