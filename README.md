@@ -42,7 +42,8 @@ flowchart TD
   subgraph External
     GIT[Git Repository]
     USER[Talosctl Client]
-    NET[Internet / Cloudflare]
+    LOCALNET[Local Ingress]
+    NET[Internet Ingress]
   end
 
   %% Control Plane
@@ -82,6 +83,7 @@ flowchart TD
   TRF --> APIS
   CFD --> APIS
   NET --> CFD
+  LOCALNET --> TRF
   CFD --> TRF
   CIL --> TRF
   CIL --> DNS
