@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: local-path-provisioner-config-map
+  namespace: kube-system
+data:
+  values.yaml: |-
+    image:
+      repository: rancher/local-path-provisioner
+      tag: v0.0.32
+      pullPolicy: IfNotPresent
+
+    helperImage:
+      repository: busybox
+      tag: "1.36.1"
+
+    # Storage class for RWO claims (default)
+    storageClass:
+      create: true
+      name: local-path
+      defaultClass: true
+      defaultVolumeType: hostPath
+      reclaimPolicy: Retain
+      volumeBindingMode: WaitForFirstConsumer
+
+    # Where volumes live on the node
+    nodePathMap:
+      - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+        paths:
+          - /var/mnt/storage/local-path-provisioner
+
+    # Storage class for RWX claims
+    storageClassConfigs:
+      local-path-rwx:
+        storageClass:
+          create: true
+          name: local-path-rwx
+          defaultClass: false
+          defaultVolumeType: hostPath
+          reclaimPolicy: Delete
+          # If you later switch to a shared FS mounted on all nodes,
+          # flip this class to volumeBindingMode: Immediate and use sharedFileSystemPath instead of nodePathMap.
+          volumeBindingMode: WaitForFirstConsumer
+        nodePathMap:
+          - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+            paths:
+              - /var/mnt/storage/local-path-provisioner
+        # sharedFileSystemPath: /srv/nfs/rwx   # <-- use this (and remove nodePathMap) for a shared FS
+
+    # Schedule on Talos' tainted control-plane
+    tolerations:
+      - key: "node-role.kubernetes.io/control-plane"
+        operator: "Exists"
+        effect: "NoSchedule"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+
+    # Minimal hardening
+    podSecurityContext:
+      runAsNonRoot: true
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      seccompProfile: { type: RuntimeDefault }
+      capabilities: { drop: ["ALL"] }
+
+    # The controller reads these scripts via its own config map
+    configmap:
+      name: local-path-config
+      setup: |-
+        #!/bin/sh
+        set -eu
+        mkdir -m 0777 -p "$VOL_DIR"
+      teardown: |-
+        #!/bin/sh
+        set -eu
+        rm -rf "$VOL_DIR"
+      helperPod:
+        namespaceOverride: ""
+        name: "helper-pod"
+        annotations: {}
+        tolerations: []
