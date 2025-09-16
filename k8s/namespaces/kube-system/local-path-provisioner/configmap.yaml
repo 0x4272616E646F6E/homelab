@@ -37,7 +37,7 @@ data:
           name: local-path-rwx
           defaultClass: false
           defaultVolumeType: hostPath
-          reclaimPolicy: Delete
+          reclaimPolicy: Retain
           # If you later switch to a shared FS mounted on all nodes,
           # flip this class to volumeBindingMode: Immediate and use sharedFileSystemPath instead of nodePathMap.
           volumeBindingMode: WaitForFirstConsumer
