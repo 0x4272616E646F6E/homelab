@@ -21,13 +21,13 @@ spec:
               kubernetes.io/metadata.name: traefik
       ports:
         - port: 4545
-          protocol: UDP
+          protocol: TCP
     - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: media
       ports:
         - port: 4545
-          protocol: UDP
+          protocol: TCP
   egress:
     - {}
