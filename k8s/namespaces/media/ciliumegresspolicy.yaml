@@ -9,7 +9,7 @@ spec:
   selectors:
     - podSelector:
         matchExpressions:
-          - {key: app, operator: In, values: [flaresolverr, qbittorrent, sabnzbd, rtorrent, nzbget]}
+          - {key: app.kubernetes.io/name, operator: In, values: [flaresolverr, qbittorrent, sabnzbd, rtorrent, nzbget]}
           - {key: io.kubernetes.pod.namespace, operator: In, values: [media]}
   destinationCIDRs:
     - 0.0.0.0/0
