@@ -23,7 +23,7 @@ data:
             cpu: 1000m
             memory: 1000Mi
       operator_webhook:
-        image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:9201cfb8d2b86b798916d7c87d3c766d150c3975ba245e581afe7d8b246de2e7
+        image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:da1e82b0d031293769b8778d229c9436be39934881385432eee4ec580da50ad9
         tag: {{ tag }}
         affinity:
           # To avoid node becoming SPOF, spread our replicas to different nodes.
