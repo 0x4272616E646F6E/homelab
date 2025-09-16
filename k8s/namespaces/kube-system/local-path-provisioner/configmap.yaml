@@ -37,7 +37,7 @@ data:
         nodePathMap:
           - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
             paths:
-              - /var/mnt/storage/local-path-provisioner
+              - /var/mnt/storage/local-path-provisioner/rwo
 
       local-path-rwx:
         storageClass:
@@ -46,15 +46,9 @@ data:
           defaultClass: false
           defaultVolumeType: hostPath
           reclaimPolicy: Retain
-          volumeBindingMode: WaitForFirstConsumer
+          volumeBindingMode: Immediate
           allowVolumeExpansion: true
-        nodePathMap:
-          - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
-            paths:
-              - /var/mnt/storage/local-path-provisioner
-        # Switch to a real shared FS
-        # sharedFileSystemPath: /srv/nfs/rwx
-        # nodePathMap: []
+        sharedFileSystemPath: /var/mnt/storage/local-path-provisioner/rwx
 
     # Talos control-plane taint tolerance (single-node)
     tolerations:
