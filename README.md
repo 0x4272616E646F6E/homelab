@@ -38,53 +38,74 @@ Or use nix.
 
 ```mermaid
 flowchart TD
-    subgraph GitOps
-        G1[Git Repository]
-        G2[Flux]
-        G1 --> G2
-    end
+  %% External
+  subgraph External
+    GIT[Git Repository]
+    USER[Talosctl Client]
+    NET[Internet / Cloudflare]
+  end
 
-    subgraph ControlPlane
-        G2 --> C1[Kubernetes API Server]
-        C1 --> C2[Controllers & CRDs]
-        C1 --> C3[(etcd)]
-        C1 --> C4[Kube Scheduler]
-        C1 --> C5[Kube Controller]
-        C2 --> C6[Talos Debug]
-    end
+  %% Control Plane
+  subgraph ControlPlane
+    APIS[Kubernetes API Server]
+    ETCD[(etcd)]
+    SCHED[Scheduler]
+    KCM[Kube Controller Manager]
+  end
 
+  APIS <--> ETCD
+  SCHED --> APIS
+  KCM --> APIS
 
-    subgraph DataPlane
-        C2 --> D1[Cilium]
-        C2 --> D2[CoreDNS]
-        %% Node-level components
-        D3[Kubelet] -.-> D1
-        C1 -.-> D3[Kubelet]
-        D4[containerd] -.-> D3
-    end
+  %% GitOps (runs in cluster)
+  subgraph GitOps
+    FLUX[Flux Controllers]
+  end
 
+  GIT --> FLUX
+  FLUX --> APIS
 
-    subgraph Ingress
-        direction TB
-        C2 --> I1[Cloudflared]
-        C2 --> I2[Emissary/HaProxy/Traefik]
-        D1 --> I1[Cloudflared]
-        D1 --> I2[Emissary/HaProxy/Traefik]
-    end
+  %% Nodes / Data Plane
+  subgraph Nodes
+    KUBE[Kubelet]
+    CRI[Containerd]
+    CIL[Cilium]
+    DNS[CoreDNS]
+    TRF[Traefik]
+    CFD[Cloudflared]
+  end
 
-    subgraph Applications
-        direction TB
-        C2 --> A1[App]
-         I1 --> A1[App]
-         I2 --> A1[App]
-    end
+  KUBE <--> APIS
+  CRI -. Runtime .-> KUBE
+  CIL -. CNI .- KUBE
+  DNS --> APIS
+  TRF --> APIS
+  CFD --> APIS
+  NET --> CFD
+  CFD --> TRF
+  CIL --> TRF
+  CIL --> DNS
 
-    subgraph Storage
-        direction TB
-        C2 --> S1[Rook]
-        A1 --> S1[Rook]
-    end
+  %% Storage
+  subgraph Storage
+    LPP[Local-Path-Provisioner]
+  end
 
+  LPP --> APIS
+  KUBE --> LPP
+
+  %% Applications
+  subgraph Applications
+    APP[Application Pods]
+  end
+
+  APIS --> APP
+  CIL --> APP
+  TRF --> APP
+  APP --> LPP
+
+  %% Talos management
+  USER --> KUBE
 ```
 
 ## Hardware Specs
@@ -134,6 +155,7 @@ The following resources are managed through Flux in this repository:
 - **Kserve**
 - **Kubelet CSR Approver**
 - **Lazy Librarian**
+- **Local Path Provisioner**
 - **Loki**
 - **Minecraft Server**
 - **Nvidia Device Plugin**
