@@ -20,7 +20,7 @@ spec:
       containers:
         - name: openwebui
           # renovate: datasource=docker depName=ghcr.io/open-webui/open-webui
-          image: ghcr.io/open-webui/open-webui:main@sha256:8a27cb1dbd6e3f81381fa03525be778620aa7f675704557f96fd183dc095ddc5
+          image: ghcr.io/open-webui/open-webui:main@sha256:6411dd62178b3d5fbd26bd953b12c03e74ede96875aa96c394513628ba842cc1
           ports:
             - containerPort: 8080
               protocol: TCP
