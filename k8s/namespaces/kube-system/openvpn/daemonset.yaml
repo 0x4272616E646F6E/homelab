@@ -25,7 +25,7 @@ spec:
       containers:
         - name: openvpn
           # renovate: datasource=docker depName=docker.io/debian
-          image: docker.io/debian:13
+          image: docker.io/debian:13@sha256:833c135acfe9521d7a0035a296076f98c182c542a2b6b5a0fd7063d355d696be
           securityContext:
             privileged: true
             runAsUser: 0
