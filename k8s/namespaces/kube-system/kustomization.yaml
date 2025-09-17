@@ -7,8 +7,9 @@ resources:
   - local-path-provisioner/
   - coredns/
   - cilium/
+  # - openvpn/
   - egress-gw-helper/daemonset.yaml
   - nvidia-device-plugin/
   - kubelet-csr-approver/
   - metrics-server/
-  - talos-debug/deployment.yaml
+  - talos-debug/

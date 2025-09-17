@@ -1,0 +1,164 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: openvpn
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/name: openvpn
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: openvpn
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: openvpn
+    spec:
+      hostNetwork: true
+      hostPID: true
+      nodeSelector:
+        kubernetes.io/hostname: "talos-4m3-8nj"
+      tolerations:
+        - operator: "Exists"
+      serviceAccountName: openvpn
+      containers:
+        - name: openvpn
+          # renovate: datasource=docker depName=docker.io/debian
+          image: docker.io/debian:13
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          volumeMounts:
+            - name: tun
+              mountPath: /dev/net
+            - name: openvpn-config
+              mountPath: /etc/openvpn
+            - name: host-sys
+              mountPath: /sys
+              readOnly: false
+          env:
+            - name: OVPN_CONFIG
+              value: /etc/openvpn/client.conf
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -euo pipefail
+              # create tun device if not present
+              mkdir -p /dev/net
+              if [ ! -c /dev/net/tun ]; then
+                mknod /dev/net/tun c 10 200 || true
+              fi
+
+              # Write on-up helper that OpenVPN can call (keeps compatibility)
+              cat >/etc/openvpn/on-up.sh <<'UP'
+              #!/bin/sh
+              /sbin/sysctl -w net.ipv4.ip_forward=1 || true
+              # Ensure a MASQUERADE exists for the interface used by OpenVPN
+              /sbin/iptables -t nat -C POSTROUTING -o "$dev" -s "${POD_CIDR:-10.244.0.0/16}" -j MASQUERADE 2>/dev/null || \
+                /sbin/iptables -t nat -A POSTROUTING -o "$dev" -s "${POD_CIDR:-10.244.0.0/16}" -j MASQUERADE
+              UP
+              chmod +x /etc/openvpn/on-up.sh || true
+
+              # Create a persistent helper that watches for tun0 and programs ip rules/routes + NAT
+              cat >/usr/local/bin/openvpn-egress-helper.sh <<'HELPER'
+              #!/bin/sh
+              set -eu
+              TABLE=100
+              PRIORITY=100
+              IFACE=${IFACE:-tun0}
+              POD_CIDR="${POD_CIDR:-10.244.0.0/16}"
+
+              ensure_sysctl() {
+                /sbin/sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1 || true
+              }
+
+              apply_rules() {
+                local ip="$1"
+                # remove any existing rules for table to avoid duplicates
+                ip route flush table "${TABLE}" 2>/dev/null || true
+                ip rule del from "${POD_CIDR}" table "${TABLE}" priority "${PRIORITY}" 2>/dev/null || true
+
+                # route traffic from pod CIDR through the table
+                ip rule add from "${POD_CIDR}" lookup "${TABLE}" priority "${PRIORITY}" 2>/dev/null || true
+                ip route add default dev "${IFACE}" table "${TABLE}" 2>/dev/null || true
+
+                # ensure NAT exists for pod CIDR -> out IFACE
+                iptables -t nat -C POSTROUTING -o "${IFACE}" -s "${POD_CIDR}" -j MASQUERADE 2>/dev/null || \
+                  iptables -t nat -A POSTROUTING -o "${IFACE}" -s "${POD_CIDR}" -j MASQUERADE
+              }
+
+              clear_rules() {
+                ip rule del from "${POD_CIDR}" table "${TABLE}" priority "${PRIORITY}" 2>/dev/null || true
+                ip route flush table "${TABLE}" 2>/dev/null || true
+                iptables -t nat -D POSTROUTING -o "${IFACE}" -s "${POD_CIDR}" -j MASQUERADE 2>/dev/null || true
+              }
+
+              ensure_sysctl
+              while true; do
+                if ip link show "${IFACE}" >/dev/null 2>&1; then
+                  IF_IP=$(ip -4 -o addr show dev "${IFACE}" | awk '{print $4}' | cut -d/ -f1 | head -n1 || true)
+                  if [ -n "${IF_IP}" ]; then
+                    echo "[$(date -Iseconds)] ${IFACE} has IP ${IF_IP}; applying routing & NAT"
+                    apply_rules "${IF_IP}"
+                    while ip link show "${IFACE}" >/dev/null 2>&1; do
+                      CURRENT_IP=$(ip -4 -o addr show dev "${IFACE}" | awk '{print $4}' | cut -d/ -f1 | head -n1 || true)
+                      if [ "${CURRENT_IP}" != "${IF_IP}" ]; then
+                        echo "[$(date -Iseconds)] ${IFACE} IP changed ${IF_IP} -> ${CURRENT_IP}; re-applying"
+                        clear_rules
+                        IF_IP="${CURRENT_IP}"
+                        apply_rules "${IF_IP}"
+                      fi
+                      sleep 5
+                    done
+                    echo "[$(date -Iseconds)] ${IFACE} disappeared; clearing rules"
+                    clear_rules
+                  else
+                    echo "[$(date -Iseconds)] ${IFACE} exists but has no IPv4 yet, sleeping"
+                    sleep 3
+                  fi
+                else
+                  echo "[$(date -Iseconds)] ${IFACE} not present, waiting"
+                  sleep 3
+                fi
+              done
+              HELPER
+              chmod +x /usr/local/bin/openvpn-egress-helper.sh || true
+
+              # install packages and run helper in background, then run openvpn in foreground
+              apt-get update -y && apt-get install -y openvpn iproute2 iptables iputils-ping
+
+              # run the helper in background so it can maintain ip rules and NAT
+              /usr/local/bin/openvpn-egress-helper.sh >/var/log/openvpn-egress-helper.log 2>&1 &
+
+              # finally exec openvpn in foreground (openvpn will call on-up if configured)
+              exec openvpn --config "$OVPN_CONFIG"
+      volumes:
+        - name: tun
+          hostPath:
+            path: /dev/net
+            type: DirectoryOrCreate
+        - name: openvpn-config
+          projected:
+            sources:
+              - configMap:
+                  name: openvpn-client-cfg
+                  items:
+                    - key: client.conf
+                      path: client.conf
+              - secret:
+                  name: openvpn-secrets
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                    - key: client.crt
+                      path: client.crt
+                    - key: client.key
+                      path: client.key
+        - name: host-sys
+          hostPath:
+            path: /sys
+            type: Directory
+      hostAliases: []
+      restartPolicy: Always

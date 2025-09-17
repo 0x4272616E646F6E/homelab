@@ -130,7 +130,6 @@ Below is a description of the hardware this cluster runs on:
 The following resources are managed through Flux in this repository:
 
 - **Actions Runner Controller**
-- **Alpine (Talos Debug)**
 - **Authentik**
 - **Bazarr**
 - **BuildKit**
@@ -139,6 +138,7 @@ The following resources are managed through Flux in this repository:
 - **Cloudflared**
 - **Code-Server**
 - **Comfy-UI**
+- **Debian**(Talos Debug & OpenVPN)
 - **Egress Gateway Helper**
 - **Emissary**
 - **Falco**
