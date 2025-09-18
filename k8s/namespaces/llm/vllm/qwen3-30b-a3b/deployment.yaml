@@ -32,7 +32,7 @@ spec:
           - --model
           - Qwen/Qwen3-30B-A3B-GPTQ-Int4
           - --quantization
-          - gptq
+          - gptq_marlin
           - --max-model-len
           - "32768"
           - --kv-cache-dtype
@@ -46,8 +46,6 @@ spec:
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
-        - name: VLLM_ATTENTION_BACKEND
-          value: TRITON_ATTN_VLLM_V1
         - name: VLLM_LOGGING_LEVEL
           value: INFO
         - name: PYTORCH_CUDA_ALLOC_CONF
