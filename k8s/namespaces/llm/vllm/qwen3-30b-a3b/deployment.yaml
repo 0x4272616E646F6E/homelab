@@ -32,7 +32,7 @@ spec:
           - --model
           - Qwen/Qwen3-Coder-30B-A3B-Instruct
           - --quantization
-          - awq
+          - gptq
           - --max-model-len
           - "32768"
           - --kv-cache-dtype
