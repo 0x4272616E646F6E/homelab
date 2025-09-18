@@ -3,7 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - secrets.enc.yaml
-  - qwen3-30b-a3b/
-  # - gpt-oss-20b/
-  # - lucy-128k/
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress-route.yaml
