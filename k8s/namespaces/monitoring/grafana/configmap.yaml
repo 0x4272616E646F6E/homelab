@@ -8,46 +8,21 @@ data:
       global:
         # -- Overrides the Docker registry globally for all images
         imageRegistry: null
-
-        # To help compatibility with other charts which use global.imagePullSecrets.
-        # Allow either an array of {name: pullSecret} maps (k8s-style), or an array of strings (more common helm-style).
-        # Can be templated.
-        # global:
-        #   imagePullSecrets:
-        #   - name: pullSecret1
-        #   - name: pullSecret2
-        # or
-        # global:
-        #   imagePullSecrets:
-        #   - pullSecret1
-        #   - pullSecret2
         imagePullSecrets: []
 
       rbac:
         create: true
-        ## Use an existing ClusterRole/Role (depending on rbac.namespaced false/true)
-        # useExistingRole: name-of-some-role
-        # useExistingClusterRole: name-of-some-clusterRole
         pspEnabled: false
         pspUseAppArmor: false
         namespaced: false
         extraRoleRules: []
-        # - apiGroups: []
-        #   resources: []
-        #   verbs: []
         extraClusterRoleRules: []
-        # - apiGroups: []
-        #   resources: []
-        #   verbs: []
       serviceAccount:
         create: true
         name:
         nameTest:
         ## ServiceAccount labels.
         labels: {}
-        ## Service account annotations. Can be templated.
-        #  annotations:
-        #    eks.amazonaws.com/role-arn: arn:aws:iam::123456789000:role/iam-role-name-here
 
         ## autoMount is deprecated in favor of automountServiceAccountToken
         # autoMount: false
@@ -117,7 +92,6 @@ data:
         ## Can be templated.
         ##
         pullSecrets: []
-        #   - myRegistrKeySecretName
 
       testFramework:
         enabled: true
@@ -144,18 +118,12 @@ data:
       # dns configuration for pod
       dnsPolicy: ~
       dnsConfig: {}
-        # nameservers:
-        #   - 8.8.8.8
-        #   options:
-        #   - name: ndots
-        #     value: "2"
-        #   - name: edns0
 
       securityContext:
         runAsNonRoot: true
-        runAsUser: 472
-        runAsGroup: 472
-        fsGroup: 472
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
 
       containerSecurityContext:
         allowPrivilegeEscalation: false
@@ -1313,12 +1281,7 @@ data:
           # Sets the size limit of the notifier sidecar emptyDir volume
           sizeLimit: {}
 
-      ## Override the deployment namespace
-      ##
       namespaceOverride: ""
-
-      ## Number of old ReplicaSets to retain
-      ##
       revisionHistoryLimit: 10
 
       ## Add a seperate remote image renderer deployment/service
@@ -1359,19 +1322,7 @@ data:
           # RENDERING_MODE: clustered
           # IGNORE_HTTPS_ERRORS: true
 
-        ## "valueFrom" environment variable references that will be added to deployment pods. Name is templated.
-        ## ref: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.19/#envvarsource-v1-core
-        ## Renders in container spec as:
-        ##   env:
-        ##     ...
-        ##     - name: <key>
-        ##       valueFrom:
-        ##         <value rendered as YAML>
         envValueFrom: {}
-          #  ENV_NAME:
-          #    configMapKeyRef:
-          #      name: configmap-name
-          #      key: value_key
 
         # image-renderer deployment serviceAccount
         serviceAccountName: ""
@@ -1441,9 +1392,6 @@ data:
       #   requests:
       #     cpu: 50m
       #     memory: 50Mi
-        ## Node labels for pod assignment
-        ## ref: https://kubernetes.io/docs/user-guide/node-selection/
-        #
         nodeSelector: {}
 
         ## Tolerations for pod assignment
@@ -1474,69 +1422,15 @@ data:
         extraVolumes: []
 
       networkPolicy:
-        ## @param networkPolicy.enabled Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.
-        ##
         enabled: false
-        ## @param networkPolicy.allowExternal Don't require client label for connections
-        ## The Policy model to apply. When set to false, only pods with the correct
-        ## client label will have network access to  grafana port defined.
-        ## When true, grafana will accept connections from any source
-        ## (with the correct destination port).
-        ##
         ingress: true
-        ## @param networkPolicy.ingress When true enables the creation
-        ## an ingress network policy
-        ##
         allowExternal: true
-        ## @param networkPolicy.explicitNamespacesSelector A Kubernetes LabelSelector to explicitly select namespaces from which traffic could be allowed
-        ## If explicitNamespacesSelector is missing or set to {}, only client Pods that are in the networkPolicy's namespace
-        ## and that match other criteria, the ones that have the good label, can reach the grafana.
-        ## But sometimes, we want the grafana to be accessible to clients from other namespaces, in this case, we can use this
-        ## LabelSelector to select these namespaces, note that the networkPolicy's namespace should also be explicitly added.
-        ##
-        ## Example:
-        ## explicitNamespacesSelector:
-        ##   matchLabels:
-        ##     role: frontend
-        ##   matchExpressions:
-        ##    - {key: role, operator: In, values: [frontend]}
-        ##
         explicitNamespacesSelector: {}
-        ##
-        ##
-        ##
-        ##
-        ##
-        ##
         egress:
-          ## @param networkPolicy.egress.enabled When enabled, an egress network policy will be
-          ## created allowing grafana to connect to external data sources from kubernetes cluster.
           enabled: false
-          ##
-          ## @param networkPolicy.egress.blockDNSResolution When enabled, DNS resolution will be blocked
-          ## for all pods in the grafana namespace.
           blockDNSResolution: false
-          ##
-          ## @param networkPolicy.egress.ports Add individual ports to be allowed by the egress
           ports: []
-          ## Add ports to the egress by specifying - port: <port number>
-          ## E.X.
-          ## - port: 80
-          ## - port: 443
-          ##
-          ## @param networkPolicy.egress.to Allow egress traffic to specific destinations
           to: []
-          ## Add destinations to the egress by specifying - ipBlock: <CIDR>
-          ## E.X.
-          ## to:
-          ##  - namespaceSelector:
-          ##    matchExpressions:
-        ##    - {key: role, operator: In, values: [grafana]}
-        ##
-        ##
-        ##
-        ##
-        ##
 
       # Enable backward compatibility of kubernetes where version below 1.13 doesn't have the enableServiceLinks option
       enableKubeBackwardCompatibility: false
@@ -1544,36 +1438,5 @@ data:
 
       # extraObjects could be utilized to add dynamic manifests via values
       extraObjects: []
-      # Examples:
-      # extraObjects:
-      # - apiVersion: kubernetes-client.io/v1
-      #   kind: ExternalSecret
-      #   metadata:
-      #     name: grafana-secrets-{{ .Release.Name }}
-      #   spec:
-      #     backendType: gcpSecretsManager
-      #     data:
-      #     - key: grafana-admin-password
-      #       name: adminPassword
-      # Alternatively, you can use strings, which lets you use additional templating features:
-      # extraObjects:
-      # - |
-      #   apiVersion: kubernetes-client.io/v1
-      #   kind: ExternalSecret
-      #   metadata:
-      #     name: grafana-secrets-{{ .Release.Name }}
-      #   spec:
-      #     backendType: gcpSecretsManager
-      #     data:
-      #     - key: grafana-admin-password
-      #       name: {{ include "some-other-template" }}
 
-      # assertNoLeakedSecrets is a helper function defined in _helpers.tpl that checks if secret
-      # values are not exposed in the rendered grafana.ini configmap. It is enabled by default.
-      #
-      # To pass values into grafana.ini without exposing them in a configmap, use variable expansion:
-      # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#variable-expansion
-      #
-      # Alternatively, if you wish to allow secret values to be exposed in the rendered grafana.ini configmap,
-      # you can disable this check by setting assertNoLeakedSecrets to false.
       assertNoLeakedSecrets: true

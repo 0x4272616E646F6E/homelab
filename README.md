@@ -1,4 +1,5 @@
 # Homelab
+
 ![Proxmox](https://img.shields.io/badge/Proxmox%209.0.9-proxmox?style=flat-square&logo=proxmox&logoColor=%23E57000&labelColor=%232b2a33&color=%232b2a33)
 ![Ansible](https://img.shields.io/badge/Ansible%202.18.8-%23EE0000.svg?style=flat-square&logo=ansible&logoColor=white)
 ![OpenTofu](https://img.shields.io/badge/OpenTofu%201.10.6-623CE4?style=flat-square&logo=opentofu&logoColor=white)
@@ -138,7 +139,7 @@ The following resources are managed through Flux in this repository:
 - **Cloudflared**
 - **Code-Server**
 - **Comfy-UI**
-- **Debian**(Talos Debug & OpenVPN)
+- **Debian** (Talos Debug & OpenVPN)
 - **Egress Gateway Helper**
 - **Emissary**
 - **Falco**
@@ -183,4 +184,3 @@ The following resources are managed through Flux in this repository:
 - **Vertical Pod Autoscaler**
 - **VLLM**
 - **Wizarr**
-
