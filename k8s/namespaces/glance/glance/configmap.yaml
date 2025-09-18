@@ -122,7 +122,6 @@ data:
                   - cilium/cilium
                   - fluxcd/flux2
                   - helm/helm
-                  - openjdk/jdk
                   - kubernetes/kubernetes
                   - NixOS/nix
                   - siderolabs/talos
