@@ -96,10 +96,18 @@ data:
               - type: split-column
                 widgets:
                   - type: reddit
-                    subreddit: localllama
+                    subreddit: selfhosted
                     show-thumbnails: true
                   - type: reddit
-                    subreddit: selfhosted
+                    subreddit: kubernetes
+                    show-thumbnails: true
+              - type: split-column
+                widgets:
+                  - type: reddit
+                    subreddit: java
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: localllama
                     show-thumbnails: true
           - size: small
             widgets:
@@ -114,6 +122,7 @@ data:
                   - cilium/cilium
                   - fluxcd/flux2
                   - helm/helm
+                  - openjdk/jdk
                   - kubernetes/kubernetes
                   - NixOS/nix
                   - siderolabs/talos
