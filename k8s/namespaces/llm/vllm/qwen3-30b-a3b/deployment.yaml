@@ -30,7 +30,7 @@ spec:
         image: docker.io/vllm/vllm-openai:latest@sha256:d731ee65c044ae0977421eed3d93f931d4b7d79614394184c939db35b8f28fc2
         args:
           - --model
-          - Qwen/Qwen3-30B-A3B-GPTQ-Int4
+          - Qwen/Qwen3-Coder-30B-A3B-Instruct
           - --quantization
           - gptq_marlin
           - --max-model-len
