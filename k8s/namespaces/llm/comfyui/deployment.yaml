@@ -34,12 +34,12 @@ spec:
               mountPath: /root
           resources:
             requests:
-              cpu: "1"
-              memory: "2Gi"
+              cpu: "2"
+              memory: "20Gi"
               nvidia.com/gpu: "1"
             limits:
-              cpu: "2"
-              memory: "4Gi"
+              cpu: "4"
+              memory: "20Gi"
               nvidia.com/gpu: "1"
       volumes:
         - name: config
