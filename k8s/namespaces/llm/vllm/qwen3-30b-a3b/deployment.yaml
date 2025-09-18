@@ -46,6 +46,8 @@ spec:
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+        - name: VLLM_ATTENTION_BACKEND
+          value: "FLASHINFER"
         - name: VLLM_LOGGING_LEVEL
           value: INFO
         - name: PYTORCH_CUDA_ALLOC_CONF
