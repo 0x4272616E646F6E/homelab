@@ -6,4 +6,4 @@ resources:
   - secrets.enc.yaml
   # - qwen3-30b-a3b/
   # - gpt-oss-20b/
-  # - lucy-128k/
+  - lucy-128k/
