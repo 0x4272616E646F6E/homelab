@@ -141,7 +141,6 @@ The following resources are managed through Flux in this repository:
 - **Comfy-UI**
 - **Debian** (Talos Debug & OpenVPN)
 - **Egress Gateway Helper**
-- **Emissary**
 - **Falco**
 - **Filebrowser**
 - **Flaresolverr**
@@ -161,6 +160,7 @@ The following resources are managed through Flux in this repository:
 - **Local Path Provisioner**
 - **Loki**
 - **Minecraft Server**
+- **Nginx**
 - **Nvidia Device Plugin**
 - **NzbGet**
 - **Prometheus**

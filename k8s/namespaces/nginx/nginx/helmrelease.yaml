@@ -1,22 +1,22 @@
- # renovate: registryUrl=oci://ghcr.io/emissary-ingress
+ # renovate: registryUrl=https://kubernetes.github.io/ingress-nginx
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: emissary
-  namespace: emissary
+  name: nginx
+  namespace: nginx
 spec:
   chart:
     spec:
-      chart: emissary
-      version: 3.10.0
+      chart: nginx
+      version: 4.13.2
       sourceRef:
         kind: HelmRepository
-        name: emissary
+        name: nginx
         namespace: flux-system
   interval: 15m
   timeout: 5m
-  releaseName: emissary
+  releaseName: nginx
   valuesFrom:
   - kind: ConfigMap
-    name: emissary-config-map
+    name: nginx-config-map
     valuesKey: values.yaml

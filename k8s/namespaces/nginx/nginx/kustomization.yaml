@@ -5,5 +5,3 @@ commonLabels:
 resources:
   - configmap.yaml
   - helmrelease.yaml
-  - listener.yaml
-  - mapping.yaml

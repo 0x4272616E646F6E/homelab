@@ -1,11 +1,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: emissary
+  name: nginx-ingress
   namespace: flux-system
 spec:
   interval: 4m
-  path: "./k8s/namespaces/emissary"
+  path: "./k8s/namespaces/nginx-ingress"
   prune: true
   sourceRef:
     kind: GitRepository
