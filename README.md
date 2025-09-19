@@ -73,7 +73,7 @@ flowchart TD
     CRI[Containerd]
     CIL[Cilium]
     DNS[CoreDNS]
-    TRF[Traefik]
+    TRF[HAProxy/Nginx/Traefik]
     CFD[Cloudflared]
   end
 
@@ -82,12 +82,13 @@ flowchart TD
   CIL -. CNI .- KUBE
   DNS --> APIS
   TRF --> APIS
-  CFD --> APIS
+  CFD --> TRF
   NET --> CFD
   LOCALNET --> TRF
-  CFD --> TRF
-  CIL --> TRF
+  CFD --> APIS
   CIL --> DNS
+  CIL --> TRF
+
 
   %% Storage
   subgraph Storage
