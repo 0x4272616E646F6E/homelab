@@ -1,11 +1,7 @@
 customization:
     systemExtensions:
         officialExtensions:
-            - siderolabs/fuse3
             - siderolabs/gasket-driver
-            - siderolabs/intel-ice-firmware
-            - siderolabs/intel-ucode
-            - siderolabs/mei
             - siderolabs/nonfree-kmod-nvidia-production
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/qemu-guest-agent

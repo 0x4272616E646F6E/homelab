@@ -2,6 +2,15 @@
 
 ## Kubernetes
 
+**Copy Local Files to Pod**
+```bash
+# copy local to pod
+kubectl cp ./local.file ns/pod:/app/local.file -c container1
+
+# copy dir recursively
+kubectl cp ./dist ns/pod:/var/www/dist -c container1
+```
+
 **Drain Node**
 ```bash
 kubectl drain talos-4m3-8nj \
@@ -12,6 +21,12 @@ kubectl drain talos-4m3-8nj \
 **Uncordon Node**
 ```bash
 kubectl uncordon talos-4m3-8nj
+```
+
+**Set Scale Replica**
+```bash
+# scale to 0 or greater
+kubectl scale deployment pod -n ns --replicas=0
 ```
 
 ## Talos

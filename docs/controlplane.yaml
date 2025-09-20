@@ -41,13 +41,6 @@ machine:
       event-qps: "0"
       registry-qps: "0"
     extraMounts:
-      - destination: /var/lib/rook
-        type: bind
-        source: /var/lib/rook
-        options:
-          - bind
-          - rshared
-          - rw
       - destination: /dev/dri
         type: bind
         source: /dev/dri
@@ -79,7 +72,6 @@ machine:
     disk: /dev/sda
   disks:
     - device: /dev/sdb
-    - device: /dev/sdc
       partitions:
         - mountpoint: /var/mnt/storage
   kernel:
@@ -88,14 +80,18 @@ machine:
     - name: br_netfilter
       parameters:
         - nf_conntrack_max=131072
+    - name: nf_conntrack
+    - name: iptable_nat
+    - name: nf_nat
+    - name: xt_conntrack
     - name: dm_mod
     - name: drm
     - name: gasket
+    - name: nbd
     - name: nvidia
     - name: nvidia_uvm
     - name: nvidia_drm
     - name: nvidia_modeset
-    - name: nfs
     - name: tun
     - name: uio_pci_generic
     - name: vfio_pci
