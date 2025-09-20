@@ -42,7 +42,7 @@ spec:
           - --tool-call-parser
           - hermes
           - --max-model-len
-          - "32768"
+          - "16384"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
