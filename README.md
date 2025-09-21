@@ -125,7 +125,7 @@ Below is a description of the hardware this cluster runs on:
 - OS Disks (2x): [Intel Optane SSD 1600X Series](https://www.intel.com/content/www/us/en/products/sku/211868/intel-optane-ssd-p1600x-series-58gb-m-2-80mm-pcie-3-0-x4-3d-xpoint/specifications.html)
 - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
 - GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
-- TPU: [Google Coral TPU M.2](https://coral.ai/products/m2-accelerator-bm)
+- TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
 
 ## Cluster Resources
 
