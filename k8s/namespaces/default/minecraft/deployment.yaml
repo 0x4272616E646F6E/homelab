@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: games
+  labels:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minecraft
+      app.kubernetes.io/managed-by: flux
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minecraft
+        app.kubernetes.io/managed-by: flux
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      automountServiceAccountToken: false
+      containers:
+        - name: minecraft
+        # renovate: datasource=docker depName=docker.io/itzg/minecraft-server
+          image: docker.io/itzg/minecraft-server:java21-graalvm@sha256:ffbb5ed788af27c9d197060bb94fdfd6d6ce22ee685069fbd1b9660de81a2c19
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ENABLE_ROLLING_LOGS
+              value: "TRUE"
+            - name: LOG_TIMESTAMP
+              value: "TRUE"
+            - name: TYPE
+              value: "VANILLA"
+            - name: EULA
+              value: "TRUE"
+            - name: MOTD
+              value: "Welcome to the Minecraft Server!"
+            - name: DIFFICULTY
+              value: "NORMAL"
+            - name: MAX_PLAYERS
+              value: "50"
+            - name: FORCE_GAMEMODE
+              value: "TRUE"
+            - name: HARDCORE
+              value: "TRUE"
+            - name: MODE
+              value: "SURVIVAL"
+            - name: SERVER_NAME
+              value: "My Minecraft Server"
+            - name: PLAYER_IDLE_TIMEOUT
+              value: "15"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          ports:
+            - containerPort: 19132
+              protocol: UDP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: minecraft-config

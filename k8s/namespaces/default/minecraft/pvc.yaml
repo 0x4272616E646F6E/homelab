@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minecraft-config
+  namespace: games
+  labels:
+    app.kubernetes.io/name: minecraft
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 8Gi

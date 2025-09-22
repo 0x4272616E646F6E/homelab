@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: authentik-postgres-pvc
+  namespace: security
+  labels:
+    app.kubernetes.io/name: authentik-postgres-17
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: local-path-rwo
+  volumeMode: Filesystem

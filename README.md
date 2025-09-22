@@ -131,57 +131,57 @@ Below is a description of the hardware this cluster runs on:
 
 The following resources are managed through Flux in this repository:
 
-- **Actions Runner Controller**
-- **Authentik**
-- **Bazarr**
-- **BuildKit**
-- **Cert Manager**
-- **Cilium**
-- **Cloudflared**
-- **Code-Server**
-- **Comfy-UI**
-- **Debian** (Talos Debug & OpenVPN)
-- **Egress Gateway Helper**
-- **Falco**
-- **Filebrowser**
-- **Flaresolverr**
-- **Glance**
-- **Grafana**
-- **HA Proxy**
-- **Harbor**
-- **Home Assistant**
-- **Huntarr**
-- **Jellyfin**
-- **Jellyseerr**
-- **Kestra**
-- **Knative**
-- **Kserve**
-- **Kubelet CSR Approver**
-- **Lazy Librarian**
-- **Local Path Provisioner**
-- **Loki**
-- **Minecraft Server**
-- **Nginx**
-- **Nvidia Device Plugin**
-- **NzbGet**
-- **Prometheus**
-- **Prowlarr**
-- **Radarr**
-- **Redbot**
-- **Reflector**
-- **Requestrr**
-- **Reloader**
-- **Renovate**
-- **rTorrent**
-- **Sonarr**
-- **SonarQube**
-- **Subgen**
-- **Suwayomi**
-- **Syncthing**
-- **Tdarr**
-- **Tempo**
-- **Traefik**
-- **Vector**
-- **Vertical Pod Autoscaler**
-- **VLLM**
-- **Wizarr**
+- [**Authentik**]()
+- [**Bazarr**]()
+- [**BuildKit**]()
+- [**Cert Manager**]()
+- [**Cilium**]()
+- [**Cloudflared**]()
+- [**Code-Server**]()
+- [**Comfy-UI**]()
+- [**Debian**]()
+- [**Falco**]()
+- [**Filebrowser**]()
+- [**Flaresolverr**]()
+- [**GitHub Actions Runner**]()
+- [**Glance**]()
+- [**Grafana**]()
+- [**HA Proxy**]()
+- [**Harbor**]()
+- [**Home Assistant**]()
+- [**Huntarr**]()
+- [**Jellyfin**]()
+- [**Jellyseerr**]()
+- [**Kestra**]()
+- [**Knative**]()
+- [**Kserve**]()
+- [**Kubelet CSR Approver**]()
+- [**Lazy Librarian**]()
+- [**LibreChat**]()
+- [**Local Path Provisioner**]()
+- [**Loki**]()
+- [**Minecraft Server**]()
+- [**Nginx**]()
+- [**Nvidia Device Plugin**]()
+- [**NzbGet**]()
+- [**Prometheus**]()
+- [**Prowlarr**]()
+- [**Radarr**]()
+- [**Redbot**]()
+- [**Reflector**]()
+- [**Requestrr**]()
+- [**Reloader**]()
+- [**Renovate**]()
+- [**rTorrent**]()
+- [**Sonarr**]()
+- [**SonarQube**]()
+- [**Subgen**]()
+- [**Suwayomi**]()
+- [**Syncthing**]()
+- [**Tdarr**]()
+- [**Tempo**]()
+- [**Traefik**]()
+- [**Vector**]()
+- [**Vertical Pod Autoscaler**]()
+- [**VLLM**]()
+- [**Wizarr**]()

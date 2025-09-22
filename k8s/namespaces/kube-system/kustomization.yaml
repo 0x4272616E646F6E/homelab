@@ -5,11 +5,9 @@ commonLabels:
 resources:
   - runtimeclass.yaml
   - local-path-provisioner/
-  - coredns/
   - cilium/
-  # - openvpn/
-  - egress-gw-helper/daemonset.yaml
-  - nvidia-device-plugin/
+  - coredns/
   - kubelet-csr-approver/
+  - nvidia-device-plugin/
   - metrics-server/
   - talos-debug/

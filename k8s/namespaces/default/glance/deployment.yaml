@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance
+  namespace: glance
+  labels:
+    app.kubernetes.io/name: glance
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: glance
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: glance
+        app.kubernetes.io/managed-by: flux
+    spec:
+      runtimeClassName: youki
+      automountServiceAccountToken: false
+      containers:
+        - name: glance
+        # renovate: datasource=docker depName=docker.io/glanceapp/glance
+          image: docker.io/glanceapp/glance:latest@sha256:6df86a7e8868d1eda21f35205134b1962c422957e42a0c44d4717c8e8f741b1a
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: glance-config
+              mountPath: /app/config
+              readOnly: true
+      volumes:
+        - name: glance-config
+          configMap:
+            name: glance-config
+            items:
+              - key: glance.yml
+                path: glance.yml

@@ -13,3 +13,4 @@ data:
         resources:
         - name: nvidia.com/gpu
           replicas: 8
+
