@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: knative-config-map
-  namespace: knative
+  namespace: kube-service
 data:
   values.yaml: |-
     knative_operator:

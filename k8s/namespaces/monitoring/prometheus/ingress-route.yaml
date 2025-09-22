@@ -11,7 +11,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
       services:
         - name: prometheus
           port: 9090
@@ -31,9 +31,9 @@ spec:
       kind: Rule
       middlewares:
       - name: internal-whitelist
-        namespace: traefik
+        namespace: ingress
       - name: redirect-https
-        namespace: traefik
+        namespace: ingress
       services:
         - name: prometheus
           port: 9090

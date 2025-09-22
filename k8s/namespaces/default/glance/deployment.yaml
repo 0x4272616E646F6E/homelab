@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: glance
-  namespace: glance
+  namespace: default
   labels:
     app.kubernetes.io/name: glance
     app.kubernetes.io/managed-by: flux

@@ -14,7 +14,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
       services:
         - name: flaresolverr
           port: 8191
@@ -38,9 +38,9 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
         - name: redirect-https
-          namespace: traefik
+          namespace: ingress
       services:
         - name: flaresolverr
           port: 8191

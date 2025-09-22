@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard-http
-  namespace: traefik
+  namespace: ingress
 spec:
   entryPoints:
     - web
@@ -20,7 +20,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: traefik-dashboard-https
-  namespace: traefik
+  namespace: ingress
 spec:
   entryPoints:
     - websecure

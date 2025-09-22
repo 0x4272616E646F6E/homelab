@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config-map
-  namespace: nginx
+  namespace: ingress
 data:
   values.yaml: |-
     ## nginx configuration

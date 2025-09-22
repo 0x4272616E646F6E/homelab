@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: traefik-config-map
-  namespace: traefik
+  namespace: ingress
 data:
   values.yaml: |-
       # Default values for Traefik

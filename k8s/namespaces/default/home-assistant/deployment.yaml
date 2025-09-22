@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homeassistant
-  namespace: automation
+  namespace: default
   labels:
     app.kubernetes.io/name: homeassistant
     app.kubernetes.io/managed-by: flux

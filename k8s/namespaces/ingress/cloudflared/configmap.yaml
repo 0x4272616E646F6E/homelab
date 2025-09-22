@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared-config-map
-  namespace: cloudflared
+  namespace: ingress
 data:
   values.yaml: |-
     # Default values for cloudflare-tunnel.

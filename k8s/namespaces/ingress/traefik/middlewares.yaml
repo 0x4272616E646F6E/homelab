@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: redirect-https
-  namespace: traefik
+  namespace: ingress
 spec:
   redirectScheme:
     scheme: https
@@ -12,7 +12,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
     name: authentik
-    namespace: traefik
+    namespace: ingress
 spec:
     forwardAuth:
       address: http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/traefik
@@ -35,7 +35,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: internal-whitelist
-  namespace: traefik
+  namespace: ingress
 spec:
   ipAllowList:
     sourceRange:

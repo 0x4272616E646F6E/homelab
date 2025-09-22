@@ -11,7 +11,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
       services:
         - name: kestra
           port: 8080
@@ -34,6 +34,6 @@ spec:
           port: 8080
       middlewares:
       - name: internal-whitelist
-        namespace: traefik
+        namespace: ingress
       - name: redirect-https
-        namespace: traefik
+        namespace: ingress

@@ -11,9 +11,9 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
         - name: authentik
-          namespace: traefik
+          namespace: ingress
       services:
         - name: code-server
           port: 8080
@@ -33,9 +33,9 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
         - name: redirect-https
-          namespace: traefik
+          namespace: ingress
       services:
         - name: code-server
           port: 8080

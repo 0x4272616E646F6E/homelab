@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: haproxy-config-map
-  namespace: haproxy
+  namespace: ingress
 data:
   values.yaml: |-
     ## Default values for kubernetes-ingress Chart for HAProxy Ingress Controller

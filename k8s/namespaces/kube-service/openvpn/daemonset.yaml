@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: openvpn
-  namespace: kube-system
+  namespace: kube-service
   labels:
     app.kubernetes.io/managed-by: flux
     app.kubernetes.io/name: openvpn
