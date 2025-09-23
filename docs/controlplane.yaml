@@ -19,12 +19,12 @@ machine:
             metric: 100
       - interface: wg0
         addresses:
-          - 10.72.127.202/32
+          - 10.2.0.2/32
         wireguard:
           privateKey:
           peers:
             - publicKey:
-              endpoint:
+              endpoint: endpoint.wireguard.example.com:51820
               allowedIPs:
                 - 0.0.0.0/0
                 - ::/0
