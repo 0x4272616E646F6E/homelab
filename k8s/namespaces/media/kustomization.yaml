@@ -5,7 +5,6 @@ commonLabels:
 resources:
   - namespace.yaml
   - pvc.yaml
-  - ciliumegresspolicy.yaml
   - flaresolverr/
   - rtorrent/
   - nzbget/
