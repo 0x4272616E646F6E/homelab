@@ -15,6 +15,5 @@ spec:
   egressGateway:
     nodeSelector:
       matchLabels:
-        kubernetes.io/hostname: talos-4m3-8nj
-    egressGateway:
-      Interface: wg0
+        kubernetes.io/hostname: "talos-4m3-8nj"
+    interface: wg0
