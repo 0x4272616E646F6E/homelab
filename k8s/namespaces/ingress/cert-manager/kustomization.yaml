@@ -6,6 +6,6 @@ resources:
   - secrets.enc.yaml 
   - configmap.yaml
   - helmrelease.yaml
-  # - issuers/letsencrypt-staging.yaml
-  # - issuers/letsencrypt-production.yaml
-  # - certificate.yaml
+  - issuers/letsencrypt-staging.yaml
+  - issuers/letsencrypt-production.yaml
+  - certificate.yaml
