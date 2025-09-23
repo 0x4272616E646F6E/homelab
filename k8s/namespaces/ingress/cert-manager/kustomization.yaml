@@ -8,4 +8,4 @@ resources:
   - helmrelease.yaml
   - issuers/letsencrypt-staging.yaml
   - issuers/letsencrypt-production.yaml
-  - certificate.yaml
+  # - certificate.yaml
