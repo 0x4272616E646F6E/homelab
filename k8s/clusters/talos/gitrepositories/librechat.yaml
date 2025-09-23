@@ -1,0 +1,14 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: ext-charts
+  namespace: flux-system
+spec:
+  interval: 5m
+  url: https://github.com/vendor/project-with-chart.git
+  ref:
+    tag: v1.2.3        # or branch: main / semver: ">1.2.0"
+  # Only the helm chart subdir
+  ignore: |
+    /*
+    !/helm/librechat/**

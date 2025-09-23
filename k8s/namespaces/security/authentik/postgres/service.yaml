@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentik-postgres-17
+  namespace: security
+  labels:
+    app.kubernetes.io/name: authentik-postgres-17
+spec:
+  ports:
+  - port: 5432
+    targetPort: postgres
+  selector:
+    app.kubernetes.io/name: authentik-postgres-17

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  namespace: default
+  labels:
+    app.kubernetes.io/name: homeassistant
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homeassistant
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homeassistant
+        app.kubernetes.io/managed-by: flux
+    spec:
+      runtimeClassName: youki
+      containers:
+        - name: homeassistant
+        # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
+          image: lscr.io/linuxserver/homeassistant:latest@sha256:7b1cb6450bb2e371bc2601e5fa9363b8938e337c1beb27cd44a72eda1a9ca28c
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8123
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: homeassistant-config

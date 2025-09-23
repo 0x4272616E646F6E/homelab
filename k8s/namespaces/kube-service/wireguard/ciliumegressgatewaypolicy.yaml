@@ -1,0 +1,20 @@
+apiVersion: cilium.io/v2
+kind: CiliumEgressGatewayPolicy
+metadata:
+  name: wireguard-cilium-egress-gateway-policy
+  labels:
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/name: wireguard
+spec:
+  selectors:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/egress: wireguard
+  destinationCIDRs:
+    - 0.0.0.0/0
+  egressGateway:
+    nodeSelector:
+      matchLabels:
+        kubernetes.io/hostname: talos-4m3-8nj
+    egressGateway:
+      Interface: wg0

@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-https
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`homeassistant.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: ingress
+      services:
+        - name: homeassistant
+          port: 8123
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: homeassistant-http
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`homeassistant.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: ingress
+        - name: redirect-https
+          namespace: ingress
+      services:
+        - name: homeassistant
+          port: 8123

@@ -14,7 +14,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
       services:
         - name: jellyfin
           port: 8096
@@ -38,9 +38,9 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
         - name: redirect-https
-          namespace: traefik
+          namespace: ingress
       services:
         - name: jellyfin
           port: 8096
@@ -58,7 +58,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-          namespace: traefik
+          namespace: ingress
       services:
         - name: jellyfin
           port: 8096

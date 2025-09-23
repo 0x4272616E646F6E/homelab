@@ -1,0 +1,39 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: glance-https
+  namespace: default
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`glance.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: ingress
+      services:
+        - name: glance
+          port: 80
+  tls: 
+    secretName: oglesby-io-tls
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: glance-http
+  namespace: glance
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`glance.oglesby.io`)
+      kind: Rule
+      middlewares:
+        - name: internal-whitelist
+          namespace: ingress
+        - name: redirect-https
+          namespace: ingress
+      services:
+        - name: glance
+          port: 80

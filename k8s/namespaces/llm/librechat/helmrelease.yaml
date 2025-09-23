@@ -1,0 +1,22 @@
+ # renovate: datasource=github-releases depName=danny-avila/LibreChat
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: librechat
+  namespace: llm
+spec:
+  chart:
+    spec:
+      chart: helm/librechat
+      version: 1.8.10
+      sourceRef:
+        kind: GitRepository
+        name: librechat
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: librechat
+  valuesFrom:
+  - kind: ConfigMap
+    name: librechat-config-map
+    valuesKey: values.yaml

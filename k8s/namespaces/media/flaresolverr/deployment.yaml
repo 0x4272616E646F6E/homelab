@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: flaresolverr
     app.kubernetes.io/managed-by: flux
-    app.kubernetes.io/egress: openvpn
+    app.kubernetes.io/egress: wireguard
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
       labels:
         app.kubernetes.io/name: flaresolverr
         app.kubernetes.io/managed-by: flux
-        app.kubernetes.io/egress: openvpn
+        app.kubernetes.io/egress: wireguard
     spec:
       runtimeClassName: youki
       dnsPolicy: None

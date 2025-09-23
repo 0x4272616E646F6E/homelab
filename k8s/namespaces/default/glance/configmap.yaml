@@ -1,0 +1,128 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glance-config
+  namespace: default
+data:
+  glance.yml: |
+    pages:
+      - name: Home
+        columns:
+          - size: small
+            widgets:
+              - type: calendar
+                first-day-of-week: monday
+              - type: bookmarks
+                groups:
+                  - links:
+                      - title: Authentik
+                        url: https://authentik.oglesby.io/
+                      - title: Bazarr
+                        url: https://bazarr.oglesby.io/
+                      - title: ComfyUI
+                        url: https://comfyui.oglesby.io/
+                      - title: Grafana
+                        url: https://grafana.oglesby.io/
+                      - title: Harbor
+                        url: https://harbor.oglesby.io/
+                      - title: Home Assistant
+                        url: https://homeassistant.oglesby.io/
+                      - title: Huntarr
+                        url: https://huntarr.oglesby.io/
+                      - title: Jellyfin
+                        url: https://jellyfin.oglesby.io/
+                      - title: JellySeerr
+                        url: https://jellyseerr.oglesby.io/
+                      - title: NzbGet
+                        url: https://nzbget.oglesby.io/
+                      - title: OpenWebUI
+                        url: https://openwebui.oglesby.io/
+                      - title: Prometheus
+                        url: https://prometheus.oglesby.io/
+                      - title: Prowlarr
+                        url: https://prowlarr.oglesby.io/
+                      - title: Proxmox Backup Server
+                        url: https://pve.oglesby.io:8007/
+                      - title: Proxmox VE
+                        url: https://pve.oglesby.io:8006/
+                      - title: Radarr
+                        url: https://radarr.oglesby.io/
+                      - title: Requestrr
+                        url: https://requestrr.oglesby.io/
+                      - title: rTorrent
+                        url: https://rtorrent.oglesby.io/
+                      - title: Sonarr
+                        url: https://sonarr.oglesby.io/
+                      - title: SonarQube
+                        url: https://sonarqube.oglesby.io/
+                      - title: Suwayomi
+                        url: https://suwayomi.oglesby.io/
+                      - title: Traefik
+                        url: https://traefik.oglesby.io/
+                      - title: Unifi
+                        url: https://unifi.oglesby.io/
+                      - title: Wizarr
+                        url: https://wizarr.oglesby.io/
+          - size: full
+            widgets:
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 12h
+                feeds:
+                  - url: https://deepmind.com/blog/feed/basic
+                    title: DeepMind
+                    limit: 4
+                  - url: https://distrowatch.com/news/news-headlines.xml
+                    title: Distrowatch
+                    limit: 4
+                  - url: http://news.ycombinator.com/rss
+                    title: Hacker News
+                    limit: 4
+                  - url: https://kubernetes.io/feed.xml
+                    title: Kubernetes
+                    limit: 4
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
+              - type: videos
+                channels:
+                  - UC2WHjPDvbE6O328n17ZGcfg # Forrest Knight
+                  - UC8butISFwT-Wl7EV0hUK0BQ # Free Code Camp
+                  - UCCMi6F5Ac3kQDfffWXQGZDw # Guided Hacking
+                  - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+                  - UClcE-kVhqyiHCcjYwcpfj9w # Live Overflow
+              - type: split-column
+                widgets:
+                  - type: reddit
+                    subreddit: selfhosted
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: kubernetes
+                    show-thumbnails: true
+              - type: split-column
+                widgets:
+                  - type: reddit
+                    subreddit: java
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: localllama
+                    show-thumbnails: true
+          - size: small
+            widgets:
+              - type: weather
+                location: Edgewater, Florida, United States
+                units: imperial
+                hour-format: 24h
+              - type: releases
+                collapse-after: 99
+                cache: 1d
+                repositories:
+                  - cilium/cilium
+                  - fluxcd/flux2
+                  - helm/helm
+                  - kubernetes/kubernetes
+                  - NixOS/nix
+                  - siderolabs/talos
+                  - torvalds/linux

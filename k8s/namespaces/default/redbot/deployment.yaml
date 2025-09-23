@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redbot
+  namespace: default
+  labels:
+    app.kubernetes.io/name: redbot
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redbot
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redbot
+        app.kubernetes.io/managed-by: flux
+    spec:
+      runtimeClassName: youki
+      containers:
+        - name: redbot
+        # renovate: datasource=docker depName=docker.io/phasecorex/red-discordbot
+          image: docker.io/phasecorex/red-discordbot:core@sha256:85f1d664d1b26e934e3d9b355a2861076a7cbc3f0729fee625bb7ddc76f1553a
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: redbot-secrets
+                  key: TOKEN
+            - name: PREFIX
+              value: "!"
+          volumeMounts:
+            - name: config
+              mountPath: /data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: redbot-config
