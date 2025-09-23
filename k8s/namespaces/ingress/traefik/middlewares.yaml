@@ -15,7 +15,7 @@ metadata:
     namespace: ingress
 spec:
     forwardAuth:
-      address: http://ak-outpost-authentik-embedded-outpost.authentik.svc.cluster.local:9000/outpost.goauthentik.io/auth/traefik
+      address: http://ak-outpost-authentik-embedded-outpost.security.svc.cluster.local:9000/outpost.goauthentik.io/auth/traefik
       trustForwardHeader: true
       authResponseHeaders:
           - X-authentik-username
