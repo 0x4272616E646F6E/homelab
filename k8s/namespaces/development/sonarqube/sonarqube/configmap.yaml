@@ -449,7 +449,7 @@ data:
       # - name: SONAR_WEB_CONTEXT
       #   value: /sonarqube
       - name: SONAR_SEARCH_JAVAOPTS
-        value: "-Des.enforce.bootstrap.checks=false"
+        value: "-Des.enforce.bootstrap.checks=true"
 
     # Set annotations for pods
     annotations: {}
@@ -457,7 +457,7 @@ data:
     ## Environment variables to attach to the pods
     env:
       - name: SONAR_SEARCH_JAVAOPTS
-        value: "-Des.enforce.bootstrap.checks=false"
+        value: "-Des.enforce.bootstrap.checks=true"
 
     ## We usually don't make specific resource recommendations, as they are heavily dependant on
     ## the usage of SonarQube and the surrounding infrastructure.
@@ -498,7 +498,7 @@ data:
     #   sonar.security.realm: LDAP
     #   ldap.url: ldaps://organization.com
     sonarProperties:
-      sonar.search.javaOpts: "-Des.enforce.bootstrap.checks=false"
+      sonar.search.javaOpts: "-Des.enforce.bootstrap.checks=true"
 
     # Additional sonar properties to load from a secret with a key "secret.properties" (must be a string)
     # sonarSecretProperties:
