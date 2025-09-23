@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: media
+  labels:
+    app.kubernetes.io/name: qbittorrent
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/egress: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: qbittorrent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: qbittorrent
+        app.kubernetes.io/managed-by: flux
+        app.kubernetes.io/egress: wireguard
+    spec:
+      runtimeClassName: youki
+      initContainers:
+        - name: init-qb
+          image: docker.io/busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh","-lc"]
+          args:
+            - |
+              set -e
+              mkdir -p /init/downloads/complete /init/downloads/incomplete
+              mkdir -p /init/media/movies /init/media/tvshows
+              chown -R 1000:1000 /init
+              chmod -R 777 /init
+          securityContext:
+            runAsUser: 0
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: media
+              mountPath: /init
+      containers:
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "UTC"
+            - name: WEBUI_PORT
+              value: "8080"
+          ports:
+            - containerPort: 8080
+            - containerPort: 6881 
+            - containerPort: 6881
+              protocol: UDP
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "2000m"
+              memory: "4Gi"
+        - name: qb-port-sync
+          image: docker.io/debian:13
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          env:
+            - name: GATEWAY
+              value: "10.2.0.1"
+            - name: LEASE
+              value: "60"
+            - name: QB_HOST
+              value: "127.0.0.1"
+            - name: QB_PORT
+              value: "8080"
+            - name: QB_USER
+              value: ""
+            - name: QB_PASS
+              value: ""
+            - name: STATE_FILE
+              value: "/run/protonvpn-forwarded-port"
+          volumeMounts:
+            - name: script
+              mountPath: /opt/qb
+            - name: dev-net-tun
+              mountPath: /dev/net/tun
+          command: ["/bin/bash","-lc"]
+          args:
+            - |
+              set -euo pipefail
+              apt-get update
+              DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+                natpmpc iproute2 python3 python3-pip ca-certificates
+              pip3 install --no-cache-dir requests
+              chmod +x /opt/qb/qb_port_sync.py
+              exec /opt/qb/qb_port_sync.py
+              set -euo pipefail
+              apt-get update
+              DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+                natpmpc iproute2 python3 python3-pip ca-certificates
+              pip3 install --no-cache-dir requests
+              chmod +x /opt/qb/qb_port_sync.py
+              exec /opt/qb/qb_port_sync.py
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbitorrent-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: media
+        - name: script
+          configMap:
+            name: qbittorrent-port-forward-sync
+            defaultMode: 0755
+        - name: dev-net-tun
+          hostPath:
+            path: /dev/net/tun
+            type: CharDevice

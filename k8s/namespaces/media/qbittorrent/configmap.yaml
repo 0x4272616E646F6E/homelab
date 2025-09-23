@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qbittorrent-port-forward-sync
+  namespace: media
+data:
+  qb_port_sync.py: |
+    #!/usr/bin/env python3
+    import os, time, re, json, subprocess, requests, sys
+
+    GATEWAY   = os.getenv("GATEWAY", "10.2.0.1")  # Proton NAT-PMP gateway inside WG tunnel
+    LEASE     = int(os.getenv("LEASE", "60"))     # seconds; Proton mappings expire fast
+    REFRESH   = max(10, LEASE - 15)
+    QB_HOST   = os.getenv("QB_HOST", "127.0.0.1")
+    QB_PORT   = int(os.getenv("QB_PORT", "8080")) # qB WebUI/API port
+    QB_USER   = os.getenv("QB_USER", "")
+    QB_PASS   = os.getenv("QB_PASS", "")
+    STATE     = os.getenv("STATE_FILE", "/run/protonvpn-forwarded-port")
+    BASE      = f"http://{QB_HOST}:{QB_PORT}/api/v2"
+
+    def ensure_route():
+        try:
+            out = subprocess.run(["ip","route","get",GATEWAY], capture_output=True, text=True)
+            if out.returncode != 0 or " dev wg0 " not in out.stdout:
+                subprocess.run(["ip","route","add",GATEWAY,"dev","wg0"], check=False)
+        except Exception as e:
+            print(f"[qb-sync] warn: route check/add failed: {e}", file=sys.stderr)
+
+    def get_forwarded_port():
+        # Request random public UDP port; parse natpmpc output
+        out = subprocess.run(
+            ["natpmpc","-a","0","0","udp",str(LEASE),"-g",GATEWAY],
+            capture_output=True, text=True
+        ).stdout
+        m = re.search(r"external port (\d+)", out)
+        return int(m.group(1)) if m else None
+
+    def qb_login(sess: requests.Session):
+        r = sess.post(f"{BASE}/auth/login",
+                      data={"username": QB_USER, "password": QB_PASS}, timeout=5)
+        r.raise_for_status()
+        if r.text.strip() != "Ok.":
+            raise RuntimeError("qB auth failed")
+
+    def qb_set_listen_port(sess: requests.Session, port: int):
+        prefs = {"listen_port": port}
+        r = sess.post(f"{BASE}/app/setPreferences",
+                      data={"json": json.dumps(prefs)}, timeout=5)
+        r.raise_for_status()
+
+    def write_state(p: int):
+        try:
+            os.makedirs(os.path.dirname(STATE), exist_ok=True)
+            with open(STATE, "w") as f: f.write(str(p))
+        except Exception as e:
+            print(f"[qb-sync] warn: cannot write state file: {e}", file=sys.stderr)
+
+    def main():
+        ensure_route()
+        last = None
+        s = requests.Session()
+        # Skip login if no credentials provided; if creds present, attempt login but continue without auth on failure
+        if QB_USER and QB_PASS:
+            try:
+                qb_login(s)
+            except Exception as e:
+                print(f"[qb-sync] ERROR qB login failed: {e}", file=sys.stderr, flush=True)
+                print("[qb-sync] continuing without auth", file=sys.stderr, flush=True)
+        else:
+            print("[qb-sync] no QB credentials provided; skipping login", file=sys.stderr, flush=True)
+
+        print("[qb-sync] started", flush=True)
+        while True:
+            p = get_forwarded_port()
+            if p and p > 0:
+                if p != last:
+                    print(f"[qb-sync] new forwarded port: {p}", flush=True)
+                    try:
+                        qb_set_listen_port(s, p)
+                        write_state(p)
+                        last = p
+                        print("[qb-sync] qBittorrent updated OK", flush=True)
+                    except Exception as e:
+                        print(f"[qb-sync] ERROR updating qB: {e}", file=sys.stderr, flush=True)
+                else:
+                    print(f"[qb-sync] port unchanged: {p}", flush=True)
+            else:
+                print("[qb-sync] no NAT-PMP reply; will retry", flush=True)
+            time.sleep(REFRESH)
+
+    if __name__ == "__main__":
+        main()

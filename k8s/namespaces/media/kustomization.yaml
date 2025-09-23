@@ -7,6 +7,7 @@ resources:
   - pvc.yaml
   - flaresolverr/
   - rtorrent/
+  - qbittorrent/
   - nzbget/
   - prowlarr/
   - bazarr/
