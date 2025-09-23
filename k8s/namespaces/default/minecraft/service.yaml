@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: minecraft
-  namespace: games
+  namespace: default
   labels:
     app.kubernetes.io/name: minecraft
 spec:

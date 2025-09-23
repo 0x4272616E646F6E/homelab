@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: minecraft-config
-  namespace: games
+  namespace: default
   labels:
     app.kubernetes.io/name: minecraft
 spec:

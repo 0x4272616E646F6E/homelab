@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: minecraft-https
-  namespace: games
+  namespace: default
 spec:
   entryPoints:
     - websecure
@@ -24,7 +24,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: minecraft-http
-  namespace: games
+  namespace: default
 spec:
   entryPoints:
     - web
