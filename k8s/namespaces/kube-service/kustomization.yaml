@@ -4,7 +4,7 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - openvpn/
+  - wireguard/
   - reflector/
   - reloader/
   - knative-operator/

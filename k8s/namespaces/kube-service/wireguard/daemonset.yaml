@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wireguard
+  namespace: kube-service
+  labels:
+    app.kubernetes.io/name: wireguard
+    app.kubernetes.io/managed-by: flux
+spec:
+  force: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wireguard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wireguard
+        app.kubernetes.io/managed-by: flux
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+        - name: wireguard
+        # renovate: datasource=docker depName=docker.io/debian
+          image: docker.io/debian:13
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command:
+            - /bin/sh
+            - -c
+            - |
+              apt-get update && apt-get install -y iproute2 && \
+              apt-get clean && rm -rf /var/lib/apt/lists/* || true
+              ip rule add from 10.2.0.2/32 table 100 priority 100 2>/dev/null || true
+              ip route add 10.2.0.1 dev wg0 table 100             2>/dev/null || true
+              ip route add default dev wg0 table 100              2>/dev/null || true
+              sleep infinity
+      tolerations:
+        - operator: Exists

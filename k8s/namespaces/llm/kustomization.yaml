@@ -6,4 +6,5 @@ resources:
   - namespace.yaml
   - vllm/
   - comfyui/
-  - librechat/
+  # - kserve/
+  # - librechat/

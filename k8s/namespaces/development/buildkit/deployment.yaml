@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: buildkit
-  namespace: builder
+  namespace: development
   labels:
     app.kubernetes.io/name: buildkit
     app.kubernetes.io/managed-by: flux
