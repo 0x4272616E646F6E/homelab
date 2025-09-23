@@ -5,365 +5,351 @@ metadata:
   namespace: development
 data:
   values.yaml: |-
-    ### Image
-    image:
-      image: kestra/kestra@sha256:05acfa3d43ff21bba2f7025b927bb6a9a27c273e07117449e89c3c1671581fe6
-      pullPolicy: Always
-      # The tag of the image is taken from AppVersion by default.
-      # If you want to use a specific tag, add image.tag below.
-      # tag: "your-specific-tag"
+    # This is to override the chart name.
+    nameOverride: ""
+    fullnameOverride: ""
 
+    ### -------------------------------
+    ### Image settings
+    ### -------------------------------
+
+    image:
+      # -- Image repository to use for deploying kestra.
+      # @section -- image settings
+      repository: kestra/kestra
+      # -- Policy for pulling container images (Always, IfNotPresent, Never).
+      # @section -- image settings
+      pullPolicy: IfNotPresent
+      # -- Overrides the image tag (defaults to chart appVersion).
+      # @section -- image settings
+      tag: ""
+    # -- References to secrets for pulling images from private registries.
+    # @section -- image settings
     imagePullSecrets: []
     # - name: regcred
 
-    ### Configuration for Kestra Deployment
-    ## The following 4 sections can be used to set up the Kestra configuration
-    ## Please note the secrets defined here are purposely for configuration your Kestra server
-    ## To use secrets in your flows, please see below under "Application Secrets"
+    ### -------------------------------
+    ### Common settings
+    ### -------------------------------
 
-    ### This creates a config map of the Kestra configuration
-    configuration: {}
-    # Example: Setting the plugin defaults for the Docker runner
-    #   kestra:
-    #     plugins:
-    #       configurations:
-    #         - type:  io.kestra.plugin.scripts.runner.docker.Docker
-    #           values:
-    #             volume-enabled: true
-
-
-    ### This will create a Kubernetes Secret for the values provided
-    ## This will be appended to kestra-secret with the key application-secrets.yml
-    secrets: {}
-    # Example: Store your postgres backend credentials in a secret
-    #   secrets:
-    #     kestra:
-    #       datasources:
-    #         postgres:
-    #           username: pguser
-    #           password: mypass123
-    #           url: jdbc:postgresql://pghost:5432/db
-
-    ### Load Kestra configuration from existing secret
-    ## Here this assumes the secret is already deployed and the following apply:
-    ## 1. The secret type is "Opaque"
-    ## 2. The secret has a single key
-    ## 3. The value of the secret is the Kestra configuration.
-    externalSecret: {}
-      #secretName: secret-name
-      #key: application-kestra.yml
-
-    ### configuration files
-    ## This option allows you to reference existing local files to configure Kestra, e.g.
-    configurationPath:
-    # configurationPath: /app/application.yml,/app/application-secrets.yml
-
-    ### Kestra executable
-    executable: /app/kestra
-
-
-    ### Deployments
-    deployments:
-      webserver:
-        enabled: false
-        kind: Deployment
-        replicaCount: 1
-        command: "server webserver"
-        labels: {}
-        annotations: {}
-        resources: {}
-        nodeSelector: {}
-        tolerations: []
-        affinity: {}
-        strategy: {}
-        podSecurityContext: {}
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
-        extraContainers: []
-        extraEnv: []
-        readinessProbe: {}
-        livenessProbe: {}
-        startupProbe: {}
-        autoscaler:
-          enabled: false
-          minReplicas: 1
-          maxReplicas: 3
-          extra: {}
-          metrics: []
-          #  - type: Resource
-          #    resource:
-          #      name: cpu
-          #      target:
-          #        type: Utilization
-          #        averageUtilization: 50
-          #  - type: Resource
-          #    resource:
-          #      name: memory
-          #      target:
-          #        type: AverageValue
-          #        averageValue: 100Mi
-
-      executor:
-        enabled: false
-        kind: Deployment
-        command: "server executor"
-
-      indexer:
-        enabled: false
-        kind: Deployment
-        command: "server indexer"
-
-      scheduler:
-        enabled: false
-        kind: Deployment
-        command: "server scheduler"
-
-      worker:
-        enabled: false
-        kind: Deployment
-        command: "server worker{{ if $.Values.deployments.worker.workerThreads }} --thread={{ .Values.deployments.worker.workerThreads }}{{ end }}"
-        terminationGracePeriodSeconds: 60
-        # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
-        #workerThreads: 128
-
-      standalone:
-        enabled: true
-        kind: Deployment
-        command: "server standalone{{ if $.Values.deployments.standalone.workerThreads }} --worker-thread={{ .Values.deployments.standalone.workerThreads }}{{ end }}"
-        terminationGracePeriodSeconds: 60
-        # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
-        #workerThreads: 128
-
-    # EE only - Define additional group of workers.
-    # Must be used in addition to default workers (in standalone or separate worker deployment).
-    workerGroup:
-      workergroupname: # name of the worker group
-        enabled: false
-        kind: Deployment
-        command: "server worker{{ if $.Values.workerGroup.workergroupname.workerThreads }} --thread={{ .Values.workerGroup.workergroupname.workerThreads }}{{ end }} --worker-group={{ .WorkerGroup }}"
-        terminationGracePeriodSeconds: 60
-        # By default, we start a number of threads of two times the number of available processors, use 'workerThreads' to configure a different value.
-        #workerThreads: 128
-
-    # EE only - the Kestra Kubernetes Operator
-    operator:
-      enabled: false
-      image: registry.kestra.io/docker/kestra-operator
-      apiKey: ""
-      basicAuth: ""
-
-    # for io.kestra.core.tasks.scripts.Bash task or io.kestra.plugin.scripts.*, attach a docker dind container in order to isolate in a container
-    # every command launch
-    dind:
-      enabled: true
-      image:
-        image: docker@sha256:831644212c5bdd0b3362b5855c87b980ea39a83c9e9adcef2ce03eced99a737a
-        tag: dind-rootless
-        pullPolicy: IfNotPresent
-      socketPath: /dind/
-      tmpPath: /tmp/
+    common:
+      # -- Number of pod replicas to run.
+      # @section -- common settings
+      replicas: 1
+      # -- Priority class for scheduling pods.
+      # @section -- common settings
+      priorityClassName: ""
+      # -- Deployment update strategy (e.g., RollingUpdate, Recreate).
+      # @section -- common settings
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1
+      # -- Number of old ReplicaSets to retain for rollback.
+      # @section -- common settings
+      revisionHistoryLimit: 10
+      # -- Annotations applied to all resources.
+      # @section -- common settings
+      annotations: {}
+      # -- Annotations applied specifically to pods.
+      # @section -- common settings
+      podAnnotations: {}
+      # -- Labels applied to all resources.
+      # @section -- common settings
+      labels: {}
+      # -- Labels applied specifically to pods.
+      # @section -- common settings
+      podLabels: {}
+      # -- Liveness probe configuration for container health checks.
+      # @section -- common settings
+      livenessProbe:
+        httpGet:
+          path: /health/liveness
+          port: management
+        initialDelaySeconds: 0
+        periodSeconds: 5
+        timeoutSeconds: 3
+        successThreshold: 1
+        failureThreshold: 3
+      # -- Readiness probe configuration to determine pod availability.
+      # @section -- common settings
+      readinessProbe:
+        httpGet:
+          path: /health/readiness
+          port: management
+        initialDelaySeconds: 0
+        periodSeconds: 5
+        timeoutSeconds: 3
+        successThreshold: 1
+        failureThreshold: 3
+      # -- Startup probe configuration to verify app starts correctly.
+      # @section -- common settings
+      startupProbe:
+        httpGet:
+          path: /health
+          port: management
+        initialDelaySeconds: 1
+        periodSeconds: 1
+        timeoutSeconds: 1
+        successThreshold: 1
+        failureThreshold: 120
+      # -- Resource requests and limits for containers.
+      # @section -- common settings
       resources: {}
-      args:
-        - --log-level=fatal
-        - --group=1000
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+      # -- Grace period for pod termination.
+      # @section -- common settings
+      terminationGracePeriodSeconds: 60
+      # -- Node selector constraints for scheduling pods.
+      # @section -- common settings
+      nodeSelector: {}
+      # -- Tolerations for scheduling pods on tainted nodes.
+      # @section -- common settings
+      tolerations: []
+      # -- Affinity rules for pod scheduling.
+      # @section -- common settings
+      affinity: {}
+      # -- Security context settings for containers.
+      # @section -- common settings
+      securityContext: {}
+      # -- Security context settings for pods.
+      # @section -- common settings
+      podSecurityContext: {}
+      # -- Additional init containers to run before main container.
+      # @section -- common settings
+      initContainers: []
+      # -- Extra volume mounts to add to containers.
+      # @section -- common settings
       extraVolumeMounts: []
+      # -- Extra volumes to add to pods.
+      # @section -- common settings
+      extraVolumes: []
+      # -- Extra environment variables for containers.
+      # @section -- common settings
+      extraEnv: []
+      # -- Import environment variables from ConfigMaps/Secrets.
+      # @section -- common settings
+      extraEnvFrom: []
+      # -- Additional sidecar containers.
+      # @section -- common settings
+      extraContainers: []
+
+    ### -------------------------------
+    ### Kestra settings
+    ### -------------------------------
+
+    configurations:
+      # -- Application configuration (Kestra settings, DB, storage, etc.).
+      # @section -- kestra configurations
+      application: {}
+      # -- Extra configmaps mounted as configuration files.
+      # @section -- kestra configurations
+      configmaps: []
+      # configmaps:
+      #   - name: kestra-others
+      #     key: others.yml
+      # -- Extra secrets mounted as configuration files.
+      # @section -- kestra configurations
+      secrets: []
+      # secrets:
+      #   - name: kestra-basic-auth
+      #     key: basic-auth.yml
+
+    ### -------------------------------
+    ### kestra service account
+    ### -------------------------------
+
+    serviceAccount:
+      # -- Specifies whether to create a ServiceAccount.
+      # @section -- kubernetes serviceAccount
+      create: true
+      # -- Automatically mount API credentials to pods.
+      # @section -- kubernetes serviceAccount
+      automount: true
+      # -- Annotations to add to the ServiceAccount.
+      # @section -- kubernetes serviceAccount
+      annotations: {}
+      # -- Name of the ServiceAccount to use.
+      # @section -- kubernetes serviceAccount
+      name: ""
+
+    ### -------------------------------
+    ### kestra deployments
+    ### -------------------------------
+
+    deployments:
+      standalone:
+        # -- Enable standalone Kestra deployment.
+        # @section -- kestra deployments
+        enabled: true
+        # -- Number of worker threads for standalone deployment.
+        # @section -- kestra deployments
+        workerThreads: 32
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+      webserver:
+        # -- Enable webserver in distributed mode.
+        # @section -- kestra deployments
+        enabled: false
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+      executor:
+        # -- Enable executor in distributed mode.
+        # @section -- kestra deployments
+        enabled: false
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+      indexer:
+        # -- Enable indexer in distributed mode.
+        # @section -- kestra deployments
+        enabled: false
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+      scheduler:
+        # -- Enable scheduler in distributed mode.
+        # @section -- kestra deployments
+        enabled: false
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+      worker:
+        # -- Enable worker in distributed mode.
+        # @section -- kestra deployments
+        enabled: false
+        # -- Number of worker threads for worker deployment.
+        # @section -- kestra deployments
+        workerThreads: 32
+        # -- Extra arguments to pass to the container.
+        # @section -- kestra deployments
+        extraArgs: []
+
+    # -- EE only - Define additional worker groups with custom settings.
+    # @section -- kestra workerGroups
+    workerGroups: {}
+    # workerGroups:
+    #   test:
+    #     workerThreads: 128
+    #     extraArgs: []
+
+    ### -------------------------------
+    ### kestra service
+    ### -------------------------------
+
+    service:
+      # -- Kubernetes Service type (ClusterIP, NodePort, LoadBalancer).
+      # @section -- kestra service
+      type: ClusterIP
+      # -- Labels to apply to the Service.
+      # @section -- kestra service
+      labels: {}
+      # -- Annotations to apply to the Service.
+      # @section -- kestra service
+      annotations: {}
+      ports:
+        # -- HTTP service port mapping.
+        # @section -- kestra service
+        http:
+          port: 8080
+          containerPort: 8080
+          targetPort: http
+          protocol: TCP
+        # -- Management (metrics/health) service port mapping.
+        # @section -- kestra service
+        management:
+          port: 8081
+          containerPort: 8081
+          targetPort: management
+          protocol: TCP
+
+    ### -------------------------------
+    ### kestra dind
+    ### -------------------------------
+
+    dind:
+      # -- Enable Docker-in-Docker (dind) sidecar.
+      # @section -- kestra dind
+      enabled: true
+      # -- Dind mode (rootless or insecure).
+      # @section -- kestra dind
+      mode: 'rootless'
+      base:
+        # -- Rootless dind configuration.
+        # @section -- kestra dind rootless
+        rootless:
+          image:
+            repository: docker
+            pullPolicy: IfNotPresent
+            tag: dind-rootless
+          securityContext:
+            privileged: true
+            runAsUser: 1000
+            runAsGroup: 1000
+          args:
+            - --log-level=fatal
+            - --group=1000
+        # -- Insecure dind configuration (privileged).
+        # @section -- kestra dind insecure
+        insecure:
+          image:
+            repository: docker
+            pullPolicy: IfNotPresent
+            tag: dind-rootless
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+                - NET_ADMIN
+                - DAC_OVERRIDE
+                - SETUID
+                - SETGID
+          args:
+            - '--log-level=fatal'
+      # -- Path where dind socket is mounted.
+      # @section -- kestra dind
+      socketPath: /dind/
+      # -- Path for temporary storage in dind.
+      # @section -- kestra dind
+      tmpPath: /tmp/
+      # -- Resource requests and limits for dind sidecar.
+      # @section -- kestra dind
+      resources: {}
+      # -- Extra environment variables for dind container.
+      # @section -- kestra dind
       extraEnv: []
 
-    ### Kafka
-    kafka:
-      enabled: false
-      listeners:
-        client:
-          protocol: PLAINTEXT
-        controller:
-          protocol: PLAINTEXT
-        interbroker:
-          protocol: PLAINTEXT
-        external:
-          protocol: PLAINTEXT
-
-    ### ElasticSearch
-    elasticsearch:
-      enabled: false
-      clusterName: "es-kestra"
-      createCert: false
-      protocol: http
-      esConfig:
-        elasticsearch.yml: |
-          xpack.security.enabled: false
-
-    ### Minio
-    minio:
-      enabled: true
-      auth:
-        rootUser: please-change-me
-        rootPassword: its-not-a-secret
-      defaultBuckets: kestra
-      resources:
-        requests:
-          memory: 512Mi
-
-    ### Postgresql
-    postgresql:
-      enabled: true
-      auth:
-        database: kestra
-        username: kestra
-        password: kestra
-
-      primary:
-        persistence:
-          enabled: true
-          size: 8Gi
-
-    ### Service
-    service:
-      type: ClusterIP
-      port: 8080
-      loadBalancerIP: ""
-      annotations: {}
-      management:
-        enabled: false
-        port: 8081
-
-
+    ### -------------------------------
     ### Ingress
+    ### -------------------------------
+
+    # This block is for setting up the ingress
     ingress:
+      # -- Enable Ingress resource.
+      # @section -- kubernetes ingress
       enabled: false
+      # -- IngressClass name to use.
+      # @section -- kubernetes ingress
       className: ""
+      # -- Annotations to add to the Ingress.
+      # @section -- kubernetes ingress
       annotations: {}
-        # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-      hosts:
-        - host: chart-example.local
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+      # -- Hosts and paths for Ingress routing.
+      # @section -- kubernetes ingress
+      hosts: []
+      # -- TLS configuration for Ingress.
+      # @section -- kubernetes ingress
       tls: []
-      #  - secretName: chart-example-tls
-      #    hosts:
-      #      - chart-example.local
 
-
-    ### Global Deployement
-    nameOverride: ""
-    serviceAccountName: ""
-
-
-    ### Annotations for deployments
-    annotations: {}
-    podAnnotations: {}
-    initContainers: []
-
-    resources: {}
-      # We usually recommend not to specify default resources and to leave this as a conscious
-      # choice for the user. This also increases chances charts run on environments with little
-      # resources, such as Minikube. If you do want to specify resources, uncomment the following
-      # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-
-    terminationGracePeriodSeconds: 30
-
-    nodeSelector: {}
-
-    tolerations: []
-
-    affinity: {}
-
-    extraVolumeMounts: []
-
-    extraVolumes: []
-
-    extraEnv: []
-
-    extraContainers: []
-
-    # You can setup extra ports
-    extraPorts: []
-    # extraPorts:
-    # - name: jmxremote
-    #   containerPort: 8686
-    #   protocol: TCP
-
-    # https://kestra.io/docs/configuration#environment-variables-prefix
-    extraConfigMapEnvFrom:
-      # - name: my-existing-configmap-no-prefix
-      # - name: my-existing-configmap-with-prefix
-      #   prefix: KESTRA_
-
-    extraSecretEnvFrom:
-      # - name: my-existing-no-prefix
-      # - name: my-existing-with-prefix
-      #   prefix: SECRET_
-
-    ### Application Secrets
-    ## To pass in secrets of your applications, services etc to Kestra please see the following:
-    ## https://kestra.io/docs/how-to-guides/kubernetes-secrets
-
-    podSecurityContext: {}
-    # fsGroup: 2000
-
-    securityContext:
-      # capabilities:
-      #   drop:
-      #   - ALL
-      # readOnlyRootFilesystem: true
-      # runAsNonRoot: true
-      runAsUser: 1000
-      runAsGroup: 1000
-
-    ### Startup / Readiness / Liveness probe config.
-    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
-    ## The following config is applied to all deployments by default. You can override this in each deployment.
-    readinessProbe:
-      enabled: true
-      path: /health/readiness
-      port: management
-      initialDelaySeconds: 0
-      periodSeconds: 5
-      timeoutSeconds: 3
-      successThreshold: 1
-      failureThreshold: 3
-      httpGetEnabled: true
-      httpGetExtra: {}
-
-    livenessProbe:
-      enabled: true
-      path: /health/liveness
-      port: management
-      initialDelaySeconds: 0
-      periodSeconds: 5
-      timeoutSeconds: 3
-      successThreshold: 1
-      failureThreshold: 3
-      httpGetEnabled: true
-      httpGetExtra: {}
-
-    startupProbe:
-      enabled: true
-      path: /health
-      port: management
-      initialDelaySeconds: 1
-      periodSeconds: 1
-      timeoutSeconds: 1
-      successThreshold: 1
-      failureThreshold: 120
-      httpGetEnabled: true
-      httpGetExtra: {}
-
+    ### -------------------------------
     ### Extra Kubernetes Manifests
+    ### -------------------------------
+
+    # -- Extra Kubernetes manifests to deploy with the chart.
     extraManifests: []
-      # - apiVersion: v1
-      #   kind: Secret
-      #   metadata:
-      #     name: demo
-      #   data:
-      #     key: pass123
