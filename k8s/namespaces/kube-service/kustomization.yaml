@@ -8,4 +8,4 @@ resources:
   - reflector/
   - reloader/
   - knative-operator/
-  - vertical-pod-autoscaler/
+  # - vertical-pod-autoscaler/
