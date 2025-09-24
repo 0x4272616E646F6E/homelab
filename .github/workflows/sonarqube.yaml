@@ -38,6 +38,6 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_SCANNER_OPTS: >
             -Dsonar.java.binaries=cdk/cdk8s/target/classes
-            -Dsonar.sources=cdk/cdk8s,k8s
-            -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json
+            -Dsonar.sources=cdk/cdk8s,k8s,terraform
+            -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json,**/*.tf
             -Dsonar.projectKey=homelab
