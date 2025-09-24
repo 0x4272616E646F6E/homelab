@@ -11,3 +11,4 @@ resources:
   - harbor/
   - sonarqube/
   - actions-runner-controller/
+  - actions-runner/
