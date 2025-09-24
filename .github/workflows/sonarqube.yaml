@@ -5,23 +5,31 @@ on:
     branches:
       - main
 
-
 jobs:
   build:
     name: Build and analyze
     runs-on: actions-runner
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build Java modules (maven)
+        run: mvn -B -f cdk8s/pom.xml -DskipTests package
+
       - uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      # If you wish to fail your job when the Quality Gate is red, uncomment the
-      # following lines. This would typically be used to fail a deployment.
-      # - uses: SonarSource/sonarqube-quality-gate-action@v1
-      #   timeout-minutes: 5
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_SCANNER_OPTS: >
+            -Dsonar.java.binaries=cdk8s/target/classes
+            -Dsonar.sources=cdk8s,k8s
+            -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json
+            -Dsonar.projectKey=${{ github.repository }}
