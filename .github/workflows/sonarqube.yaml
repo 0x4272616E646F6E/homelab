@@ -40,4 +40,4 @@ jobs:
             -Dsonar.java.binaries=cdk8s/target/classes
             -Dsonar.sources=cdk/cdk8s,k8s
             -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json
-            -Dsonar.projectKey=${{ github.repository }}
+            -Dsonar.projectKey=homelab
