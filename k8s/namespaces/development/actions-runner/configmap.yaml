@@ -24,21 +24,9 @@ data:
     ## (Variation B) When using a GitHub App, the syntax is as follows:
     # githubConfigSecret:
     #   # NOTE: IDs MUST be strings, use quotes
-      github_app_id:
-      valueFrom:
-        secretKeyRef:
-          key: github_app_id
-          name: actions-runner-secrets
-      github_app_installation_id:
-      valueFrom:
-        secretKeyRef:
-          key: github_app_installation_id
-          name: actions-runner-secrets
-      github_app_private_key:
-      valueFrom:
-        secretKeyRef:
-          key: private-key.pem
-          name: actions-runner-secrets
+    #   github_app_id: ""
+    #   github_app_installation_id: ""
+    #   github_app_private_key: |
     #      private key line 1
     #      private key line 2
     #      .
@@ -48,7 +36,7 @@ data:
     #
     ## (Variation C) When using a pre-defined Kubernetes secret in the same namespace that the gha-runner-scale-set is going to deploy,
     ## the syntax is as follows:
-    # githubConfigSecret:
+    githubConfigSecret: actions-runner-secrets
     ## Notes on using pre-defined Kubernetes secrets:
     ##   You need to make sure your predefined secret has all the required secret data set properly.
     ##   For a pre-defined secret using GitHub PAT, the secret needs to be created like this:
@@ -80,7 +68,7 @@ data:
     # runnerGroup: "default"
 
     ## name of the runner scale set to create.  Defaults to the helm release name
-    # runnerScaleSetName: ""
+    # runnerScaleSetName: "k8s-actions-runner"
 
     ## A self-signed CA certificate for communication with the GitHub server can be
     ## provided using a config map key selector. If `runnerMountPath` is set, for
