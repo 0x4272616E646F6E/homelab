@@ -10,4 +10,5 @@ resources:
   - kestra/
   - harbor/
   - sonarqube/
-  # - github-actions-runner/
+  # - actions-runner-controller/
+  # - actions-runner/

@@ -1,0 +1,22 @@
+ # renovate: registryUrl=https://actions-runner-controller.github.io/actions-runner-controller
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: actions-runner-controller
+  namespace: development
+spec:
+  chart:
+    spec:
+      chart: gha-runner-scale-set-controller
+      version: 0.11.0
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller
+        namespace: flux-system
+  interval: 15m
+  timeout: 5m
+  releaseName: actions-runner-controller
+  valuesFrom:
+  - kind: ConfigMap
+    name: actions-runner-controller-config-map
+    valuesKey: values.yaml
