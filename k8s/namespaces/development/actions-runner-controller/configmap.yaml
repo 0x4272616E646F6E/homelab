@@ -111,7 +111,7 @@ data:
 
       ## Restricts the controller to only watch resources in the desired namespace.
       ## Defaults to watch all namespaces when unset.
-      watchSingleNamespace: "actions-runner"
+      # watchSingleNamespace: ""
 
       ## The maximum number of concurrent reconciles which can be run by the EphemeralRunner controller.
       # Increase this value to improve the throughput of the controller.
