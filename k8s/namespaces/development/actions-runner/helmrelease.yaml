@@ -20,6 +20,3 @@ spec:
   - kind: ConfigMap
     name: actions-runner-config-map
     valuesKey: values.yaml
-  - kind: Secret
-    name: actions-runner-secrets
-    valuesKey: values.yaml

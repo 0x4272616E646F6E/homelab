@@ -48,7 +48,7 @@ data:
     #
     ## (Variation C) When using a pre-defined Kubernetes secret in the same namespace that the gha-runner-scale-set is going to deploy,
     ## the syntax is as follows:
-    githubConfigSecret: actions-runner-secrets
+    # githubConfigSecret:
     ## Notes on using pre-defined Kubernetes secrets:
     ##   You need to make sure your predefined secret has all the required secret data set properly.
     ##   For a pre-defined secret using GitHub PAT, the secret needs to be created like this:
