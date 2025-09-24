@@ -16,7 +16,7 @@ data:
     ##   C) a pre-defined Kubernetes secret.
     ## The syntax for each of these variations is documented below.
     ## (Variation A) When using a PAT token, the syntax is as follows:
-    githubConfigSecret:
+    # githubConfigSecret:
       # Example:
       # github_token: "ghp_sampleSampleSampleSampleSampleSample"
       # github_token: ""
