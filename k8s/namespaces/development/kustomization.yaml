@@ -7,8 +7,8 @@ resources:
   - renovate/
   - buildkit/
   - code-server/
-  - kestra/
+  # - kestra/
   - harbor/
   - sonarqube/
-  # - actions-runner-controller/
-  # - actions-runner/
+  - actions-runner-controller/
+  - actions-runner/
