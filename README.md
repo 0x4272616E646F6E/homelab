@@ -131,6 +131,7 @@ Below is a description of the hardware this cluster runs on:
 
 The following resources are managed through Flux in this repository:
 
+- [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
 - [**Authentik**](https://github.com/goauthentik/authentik)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
 - [**BuildKit**](https://github.com/moby/buildkit)
@@ -143,7 +144,6 @@ The following resources are managed through Flux in this repository:
 - [**Falco**](https://github.com/falcosecurity/falco)
 - [**Filebrowser**](https://github.com/gtsteffaniak/filebrowser)
 - [**Flaresolverr**](https://github.com/FlareSolverr/FlareSolverr)
-- [**GitHub Actions Runner**](https://github.com/actions/runner)
 - [**Glance**](https://github.com/glanceapp/glance)
 - [**Grafana**](https://github.com/grafana/grafana)
 - [**HAProxy**](https://github.com/jcmoraisjr/haproxy-ingress)
