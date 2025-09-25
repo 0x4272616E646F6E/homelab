@@ -4,8 +4,9 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
+  - cert-manager/
   - wireguard/
   - reflector/
   - reloader/
   - knative-operator/
-  - autoscaler/
+  # - autoscaler/

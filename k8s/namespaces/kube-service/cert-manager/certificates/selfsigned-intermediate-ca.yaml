@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-intermediate-ca
+  namespace: kube-service
+spec:
+  isCA: true
+  secretName: intermediate-ca-keypair
+  commonName: kube-service-intermediate-ca
+  duration: 87600h
+  renewBefore: 7200h
+  issuerRef:
+    name: selfsigned-root
+    kind: ClusterIssuer

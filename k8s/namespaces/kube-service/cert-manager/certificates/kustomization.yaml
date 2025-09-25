@@ -3,8 +3,6 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - namespace.yaml
-  - traefik/
-  - cloudflared/
-  - nginx/
-  - haproxy/
+  - selfsigned-root-ca.yaml
+  - selfsigned-intermediate-ca.yaml
+  - letsencrypt-wildcard-oglesby-io.yaml
