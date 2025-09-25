@@ -3,9 +3,5 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - namespace.yaml
-  - wireguard/
-  - reflector/
-  - reloader/
-  - knative-operator/
-  # - autoscaler/
+  - configmap.yaml
+  - helmrelease.yaml
