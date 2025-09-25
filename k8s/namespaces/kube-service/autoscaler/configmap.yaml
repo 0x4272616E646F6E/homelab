@@ -5,497 +5,355 @@ metadata:
   namespace: kube-service
 data:
   values.yaml: |-
-    ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
-    # affinity -- Affinity for pod assignment
-    affinity: {}
+    # Default values for vertical-pod-autoscaler.
+    # This is a YAML-formatted file.
+    # Declare variables to be passed into your templates.
 
-    # additionalLabels -- Labels to add to each object of the chart.
-    additionalLabels: {}
-
-    autoDiscovery:
-      # cloudProviders `aws`, `gce`, `azure`, `magnum`, `clusterapi` and `oci` are supported by auto-discovery at this time
-      # AWS: Set tags as described in https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
-
-      # autoDiscovery.clusterName -- Enable autodiscovery for `cloudProvider=aws`, for groups matching `autoDiscovery.tags`.
-      # autoDiscovery.clusterName -- Enable autodiscovery for `cloudProvider=azure`, using tags defined in https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/azure/README.md#auto-discovery-setup.
-      # Enable autodiscovery for `cloudProvider=clusterapi`, for groups matching `autoDiscovery.labels`.
-      # Enable autodiscovery for `cloudProvider=gce`, but no MIG tagging required.
-      # Enable autodiscovery for `cloudProvider=magnum`, for groups matching `autoDiscovery.roles`.
-      clusterName:  # cluster.local
-
-      # autoDiscovery.namespace -- Enable autodiscovery via cluster namespace for for `cloudProvider=clusterapi`
-      namespace:  # default
-
-      # autoDiscovery.tags -- ASG tags to match, run through `tpl`.
-      tags:
-        - k8s.io/cluster-autoscaler/enabled
-        - k8s.io/cluster-autoscaler/{{ .Values.autoDiscovery.clusterName }}
-      # - kubernetes.io/cluster/{{ .Values.autoDiscovery.clusterName }}
-
-      # autoDiscovery.roles -- Magnum node group roles to match.
-      roles:
-        - worker
-
-      # autoDiscovery.labels -- Cluster-API labels to match  https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/clusterapi/README.md#configuring-node-group-auto-discovery
-      labels: []
-        # - color: green
-        # - shape: circle
-    # autoscalingGroups -- For AWS, Azure AKS, Exoscale or Magnum. At least one element is required if not using `autoDiscovery`. For example:
-    # <pre>
-    # - name: asg1<br />
-    #   maxSize: 2<br />
-    #   minSize: 1
-    # </pre>
-    # For Hetzner Cloud, the `instanceType` and `region` keys are also required.
-    # <pre>
-    # - name: mypool<br />
-    #   maxSize: 2<br />
-    #   minSize: 1<br />
-    #   instanceType: CPX21<br />
-    #   region: FSN1
-    # </pre>
-    autoscalingGroups: []
-    # - name: asg1
-    #   maxSize: 2
-    #   minSize: 1
-    # - name: asg2
-    #   maxSize: 2
-    #   minSize: 1
-
-    # autoscalingGroupsnamePrefix -- For GCE. At least one element is required if not using `autoDiscovery`. For example:
-    # <pre>
-    # - name: ig01<br />
-    #   maxSize: 10<br />
-    #   minSize: 0
-    # </pre>
-    autoscalingGroupsnamePrefix: []
-    # - name: ig01
-    #   maxSize: 10
-    #   minSize: 0
-    # - name: ig02
-    #   maxSize: 10
-    #   minSize: 0
-
-    # awsAccessKeyID -- AWS access key ID ([if AWS user keys used](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#using-aws-credentials))
-    awsAccessKeyID: ""
-
-    # awsRegion -- AWS region (required if `cloudProvider=aws`)
-    awsRegion: ""
-
-    # awsSecretAccessKey -- AWS access secret key ([if AWS user keys used](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#using-aws-credentials))
-    awsSecretAccessKey: ""
-
-    # azureClientID -- Service Principal ClientID with contributor permission to Cluster and Node ResourceGroup.
-    # Required if `cloudProvider=azure`
-    azureClientID: ""
-
-    # azureClientSecret -- Service Principal ClientSecret with contributor permission to Cluster and Node ResourceGroup.
-    # Required if `cloudProvider=azure`
-    azureClientSecret: ""
-
-    # azureResourceGroup -- Azure resource group that the cluster is located.
-    # Required if `cloudProvider=azure`
-    azureResourceGroup: ""
-
-    # azureSubscriptionID -- Azure subscription where the resources are located.
-    # Required if `cloudProvider=azure`
-    azureSubscriptionID: ""
-
-    # azureTenantID -- Azure tenant where the resources are located.
-    # Required if `cloudProvider=azure`
-    azureTenantID: ""
-
-    # azureUseManagedIdentityExtension -- Whether to use Azure's managed identity extension for credentials. If using MSI, ensure subscription ID, resource group, and azure AKS cluster name are set. You can only use one authentication method at a time, either azureUseWorkloadIdentityExtension or azureUseManagedIdentityExtension should be set.
-    azureUseManagedIdentityExtension: false
-
-    # azureUserAssignedIdentityID -- When vmss has multiple user assigned identity assigned, azureUserAssignedIdentityID specifies which identity to be used
-    azureUserAssignedIdentityID: ""
-
-    # azureUseWorkloadIdentityExtension -- Whether to use Azure's workload identity extension for credentials. See the project here: https://github.com/Azure/azure-workload-identity for more details. You can only use one authentication method at a time, either azureUseWorkloadIdentityExtension or azureUseManagedIdentityExtension should be set.
-    azureUseWorkloadIdentityExtension: false
-
-    # azureVMType -- Azure VM type.
-    azureVMType: "vmss"
-
-    # azureEnableForceDelete -- Whether to force delete VMs or VMSS instances when scaling down.
-    azureEnableForceDelete: false
-
-    # civoApiUrl -- URL for the Civo API.
-    # Required if `cloudProvider=civo`
-    civoApiUrl: "https://api.civo.com"
-
-    # civoApiKey -- API key for the Civo API.
-    # Required if `cloudProvider=civo`
-    civoApiKey: ""
-
-    # civoClusterID -- Cluster ID for the Civo cluster.
-    # Required if `cloudProvider=civo`
-    civoClusterID: ""
-
-    # civoRegion -- Region for the Civo cluster.
-    # Required if `cloudProvider=civo`
-    civoRegion: ""
-
-    # cloudConfigPath -- Configuration file for cloud provider.
-    cloudConfigPath: ""
-
-    # cloudProvider -- The cloud provider where the autoscaler runs.
-    # Currently only `gce`, `aws`, `azure`, `magnum`, `clusterapi`, `civo` and `coreweave` are supported.
-    # `aws` supported for AWS. `gce` for GCE. `azure` for Azure AKS.
-    # `magnum` for OpenStack Magnum, `clusterapi` for Cluster API.
-    # `civo` for Civo Cloud.
-    # `coreweave` for CoreWeave.
-    cloudProvider: aws
-
-    # clusterAPICloudConfigPath -- Path to kubeconfig for connecting to Cluster API Management Cluster, only used if `clusterAPIMode=kubeconfig-kubeconfig or incluster-kubeconfig`
-    clusterAPICloudConfigPath: /etc/kubernetes/mgmt-kubeconfig
-
-    # clusterAPIConfigMapsNamespace -- Namespace on the workload cluster to store Leader election and status configmaps
-    clusterAPIConfigMapsNamespace: ""
-
-    # clusterAPIKubeconfigSecret -- Secret containing kubeconfig for connecting to Cluster API managed workloadcluster
-    # Required if `cloudProvider=clusterapi` and `clusterAPIMode=kubeconfig-kubeconfig,kubeconfig-incluster or incluster-kubeconfig`
-    clusterAPIKubeconfigSecret: ""
-
-    # clusterAPIMode --  Cluster API mode, see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/clusterapi/README.md#connecting-cluster-autoscaler-to-cluster-api-management-and-workload-clusters
-    # Syntax: workloadClusterMode-ManagementClusterMode
-    # for `kubeconfig-kubeconfig`, `incluster-kubeconfig` and `single-kubeconfig` you always must mount the external kubeconfig using either `extraVolumeSecrets` or `extraMounts` and `extraVolumes`
-    # if you dont set `clusterAPIKubeconfigSecret`and thus use an in-cluster config or want to use a non capi generated kubeconfig you must do so for the workload kubeconfig as well
-    clusterAPIMode: incluster-incluster  # incluster-incluster, incluster-kubeconfig, kubeconfig-incluster, kubeconfig-kubeconfig, single-kubeconfig
-
-    # clusterAPIWorkloadKubeconfigPath -- Path to kubeconfig for connecting to Cluster API managed workloadcluster, only used if `clusterAPIMode=kubeconfig-kubeconfig or kubeconfig-incluster`
-    clusterAPIWorkloadKubeconfigPath: /etc/kubernetes/value
-
-    # containerSecurityContext -- [Security context for container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-    containerSecurityContext: {}
-      # allowPrivilegeEscalation: false
-      # capabilities:
-      #   drop:
-      #   - ALL
-      # readOnlyRootFilesystem: true
-
-    deployment:
-      # deployment.annotations -- Annotations to add to the Deployment object.
-      annotations: {}
-
-    # dnsConfig -- [Pod's DNS Config](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-dns-config)
-    dnsConfig: {}
-      # nameservers:
-      #   - 1.2.3.4
-      # searches:
-      #   - ns1.svc.cluster-domain.example
-      #   - my.dns.search.suffix
-      # options:
-      #   - name: ndots
-      #     value: "2"
-      #   - name: edns0
-
-    # dnsPolicy -- Defaults to `ClusterFirst`. Valid values are:
-    # `ClusterFirstWithHostNet`, `ClusterFirst`, `Default` or `None`.
-    # If autoscaler does not depend on cluster DNS, recommended to set this to `Default`.
-    dnsPolicy: ClusterFirst
-
-    # envFromConfigMap -- ConfigMap name to use as envFrom.
-    envFromConfigMap: ""
-
-    # envFromSecret -- Secret name to use as envFrom.
-    envFromSecret: ""
-
-    ## Priorities Expander
-    # expanderPriorities -- The expanderPriorities is used if `extraArgs.expander` contains `priority` and expanderPriorities is also set with the priorities.
-    # If `extraArgs.expander` contains `priority`, then expanderPriorities is used to define cluster-autoscaler-priority-expander priorities.
-    # See: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md
-    expanderPriorities: {}
-
-    # extraArgs -- Additional container arguments.
-    # Refer to https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca for the full list of cluster autoscaler
-    # parameters and their default values.
-    # Everything after the first _ will be ignored allowing the use of multi-string arguments.
-    extraArgs:
-      logtostderr: true
-      stderrthreshold: info
-      v: 4
-      # write-status-configmap: true
-      # status-config-map-name: cluster-autoscaler-status
-      # leader-elect: true
-      # leader-elect-resource-lock: endpoints
-      # skip-nodes-with-local-storage: true
-      # expander: random
-      # scale-down-enabled: true
-      # balance-similar-node-groups: true
-      # min-replica-count: 0
-      # scale-down-utilization-threshold: 0.5
-      # scale-down-non-empty-candidates-count: 30
-      # max-node-provision-time: 15m0s
-      # scan-interval: 10s
-      # scale-down-delay-after-add: 10m
-      # scale-down-delay-after-delete: 0s
-      # scale-down-delay-after-failure: 3m
-      # scale-down-unneeded-time: 10m
-      # node-deletion-delay-timeout: 2m
-      # node-deletion-batcher-interval: 0s
-      # skip-nodes-with-system-pods: true
-      # balancing-ignore-label_1: first-label-to-ignore
-      # balancing-ignore-label_2: second-label-to-ignore
-
-    # customArgs -- Additional custom container arguments.
-    # Refer to https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca for the full list of cluster autoscaler
-    # parameters and their default values.
-    # List of arguments as strings.
-    customArgs: []
-
-    # extraEnv -- Additional container environment variables.
-    extraEnv: {}
-
-    # extraEnvConfigMaps -- Additional container environment variables from ConfigMaps.
-    extraEnvConfigMaps: {}
-
-    # extraEnvSecrets -- Additional container environment variables from Secrets.
-    extraEnvSecrets: {}
-
-    # extraObjects -- Extra K8s manifests to deploy
-    extraObjects: []
-    #  - apiVersion: v1
-    #    kind: ConfigMap
-    #    metadata:
-    #      name: my-configmap
-    #    data:
-    #      key: "value"
-    #  - apiVersion: scheduling.k8s.io/v1
-    #    kind: PriorityClass
-    #    metadata:
-    #      name: high-priority
-    #    value: 1000000
-    #    globalDefault: false
-    #    description: "This priority class should be used for XYZ service pods only."
-
-    # extraVolumeMounts -- Additional volumes to mount.
-    extraVolumeMounts: []
-      # - name: ssl-certs
-      #   mountPath: /etc/ssl/certs/ca-certificates.crt
-      #   readOnly: true
-
-    # extraVolumes -- Additional volumes.
-    extraVolumes: []
-      # - name: ssl-certs
-      #   hostPath:
-      #     path: /etc/ssl/certs/ca-bundle.crt
-
-    # extraVolumeSecrets -- Additional volumes to mount from Secrets.
-    extraVolumeSecrets: {}
-      # autoscaler-vol:
-      #   mountPath: /data/autoscaler/
-      # custom-vol:
-      #   name: custom-secret
-      #   mountPath: /data/custom/
-      #   items:
-      #     - key: subkey
-      #       path: mypath
-
-    # initContainers -- Any additional init containers.
-    initContainers: []
-
-    # fullnameOverride -- String to fully override `cluster-autoscaler.fullname` template.
-    fullnameOverride: ""
-
-    # hostNetwork -- Whether to expose network interfaces of the host machine to pods.
-    hostNetwork: false
-
-    image:
-      # image.repository -- Image repository
-      repository: registry.k8s.io/autoscaling/cluster-autoscaler
-      # image.tag -- Image tag
-      tag: v1.33.0
-      # image.pullPolicy -- Image pull policy
-      pullPolicy: IfNotPresent
-      ## Optionally specify an array of imagePullSecrets.
-      ## Secrets must be manually created in the namespace.
-      ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-      ##
-      # image.pullSecrets -- Image pull secrets
-      pullSecrets: []
-      # - myRegistrKeySecretName
-
-    # kubeTargetVersionOverride -- Allow overriding the `.Capabilities.KubeVersion.GitVersion` check. Useful for `helm template` commands.
-    kubeTargetVersionOverride: ""
-
-    # kwokConfigMapName -- configmap for configuring kwok provider
-    kwokConfigMapName: "kwok-provider-config"
-
-    # magnumCABundlePath -- Path to the host's CA bundle, from `ca-file` in the cloud-config file.
-    magnumCABundlePath: "/etc/kubernetes/ca-bundle.crt"
-
-    # magnumClusterName -- Cluster name or ID in Magnum.
-    # Required if `cloudProvider=magnum` and not setting `autoDiscovery.clusterName`.
-    magnumClusterName: ""
-
-    # nameOverride -- String to partially override `cluster-autoscaler.fullname` template (will maintain the release name)
+    # imagePullSecrets -- A list of image pull secrets to be used for all pods
+    imagePullSecrets: []
+    # priorityClassName -- To set the priorityclass for all pods
+    priorityClassName: ""
+    # nameOverride -- A template override for the name
     nameOverride: ""
-
-    # nodeSelector -- Node labels for pod assignment. Ref: https://kubernetes.io/docs/user-guide/node-selection/.
-    nodeSelector: {}
-
-    # podAnnotations -- Annotations to add to each pod.
-    podAnnotations: {}
-
-    # podDisruptionBudget -- Pod disruption budget.
-    podDisruptionBudget:
-      maxUnavailable: 1
-      # minAvailable: 2
-
-    # podLabels -- Labels to add to each pod.
+    # fullnameOverride -- A template override for the fullname
+    fullnameOverride: ""
+    # podLabels -- Labels to add to all pods
     podLabels: {}
-
-    # priorityClassName -- priorityClassName
-    priorityClassName: "system-cluster-critical"
-
-    # priorityConfigMapAnnotations -- Annotations to add to `cluster-autoscaler-priority-expander` ConfigMap.
-    priorityConfigMapAnnotations: {}
-      # key1: "value1"
-      # key2: "value2"
-
-    ## Custom PrometheusRule to be defined
-    ## The value is evaluated as a template, so, for example, the value can depend on .Release or .Chart
-    ## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions
-    prometheusRule:
-      # prometheusRule.enabled -- If true, creates a Prometheus Operator PrometheusRule.
-      enabled: false
-      # prometheusRule.additionalLabels -- Additional labels to be set in metadata.
-      additionalLabels: {}
-      # prometheusRule.namespace -- Namespace which Prometheus is running in.
-      namespace: monitoring
-      # prometheusRule.interval -- How often rules in the group are evaluated (falls back to `global.evaluation_interval` if not set).
-      interval: null
-      # prometheusRule.rules -- Rules spec template (see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#rule).
-      rules: []
-
     rbac:
-      # rbac.create -- If `true`, create and use RBAC resources.
+      # rbac.create -- If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components.
+      # Temporary rbac resources will still be created, to ensure a functioning installation process
       create: true
-      # rbac.pspEnabled -- If `true`, creates and uses RBAC resources required in the cluster with [Pod Security Policies](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) enabled.
-      # Must be used with `rbac.create` set to `true`.
-      pspEnabled: false
-      # rbac.clusterScoped -- if set to false will only provision RBAC to alter resources in the current namespace. Most useful for Cluster-API
-      clusterScoped: true
-      serviceAccount:
-        # rbac.serviceAccount.annotations -- Additional Service Account annotations.
+      # rbac.extraRules -- Extra rbac rules for ClusterRoles
+      extraRules:
+        # rbac.extraRules.vpaActor -- Extra rbac rules for the vpa-actor ClusterRole
+        vpaActor: []
+        # -- Extra rbac rules for the vpa-status-actor ClusterRole
+        vpaStatusActor: []
+        # rbac.extraRules.vpaCheckpointActor -- Extra rbac rules for the vpa-checkpoint-actor ClusterRole
+        vpaCheckpointActor: []
+        # rbac.extraRules.vpaEvictioner -- Extra rbac rules for the vpa-evictioner ClusterRole
+        vpaEvictioner: []
+        # rbac.extraRules.vpaMetricsReader -- Extra rbac rules for the vpa-metrics-reader ClusterRole
+        vpaMetricsReader: []
+        # rbac.extraRules.vpaUpdaterInPlace -- Extra rbac rules for the vpa-updater-in-place ClusterRole
+        vpaUpdaterInPlace: []
+        # rbac.extraRules.vpaTargetReader -- Extra rbac rules for the vpa-target-reader ClusterRole
+        vpaTargetReader: []
+        # rbac.extraRules.vpaStatusReader -- Extra rbac rules for the vpa-status-reader ClusterRole
+        vpaStatusReader: []
+
+    serviceAccount:
+      # serviceAccount.create -- Specifies whether a service account should be created for each component
+      create: true
+      # serviceAccount.annotations -- Annotations to add to the service accounts for each component
+      annotations: {}
+      # serviceAccount.name -- The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component
+      name: ""
+      # serviceAccount.automountServiceAccountToken -- Automount API credentials for the Service Account
+      automountServiceAccountToken: true
+
+    recommender:
+      # recommender.enabled -- If true, the vpa recommender component will be installed.
+      enabled: true
+      # -- Specify a secret to get environment variables from
+      envFromSecret: ""
+      # recommender.annotations -- Annotations to add to the recommender deployment
+      annotations: {}
+      # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
+      extraArgs:
+        v: "4"
+        pod-recommendation-min-cpu-millicores: 15
+        pod-recommendation-min-memory-mb: 100
+      replicaCount: 1
+      # recommender.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+      revisionHistoryLimit: 10
+      # recommender.podDisruptionBudget -- This is the setting for the pod disruption budget
+      podDisruptionBudget: {}
+        # maxUnavailable: 1
+      image:
+        # recommender.image.repository -- The location of the recommender image
+        repository: registry.k8s.io/autoscaling/vpa-recommender
+        # recommender.image.tag -- Overrides the image tag whose default is the chart appVersion
+        tag: ""
+        # recommender.image.pullPolicy -- The pull policy for the recommender image. Recommend not changing this
+        pullPolicy: Always
+      # recommender.podAnnotations -- Annotations to add to the recommender pod
+      podAnnotations: {}
+      # recommender.podLabels -- Labels to add to the recommender pod
+      podLabels: {}
+      # recommender.podSecurityContext -- The security context for the recommender pod
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      # recommender.securityContext -- The security context for the containers inside the recommender pod
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+      # recommender.livenessProbe -- The liveness probe definition inside the recommender pod
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # recommender.readinessProbe -- The readiness probe definition inside the recommender pod
+      readinessProbe:
+        failureThreshold: 120
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # recommender.resources -- The resources block for the recommender pod
+      resources:
+        limits: {}
+          # cpu: 200m
+          # memory: 1000Mi
+        requests:
+          cpu: 50m
+          memory: 500Mi
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+      # -- Enables a prometheus operator podMonitor for the recommender
+      podMonitor:
+        enabled: false
         annotations: {}
-        # rbac.serviceAccount.create -- If `true` and `rbac.create` is also true, a Service Account will be created.
-        create: true
-        # rbac.serviceAccount.name -- The name of the ServiceAccount to use. If not set and create is `true`, a name is generated using the fullname template.
-        name: ""
-        # rbac.serviceAccount.automountServiceAccountToken -- Automount API credentials for a Service Account.
-        automountServiceAccountToken: true
-      # rbac.additionalRules -- Additional rules for role/clusterrole
-      additionalRules: []
-      # - apiGroups:
-      #   - infrastructure.cluster.x-k8s.io
-      #   resources:
-      #   - kubemarkmachinetemplates
-      #   verbs:
-      #   - get
-      #   - list
-      #   - watch
+        labels: {}
 
-
-    # replicaCount -- Desired number of pods
-    replicaCount: 1
-
-    # resources -- Pod resource requests and limits.
-    resources: {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 300Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 300Mi
-
-    # revisionHistoryLimit -- The number of revisions to keep.
-    revisionHistoryLimit: 10
-
-    # securityContext -- [Security context for pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-    securityContext: {}
-      # runAsNonRoot: true
-      # runAsUser: 65534
-      # runAsGroup: 65534
-      # seccompProfile:
-      #    type: RuntimeDefault
-
-    service:
-      # service.create -- If `true`, a Service will be created.
-      create: true
-      # service.annotations -- Annotations to add to service
+    updater:
+      # updater.enabled -- If true, the updater component will be deployed
+      enabled: true
+      # updater.annotations -- Annotations to add to the updater deployment
       annotations: {}
-      # service.labels -- Labels to add to service
-      labels: {}
-      # service.externalIPs -- List of IP addresses at which the service is available. Ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-ips.
-      externalIPs: []
+      # updater.extraArgs -- A key-value map of flags to pass to the updater
+      extraArgs: {}
+      replicaCount: 1
+      # updater.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+      revisionHistoryLimit: 10
+      # updater.podDisruptionBudget -- This is the setting for the pod disruption budget
+      podDisruptionBudget: {}
+        # maxUnavailable: 1
+      image:
+        # updater.image.repository -- The location of the updater image
+        repository: registry.k8s.io/autoscaling/vpa-updater
+        # updater.image.tag -- Overrides the image tag whose default is the chart appVersion
+        tag: ""
+        # updater.image.pullPolicy -- The pull policy for the updater image. Recommend not changing this
+        pullPolicy: Always
+      # updater.podAnnotations -- Annotations to add to the updater pod
+      podAnnotations: {}
+      # updater.podLabels -- Labels to add to the updater pod
+      podLabels: {}
+      # updater.podSecurityContext -- The security context for the updater pod
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      # updater.securityContext -- The security context for the containers inside the updater pod
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+      # updater.livenessProbe -- The liveness probe definition inside the updater pod
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # updater.readinessProbe -- The readiness probe definition inside the updater pod
+      readinessProbe:
+        failureThreshold: 120
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # updater.resources -- The resources block for the updater pod
+      resources:
+        limits: {}
+          # cpu: 200m
+          # memory: 1000Mi
+        requests:
+          cpu: 50m
+          memory: 500Mi
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+      # -- Enables a prometheus operator podMonitor for the updater
+      podMonitor:
+        enabled: false
+        annotations: {}
+        labels: {}
 
-      # service.clusterIP -- IP address to assign to service
-      clusterIP: ""
-
-      # service.loadBalancerIP -- IP address to assign to load balancer (if supported).
-      loadBalancerIP: ""
-      # service.loadBalancerSourceRanges -- List of IP CIDRs allowed access to load balancer (if supported).
-      loadBalancerSourceRanges: []
-      # service.servicePort -- Service port to expose.
-      servicePort: 8085
-      # service.portName -- Name for service port.
-      portName: http
-      # service.type -- Type of service to create.
-      type: ClusterIP
-
-    ## Are you using Prometheus Operator?
-    serviceMonitor:
-      # serviceMonitor.enabled -- If true, creates a Prometheus Operator ServiceMonitor.
-      enabled: false
-      # serviceMonitor.interval -- Interval that Prometheus scrapes Cluster Autoscaler metrics.
-      interval: 10s
-      # serviceMonitor.namespace -- Namespace which Prometheus is running in.
-      namespace: monitoring
-      ## [Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#prometheus-operator-1)
-      ## [Kube Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#exporters)
-      # serviceMonitor.selector -- Default to kube-prometheus install (CoreOS recommended), but should be set according to Prometheus install.
-      selector:
-        release: prometheus-operator
-      # serviceMonitor.path -- The path to scrape for metrics; autoscaler exposes `/metrics` (this is standard)
-      path: /metrics
-      # serviceMonitor.annotations -- Annotations to add to service monitor
+    admissionController:
+      # admissionController.enabled -- If true, will install the admission-controller component of vpa
+      enabled: true
+      # admissionController.annotations -- Annotations to add to the admission controller deployment
       annotations: {}
-      ## [RelabelConfig](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig)
-      # serviceMonitor.relabelings -- RelabelConfigs to apply to metrics before scraping.
-      relabelings: {}
-      ## [RelabelConfig](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig)
-      # serviceMonitor.metricRelabelings -- MetricRelabelConfigs to apply to samples before ingestion.
-      metricRelabelings: {}
+      # admissionController.extraArgs -- A key-value map of flags to pass to the admissionController
+      extraArgs: {}
+      # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook
+      generateCertificate: true
+      # admissionController.secretName -- Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret
+      secretName: "{{ include \"vpa.fullname\" . }}-tls-secret"
+      # admissionController.registerWebhook -- If true, will allow the vpa admission controller to register itself as a mutating webhook
+      registerWebhook: false
+      certGen:
+        image:
+          # admissionController.certGen.image.repository -- An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true
+          repository: registry.k8s.io/ingress-nginx/kube-webhook-certgen
+          # admissionController.certGen.image.tag -- An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true
+          tag: v20230312-helm-chart-4.5.2-28-g66a760794
+          # admissionController.certGen.image.pullPolicy -- The pull policy for the certgen image. Recommend not changing this
+          pullPolicy: Always
+        # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
+        env: {}
+        # admissionController.certGen.resources -- The resources block for the certgen pod
+        resources: {}
+        # admissionController.certGen.podSecurityContext -- The securityContext block for the certgen pod(s)
+        podSecurityContext:
+          runAsNonRoot: true
+          runAsUser: 65534
+          seccompProfile:
+            type: RuntimeDefault
+        # admissionController.certGen.securityContext -- The securityContext block for the certgen container(s)
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        nodeSelector: {}
+        tolerations: []
+        affinity: {}
 
-    # tolerations -- List of node taints to tolerate (requires Kubernetes >= 1.6).
-    tolerations: []
+      mutatingWebhookConfiguration:
+        # admissionController.mutatingWebhookConfiguration.annotations -- Additional annotations for the MutatingWebhookConfiguration. Can be used for integration with cert-manager
+        annotations: {}
+        # admissionController.mutatingWebhookConfiguration.failurePolicy -- The failurePolicy for the mutating webhook. Allowed values are: Ignore, Fail
+        failurePolicy: Ignore
+        # admissionController.mutatingWebhookConfiguration.namespaceSelector -- The namespaceSelector controls, which namespaces are affected by the webhook
+        namespaceSelector: {}
+        # admissionController.mutatingWebhookConfiguration.objectSelector -- The objectSelector can filter object on e.g. labels
+        objectSelector: {}
+        # admissionController.mutatingWebhookConfiguration.timeout -- Sets the amount of time the API server will wait on a response from the webhook service.
+        timeoutSeconds: 5
 
-    # topologySpreadConstraints -- You can use topology spread constraints to control how Pods are spread across your cluster among failure-domains such as regions, zones, nodes, and other user-defined topology domains. (requires Kubernetes >= 1.19).
-    topologySpreadConstraints: []
-      # - maxSkew: 1
-      #   topologyKey: topology.kubernetes.io/zone
-      #   whenUnsatisfiable: DoNotSchedule
-      #   labelSelector:
-      #     matchLabels:
-      #       app.kubernetes.io/instance: cluster-autoscaler
+      replicaCount: 1
+      # admissionController.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+      revisionHistoryLimit: 10
+      # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
+      podDisruptionBudget: {}
+        # maxUnavailable: 1
+      image:
+        # admissionController.image.repository -- The location of the vpa admission controller image
+        repository: registry.k8s.io/autoscaling/vpa-admission-controller
+        # admissionController.image.tag -- Overrides the image tag whose default is the chart appVersion
+        tag: ""
+        # admissionController.image.pullPolicy -- The pull policy for the admission controller image. Recommend not changing this
+        pullPolicy: Always
+      # admissionController.podAnnotations -- Annotations to add to the admission controller pod
+      podAnnotations: {}
+      # admissionController.podLabels -- Labels to add to the admission controller pod
+      podLabels: {}
+      # admissionController.podSecurityContext -- The security context for the admission controller pod
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      # admissionController.securityContext -- The security context for the containers inside the admission controller pod
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+      # admissionController.livenessProbe -- The liveness probe definition inside the admission controller pod
+      livenessProbe:
+        failureThreshold: 6
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # admissionController.readinessProbe -- The readiness probe definition inside the admission controller pod
+      readinessProbe:
+        failureThreshold: 120
+        httpGet:
+          path: /health-check
+          port: metrics
+          scheme: HTTP
+        periodSeconds: 5
+        successThreshold: 1
+        timeoutSeconds: 3
+      # admissionController.resources -- The resources block for the admission controller pod
+      resources:
+        limits: {}
+          # cpu: 200m
+          # memory: 500Mi
+        requests:
+          cpu: 50m
+          memory: 200Mi
+      # admissionController.tlsSecretKeys -- The keys in the vpa-tls-certs secret to map in to the admission controller
+      tlsSecretKeys: []
+        # - key: ca.crt
+        #   path: caCert.pem
+        # - key: tls.crt
+        #   path: serverCert.pem
+        # - key: tls.key
+        #   path: serverKey.pem
+      nodeSelector: {}
+      tolerations: []
+      affinity: {}
+      # admissionController.useHostNetwork -- Whether to use host network, this is required on EKS with custom CNI
+      useHostNetwork: false
+      # admissionController.httpPort -- Port of the admission controller for the mutating webhooks
+      httpPort: 8000
+      # admissionController.metricsPort -- Port of the admission controller where metrics can be received from
+      metricsPort: 8944
 
-    # updateStrategy -- [Deployment update strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
-    updateStrategy: {}
-      # rollingUpdate:
-      #   maxSurge: 1
-      #   maxUnavailable: 0
-      # type: RollingUpdate
+    tests:
+      # tests.securityContext -- The security context for the containers run as helm hook tests
+      securityContext:
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+        runAsNonRoot: true
+        runAsUser: 10324
+        capabilities:
+          drop:
+            - ALL
+      image:
+        # tests.image.repository -- An image used for testing containing sh, cat and kubectl
+        repository: alpine/kubectl
+        # tests.image.tag -- An image tag for the tests image
+        tag: "1.33.3"
+        # tests.image.pullPolicy -- The pull policy for the tests image.
+        pullPolicy: Always
 
-    # vpa -- Configure a VerticalPodAutoscaler for the cluster-autoscaler Deployment.
-    vpa:
-      # vpa.enabled -- If true, creates a VerticalPodAutoscaler.
+    # metrics-server -- configuration options for the [metrics server Helm chart](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server). See the projects [README.md](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server#configuration) for all available options
+    metrics-server:
+      # metrics-server.enabled -- Whether or not the metrics server Helm chart should be installed
       enabled: false
-      # vpa.updateMode -- [UpdateMode](https://github.com/kubernetes/autoscaler/blob/vertical-pod-autoscaler/v0.13.0/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1/types.go#L124)
-      updateMode: "Auto"
-      # vpa.containerPolicy -- [ContainerResourcePolicy](https://github.com/kubernetes/autoscaler/blob/vertical-pod-autoscaler/v0.13.0/vertical-pod-autoscaler/pkg/apis/autoscaling.k8s.io/v1/types.go#L159). The containerName is always et to the deployment's container name. This value is required if VPA is enabled.
-      containerPolicy: {}
-
-    # secretKeyRefNameOverride -- Overrides the name of the Secret to use when loading the secretKeyRef for AWS, Azure and Civo env variables
-    secretKeyRefNameOverride: ""
