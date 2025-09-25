@@ -7,7 +7,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: nginx
+      chart: nginx-ingress
       version: 4.13.2
       sourceRef:
         kind: HelmRepository
