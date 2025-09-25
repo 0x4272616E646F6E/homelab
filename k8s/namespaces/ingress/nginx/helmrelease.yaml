@@ -11,7 +11,7 @@ spec:
       version: 4.13.2
       sourceRef:
         kind: HelmRepository
-        name: nginx
+        name: nginx-ingress
         namespace: flux-system
   interval: 15m
   timeout: 5m
