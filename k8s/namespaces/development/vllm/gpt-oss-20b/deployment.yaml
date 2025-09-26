@@ -53,7 +53,7 @@ spec:
           - --model
           - unsloth/gpt-oss-20b-BF16
           - --quantization
-          - fp8
+          - fp8_e5m2
           - --tensor-parallel-size
           - "1"
           - --max-model-len
