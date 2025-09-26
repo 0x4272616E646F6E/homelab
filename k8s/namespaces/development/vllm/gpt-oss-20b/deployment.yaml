@@ -51,9 +51,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - unsloth/gpt-oss-20b-BF16
-          - --quantization
-          - fp4
+          - unsloth/gpt-oss-20b
           - --tensor-parallel-size
           - "1"
           - --max-model-len
