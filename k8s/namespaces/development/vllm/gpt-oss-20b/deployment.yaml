@@ -63,7 +63,7 @@ spec:
           - --kv-cache-dtype
           - fp8_e5m2
           - --gpu-memory-utilization
-          - "0.92"
+          - "0.90"
           - --enable-chunked-prefill
           - --async-scheduling
           - --tool-call-parser
