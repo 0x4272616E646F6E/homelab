@@ -9,9 +9,6 @@ data:
       # Explicitly disable object-store paths so templates do not expect bucketNames
       storage:
         use_thanos_objstore: false
-        # Provide bucketNames map to avoid nil pointers in chart helpers.
-        # Left empty because we're using filesystem TSDB; if you switch to S3/MinIO,
-        # fill these with real bucket names.
         bucketNames:
           chunks: ""
           index: ""
@@ -35,6 +32,24 @@ data:
         requests:
           cpu: 1
           memory: 2Gi
+
+      # Ensure distributed components are disabled when running single-binary
+    distributor:
+      replicas: 0
+    querier:
+      replicas: 0
+    ingester:
+      replicas: 0
+    indexGateway:
+      replicas: 0
+    frontend:
+      replicas: 0
+    frontend_worker:
+      replicas: 0
+    compactor:
+      replicas: 0
+    ruler:
+      replicas: 0
 
     # StatefulSet persistence using local-path-provisioner
     persistence:
