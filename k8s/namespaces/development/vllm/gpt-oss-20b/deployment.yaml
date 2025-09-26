@@ -26,13 +26,19 @@ spec:
         fsGroup: 10001
         fsGroupChangePolicy: "OnRootMismatch"
       initContainers:
-      - name: fix-perms
+      - name: fix-permissions
         image: busybox:1.36
         command:
           - sh
           - -c
           - >
-            mkdir -p /home/vllm/.cache/huggingface /vllm-workspace &&
+            mkdir -p \
+              /home/vllm/.cache/huggingface \
+              /home/vllm/.cache/hf \
+              /home/vllm/.cache/torch \
+              /home/vllm/.cache \
+              /vllm-workspace \
+              /tmp/torchinductor_cache &&
             chown -R 10001:10001 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
         volumeMounts:
         - { name: cache-volume,     mountPath: /home/vllm/.cache/huggingface }
@@ -77,10 +83,10 @@ spec:
         - { name: NCCL_IB_DISABLE,           value: "1" }
         - { name: HF_HUB_ENABLE_HF_TRANSFER, value: "1" }
         - { name: HOME,                      value: /home/vllm }
+        - { name: XDG_CACHE_HOME,            value: /home/vllm/.cache }
+        - { name: TORCH_HOME,                value: /home/vllm/.cache/torch }
         - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
-        - { name: TRANSFORMERS_CACHE,        value: /home/vllm/.cache/huggingface }
-        - { name: XDG_CACHE_HOME,            value: /home/vllm/.cache }
         - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
         - { name: TMPDIR, value: /tmp }
         - { name: TEMP,   value: /tmp }
