@@ -88,6 +88,7 @@ spec:
         - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
         - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
+        - { name: TORCH_COMPILE_DISABLE,     value: "1" }
         - { name: TMPDIR, value: /tmp }
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
