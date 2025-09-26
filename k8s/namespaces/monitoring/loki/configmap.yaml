@@ -6,19 +6,11 @@ metadata:
 data:
   values.yaml: |-
     loki:
-      # default is 500MB, with limited memory keep this smaller
-      writebackSizeLimit: 10MB
-
-      # Explicit single-binary (all-in-one) mode for this chart version
-      singleBinary:
-        enabled: true
-        replicas: 1
-
-      # Use filesystem TSDB, not Thanos/S3 objectstore
+      # Explicitly disable object-store paths so templates do not expect bucketNames
       storage:
         use_thanos_objstore: false
 
-      # Schema must indicate filesystem TSDB
+      # Ensure schema uses filesystem TSDB
       schemaConfig:
         configs:
           - from: 2024-04-01
@@ -29,6 +21,14 @@ data:
               prefix: loki_index_
               period: 24h
 
+      # runtime/tuning defaults
+      commonConfig:
+        replication_factor: 1
+      resources:
+        requests:
+          cpu: 1
+          memory: 2Gi
+
     # StatefulSet persistence using local-path-provisioner
     persistence:
       enabled: true
@@ -37,12 +37,11 @@ data:
         - ReadWriteOnce
       size: 50Gi
 
-    # Ensure single-binary uses local storage (avoid distributed components)
+    # run single-binary/all-in-one for a local single-node install
     singleBinary:
+      enabled: true
+      replicas: 1
       resources:
         requests:
           cpu: 500m
           memory: 1Gi
-        limits:
-          cpu: 1
-          memory: 2Gi
