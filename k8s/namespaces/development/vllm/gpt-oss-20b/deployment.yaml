@@ -22,9 +22,6 @@ spec:
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
-      securityContext:
-        fsGroup: 10001
-        fsGroupChangePolicy: "OnRootMismatch"
       initContainers:
       - name: fix-permissions
         image: busybox:1.36
@@ -33,20 +30,20 @@ spec:
           - -c
           - >
             mkdir -p \
+              /home/vllm/.cache \
               /home/vllm/.cache/huggingface \
               /home/vllm/.cache/hf \
               /home/vllm/.cache/torch \
-              /home/vllm/.cache \
               /vllm-workspace \
               /tmp/torchinductor_cache \
               /tmp/triton &&
-            chown -R 10001:10001 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
+            chown -R 0:0 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
         volumeMounts:
-        - { name: cache-volume,     mountPath: /home/vllm/.cache/huggingface }
-        - { name: shm,              mountPath: /dev/shm }
-        - { name: tmp,              mountPath: /tmp }
-        - { name: var-tmp,          mountPath: /var/tmp }
-        - { name: vllm-workspace,   mountPath: /vllm-workspace }
+        - { name: cache-volume,   mountPath: /home/vllm/.cache }
+        - { name: shm,            mountPath: /dev/shm }
+        - { name: tmp,            mountPath: /tmp }
+        - { name: var-tmp,        mountPath: /var/tmp }
+        - { name: vllm-workspace, mountPath: /vllm-workspace }
       containers:
       - name: vllm
         # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
@@ -76,40 +73,36 @@ spec:
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+        - { name: HOME,                      value: /home/vllm }
+        - { name: XDG_CACHE_HOME,            value: /home/vllm/.cache }
+        - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
+        - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
+        - { name: TRANSFORMERS_CACHE,        value: /home/vllm/.cache/huggingface }
+        - { name: TORCH_HOME,                value: /home/vllm/.cache/torch }
+        - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
+        - { name: TRITON_CACHE_DIR,          value: /tmp/triton }
+        - { name: TMPDIR, value: /tmp }
+        - { name: TEMP,   value: /tmp }
+        - { name: TMP,    value: /tmp }
         - { name: VLLM_ATTENTION_BACKEND,    value: TRITON_ATTN_VLLM_V1 }
         - { name: VLLM_LOGGING_LEVEL,        value: INFO }
         - { name: PYTORCH_CUDA_ALLOC_CONF,   value: "expandable_segments:True" }
         - { name: NCCL_P2P_DISABLE,          value: "1" }
         - { name: NCCL_IB_DISABLE,           value: "1" }
         - { name: HF_HUB_ENABLE_HF_TRANSFER, value: "1" }
-        - { name: HOME,                      value: /home/vllm }
-        - { name: XDG_CACHE_HOME,            value: /home/vllm/.cache }
-        - { name: TORCH_HOME,                value: /home/vllm/.cache/torch }
-        - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
-        - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
-        - { name: USER,                      value: vllm }
-        - { name: LOGNAME,                   value: vllm }
-        - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
-        - { name: TRITON_CACHE_DIR,          value: /tmp/triton }
-        - { name: TORCH_COMPILE_DISABLE,     value: "1" }
-        - { name: TMPDIR, value: /tmp }
-        - { name: TEMP,   value: /tmp }
-        - { name: TMP,    value: /tmp }
-
         ports:
         - { containerPort: 8000, name: http }
         resources:
           requests: { cpu: "2", memory: "24Gi", nvidia.com/gpu: "1" }
           limits:   { cpu: "4", memory: "24Gi", nvidia.com/gpu: "1" }
         securityContext:
-          runAsUser: 10001
-          runAsGroup: 10001
-          runAsNonRoot: true
+          runAsUser: 0
+          runAsNonRoot: false
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           capabilities: { drop: ["ALL"] }
         volumeMounts:
-        - { name: cache-volume,   mountPath: /home/vllm/.cache/huggingface }
+        - { name: cache-volume,   mountPath: /home/vllm/.cache }
         - { name: shm,            mountPath: /dev/shm }
         - { name: tmp,            mountPath: /tmp }
         - { name: var-tmp,        mountPath: /var/tmp }
@@ -131,9 +124,7 @@ spec:
       - name: cache-volume
         persistentVolumeClaim: { claimName: gpt-oss-20b-pvc }
       - name: shm
-        emptyDir:
-          medium: Memory
-          sizeLimit: "16Gi"
+        emptyDir: { medium: Memory, sizeLimit: "16Gi" }
       - name: tmp
         emptyDir: {}
       - name: var-tmp
