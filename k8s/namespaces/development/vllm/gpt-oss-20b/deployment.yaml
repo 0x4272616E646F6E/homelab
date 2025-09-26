@@ -38,7 +38,8 @@ spec:
               /home/vllm/.cache/torch \
               /home/vllm/.cache \
               /vllm-workspace \
-              /tmp/torchinductor_cache &&
+              /tmp/torchinductor_cache \
+              /tmp/triton &&
             chown -R 10001:10001 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
         volumeMounts:
         - { name: cache-volume,     mountPath: /home/vllm/.cache/huggingface }
@@ -87,11 +88,15 @@ spec:
         - { name: TORCH_HOME,                value: /home/vllm/.cache/torch }
         - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
+        - { name: USER,                      value: vllm }
+        - { name: LOGNAME,                   value: vllm }
         - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
+        - { name: TRITON_CACHE_DIR,          value: /tmp/triton }
         - { name: TORCH_COMPILE_DISABLE,     value: "1" }
         - { name: TMPDIR, value: /tmp }
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
+
         ports:
         - { containerPort: 8000, name: http }
         resources:
