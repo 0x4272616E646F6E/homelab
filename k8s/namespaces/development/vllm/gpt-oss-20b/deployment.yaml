@@ -69,7 +69,7 @@ spec:
           - --tool-call-parser
           - "openai"
           - --reasoning-parser
-          - "openai"
+          - "openai_gptoss"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
