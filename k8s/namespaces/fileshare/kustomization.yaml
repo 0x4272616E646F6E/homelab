@@ -7,3 +7,4 @@ resources:
   - pvc.yaml
   - syncthing/
   - filebrowser/
+  # - minio/

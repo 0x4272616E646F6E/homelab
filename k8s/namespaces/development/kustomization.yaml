@@ -12,3 +12,6 @@ resources:
   - sonarqube/
   - actions-runner-controller/
   - actions-runner/
+  - vllm/
+  # - librechat/
+  # - mcpgateway/

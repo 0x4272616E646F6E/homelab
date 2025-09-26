@@ -3,6 +3,5 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - pvc.yaml
-  - deployment.yaml
-  - service.yaml
+  - secrets.enc.yaml
+  - gpt-oss-20b/

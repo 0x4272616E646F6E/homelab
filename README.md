@@ -154,7 +154,6 @@ The following resources are managed through Flux in this repository:
 - [**Jellyseerr**](https://github.com/fallenbagel/jellyseerr)
 - [**Kestra**](https://github.com/kestra-io/kestra)
 - [**Knative**](https://github.com/knative/serving)
-- [**Kserve**](https://github.com/kserve/kserve)
 - [**Kubelet CSR Approver**](https://github.com/postfinance/kubelet-csr-approver)
 - [**Lazy Librarian**](https://gitlab.com/LazyLibrarian/LazyLibrarian)
 - [**LibreChat**](https://github.com/danny-avila/LibreChat)

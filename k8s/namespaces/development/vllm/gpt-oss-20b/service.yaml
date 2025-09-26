@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: http-lucy-128k
-  namespace: llm
+  name: http-gpt-oss-20b
+  namespace: development
   labels:
-    app.kubernetes.io/name: lucy-128k
+    app.kubernetes.io/name: gpt-oss-20b
 spec:
   ports:
-  - name: http-lucy-128k
+  - name: http-gpt-oss-20b
     port: 80
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: vllm-lucy-128k
+    app.kubernetes.io/name: vllm-gpt-oss-20b
   sessionAffinity: None
   type: ClusterIP

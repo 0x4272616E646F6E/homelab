@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm-lucy-128k
-  namespace: llm
+  name: vllm-gpt-oss-20b
+  namespace: development
   labels:
-    app.kubernetes.io/name: vllm-lucy-128k
+    app.kubernetes.io/name: vllm-gpt-oss-20b
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: vllm-lucy-128k
+      app.kubernetes.io/name: vllm-gpt-oss-20b
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -19,30 +19,38 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vllm-lucy-128k
+        app.kubernetes.io/name: vllm-gpt-oss-20b
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
       containers:
       - name: vllm
-      # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
-        image: docker.io/vllm/vllm-openai:latest@sha256:d731ee65c044ae0977421eed3d93f931d4b7d79614394184c939db35b8f28fc2
+        # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
+        image: docker.io/vllm/vllm-openai:gptoss@sha256:23c3feefba723be97ff9e9bd769aed7d165839a79bc042eb8f3a13dd2a469e1c
+        imagePullPolicy: IfNotPresent
         args:
           - --model
-          - Menlo/Lucy-128k
+          - openai/gpt-oss-20b
           - --tensor-parallel-size
           - "1"
+          - --max-model-len
+          - "32768"
+          - --kv-cache-dtype
+          - fp8_e5m2
+          - --max-num-seqs
+          - "1"
           - --gpu-memory-utilization
-          - "0.50"
+          - "0.92"
+          - --enable-chunked-prefill
           - --async-scheduling
+          - --enable-prefix-caching
+          - --cpu-offload-gb
+          - "2"
+          - --swap-space
+          - "8"
           - --max-parallel-loading-workers
           - "2"
-          - --enable-auto-tool-choice
-          - --tool-call-parser
-          - hermes
-          - --max-model-len
-          - "16384"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
@@ -64,12 +72,18 @@ spec:
         resources:
           requests:
             cpu: "2"
-            memory: "16Gi"
+            memory: "24Gi"
             nvidia.com/gpu: "1"
           limits:
             cpu: "4"
-            memory: "16Gi"
+            memory: "24Gi"
             nvidia.com/gpu: "1"
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
         volumeMounts:
         - { name: cache-volume, mountPath: /root/.cache/huggingface }
         - { name: shm,         mountPath: /dev/shm }
@@ -88,7 +102,7 @@ spec:
               command: ["bash","-lc","nvidia-smi || true; ls -l /dev/nvidia* || true"]
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: lucy-128k-pvc }
+        persistentVolumeClaim: { claimName: gpt-oss-20b-pvc }
       - name: shm
         emptyDir:
           medium: Memory

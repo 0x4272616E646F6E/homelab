@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: librechat-config-map
-  namespace: llm
+  namespace: development
 data:
   values.yaml: |-
     replicaCount: 1
