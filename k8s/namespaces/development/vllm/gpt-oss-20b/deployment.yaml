@@ -54,8 +54,6 @@ spec:
           - openai/gpt-oss-20b
           - --tensor-parallel-size
           - "1"
-          - --attention-backend
-          - "triton"
           - --max-model-len
           - "32768"
           - --kv-cache-dtype
