@@ -51,7 +51,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - openai/gpt-oss-20b
+          - unsloth/gpt-oss-20b-BF16
+          - --quantization
+          - fp8
           - --tensor-parallel-size
           - "1"
           - --max-model-len
