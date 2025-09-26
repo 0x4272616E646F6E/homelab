@@ -59,7 +59,6 @@ spec:
           - "1"
           - --max-model-len
           - "32768"
-          - --disable-sliding-window
           - --kv-cache-dtype
           - fp8_e5m2
           - --max-num-seqs
@@ -68,7 +67,6 @@ spec:
           - "0.92"
           - --enable-chunked-prefill
           - --async-scheduling
-          - --enable-prefix-caching
           - --cpu-offload-gb
           - "2"
           - --swap-space
