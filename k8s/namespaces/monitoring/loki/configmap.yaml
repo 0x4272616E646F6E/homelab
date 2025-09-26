@@ -36,7 +36,7 @@ data:
     # StatefulSet persistence using local-path-provisioner
     persistence:
       enabled: true
-      storageClassName: local-path
+      storageClassName: local-path-rwo
       accessModes:
         - ReadWriteOnce
       size: 50Gi
