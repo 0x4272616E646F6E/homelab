@@ -57,9 +57,9 @@ spec:
           - --max-model-len
           - "32768"
           - --max-num-seqs
+          - "1"
           - --kv-cache-dtype
           - fp8_e5m2
-          - "1"
           - --gpu-memory-utilization
           - "0.92"
           - --enable-chunked-prefill
