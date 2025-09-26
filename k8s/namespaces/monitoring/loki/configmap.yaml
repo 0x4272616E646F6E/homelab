@@ -9,6 +9,13 @@ data:
       # Explicitly disable object-store paths so templates do not expect bucketNames
       storage:
         use_thanos_objstore: false
+        # Provide bucketNames map to avoid nil pointers in chart helpers.
+        # Left empty because we're using filesystem TSDB; if you switch to S3/MinIO,
+        # fill these with real bucket names.
+        bucketNames:
+          chunks: ""
+          index: ""
+          ruler: ""
 
       # Ensure schema uses filesystem TSDB
       schemaConfig:
