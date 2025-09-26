@@ -139,7 +139,6 @@ The following resources are managed through Flux in this repository:
 - [**Cilium**](https://github.com/cilium/cilium)
 - [**Cloudflared**](https://github.com/cloudflare/cloudflared)
 - [**Code-Server**](https://github.com/coder/code-server)
-- [**ComfyUI**](https://github.com/comfyanonymous/ComfyUI)
 - [**Debian**](https://hub.docker.com/_/debian)
 - [**Falco**](https://github.com/falcosecurity/falco)
 - [**Filebrowser**](https://github.com/gtsteffaniak/filebrowser)
