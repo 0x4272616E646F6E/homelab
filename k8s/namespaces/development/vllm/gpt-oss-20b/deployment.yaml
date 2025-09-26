@@ -53,9 +53,9 @@ spec:
           - --model
           - openai/gpt-oss-20b
           - --tensor-parallel-size
-          - --attention-backend
-          - triton
           - "1"
+          - --attention-backend
+          - "triton"
           - --max-model-len
           - "32768"
           - --kv-cache-dtype
@@ -91,7 +91,7 @@ spec:
         - { name: NCCL_P2P_DISABLE,          value: "1" }
         - { name: NCCL_IB_DISABLE,           value: "1" }
         - { name: HF_HUB_ENABLE_HF_TRANSFER, value: "1" }
-        - { name: OMP_NUM_THREADS, value: "2" }
+        - { name: OMP_NUM_THREADS,           value: "2" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
