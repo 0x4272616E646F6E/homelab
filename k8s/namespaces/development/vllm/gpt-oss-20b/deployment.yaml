@@ -63,11 +63,9 @@ spec:
           - --kv-cache-dtype
           - fp8_e5m2
           - --gpu-memory-utilization
-          - "0.92"
+          - "0.95"
           - --enable-chunked-prefill
           - --async-scheduling
-          - --swap-space
-          - "8"
           - --tool-call-parser
           - "openai"
           - --reasoning-parser
