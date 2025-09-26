@@ -80,6 +80,8 @@ spec:
         - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
         - { name: TRANSFORMERS_CACHE,        value: /home/vllm/.cache/huggingface }
+        - { name: XDG_CACHE_HOME,            value: /home/vllm/.cache }
+        - { name: TORCHINDUCTOR_CACHE_DIR,   value: /tmp/torchinductor_cache }
         - { name: TMPDIR, value: /tmp }
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
