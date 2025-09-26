@@ -32,7 +32,7 @@ jobs:
       - name: Build Java modules (maven)
         run: mvn -B -f cdk/cdk8s/pom.xml -DskipTests package
 
-      - uses: SonarSource/sonarqube-scan-action@v5
+      - uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
