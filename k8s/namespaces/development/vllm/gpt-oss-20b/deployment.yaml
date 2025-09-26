@@ -64,8 +64,6 @@ spec:
           - "0.92"
           - --enable-chunked-prefill
           - --async-scheduling
-          - --cpu-offload-gb
-          - "2"
           - --swap-space
           - "8"
         env:
