@@ -6,35 +6,34 @@ metadata:
 data:
   values.yaml: |-
     loki:
+      # ensure we render local filesystem TSDB rather than object storage
       commonConfig:
         replication_factor: 1
+
+      # disable thanos/s3 usage
+      storage:
+        use_thanos_objstore: false
+
+      # schema: ensure TSDB (filesystem)
       schemaConfig:
         configs:
           - from: 2024-04-01
             store: tsdb
-            object_store: s3
+            object_store: filesystem
             schema: v13
             index:
               prefix: loki_index_
               period: 24h
-      ingester:
-        chunk_encoding: snappy
-      tracing:
-        enabled: true
-      querier:
-        # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
-        max_concurrent: 2
 
-    #gateway:
-    #  ingress:
-    #    enabled: true
-    #    hosts:
-    #      - host: FIXME
-    #        paths:
-    #          - path: /
-    #            pathType: Prefix
+    # StatefulSet
+    persistence:
+      enabled: true
+      storageClassName: local-path-rwo
+      accessModes:
+        - ReadWriteOnce
+      size: 50Gi
 
-    deploymentMode: SingleBinary
+    # Optional: reduce replicas if you only have single-node storage
     singleBinary:
       replicas: 1
       resources:
