@@ -6,15 +6,19 @@ metadata:
 data:
   values.yaml: |-
     loki:
-      # ensure we render local filesystem TSDB rather than object storage
-      commonConfig:
-        replication_factor: 1
+      # default is 500MB, with limited memory keep this smaller
+      writebackSizeLimit: 10MB
 
-      # disable thanos/s3 usage
+      # Explicit single-binary (all-in-one) mode for this chart version
+      singleBinary:
+        enabled: true
+        replicas: 1
+
+      # Use filesystem TSDB, not Thanos/S3 objectstore
       storage:
         use_thanos_objstore: false
 
-      # schema: ensure TSDB (filesystem)
+      # Schema must indicate filesystem TSDB
       schemaConfig:
         configs:
           - from: 2024-04-01
@@ -25,60 +29,20 @@ data:
               prefix: loki_index_
               period: 24h
 
-    # StatefulSet
+    # StatefulSet persistence using local-path-provisioner
     persistence:
       enabled: true
-      storageClassName: local-path-rwo
+      storageClassName: local-path
       accessModes:
         - ReadWriteOnce
       size: 50Gi
 
-    # Optional: reduce replicas if you only have single-node storage
+    # Ensure single-binary uses local storage (avoid distributed components)
     singleBinary:
-      replicas: 1
       resources:
-        limits:
-          cpu: 3
-          memory: 4Gi
         requests:
-          cpu: 2
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1
           memory: 2Gi
-      extraEnv:
-        # Keep a little bit lower than memory limits
-        - name: GOMEMLIMIT
-          value: 3750MiB
-
-    chunksCache:
-      # default is 500MB, with limited memory keep this smaller
-      writebackSizeLimit: 10MB
-
-    # Enable minio for storage
-    minio:
-      enabled: false
-
-    # Zero out replica counts of other deployment modes
-    backend:
-      replicas: 0
-    read:
-      replicas: 0
-    write:
-      replicas: 0
-
-    ingester:
-      replicas: 0
-    querier:
-      replicas: 0
-    queryFrontend:
-      replicas: 0
-    queryScheduler:
-      replicas: 0
-    distributor:
-      replicas: 0
-    compactor:
-      replicas: 0
-    indexGateway:
-      replicas: 0
-    bloomCompactor:
-      replicas: 0
-    bloomGateway:
-      replicas: 0
