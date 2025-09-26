@@ -13,8 +13,8 @@ spec:
         - name: internal-whitelist
           namespace: ingress
       services:
-        - name: loki-gateway
-          port: 80
+        - name: loki
+          port: 3100
   tls: 
     secretName: oglesby-io-tls
 ---
@@ -35,5 +35,5 @@ spec:
       - name: redirect-https
         namespace: ingress
       services:
-        - name: loki-gateway
-          port: 80
+        - name: loki
+          port: 3100
