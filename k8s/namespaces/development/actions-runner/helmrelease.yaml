@@ -1,4 +1,4 @@
- # renovate: registryUrl=https://github.com/actions/actions-runner-controller
+ # renovate: docker=oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
