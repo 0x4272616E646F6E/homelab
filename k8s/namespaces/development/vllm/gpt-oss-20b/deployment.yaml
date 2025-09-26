@@ -56,8 +56,6 @@ spec:
           - "1"
           - --max-model-len
           - "32768"
-          - --kv-cache-dtype
-          - fp8_e5m2
           - --max-num-seqs
           - "1"
           - --gpu-memory-utilization
