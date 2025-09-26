@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: falco-config-map
-  namespace: monitoring
+  namespace: security
 data:
   values.yaml: |-
       # Default values for Falco.
