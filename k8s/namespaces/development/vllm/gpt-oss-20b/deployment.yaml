@@ -13,9 +13,7 @@ spec:
   replicas: 1
   strategy:
     type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
+    rollingUpdate: { maxSurge: 0, maxUnavailable: 1 }
   template:
     metadata:
       labels:
@@ -34,13 +32,17 @@ spec:
           - sh
           - -c
           - >
-            mkdir -p /home/vllm/.cache/huggingface &&
-            chown -R 10001:10001 /home/vllm /dev/shm || true
+            mkdir -p /home/vllm/.cache/huggingface /vllm-workspace &&
+            chown -R 10001:10001 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
         volumeMounts:
-        - { name: cache-volume, mountPath: /home/vllm/.cache/huggingface }
-        - { name: shm,          mountPath: /dev/shm }
+        - { name: cache-volume,     mountPath: /home/vllm/.cache/huggingface }
+        - { name: shm,              mountPath: /dev/shm }
+        - { name: tmp,              mountPath: /tmp }
+        - { name: var-tmp,          mountPath: /var/tmp }
+        - { name: vllm-workspace,   mountPath: /vllm-workspace }
       containers:
       - name: vllm
+        # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
         image: docker.io/vllm/vllm-openai:gptoss@sha256:23c3feefba723be97ff9e9bd769aed7d165839a79bc042eb8f3a13dd2a469e1c
         imagePullPolicy: IfNotPresent
         args:
@@ -68,49 +70,37 @@ spec:
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
-        - name: VLLM_ATTENTION_BACKEND
-          value: TRITON_ATTN_VLLM_V1
-        - name: VLLM_LOGGING_LEVEL
-          value: INFO
-        - name: PYTORCH_CUDA_ALLOC_CONF
-          value: "expandable_segments:True"
-        - name: NCCL_P2P_DISABLE
-          value: "1"
-        - name: NCCL_IB_DISABLE
-          value: "1"
-        - name: HF_HUB_ENABLE_HF_TRANSFER
-          value: "1"
-        - name: HOME
-          value: /home/vllm
-        - name: HF_HOME
-          value: /home/vllm/.cache/hf
-        - name: HUGGINGFACE_HUB_CACHE
-          value: /home/vllm/.cache/huggingface
-        - name: TRANSFORMERS_CACHE
-          value: /home/vllm/.cache/huggingface
+        - { name: VLLM_ATTENTION_BACKEND,    value: TRITON_ATTN_VLLM_V1 }
+        - { name: VLLM_LOGGING_LEVEL,        value: INFO }
+        - { name: PYTORCH_CUDA_ALLOC_CONF,   value: "expandable_segments:True" }
+        - { name: NCCL_P2P_DISABLE,          value: "1" }
+        - { name: NCCL_IB_DISABLE,           value: "1" }
+        - { name: HF_HUB_ENABLE_HF_TRANSFER, value: "1" }
+        - { name: HOME,                      value: /home/vllm }
+        - { name: HF_HOME,                   value: /home/vllm/.cache/hf }
+        - { name: HUGGINGFACE_HUB_CACHE,     value: /home/vllm/.cache/huggingface }
+        - { name: TRANSFORMERS_CACHE,        value: /home/vllm/.cache/huggingface }
+        - { name: TMPDIR, value: /tmp }
+        - { name: TEMP,   value: /tmp }
+        - { name: TMP,    value: /tmp }
         ports:
-        - containerPort: 8000
-          name: http
+        - { containerPort: 8000, name: http }
         resources:
-          requests:
-            cpu: "2"
-            memory: "24Gi"
-            nvidia.com/gpu: "1"
-          limits:
-            cpu: "4"
-            memory: "24Gi"
-            nvidia.com/gpu: "1"
+          requests: { cpu: "2", memory: "24Gi", nvidia.com/gpu: "1" }
+          limits:   { cpu: "4", memory: "24Gi", nvidia.com/gpu: "1" }
         securityContext:
           runAsUser: 10001
           runAsGroup: 10001
           runAsNonRoot: true
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
-          capabilities:
-            drop: ["ALL"]
+          capabilities: { drop: ["ALL"] }
         volumeMounts:
-        - { name: cache-volume, mountPath: /home/vllm/.cache/huggingface }
-        - { name: shm,          mountPath: /dev/shm }
+        - { name: cache-volume,   mountPath: /home/vllm/.cache/huggingface }
+        - { name: shm,            mountPath: /dev/shm }
+        - { name: tmp,            mountPath: /tmp }
+        - { name: var-tmp,        mountPath: /var/tmp }
+        - { name: vllm-workspace, mountPath: /vllm-workspace }
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 5
@@ -131,3 +121,9 @@ spec:
         emptyDir:
           medium: Memory
           sizeLimit: "16Gi"
+      - name: tmp
+        emptyDir: {}
+      - name: var-tmp
+        emptyDir: {}
+      - name: vllm-workspace
+        emptyDir: {}
