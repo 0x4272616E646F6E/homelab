@@ -84,7 +84,7 @@ spec:
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
         - { name: VLLM_ATTENTION_BACKEND,    value: "FLASH_ATTN" }
-        - { name: VLLM_FLASH_ATTN_VERSION,    value: "3" }
+        - { name: VLLM_FLASH_ATTN_VERSION,    value: "2" }
         - { name: VLLM_LOGGING_LEVEL,        value: "INFO" }
         - { name: PYTORCH_CUDA_ALLOC_CONF,   value: "expandable_segments:True" }
         - { name: NCCL_P2P_DISABLE,          value: "1" }
