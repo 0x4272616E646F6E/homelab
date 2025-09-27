@@ -64,7 +64,7 @@ flowchart TD
     FLUX[Flux Controllers]
   end
 
-  GIT <--> FLUX
+  GIT <-. Sync .-> FLUX
   FLUX --> APIS
 
   %% Nodes / Data Plane
@@ -83,8 +83,8 @@ flowchart TD
   DNS --> APIS
   TRF --> APIS
   CFD --> TRF
-  NET --> CFD
-  LOCALNET --> TRF
+  NET -. 10Gb .-> CFD
+  LOCALNET -. 10Gb .-> TRF
   CFD --> APIS
   CIL --> DNS
   CIL --> TRF
