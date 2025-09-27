@@ -147,6 +147,9 @@ Below is information on the hardware this homelab runs on:
 
 The following resources are managed through Flux in this repository:
 
+<details>
+  <summary>Click here to view Resources</summary>
+
 - [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
 - [**Authentik**](https://github.com/goauthentik/authentik)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
@@ -198,3 +201,18 @@ The following resources are managed through Flux in this repository:
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
 - [**VLLM**](https://github.com/vllm-project/vllm)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
+</details>
+
+## Star History
+
+<div align="center">
+
+<a href="https://www.star-history.com/embed?secret=#0x4272616E646F6E/homelab&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date" />
+  </picture>
+</a>
+
+</div>
