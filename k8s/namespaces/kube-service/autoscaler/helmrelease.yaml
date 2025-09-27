@@ -1,4 +1,4 @@
-# renovate: registryUrl=https://charts.fairwinds.com/stable
+# renovate: registryUrl=https://charts.fairwinds.com/stable/vpa
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
