@@ -13,7 +13,7 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 - [Prerequisites](#prerequisites)
 - [General Cluster Architecture](#general-cluster-architecture)
-- [Hardware Specs](#hardware-specs)
+- [Hardware](#hardware)
 - [Cluster Resources](#cluster-resources)
 
 ## Prerequisites
@@ -112,9 +112,28 @@ flowchart TD
   USER --> KUBE
 ```
 
-## Hardware Specs
+## Hardware
 
-Below is a description of the hardware this cluster runs on:
+Below is information on the hardware this homelab runs on:
+
+<details>
+  <summary>📷 Click to view Server Rack</summary>
+
+<img src="./docs/server_rack.jpeg" alt="Homelab Rack" width="300"/>
+</details>
+
+<details>
+  <summary>Click to view Hardware List</summary>
+
+- [UniFi Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro)
+- [UniFi Enterprise 24 PoE](https://store.ui.com/us/en/products/usw-enterprise-24-poe)
+- Basic Patch Panel
+- Supermicro Server (See Specs Below)
+- [CyberPower UPS](https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfcrm2u/)
+</details>
+
+<details>
+  <summary>Click to view SuperMicro Server Specs</summary>
 
 - Chassis: [SuperMicro SuperChassis 216](https://www.supermicro.com/en/products/chassis/2u/216/sc216be2c-r609jbod)
 - PSU (2x): [SuperMicro 920W Platinum Super Quiet](https://store.supermicro.com/media/wysiwyg/productspecs/PWS-920P-SQ/PWS-920P-SQ_quick_spec.pdf)
@@ -126,6 +145,7 @@ Below is a description of the hardware this cluster runs on:
 - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
 - GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
 - TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
+</details>
 
 ## Cluster Resources
 
