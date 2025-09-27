@@ -116,11 +116,7 @@ flowchart TD
 
 Below is information on the hardware this homelab runs on:
 
-<details>
-  <summary>📷 Click to view Server Rack</summary>
-
 <img src="./docs/server_rack.jpeg" alt="Homelab Rack" width="300"/>
-</details>
 
 <details>
   <summary>Click to view Hardware List</summary>
