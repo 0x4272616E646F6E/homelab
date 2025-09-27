@@ -154,6 +154,22 @@
         "digest"
       ],
       "automerge": true
+    },
+    {
+      "description": "Lock Postgres to 17.x only in selected files",
+      "matchManagers": ["kubernetes"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "postgres",
+        "docker.io/postgres",
+        "library/postgres",
+        "index.docker.io/postgres"
+      ],
+      "matchFileNames": [
+        "k8s/namespaces/development/sonarqube/postgres/deployment.yaml",
+        "k8s/namespaces/security/authentik/postgres/deployment.yaml"
+      ],
+      "allowedVersions": "/^17(\\.\\d+.*)?$/"
     }
   ]
 }
