@@ -63,8 +63,8 @@ spec:
           - "2048"
           - --max-num-seqs
           - "1"
-          - --kv-cache-dtype
-          - fp8_e5m2
+          # - --kv-cache-dtype
+          # - fp8_e5m2
           - --gpu-memory-utilization
           - "0.80"
           - --enable-chunked-prefill
