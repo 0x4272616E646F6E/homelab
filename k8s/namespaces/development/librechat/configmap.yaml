@@ -52,40 +52,22 @@ data:
           termsOfService:
             externalUrl: 'https://librechat.ai/tos'
             openNewTab: true
-
-        # registration:
-        #   socialLogins: ["discord", "facebook", "github", "google", "openid"] 
-        # endpoints:
-        #   azureOpenAI:
-        #    # Endpoint-level configuration
-        #    titleModel: "gpt-4o"
-        #    plugins: true
-        #    assistants: true
-        #    groups:
-        #         Group-level configuration
-        #       - group: "my-resource-sweden"
-        #         apiKey: "${SWEDEN_API_KEY}"
-        #         instanceName: "my-resource-sweden"
-        #         deploymentName: gpt-4-1106-preview
-        #         version: "2024-03-01-preview"
-        #         assistants: true
-        #         # Model-level configuration
-        #         models:
-        #           gpt-4o: true
-        #   custom:
-        #     # OpenRouter.ai
-        #     - name: "OpenRouter"
-        #       apiKey: "${OPENROUTER_KEY}"
-        #       baseURL: "https://openrouter.ai/api/v1"
-        #       models:
-        #         default: ["openai/gpt-3.5-turbo"]
-        #         fetch: true
-        #       titleConvo: true
-        #       titleModel: "gpt-3.5-turbo"
-        #       summarize: false
-        #       summaryModel: "gpt-3.5-turbo"
-        #       forcePrompt: false
-        #       modelDisplayLabel: "OpenRouter"
+        endpoints:
+          custom:
+            - name: "vLLM"
+              apiKey: "vllm"
+              baseURL: "http://http-gpt-oss-20b/v1"
+              models:
+                default: ['openai/gpt-oss-20b']
+                fetch: true
+              titleConvo: true
+              titleModel: "current_model"
+              titleMessageRole: "user"
+              summarize: false
+              summaryModel: "current_model"
+              forcePrompt: false
+        registration:
+          socialLogins: ["discord", "github", "google", "openid"] 
 
       # name of existing Yaml configmap, key must be librechat.yaml
       # existingConfigYaml: ""
