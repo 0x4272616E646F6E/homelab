@@ -16,7 +16,7 @@ spec:
         - name: internal-whitelist
           namespace: ingress
       services:
-        - name: librechat
+        - name: librechat-librechat
           port: 3080
   tls: 
     secretName: oglesby-io-tls
@@ -42,5 +42,5 @@ spec:
         - name: redirect-https
           namespace: ingress
       services:
-        - name: librechat
+        - name: librechat-librechat
           port: 3080

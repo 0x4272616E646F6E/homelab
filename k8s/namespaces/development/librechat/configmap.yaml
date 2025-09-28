@@ -38,7 +38,7 @@ data:
       # For adding a custom config yaml-file you can set the contents in this var. See https://www.librechat.ai/docs/configuration/librechat_yaml/example
       # configYamlContent: ""
       configYamlContent: |
-        version: 1.0.8
+        version: 1.2.9
 
         cache: true
 
