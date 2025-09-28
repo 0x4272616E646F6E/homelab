@@ -61,7 +61,7 @@ data:
           custom:
             - name: "vLLM"
               apiKey: "vllm"
-              baseURL: "http://http-gpt-oss-20b/v1"
+              baseURL: "http://vllm-gpt-oss-20b/v1"
               models:
                 default: ['unsloth/gpt-oss-20b']
                 fetch: true
