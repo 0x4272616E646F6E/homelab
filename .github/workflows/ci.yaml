@@ -16,7 +16,7 @@ permissions:
 jobs:
   kube-validate:
     name: Validate Kubernetes Manifests
-    runs-on: ubuntu-latest
+    runs-on: actions-runner
     steps:
       - uses: actions/checkout@v4
       - name: Install kubeconform
@@ -45,7 +45,7 @@ jobs:
 
   checkov-k8s:
     name: Checkov
-    runs-on: ubuntu-latest
+    runs-on: actions-runner
     steps:
       - uses: actions/checkout@v4
       - name: Run Checkov
@@ -66,7 +66,7 @@ jobs:
 
   java-build-and-scan:
     name: Build & Scan Java (cdk8s + Trivy)
-    runs-on: ubuntu-latest
+    runs-on: actions-runner
     defaults:
       run:
         working-directory: cdk/cdk8s
@@ -96,7 +96,7 @@ jobs:
 
   gitleaks:
     name: Secret scan (diff)
-    runs-on: ubuntu-latest
+    runs-on: actions-runner
     steps:
       - uses: actions/checkout@v4
         with:
