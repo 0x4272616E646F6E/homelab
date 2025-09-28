@@ -10,7 +10,7 @@ spec:
       chart: librechat
       version: 1.8.10
       sourceRef:
-        kind: GitRepository
+        kind: HelmRepository
         name: librechat
         namespace: flux-system
   interval: 15m
