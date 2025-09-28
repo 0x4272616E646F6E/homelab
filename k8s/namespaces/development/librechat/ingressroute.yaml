@@ -15,8 +15,6 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: ingress
-        - name: authentik
-          namespace: ingress
       services:
         - name: librechat
           port: 3080
