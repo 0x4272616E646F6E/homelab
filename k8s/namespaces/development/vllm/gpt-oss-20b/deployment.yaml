@@ -52,7 +52,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - openai/gpt-oss-20b
+          - unsloth/gpt-oss-20b
           - --block-size
           - "32"
           - --tensor-parallel-size
@@ -63,8 +63,6 @@ spec:
           - "2048"
           - --max-num-seqs
           - "1"
-          # - --kv-cache-dtype
-          # - fp8_e5m2
           - --gpu-memory-utilization
           - "0.80"
           - --enable-chunked-prefill
