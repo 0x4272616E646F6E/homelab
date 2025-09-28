@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: minecraft
-        # renovate: datasource=docker depName=docker.io/itzg/minecraft-server
+          # renovate: datasource=docker depName=docker.io/itzg/minecraft-server
           image: docker.io/itzg/minecraft-server:java21-graalvm@sha256:30033b7bc349e60d8d28ba56f99d85ed988f30cbef2d5ac1c87f8b0a18d4a365
           imagePullPolicy: IfNotPresent
           env:

@@ -1,4 +1,4 @@
- # renovate: datasource=github-releases depName=danny-avila/LibreChat
+# renovate: datasource=github-releases depName=danny-avila/LibreChat
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -7,7 +7,7 @@ metadata:
 spec:
   chart:
     spec:
-      chart: helm/librechat
+      chart: librechat
       version: 1.8.10
       sourceRef:
         kind: GitRepository

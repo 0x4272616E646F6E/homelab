@@ -1,4 +1,4 @@
- # renovate: docker=ghcr.io/nginx/charts/
+# renovate: docker=ghcr.io/nginx/charts/
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

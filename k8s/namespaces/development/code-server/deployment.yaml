@@ -26,7 +26,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: code-server
-        # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
+          # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
           image: docker.io/codercom/code-server:latest@sha256:6edc8e2d2849749c1a1a5eff8e76563b96db407e68899c143473a6004d0a6b5a
           imagePullPolicy: IfNotPresent
           ports:

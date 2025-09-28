@@ -24,7 +24,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: sonarr
-        # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
+          # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
           image: lscr.io/linuxserver/sonarr:latest@sha256:328d322af2bb8d7211a9c43a26ff5e658ba3e6f47a695e8fb9ff806bfeab0f04
           imagePullPolicy: IfNotPresent
           ports:

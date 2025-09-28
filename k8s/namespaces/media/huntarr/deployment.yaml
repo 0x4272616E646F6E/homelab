@@ -25,7 +25,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: huntarr
-        # renovate: datasource=docker depName=docker.io/huntarr/huntarr
+          # renovate: datasource=docker depName=docker.io/huntarr/huntarr
           image: docker.io/huntarr/huntarr:latest@sha256:b5a47c2b43806165f433d308d69a21e74a687ce59f4fcccb612d6a7acb3af6d7
           imagePullPolicy: IfNotPresent
           env:

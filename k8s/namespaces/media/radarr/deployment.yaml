@@ -24,7 +24,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: radarr
-        # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
+          # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
           image: lscr.io/linuxserver/radarr:latest@sha256:19474a623b278f558c9696a19b84640ad4aff3b2959f08904a77ffbad73ed7bd
           imagePullPolicy: IfNotPresent
           ports:

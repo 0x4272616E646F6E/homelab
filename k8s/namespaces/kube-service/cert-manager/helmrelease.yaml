@@ -1,4 +1,4 @@
- # renovate: registryUrl=https://charts.jetstack.io
+# renovate: registryUrl=https://charts.jetstack.io
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

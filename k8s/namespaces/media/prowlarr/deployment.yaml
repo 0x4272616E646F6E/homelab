@@ -20,7 +20,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: prowlarr
-        # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
+          # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
           image: lscr.io/linuxserver/prowlarr:latest@sha256:856c93bab72a6a41a23ff60bab48554135c044a456f40909307011dea8ddeafb
           imagePullPolicy: IfNotPresent
           ports:

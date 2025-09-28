@@ -1,4 +1,4 @@
- # renovate: registryUrl=https://nvidia.github.io/k8s-device-plugin
+# renovate: registryUrl=https://nvidia.github.io/k8s-device-plugin
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -18,7 +18,6 @@ spec:
         namespace: flux-system
       version: 0.17.4
   install:
-    # createNamespace: true
     remediation:
       retries: 3
   upgrade:

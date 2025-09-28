@@ -20,7 +20,7 @@ spec:
       runtimeClassName: youki
       containers:
         - name: homeassistant
-        # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
+          # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
           image: lscr.io/linuxserver/homeassistant:latest@sha256:75db1145375294f763508f0a5c132d786a547e3dc5f90d111eacc53815c850a1
           imagePullPolicy: IfNotPresent
           ports:

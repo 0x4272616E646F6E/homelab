@@ -13,5 +13,5 @@ resources:
   - actions-runner-controller/
   - actions-runner/
   - vllm/
-  # - librechat/
+  - librechat/
   # - mcpgateway/

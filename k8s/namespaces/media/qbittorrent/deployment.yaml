@@ -22,6 +22,7 @@ spec:
       runtimeClassName: youki
       initContainers:
         - name: init-qb
+          # renovate: datasource=docker depName=docker.io/busybox
           image: docker.io/busybox:1.37.0@sha256:d82f458899c9696cb26a7c02d5568f81c8c8223f8661bb2a7988b269c8b9051e
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh","-lc"]
@@ -46,6 +47,7 @@ spec:
               mountPath: /init
       containers:
         - name: qbittorrent
+          # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest@sha256:5f3785f8d8cd27d509cd948a06195306c3d951b1e1e123e46c7be40ecfb6965f
           env:
             - name: PUID
