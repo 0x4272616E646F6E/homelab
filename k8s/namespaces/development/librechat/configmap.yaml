@@ -36,59 +36,59 @@ data:
       existingSecretName: "librechat-secrets"
       
       # For adding a custom config yaml-file you can set the contents in this var. See https://www.librechat.ai/docs/configuration/librechat_yaml/example
-      configYamlContent: ""
-      # configYamlContent: |
-      #   version: 1.0.8
+      # configYamlContent: ""
+      configYamlContent: |
+        version: 1.0.8
 
-      #   cache: true
+        cache: true
 
-      #   interface:
-      #     # Privacy policy settings
-      #     privacyPolicy:
-      #       externalUrl: 'https://librechat.ai/privacy-policy'
-      #       openNewTab: true
+        interface:
+          # Privacy policy settings
+          privacyPolicy:
+            externalUrl: 'https://librechat.ai/privacy-policy'
+            openNewTab: true
 
-      #     # Terms of service
-      #     termsOfService:
-      #       externalUrl: 'https://librechat.ai/tos'
-      #       openNewTab: true
+          # Terms of service
+          termsOfService:
+            externalUrl: 'https://librechat.ai/tos'
+            openNewTab: true
 
-      #   registration:
-      #     socialLogins: ["discord", "facebook", "github", "google", "openid"] 
-      #   endpoints:
-      #     azureOpenAI:
-      #      # Endpoint-level configuration
-      #      titleModel: "gpt-4o"
-      #      plugins: true
-      #      assistants: true
-      #      groups:
-      #           Group-level configuration
-      #         - group: "my-resource-sweden"
-      #           apiKey: "${SWEDEN_API_KEY}"
-      #           instanceName: "my-resource-sweden"
-      #           deploymentName: gpt-4-1106-preview
-      #           version: "2024-03-01-preview"
-      #           assistants: true
-      #           # Model-level configuration
-      #           models:
-      #             gpt-4o: true
-      #     custom:
-      #       # OpenRouter.ai
-      #       - name: "OpenRouter"
-      #         apiKey: "${OPENROUTER_KEY}"
-      #         baseURL: "https://openrouter.ai/api/v1"
-      #         models:
-      #           default: ["openai/gpt-3.5-turbo"]
-      #           fetch: true
-      #         titleConvo: true
-      #         titleModel: "gpt-3.5-turbo"
-      #         summarize: false
-      #         summaryModel: "gpt-3.5-turbo"
-      #         forcePrompt: false
-      #         modelDisplayLabel: "OpenRouter"
+        # registration:
+        #   socialLogins: ["discord", "facebook", "github", "google", "openid"] 
+        # endpoints:
+        #   azureOpenAI:
+        #    # Endpoint-level configuration
+        #    titleModel: "gpt-4o"
+        #    plugins: true
+        #    assistants: true
+        #    groups:
+        #         Group-level configuration
+        #       - group: "my-resource-sweden"
+        #         apiKey: "${SWEDEN_API_KEY}"
+        #         instanceName: "my-resource-sweden"
+        #         deploymentName: gpt-4-1106-preview
+        #         version: "2024-03-01-preview"
+        #         assistants: true
+        #         # Model-level configuration
+        #         models:
+        #           gpt-4o: true
+        #   custom:
+        #     # OpenRouter.ai
+        #     - name: "OpenRouter"
+        #       apiKey: "${OPENROUTER_KEY}"
+        #       baseURL: "https://openrouter.ai/api/v1"
+        #       models:
+        #         default: ["openai/gpt-3.5-turbo"]
+        #         fetch: true
+        #       titleConvo: true
+        #       titleModel: "gpt-3.5-turbo"
+        #       summarize: false
+        #       summaryModel: "gpt-3.5-turbo"
+        #       forcePrompt: false
+        #       modelDisplayLabel: "OpenRouter"
 
       # name of existing Yaml configmap, key must be librechat.yaml
-      existingConfigYaml: ""
+      # existingConfigYaml: ""
 
       # Volume used to store image Files uploaded to the Web UI
       imageVolume:
@@ -162,7 +162,7 @@ data:
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       hosts:
-        - host: chat.example.com
+        - host: librechat.oglesby.io
           paths:
             - path: /
               pathType: ImplementationSpecific
@@ -238,7 +238,7 @@ data:
       enabled: true
       persistence:
         enabled: true
-        storageClass: ""
+        storageClass: "local-path-rwo"
       image: 
         tag: "v1.7.3"
       auth:
