@@ -19,15 +19,18 @@ data:
 
     librechat:
       configEnv:
-        PLUGIN_MODELS: gpt-4,gpt-4-turbo-preview,gpt-4-0125-preview,gpt-4-1106-preview,gpt-4-0613,gpt-3.5-turbo,gpt-3.5-turbo-0125,gpt-3.5-turbo-1106,gpt-3.5-turbo-0613
+        # PLUGIN_MODELS:
+        DEBUG_CONSOLE: "true"
+        DEBUG_LOGGING: "true"
+        DEBUG_OPENAI: "true"
         DEBUG_PLUGINS: "true"
-        # IMPORTANT -- GENERATE your own: openssl rand -hex 32 and openssl rand -hex 16 for CREDS_IV. Best Practise: Put into Secret. See global.librechat.existingSecretName
-        # CREDS_KEY: 
-        # CREDS_IV: 
-        # JWT_SECRET: 
-        # JWT_REFRESH_SECRET: 
-        # Set Config Params here
-        # ENV_NAME: env-value
+        ALLOW_EMAIL_LOGIN: "true"
+        ALLOW_REGISTRATION: "true"
+        ALLOW_SOCIAL_LOGIN: "false"
+        ALLOW_SOCIAL_REGISTRATION: "false"
+        APP_TITLE: "Librechat"
+        CUSTOM_FOOTER: "Provided with ❤️"
+        SEARCH: false 
 
         # existing Secret for all envs/ only Passwords. Can be locally generated with: kubectl create secret generic librechat-secret-envs --from-env-file=.env.example --dry-run=client -o yaml > secret-envs.yaml
         # For better maintainabillity, you can put all vars directly in the config Section and only overwrite Secrets with this if nessesary.
@@ -66,8 +69,8 @@ data:
               summarize: false
               summaryModel: "current_model"
               forcePrompt: false
-        registration:
-          socialLogins: ["discord", "github", "google", "openid"] 
+        # registration:
+        #   socialLogins: ["discord", "facebook", "github", "google", "openid"] 
 
       # name of existing Yaml configmap, key must be librechat.yaml
       # existingConfigYaml: ""
