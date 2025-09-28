@@ -217,8 +217,8 @@ data:
         enabled: false
       databases:
       - LibreChat
-    #  persistence: 
-    #    size: 8Gi
+      persistence: 
+        size: 8Gi
 
 
     meilisearch:
