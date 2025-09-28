@@ -6,4 +6,4 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - service.yaml
-  - ingress-route.yaml
+  - ingressroute.yaml

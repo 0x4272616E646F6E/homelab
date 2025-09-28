@@ -6,4 +6,4 @@ resources:
   - pvc.yaml
   - configmap.yaml
   - helmrelease.yaml
-  - ingress-route.yaml
+  - ingressroute.yaml

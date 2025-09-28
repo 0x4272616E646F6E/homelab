@@ -6,4 +6,4 @@ resources:
   - secrets.enc.yaml
   - configmap.yaml
   - helmrelease.yaml
-  - ingress-route.yaml
+  - ingressroute.yaml
