@@ -4,11 +4,11 @@ metadata:
   name: vllm-gpt-oss-20b
   namespace: development
   labels:
-    app.kubernetes.io/name: gpt-oss-20b
+    app.kubernetes.io/name: vllm-gpt-oss-20b
 spec:
   ports:
   - name: vllm-gpt-oss-20b
-    port: 80
+    port: 8000
     protocol: TCP
     targetPort: 8000
   selector:

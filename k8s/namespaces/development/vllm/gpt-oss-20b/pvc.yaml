@@ -4,7 +4,7 @@ metadata:
   name: gpt-oss-20b-pvc
   namespace: development
   labels:
-    app.kubernetes.io/name: gpt-oss-20b
+    app.kubernetes.io/name: vllm-gpt-oss-20b
 spec:
   accessModes:
     - ReadWriteOnce
