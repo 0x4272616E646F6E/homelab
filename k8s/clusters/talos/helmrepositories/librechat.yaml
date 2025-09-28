@@ -6,4 +6,4 @@ metadata:
 spec:
   type: oci
   interval: 1h
-  url: oci://ghcr.io/danny-avila/librechat-chart/librechat
+  url: oci://ghcr.io/danny-avila/librechat-chart/
