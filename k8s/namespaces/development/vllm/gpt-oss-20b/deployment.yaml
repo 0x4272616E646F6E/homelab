@@ -53,6 +53,8 @@ spec:
         args:
           - --model
           - unsloth/gpt-oss-20b
+          - --block-size
+          - "32"
           - --tensor-parallel-size
           - "1"
           - --max-model-len
