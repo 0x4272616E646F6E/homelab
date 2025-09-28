@@ -52,7 +52,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - unsloth/gpt-oss-20b
+          - openai/gpt-oss-20b
           - --block-size
           - "32"
           - --tensor-parallel-size
