@@ -28,7 +28,7 @@ data:
         # JWT_REFRESH_SECRET: 
         # Set Config Params here
         # ENV_NAME: env-value
-        
+
         ALLOW_EMAIL_LOGIN: "true"
         ALLOW_REGISTRATION: "true"
         ALLOW_SOCIAL_LOGIN: "false"
@@ -63,7 +63,7 @@ data:
               apiKey: "vllm"
               baseURL: "http://http-gpt-oss-20b/v1"
               models:
-                default: ['openai/gpt-oss-20b']
+                default: ['unsloth/gpt-oss-20b']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"
