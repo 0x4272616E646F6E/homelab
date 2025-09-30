@@ -21,7 +21,7 @@ spec:
       containers:
         - name: redbot
           # renovate: datasource=docker depName=docker.io/phasecorex/red-discordbot
-          image: docker.io/phasecorex/red-discordbot:core@sha256:85f1d664d1b26e934e3d9b355a2861076a7cbc3f0729fee625bb7ddc76f1553a
+          image: docker.io/phasecorex/red-discordbot:core@sha256:ec16fe246862f291299062651ff3f1812f4c5b6a3d3b8f2fa396a2881de21e85
           imagePullPolicy: IfNotPresent
           resources:
             requests:
