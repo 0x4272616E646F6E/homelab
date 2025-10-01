@@ -184,7 +184,8 @@
       "automerge": true,
       "labels": [
         "automerge",
-        "minor"
+        "minor",
+        "digest"
       ]
     }
   ]
