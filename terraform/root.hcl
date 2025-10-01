@@ -1,6 +1,6 @@
 # Secrets Encrypted With SOPS
 locals {
-  # Decrypt SOPS secrets at runtime (never writes plaintext to disk)
+  # Decrypt SOPS secrets at runtime
   secrets = yamldecode(sops_decrypt_file("${get_terragrunt_dir()}/secrets.yaml"))
 
   # AWS

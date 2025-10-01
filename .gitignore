@@ -34,6 +34,7 @@ flux-system/*.gitops.yaml
 .env
 docker-compose.override.yml
 .kube/
+.dev-zsh/
 
 # Ignore any logs
 *.log
