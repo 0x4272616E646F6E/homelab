@@ -170,6 +170,22 @@
         "k8s/namespaces/security/authentik/postgres/deployment.yaml"
       ],
       "allowedVersions": "/^17(\\.\\d+.*)?$/"
+    },
+    {
+      "description": "Auto-merge minor updates for trusted managers",
+      "matchManagers": [
+        "kubernetes",
+        "helm-values",
+        "custom.regex"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "automerge": true,
+      "labels": [
+        "automerge",
+        "minor"
+      ]
     }
   ]
 }
