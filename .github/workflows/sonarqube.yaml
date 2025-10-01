@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and analyze
+    name: Analyze
     runs-on: actions-runner
 
     steps:
@@ -18,26 +18,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-
-      - name: Install Maven
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y maven
-
-      - name: Build Java modules (maven)
-        run: mvn -B -f cdk/cdk8s/pom.xml -DskipTests package
-
       - uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_SCANNER_OPTS: >
-            -Dsonar.java.binaries=cdk/cdk8s/target/classes
-            -Dsonar.sources=cdk/cdk8s,k8s,terraform
+            -Dsonar.sources=k8s,terraform
             -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json,**/*.tf
             -Dsonar.projectKey=homelab

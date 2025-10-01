@@ -64,36 +64,6 @@ jobs:
         with:
           sarif_file: checkov-k8s.sarif
 
-  java-build-and-scan:
-    name: Build & Scan Java (cdk8s + Trivy)
-    runs-on: actions-runner
-    defaults:
-      run:
-        working-directory: cdk/cdk8s
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
-      - name: Build (compile only)
-        run: mvn -B -q -DskipTests package
-      - name: Trivy (fs scan of Java project)
-        uses: aquasecurity/trivy-action@0.22.0
-        with:
-          scan-type: fs
-          scan-ref: .              # cdk8s dir due to working-directory
-          format: sarif
-          output: trivy-java.sarif
-          severity: HIGH,CRITICAL
-          exit-code: '1'
-          ignore-unfixed: true
-      - name: Upload SARIF (Trivy Java)
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: cdk8s/trivy-java.sarif
-
   gitleaks:
     name: Secret scan (diff)
     runs-on: actions-runner
