@@ -30,6 +30,7 @@ Before using this repository, ensure you have:
 - **OpenTofu**: [Install OpenTofu](https://opentofu.org/docs/intro/install/)
 - **SOPS**: [Install SOPS](https://getsops.io/docs/#download)
 - **Talosctl**: [Install Talosctl](https://www.talos.dev/v1.10/talos-guides/install/talosctl/)
+- **Terragrunt**: [Install Terragrunt](https://terragrunt.gruntwork.io/docs/getting-started/install/)
 
 Or use nix.
 

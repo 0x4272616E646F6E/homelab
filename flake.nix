@@ -36,6 +36,7 @@
             maven
             sops
             talosctl
+            terragrunt
           ];
 
           shellHook = ''
