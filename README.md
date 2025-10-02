@@ -150,6 +150,7 @@ The following resources are managed through Flux in this repository:
   <summary>Click here to view Resources</summary>
 
 - [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
+- [**Alloy**](https://github.com/grafana/alloy/tree/main)
 - [**Authentik**](https://github.com/goauthentik/authentik)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
 - [**BuildKit**](https://github.com/moby/buildkit)
@@ -196,7 +197,6 @@ The following resources are managed through Flux in this repository:
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)
 - [**Tempo**](https://github.com/grafana/tempo)
 - [**Traefik**](https://github.com/traefik/traefik)
-- [**Vector**](https://github.com/vectordotdev/vector)
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
 - [**VLLM**](https://github.com/vllm-project/vllm)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
