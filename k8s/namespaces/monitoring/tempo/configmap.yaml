@@ -40,6 +40,7 @@ data:
         ring:
           kvstore:
             store: inmemory
+          replication_factor: 1
         storage:
           path: /var/tempo/generator/wal
           remote_write:
