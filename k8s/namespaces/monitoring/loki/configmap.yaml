@@ -6,6 +6,7 @@ metadata:
 data:
   values.yaml: |-
     deploymentMode: SingleBinary
+
     loki:
       auth_enabled: false
       schemaConfig:
@@ -32,6 +33,14 @@ data:
         volume_enabled: true
       ruler:
         alertmanager_url: http://prometheus-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+
+    # Explicitly disable simple scalable components
+    write:
+      replicas: 0
+    read:
+      replicas: 0
+    backend:
+      replicas: 0
 
     singleBinary:
       enabled: true
