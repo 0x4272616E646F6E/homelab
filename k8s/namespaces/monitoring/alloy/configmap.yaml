@@ -92,6 +92,7 @@ data:
                 cluster = "talos-single-node",
               }
             }
+            use_rfc5424_message = false
             forward_to = [loki.write.default.receiver]
           }
 
