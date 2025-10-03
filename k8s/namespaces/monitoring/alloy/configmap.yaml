@@ -32,16 +32,16 @@ data:
       mounts:
         varlog: true
         dockercontainers: true
-        extra:
-          - name: pod-logs
-            mountPath: /var/log/pods
-            readOnly: true
       volumes:
         extra:
           - name: pod-logs
             hostPath:
               path: /var/log/pods
               type: DirectoryOrCreate
+      extraVolumeMounts:
+        - name: pod-logs
+          mountPath: /var/log/pods
+          readOnly: true
       extraPorts:
         - name: otlp-grpc
           port: 4317
