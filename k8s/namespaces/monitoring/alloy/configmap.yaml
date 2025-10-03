@@ -75,97 +75,9 @@ data:
             format = "logfmt"
           }
 
-          local.file_match "pod_logs" {
-            path_targets = [
-              {
-                __path__ = "/var/log/pods/*/*/*.log",
-                job       = "kubernetes-pods",
-              },
-            ]
-          }
-
           loki.write "default" {
             endpoint {
               url = "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
-            }
-          }
-
-          loki.source.file "pods" {
-            targets    = local.file_match.pod_logs.targets
-            forward_to = [loki.process.pods.receiver]
-          }
-
-          loki.process "pods" {
-            forward_to = [loki.write.default.receiver]
-
-            stage.regex {
-              expression = ".+/var/log/pods/(?P<namespace>[^_]+)_(?P<pod>[^_]+)_[^/]+/(?P<container>[^/]+)/(?P<stream>[^/]+).log"
-              source     = "filename"
-            }
-
-            stage.labels {
-              values = {
-                cluster   = "talos-single-node",
-                namespace = "",
-                pod       = "",
-                container = "",
-                stream    = "",
-              }
-            }
-
-            stage.json {
-              source         = "log"
-              drop_malformed = true
-            }
-
-            stage.output {
-              source = "log"
-            }
-          }
-
-          otelcol.exporter.prometheus "self" {
-            endpoint = "0.0.0.0:9464"
-          }
-
-          otelcol.exporter.otlp "tempo" {
-            client {
-              endpoint = "tempo.monitoring.svc.cluster.local:4317"
-              tls {
-                insecure = true
-              }
-            }
-          }
-
-          otelcol.processor.batch "metrics" {
-            output {
-              metrics = [otelcol.exporter.prometheus.self.input]
-            }
-          }
-
-          otelcol.processor.batch "traces" {
-            output {
-              traces = [otelcol.exporter.otlp.tempo.input]
-            }
-          }
-
-          otelcol.processor.batch "logs" {
-            output {
-              logs = [loki.write.default.receiver]
-            }
-          }
-
-          otelcol.receiver.otlp "ingest" {
-            grpc {
-              endpoint = "0.0.0.0:4317"
-            }
-            http {
-              endpoint = "0.0.0.0:4318"
-            }
-
-            output {
-              metrics = [otelcol.processor.batch.metrics.input]
-              logs    = [loki.write.default.receiver]
-              traces  = [otelcol.processor.batch.traces.input]
             }
           }
 
@@ -188,10 +100,6 @@ data:
                 cluster = "talos-single-node",
               }
             }
-            forward_to = [loki.process.syslog.receiver]
-          }
-
-          loki.process "syslog" {
             forward_to = [loki.write.default.receiver]
           }
 
