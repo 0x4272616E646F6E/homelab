@@ -4111,7 +4111,7 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "kube-state-metrics-v2",
-      "uid": "garysdevil-kube-state-metrics-v2",
+      "title": "Kubernetes",
+      "uid": "kubernetes-dashboard",
       "version": 12
     }
