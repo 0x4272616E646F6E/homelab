@@ -73,6 +73,16 @@ data:
             }
           }
 
+          loki.process "drop_invalid_syslog" {
+            // Drop messages that failed syslog parsing
+            stage.drop {
+              source                = ""
+              drop_counter_reason   = "invalid_syslog"
+              longer_than           = "0"
+            }
+            forward_to = [loki.write.default.receiver]
+          }
+
           loki.source.syslog "syslog" {
             listener {
               address  = "0.0.0.0:1514"
@@ -82,6 +92,7 @@ data:
                 source  = "syslog",
                 cluster = "talos-single-node",
               }
+              syslog_format = "rfc3164"
             }
             listener {
               address  = "0.0.0.0:1514"
@@ -91,8 +102,9 @@ data:
                 source  = "syslog",
                 cluster = "talos-single-node",
               }
+              syslog_format = "rfc3164"
             }
-            forward_to = [loki.write.default.receiver]
+            forward_to = [loki.process.drop_invalid_syslog.receiver]
           }
 
     service:
