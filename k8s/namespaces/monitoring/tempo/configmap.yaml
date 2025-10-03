@@ -24,11 +24,17 @@ data:
             http:
               endpoint: 0.0.0.0:4318
       retention: 48h
-      queryFrontend:
-        max_outstanding_requests: 64
-      overrides:
-        defaults:
-          max_bytes_per_trace: 25_000_000
+      ingester:
+        max_block_duration: 5m
+      storage:
+        trace:
+          backend: local
+          local:
+            path: /var/tempo/traces
+          wal:
+            path: /var/tempo/wal
+      global_overrides:
+        max_bytes_per_trace: 25000000
       persistence:
         enabled: true
         storageClassName: local-path-rwo
