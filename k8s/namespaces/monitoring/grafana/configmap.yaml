@@ -43,6 +43,13 @@ data:
             type: loki
             access: proxy
             url: http://loki.monitoring.svc.cluster.local:3100
+            jsonData:
+              maxLines: 1000
+              derivedFields:
+                - datasourceUid: tempo
+                  matcherRegex: "traceID=(\\w+)"
+                  name: TraceID
+                  url: "$${__value.raw}"
           - name: Tempo
             uid: tempo
             type: tempo
