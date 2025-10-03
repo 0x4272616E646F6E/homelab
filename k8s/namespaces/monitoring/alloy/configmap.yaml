@@ -96,6 +96,8 @@ data:
           }
 
           loki.process "pods" {
+            forward_to = [loki.write.default.receiver]
+
             stage.regex {
               expression = ".+/var/log/pods/(?P<namespace>[^_]+)_(?P<pod>[^_]+)_[^/]+/(?P<container>[^/]+)/(?P<stream>[^/]+).log"
               source     = "filename"
@@ -104,23 +106,21 @@ data:
             stage.labels {
               values = {
                 cluster   = "talos-single-node",
-                namespace = "{{ .namespace }}",
-                pod       = "{{ .pod }}",
-                container = "{{ .container }}",
-                stream    = "{{ .stream }}",
+                namespace = "",
+                pod       = "",
+                container = "",
+                stream    = "",
               }
             }
 
             stage.json {
-              source = "log"
+              source         = "log"
               drop_malformed = true
             }
 
             stage.output {
               source = "log"
             }
-
-            forward_to = [loki.write.default.receiver]
           }
 
           otelcol.exporter.prometheus "self" {
@@ -155,33 +155,38 @@ data:
           }
 
           otelcol.receiver.otlp "ingest" {
-            protocols {
-              grpc {
-                endpoint = "0.0.0.0:4317"
-              }
-              http {
-                endpoint = "0.0.0.0:4318"
-              }
+            grpc {
+              endpoint = "0.0.0.0:4317"
+            }
+            http {
+              endpoint = "0.0.0.0:4318"
             }
 
             output {
               metrics = [otelcol.processor.batch.metrics.input]
-              logs    = [otelcol.processor.batch.logs.input]
+              logs    = [loki.write.default.receiver]
               traces  = [otelcol.processor.batch.traces.input]
             }
           }
 
           loki.source.syslog "syslog" {
-            tcp {
-              listen_address = "0.0.0.0:1514"
+            listener {
+              address  = "0.0.0.0:1514"
+              protocol = "tcp"
+              labels   = {
+                job     = "external-syslog",
+                source  = "syslog",
+                cluster = "talos-single-node",
+              }
             }
-            udp {
-              listen_address = "0.0.0.0:1514"
-            }
-            labels = {
-              job     = "external-syslog",
-              source  = "syslog",
-              cluster = "talos-single-node",
+            listener {
+              address  = "0.0.0.0:1514"
+              protocol = "udp"
+              labels   = {
+                job     = "external-syslog",
+                source  = "syslog",
+                cluster = "talos-single-node",
+              }
             }
             forward_to = [loki.process.syslog.receiver]
           }
