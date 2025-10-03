@@ -28,6 +28,7 @@ data:
         retention_period: 168h
         ingestion_rate_mb: 16
         ingestion_burst_size_mb: 32
+        volume_enabled: true
       ruler:
         alertmanager_url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
 
