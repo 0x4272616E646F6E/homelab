@@ -35,12 +35,27 @@ data:
             path: /var/tempo/wal
       global_overrides:
         max_bytes_per_trace: 25000000
-        metrics_generator_disabled: true
       metricsGenerator:
-        enabled: false
+        enabled: true
         ring:
           kvstore:
             store: inmemory
+        storage:
+          path: /var/tempo/generator/wal
+          remote_write:
+            - url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090/api/v1/write
+              send_exemplars: true
+        traces_storage:
+          path: /var/tempo/generator/traces
+        processor:
+          service_graphs:
+            dimensions:
+              - cluster
+              - namespace
+          span_metrics:
+            dimensions:
+              - cluster
+              - namespace
       memberlist:
         join_members: []
       persistence:
