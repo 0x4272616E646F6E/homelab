@@ -87,3 +87,9 @@ data:
         enabled: false
       notifiers:
         enabled: false
+
+    loki:
+      commonConfig:
+        replication_factor: 1
+      memberlist:
+        join_members: []
