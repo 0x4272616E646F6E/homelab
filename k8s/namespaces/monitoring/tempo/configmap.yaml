@@ -24,6 +24,8 @@ data:
             http:
               endpoint: 0.0.0.0:4318
       retention: 48h
+      metricsGenerator:
+        enabled: false
       ingester:
         max_block_duration: 5m
       storage:
