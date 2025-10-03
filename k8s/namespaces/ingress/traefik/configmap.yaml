@@ -757,6 +757,20 @@ data:
           exposedPort: 9100
           # -- The port protocol (TCP/UDP)
           protocol: TCP
+        syslogudp:
+          port: 1514
+          expose:
+            default: true
+          exposedPort: 1514
+          protocol: UDP
+          nodePort:  # @schema type:[integer, null]; minimum:0
+        syslogtcp:
+          port: 1514
+          expose:
+            default: true
+          exposedPort: 1514
+          protocol: TCP
+          nodePort:  # @schema type:[integer, null]; minimum:0
 
       # -- TLS Options are created as [TLSOption CRDs](https://doc.traefik.io/traefik/https/tls/#tls-options)
       # When using `labelSelector`, you'll need to set labels on tlsOption accordingly.
