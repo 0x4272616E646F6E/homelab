@@ -41,7 +41,7 @@ data:
       extraVolumeMounts:
         - name: pod-logs
           mountPath: /var/log/pods
-          readOnly: true
+              type: DirectoryOrCreate
       extraPorts:
         - name: otlp-grpc
           port: 4317
@@ -52,6 +52,14 @@ data:
         - name: prom-metrics
           port: 9464
           targetPort: 9464
+        - name: syslog-udp
+          port: 1514
+          targetPort: 1514
+          protocol: UDP
+        - name: syslog-tcp
+          port: 1514
+          targetPort: 1514
+          protocol: TCP
       resources:
         requests:
           cpu: 200m
