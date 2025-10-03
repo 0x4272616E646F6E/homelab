@@ -45,6 +45,7 @@ data:
             url: http://loki.monitoring.svc.cluster.local:3100
             jsonData:
               maxLines: 1000
+              volumeSupported: true
               derivedFields:
                 - datasourceUid: tempo
                   matcherRegex: "traceID=(\\w+)"
