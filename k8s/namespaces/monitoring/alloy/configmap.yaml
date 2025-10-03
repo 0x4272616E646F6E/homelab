@@ -154,24 +154,6 @@ data:
             }
           }
 
-          otelcol.receiver.hostmetrics "node" {
-            collection_interval = "30s"
-            scrapers = {
-              cpu        = {},
-              disk       = {},
-              filesystem = {},
-              load       = {},
-              memory     = {},
-              network    = {},
-              paging     = {},
-              processes  = {},
-            }
-
-            output {
-              metrics = [otelcol.processor.batch.metrics.input]
-            }
-          }
-
           otelcol.receiver.otlp "ingest" {
             protocols {
               grpc {
