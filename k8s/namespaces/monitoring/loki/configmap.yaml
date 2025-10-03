@@ -97,3 +97,5 @@ data:
         interval: 30s
         additionalLabels:
           release: prometheus
+      lokiCanary:
+        enabled: false
