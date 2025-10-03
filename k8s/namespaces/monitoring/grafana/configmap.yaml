@@ -13,10 +13,10 @@ data:
         cpu: 500m
         memory: 512Mi
 
-      admin:
-        existingSecret: "grafana-secrets"
-        userKey: admin-user
-        passwordKey: admin-password
+    admin:
+      existingSecret: "grafana-secrets"
+      userKey: admin-user
+      passwordKey: admin-password
 
     tolerations:
       - key: node-role.kubernetes.io/control-plane
