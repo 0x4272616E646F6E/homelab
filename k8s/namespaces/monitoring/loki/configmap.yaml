@@ -6,15 +6,9 @@ metadata:
 data:
   values.yaml: |-
     loki:
-      # Explicitly disable object-store paths so templates do not expect bucketNames
-      storage:
-        use_thanos_objstore: false
-        bucketNames:
-          chunks: ""
-          index: ""
-          ruler: ""
-
-      # Ensure schema uses filesystem TSDB
+      auth_enabled: false
+      commonConfig:
+        replication_factor: 1
       schemaConfig:
         configs:
           - from: 2024-04-01
@@ -24,53 +18,56 @@ data:
             index:
               prefix: loki_index_
               period: 24h
+      storage_config:
+        filesystem:
+          chunks_directory: /var/loki/chunks
+          rules_directory: /var/loki/rules
+      compactor:
+        working_directory: /var/loki/compactor
+      limits_config:
+        retention_period: 168h
+        ingestion_rate_mb: 16
+        ingestion_burst_size_mb: 32
+      ruler:
+        alertmanager_url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
 
-      # runtime/tuning defaults
-      commonConfig:
-        replication_factor: 1
-      resources:
-        requests:
-          cpu: 1
-          memory: 2Gi
-
-    # StatefulSet persistence using local-path-provisioner
-    persistence:
-      enabled: true
-      storageClassName: local-path-rwo
-      accessModes:
-        - ReadWriteOnce
-      size: 50Gi
-
-    # run single-binary/all-in-one for a local single-node install
     singleBinary:
       enabled: true
       replicas: 1
+      persistence:
+        enabled: true
+        size: 50Gi
+        storageClass: local-path-rwo
       resources:
         requests:
-          cpu: 500m
-          memory: 1Gi
-    backend:
-      replicas: 0
-    read:
-      replicas: 0
-    write:
-      replicas: 0
+          cpu: 300m
+          memory: 512Mi
+        limits:
+          cpu: 1500m
+          memory: 2Gi
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      podAnnotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3100"
+      extraArgs:
+        - -config.expand-env=true
+      service:
+        ports:
+          - name: http-metrics
+            port: 3100
+            targetPort: http-metrics
 
-    ingester:
-      replicas: 0
-    querier:
-      replicas: 0
-    queryFrontend:
-      replicas: 0
-    queryScheduler:
-      replicas: 0
-    distributor:
-      replicas: 0
-    compactor:
-      replicas: 0
-    indexGateway:
-      replicas: 0
-    bloomCompactor:
-      replicas: 0
-    bloomGateway:
-      replicas: 0
+    monitoring:
+      selfMonitoring:
+        enabled: false
+      serviceMonitor:
+        enabled: true
+        interval: 30s
+        additionalLabels:
+          release: prometheus

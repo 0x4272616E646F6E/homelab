@@ -14,7 +14,7 @@ spec:
           namespace: ingress
       services:
         - name: tempo
-          port: 3100
+          port: 3200
   tls:
     secretName: oglesby-io-tls
 ---
@@ -36,4 +36,4 @@ spec:
         namespace: ingress
       services:
         - name: tempo
-          port: 3100
+          port: 3200
