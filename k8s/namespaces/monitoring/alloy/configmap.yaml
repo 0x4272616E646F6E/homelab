@@ -41,7 +41,7 @@ data:
       extraVolumeMounts:
         - name: pod-logs
           mountPath: /var/log/pods
-              type: DirectoryOrCreate
+          readOnly: true
       extraPorts:
         - name: otlp-grpc
           port: 4317
