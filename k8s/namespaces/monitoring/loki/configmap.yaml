@@ -35,14 +35,24 @@ data:
       ruler:
         alertmanager_url: http://prometheus-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
 
-    # Explicitly disable simple scalable components
+    # Disable all distributed components
     write:
       replicas: 0
     read:
       replicas: 0
     backend:
       replicas: 0
-
+    
+    # Disable gateway (not needed for SingleBinary)
+    gateway:
+      enabled: false
+    
+    # Disable caching (not needed for SingleBinary)
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
+    
     singleBinary:
       enabled: true
       replicas: 1
