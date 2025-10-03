@@ -75,8 +75,9 @@ data:
 
           loki.source.syslog "syslog" {
             listener {
-              address  = "0.0.0.0:1514"
-              protocol = "tcp"
+              address          = "0.0.0.0:1514"
+              protocol         = "tcp"
+              use_rfc5424_message = false
               labels   = {
                 job     = "external-syslog",
                 source  = "syslog",
@@ -84,15 +85,15 @@ data:
               }
             }
             listener {
-              address  = "0.0.0.0:1514"
-              protocol = "udp"
+              address          = "0.0.0.0:1514"
+              protocol         = "udp"
+              use_rfc5424_message = false
               labels   = {
                 job     = "external-syslog",
                 source  = "syslog",
                 cluster = "talos-single-node",
               }
             }
-            use_rfc5424_message = false
             forward_to = [loki.write.default.receiver]
           }
 
