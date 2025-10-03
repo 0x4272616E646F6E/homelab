@@ -9,6 +9,10 @@ data:
 
     loki:
       auth_enabled: false
+      commonConfig:
+        replication_factor: 1
+      memberlist:
+        join_members: []
       schemaConfig:
         configs:
           - from: 2024-04-01
