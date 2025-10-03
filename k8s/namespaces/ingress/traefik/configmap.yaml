@@ -431,7 +431,7 @@ data:
           disableAPICheck:  # @schema type:[boolean, null]
           serviceMonitor:
             # -- Enable optional CR for Prometheus Operator. See EXAMPLES.md for more details.
-            enabled: false
+            enabled: true
             metricRelabelings: []
             relabelings: []
             jobLabel: ""
@@ -753,7 +753,7 @@ data:
           # If you want to access it from outside your cluster,
           # use `kubectl port-forward` or create a secure ingress
           expose:
-            default: true
+            default: false
           # -- The exposed port for this service
           exposedPort: 9100
           # -- The port protocol (TCP/UDP)
@@ -764,14 +764,12 @@ data:
             default: true
           exposedPort: 1514
           protocol: UDP
-          nodePort:  # @schema type:[integer, null]; minimum:0
         syslogtcp:
           port: 1514
           expose:
             default: true
           exposedPort: 1514
           protocol: TCP
-          nodePort:  # @schema type:[integer, null]; minimum:0
 
       # -- TLS Options are created as [TLSOption CRDs](https://doc.traefik.io/traefik/https/tls/#tls-options)
       # When using `labelSelector`, you'll need to set labels on tlsOption accordingly.
