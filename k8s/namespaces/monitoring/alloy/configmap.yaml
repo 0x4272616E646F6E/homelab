@@ -95,11 +95,11 @@ data:
 
             stage.labels {
               values = {
-                cluster   = "talos-single-node"
-                namespace = "{{ .namespace }}"
-                pod       = "{{ .pod }}"
-                container = "{{ .container }}"
-                stream    = "{{ .stream }}"
+                cluster   = "talos-single-node",
+                namespace = "{{ .namespace }}",
+                pod       = "{{ .pod }}",
+                container = "{{ .container }}",
+                stream    = "{{ .stream }}",
               }
             }
 
@@ -189,9 +189,9 @@ data:
               listen_address = "0.0.0.0:1514"
             }
             labels = {
-              job     = "external-syslog"
-              source  = "syslog"
-              cluster = "talos-single-node"
+              job     = "external-syslog",
+              source  = "syslog",
+              cluster = "talos-single-node",
             }
             forward_to = [loki.process.syslog.receiver]
           }

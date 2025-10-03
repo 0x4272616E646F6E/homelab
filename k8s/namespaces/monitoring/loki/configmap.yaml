@@ -26,6 +26,7 @@ data:
       compactor:
         working_directory: /var/loki/compactor
         retention_enabled: true
+        delete_request_store: filesystem
       limits_config:
         retention_period: 168h
         ingestion_rate_mb: 16
