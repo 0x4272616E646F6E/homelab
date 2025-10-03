@@ -7,8 +7,6 @@ data:
   values.yaml: |-
     loki:
       auth_enabled: false
-      commonConfig:
-        replication_factor: 1
       schemaConfig:
         configs:
           - from: 2024-04-01
@@ -18,19 +16,21 @@ data:
             index:
               prefix: loki_index_
               period: 24h
-      storage_config:
+      storage:
+        type: filesystem
         filesystem:
           chunks_directory: /var/loki/chunks
           rules_directory: /var/loki/rules
       compactor:
         working_directory: /var/loki/compactor
+        retention_enabled: true
       limits_config:
         retention_period: 168h
         ingestion_rate_mb: 16
         ingestion_burst_size_mb: 32
         volume_enabled: true
       ruler:
-        alertmanager_url: http://prometheus-alertmanager.monitoring.svc.cluster.local:9093
+        alertmanager_url: http://prometheus-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
 
     singleBinary:
       enabled: true

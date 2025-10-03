@@ -5,8 +5,12 @@ metadata:
   namespace: monitoring
 data:
   values.yaml: |-
-    server:
-      replicaCount: 1
+    # Disable the bundled Grafana since we're managing it separately
+    grafana:
+      enabled: false
+
+    # Prometheus Operator configuration
+    prometheusOperator:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
@@ -14,54 +18,82 @@ data:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
-      resources:
-        requests:
-          cpu: 250m
-          memory: 512Mi
-        limits:
-          cpu: 1000m
-          memory: 1Gi
-      persistentVolume:
-        enabled: true
-        existingClaim: prometheus-server
-        size: 20Gi
-        storageClass: local-path-rwo
-      retention: 168h
-      extraScrapeConfigs: |
-        - job_name: alloy
-          kubernetes_sd_configs:
-            - role: endpoints
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-              action: keep
-              regex: monitoring;alloy;prom-metrics
-        - job_name: tempo
-          kubernetes_sd_configs:
-            - role: endpoints
-          relabel_configs:
-            - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-              action: keep
-              regex: monitoring;tempo;tempo-http
+
+    # Prometheus instance configuration
+    prometheus:
+      prometheusSpec:
+        replicas: 1
+        retention: 168h
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+            effect: NoSchedule
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path-rwo
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 20Gi
+        # ServiceMonitor selector - match all ServiceMonitors with this label
+        serviceMonitorSelector:
+          matchLabels:
+            release: prometheus
+        # PodMonitor selector
+        podMonitorSelector:
+          matchLabels:
+            release: prometheus
+        # Additional scrape configs for services without ServiceMonitor
+        additionalScrapeConfigs:
+          - job_name: alloy
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+                action: keep
+                regex: monitoring;alloy;prom-metrics
+          - job_name: tempo
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+                action: keep
+                regex: monitoring;tempo;tempo-http
+
+    # AlertManager configuration
     alertmanager:
       enabled: true
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      alertmanagerSpec:
+        replicas: 1
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+          - key: node-role.kubernetes.io/master
+            operator: Exists
+            effect: NoSchedule
+
+    # kube-state-metrics configuration
     kube-state-metrics:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
+
+    # prometheus-node-exporter configuration
     prometheus-node-exporter:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
-    prometheus-pushgateway:
-      enabled: false
-    rbac:
-      create: true

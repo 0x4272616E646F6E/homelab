@@ -34,7 +34,7 @@ data:
             uid: prometheus
             type: prometheus
             access: proxy
-            url: http://prometheus-server.monitoring.svc.cluster.local:80
+            url: http://prometheus-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090
             jsonData:
               httpMethod: POST
             isDefault: true
