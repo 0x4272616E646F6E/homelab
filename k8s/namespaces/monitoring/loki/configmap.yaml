@@ -5,6 +5,7 @@ metadata:
   namespace: monitoring
 data:
   values.yaml: |-
+    deploymentMode: SingleBinary
     loki:
       auth_enabled: false
       schemaConfig:
