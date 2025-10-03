@@ -20,8 +20,6 @@ data:
         podAnnotations:
           prometheus.io/scrape: "true"
           prometheus.io/port: "9464"
-        podLabels:
-          app.kubernetes.io/component: telemetry-gateway
       podSecurityContext:
         runAsUser: 0
         runAsGroup: 0
