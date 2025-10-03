@@ -15,6 +15,8 @@ data:
 
       admin:
         existingSecret: "grafana-secrets"
+        userKey: admin-user
+        passwordKey: admin-password
 
     tolerations:
       - key: node-role.kubernetes.io/control-plane
