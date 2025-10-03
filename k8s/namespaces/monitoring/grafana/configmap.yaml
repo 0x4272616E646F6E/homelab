@@ -13,6 +13,9 @@ data:
         cpu: 500m
         memory: 512Mi
 
+      admin:
+        existingSecret: "grafana-secrets"
+
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
