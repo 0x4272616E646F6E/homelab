@@ -24,8 +24,6 @@ data:
             http:
               endpoint: 0.0.0.0:4318
       retention: 48h
-      metricsGenerator:
-        enabled: false
       ingester:
         max_block_duration: 5m
       storage:
@@ -37,6 +35,7 @@ data:
             path: /var/tempo/wal
       global_overrides:
         max_bytes_per_trace: 25000000
+        metrics_generator_disabled: true
       persistence:
         enabled: true
         storageClassName: local-path-rwo
