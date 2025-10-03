@@ -7,3 +7,4 @@ resources:
   - helmrelease.yaml
   - middlewares.yaml
   - ingressroute.yaml
+  - alloy-syslog.yaml
