@@ -82,7 +82,6 @@ data:
                 source  = "syslog",
                 cluster = "talos-single-node",
               }
-              syslog_format = "rfc3164"
             }
             listener {
               address  = "0.0.0.0:1514"
@@ -92,7 +91,6 @@ data:
                 source  = "syslog",
                 cluster = "talos-single-node",
               }
-              syslog_format = "rfc3164"
             }
             forward_to = [loki.write.default.receiver]
           }
