@@ -48,7 +48,7 @@ spec:
       containers:
       - name: vllm
         # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
-        image: docker.io/vllm/vllm-openai:v0.10.2@sha256:607442e407b0fea97f8a132a78b787c121a996dd4de181fa08e8da06e71ec2db
+        image: docker.io/vllm/vllm-openai:v0.11.0@sha256:014a95f21c9edf6abe0aea6b07353f96baa4ec291c427bb1176dc7c93a85845c
         imagePullPolicy: IfNotPresent
         args:
           - --model
