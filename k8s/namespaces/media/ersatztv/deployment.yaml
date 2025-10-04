@@ -28,7 +28,7 @@ spec:
       containers:
         - name: ersatztv
           # renovate: datasource=docker depName=ghcr.io/ersatztv/ersatztv
-          image: ghcr.io/ersatztv/ersatztv:latest@sha256:d05a22d5a9a08e8e8a7cdfc868a7c930aee80f8b67a4bae63407ff69103aa1c7
+          image: ghcr.io/ersatztv/ersatztv:latest@sha256:e9bca2252705250356d76eafb5f2f02ea96d18fbf38613a1389279966811d5e0
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
