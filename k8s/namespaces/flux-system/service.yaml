@@ -1,0 +1,72 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: source-controller-metrics
+  namespace: flux-system
+  labels:
+    app: source-controller
+    control-plane: controller
+spec:
+  ports:
+  - name: http-prom
+    port: 8080
+    protocol: TCP
+    targetPort: http-prom
+  selector:
+    app: source-controller
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kustomize-controller-metrics
+  namespace: flux-system
+  labels:
+    app: kustomize-controller
+    control-plane: controller
+spec:
+  ports:
+  - name: http-prom
+    port: 8080
+    protocol: TCP
+    targetPort: http-prom
+  selector:
+    app: kustomize-controller
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helm-controller-metrics
+  namespace: flux-system
+  labels:
+    app: helm-controller
+    control-plane: controller
+spec:
+  ports:
+  - name: http-prom
+    port: 8080
+    protocol: TCP
+    targetPort: http-prom
+  selector:
+    app: helm-controller
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-controller-metrics
+  namespace: flux-system
+  labels:
+    app: notification-controller
+    control-plane: controller
+spec:
+  ports:
+  - name: http-prom
+    port: 8080
+    protocol: TCP
+    targetPort: http-prom
+  selector:
+    app: notification-controller
+  type: ClusterIP
