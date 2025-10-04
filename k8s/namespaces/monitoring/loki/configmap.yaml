@@ -95,6 +95,6 @@ data:
       serviceMonitor:
         enabled: true
         interval: 30s
-        additionalLabels: {}
-      lokiCanary:
-        enabled: false
+        additionalLabels: 
+    lokiCanary:
+      enabled: false
