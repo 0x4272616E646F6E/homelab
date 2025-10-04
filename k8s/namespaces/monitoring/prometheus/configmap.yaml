@@ -46,14 +46,10 @@ data:
               resources:
                 requests:
                   storage: 20Gi
-        # ServiceMonitor selector - match all ServiceMonitors with this label
-        serviceMonitorSelector:
-          matchLabels:
-            release: prometheus
-        # PodMonitor selector
-        podMonitorSelector:
-          matchLabels:
-            release: prometheus
+        # ServiceMonitor selector - match all ServiceMonitors (empty selector = match all)
+        serviceMonitorSelector: {}
+        # PodMonitor selector - match all PodMonitors (empty selector = match all)
+        podMonitorSelector: {}
         # Additional scrape configs for services without ServiceMonitor
         additionalScrapeConfigs:
           - job_name: alloy

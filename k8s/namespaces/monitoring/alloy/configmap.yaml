@@ -116,5 +116,4 @@ data:
     serviceMonitor:
       enabled: true
       interval: 30s
-      additionalLabels:
-        release: prometheus
+      additionalLabels: {}

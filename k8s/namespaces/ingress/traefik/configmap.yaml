@@ -441,8 +441,7 @@ data:
             honorTimestamps: false
             enableHttp2: false
             followRedirects: false
-            additionalLabels:
-              release: prometheus
+            additionalLabels: {}
             namespace: ""
             namespaceSelector: {}
           prometheusRule:
