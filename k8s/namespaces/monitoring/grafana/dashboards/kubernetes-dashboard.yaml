@@ -21,7 +21,7 @@ data:
           }
         ]
       },
-      "description": "Summary metrics about kube-state-metrics v2 version(https://github.com/kubernetes/kube-state-metrics); Referenced 6417",
+      "description": "Kubernetes Cluster Monitoring Dashboard",
       "editable": true,
       "gnetId": 13332,
       "graphTooltip": 1,
