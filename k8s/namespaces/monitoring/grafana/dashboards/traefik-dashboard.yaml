@@ -38,7 +38,7 @@ data:
             "y": 0
           },
           "id": 10,
-          "title": "$backend stats",
+          "title": "$service stats",
           "type": "row"
         },
         {
@@ -662,7 +662,7 @@ data:
             "allValue": null,
             "current": {},
             "datasource": "Prometheus",
-            "definition": "label_values(service)",
+            "definition": "label_values(traefik_service_requests_total, service)",
             "description": null,
             "error": null,
             "hide": 0,
@@ -672,7 +672,7 @@ data:
             "name": "service",
             "options": [],
             "query": {
-              "query": "label_values(service)",
+              "query": "label_values(traefik_service_requests_total, service)",
               "refId": "StandardVariableQuery"
             },
             "refresh": 1,
@@ -689,7 +689,7 @@ data:
             "allValue": null,
             "current": {},
             "datasource": "Prometheus",
-            "definition": "",
+            "definition": "label_values(traefik_entrypoint_requests_total, entrypoint)",
             "description": null,
             "error": null,
             "hide": 0,
@@ -699,7 +699,7 @@ data:
             "name": "entrypoint",
             "options": [],
             "query": {
-              "query": "label_values(entrypoint)",
+              "query": "label_values(traefik_entrypoint_requests_total, entrypoint)",
               "refId": "Prometheus-entrypoint-Variable-Query"
             },
             "refresh": 1,
