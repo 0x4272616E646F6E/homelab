@@ -66,7 +66,6 @@ spec:
           - --gpu-memory-utilization
           - "0.80"
           - --enable-chunked-prefill
-          - --async-scheduling
           - --tool-call-parser
           - "openai"
           - --reasoning-parser
@@ -84,7 +83,7 @@ spec:
         - { name: TMPDIR, value: /tmp }
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
-        - { name: VLLM_ATTENTION_BACKEND,    value: "FLASH_ATTN" }
+        - { name: VLLM_ATTENTION_BACKEND,    value: "XFORMERS" }
         - { name: VLLM_LOGGING_LEVEL,        value: "INFO" }
         - { name: PYTORCH_CUDA_ALLOC_CONF,   value: "expandable_segments:True" }
         - { name: NCCL_P2P_DISABLE,          value: "1" }
