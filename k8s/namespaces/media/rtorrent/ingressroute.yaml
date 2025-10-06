@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: rtorrent-https
+  name: traefik-rtorrent-https
   namespace: media
   labels:
     app.kubernetes.io/name: rtorrent
@@ -22,27 +22,3 @@ spec:
           port: 8080
   tls: 
     secretName: oglesby-io-tls
-
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: rtorrent-http
-  namespace: media
-  labels:
-    app.kubernetes.io/name: rtorrent
-    app.kubernetes.io/managed-by: flux
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`rtorrent.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: rtorrent
-          port: 8080

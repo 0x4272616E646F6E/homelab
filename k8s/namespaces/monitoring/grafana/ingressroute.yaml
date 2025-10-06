@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: grafana-https
+  name: traefik-grafana-https
   namespace: monitoring
 spec:
   entryPoints:
@@ -17,23 +17,3 @@ spec:
           port: 80
   tls: 
     secretName: oglesby-io-tls
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: grafana-http
-  namespace: monitoring
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`grafana.oglesby.io`)
-      kind: Rule
-      middlewares:
-      - name: internal-whitelist
-        namespace: ingress
-      - name: redirect-https
-        namespace: ingress
-      services:
-        - name: grafana
-          port: 80

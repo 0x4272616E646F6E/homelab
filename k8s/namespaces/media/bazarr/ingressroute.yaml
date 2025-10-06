@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: bazarr-https
+  name: traefik-bazarr-https
   namespace: media
   labels:
     app.kubernetes.io/name: bazarr
@@ -22,27 +22,3 @@ spec:
           port: 6767
   tls: 
     secretName: oglesby-io-tls
-
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: bazarr-http
-  namespace: media
-  labels:
-    app.kubernetes.io/name: bazarr
-    app.kubernetes.io/managed-by: flux
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`bazarr.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: bazarr
-          port: 6767

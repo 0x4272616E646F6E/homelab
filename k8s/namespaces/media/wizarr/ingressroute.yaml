@@ -10,53 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`wizarr.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: authentik
-          namespace: ingress
-      services:
-        - name: wizarr
-          port: 5690
-  tls: 
-    secretName: oglesby-io-tls
-
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: wizarr-http
-  namespace: media
-  labels:
-    app.kubernetes.io/name: wizarr
-    app.kubernetes.io/managed-by: flux
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`wizarr.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: wizarr
-          port: 5690
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: wizarr-external-https
-  namespace: media
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`wizarr.hosted.fail`)
+    - match: Host(`wizarr.oglesby.io || wizarr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist

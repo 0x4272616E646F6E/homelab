@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ersatztv-https
+  name: traefik-ersatztv-https
   namespace: media
   labels:
     app.kubernetes.io/name: ersatztv
@@ -22,27 +22,3 @@ spec:
           port: 8409
   tls: 
     secretName: oglesby-io-tls
-
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: ersatztv-http
-  namespace: media
-  labels:
-    app.kubernetes.io/name: ersatztv
-    app.kubernetes.io/managed-by: flux
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`ersatztv.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: ersatztv
-          port: 8409

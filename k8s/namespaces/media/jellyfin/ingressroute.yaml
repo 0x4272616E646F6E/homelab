@@ -14,7 +14,6 @@ spec:
     - match: Host(`jellyfin.oglesby.io`) || Host(`jellyfin.hosted.fail`)
       kind: Rule
       middlewares:
-        # IP Whitelist
         - name: internal-whitelist
           namespace: ingress
       services:
@@ -31,18 +30,15 @@ metadata:
   name: nginx-jellyfin-https
   namespace: media
   annotations:
-    # IP Whitelist
     nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,127.0.0.0/8"
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - jellyfin.oglesby.io
         - jellyfin.hosted.fail
-      # Certificate
-      secretName: oglesby-io-tls
+      secretName: hosted-fail-tls
   rules:
-    - host: jellyfin.oglesby.io
+    - host: jellyfin.hosted.fail
       http:
         paths:
           - path: /
@@ -61,30 +57,15 @@ metadata:
   name: haproxy-jellyfin-https
   namespace: media
   annotations:
-    # IP Whitelist
     haproxy.org/allowlist: "192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,127.0.0.0/8"
-    
-    # HTTPS Redirect
     haproxy.org/ssl-redirect: "true"
 spec:
   ingressClassName: haproxy
   tls:
     - hosts:
-        - jellyfin.oglesby.io
         - jellyfin.hosted.fail
-      # Certificate
-      secretName: oglesby-io-tls
+      secretName: hosted-fail-tls
   rules:
-    - host: jellyfin.oglesby.io
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: jellyfin
-                port:
-                  number: 8096
     - host: jellyfin.hosted.fail
       http:
         paths:

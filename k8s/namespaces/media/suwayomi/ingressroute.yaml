@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: suwayomi-https
+  name: traefik-suwayomi-https
   namespace: media
   labels:
     app.kubernetes.io/name: suwayomi
@@ -22,27 +22,3 @@ spec:
           port: 4567
   tls: 
     secretName: oglesby-io-tls
-
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: suwayomi-http
-  namespace: media
-  labels:
-    app.kubernetes.io/name: suwayomi
-    app.kubernetes.io/managed-by: flux
-spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`suwayomi.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: suwayomi
-          port: 4567
