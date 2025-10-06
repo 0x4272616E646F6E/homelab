@@ -10,15 +10,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  postBuild:
-    # Defaults
-    substitute:
-      COMFY_REPLICAS: "0"
-      VLLM_REPLICAS:  "1"
-    # Runtime overrides
-    substituteFrom:
-      - kind: ConfigMap
-        name: gpu-app-config
   timeout: 2m
   decryption:
     provider: sops
