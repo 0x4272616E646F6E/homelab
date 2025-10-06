@@ -662,7 +662,10 @@ data:
             # Added in 2.2, one can make permanent redirects via entrypoints.
             # Same sets of parameters: to, scheme, permanent and priority.
             # https://docs.traefik.io/routing/entrypoints/#redirection
-            entryPoint: {}
+            entryPoint:
+              to: websecure
+              scheme: https
+              permanent: true
           forwardedHeaders:
             # -- Trust forwarded headers information (X-Forwarded-*).
             trustedIPs: []
