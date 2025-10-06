@@ -1,4 +1,10 @@
 creation_rules:
+  # Encrypt secrets files
   - path_regex: 'secrets(\.enc)?\.yaml$'
     encrypted_regex: '^(data|stringData)$'
+    age: 'age1mvx2tgja4uztmjrdnfp5m2vlf3j7saj9lynzvyauhmrjvkzu2u4s7sf387'
+  
+  # Encrypt cert-manager issuer files
+  - path_regex: 'cert-manager/issuers/.*\.yaml$'
+    encrypted_regex: '^(email)$'
     age: 'age1mvx2tgja4uztmjrdnfp5m2vlf3j7saj9lynzvyauhmrjvkzu2u4s7sf387'

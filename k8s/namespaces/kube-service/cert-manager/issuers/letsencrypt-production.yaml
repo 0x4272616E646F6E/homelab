@@ -1,20 +1,34 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-production
+    name: letsencrypt-production
 spec:
-  acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    email: Brandon.Oglesby@outlook.com
-    privateKeySecretRef:
-      name: letsencrypt-production
-    solvers:
-      - dns01:
-          cloudflare:
-            apiTokenSecretRef:
-              name: cloudflare-api-token-secret
-              key: api-token
-        selector:
-          dnsZones:
-            - "hosted.fail"
-            - "hosted.fail"
+    acme:
+        server: https://acme-v02.api.letsencrypt.org/directory
+        email: ENC[AES256_GCM,data:Kk9L4S7H3dKvklg7j9aInZ4N3JvlhWQUxo13,iv:RgH0xppoZrwK63iwTL2UPiKV9XWPi7bPm+YTgSYSV3I=,tag:WYEpFb8JtVkdkAxunUZT+A==,type:str]
+        privateKeySecretRef:
+            name: letsencrypt-production
+        solvers:
+            - dns01:
+                cloudflare:
+                    apiTokenSecretRef:
+                        name: cloudflare-api-token-secret
+                        key: api-token
+              selector:
+                dnsZones:
+                    - hosted.fail
+sops:
+    age:
+        - recipient: age1mvx2tgja4uztmjrdnfp5m2vlf3j7saj9lynzvyauhmrjvkzu2u4s7sf387
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0c3g0RnZHSXpYcmNCeUJz
+            SFhYMlFiM3VIYy8vOElqbkRUckYxU2NOQkhBCjhOd3lWUFdPM1lJSDdpcWh1a21u
+            TnYwdGp6MEY5QmtsNUFUa0hCQU0zdkEKLS0tIDFqN2V5aVc3cjc3c09ZZHFONitj
+            Tyt2L2dpUS80ajhobk0zLzg0bGl6VlkKs4i2S/wwVmKqRRr4h+tyR+uYpy5/xioE
+            WM0X59YBOgzjxOR+/YX2cHuWrT1kHHl6aVaLpBEYaQgJIx/6ftJx+Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-10-06T03:25:54Z"
+    mac: ENC[AES256_GCM,data:O6eXDORqTT5Ap+CE+USuXD6slyS9jdywFblDx46ATPfMls71/m4BDr2VqyNiNEuOeSFKZLxqJi3CGmatUp4HlplNg4Mn8I6lBe/h6bYWdqXD3vGNs3rkR+vSS6CsWF8hfURhVgA48Q4dyqgT6ILro4B02T/a8bTRW5l6qligibQ=,iv:0Ed1xcSXs/Fib1LRBzIA0CxrtZ4UqTJ91rn6U5vbgIY=,tag:GdFfQch61zn2cPYWUczRdg==,type:str]
+    encrypted_regex: ^(email)$
+    version: 3.11.0
