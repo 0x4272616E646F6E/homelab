@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: comfyui
     app.kubernetes.io/managed-by: flux
 spec:
-  replicas: $(COMFY_REPLICAS)
+  replicas: !!int $(COMFY_REPLICAS)
   selector:
     matchLabels:
       app.kubernetes.io/name: comfyui

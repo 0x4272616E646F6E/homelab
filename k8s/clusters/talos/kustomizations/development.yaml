@@ -19,7 +19,6 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: gpu-app-config
-        namespace: development
   timeout: 2m
   decryption:
     provider: sops

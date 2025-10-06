@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vllm-gpt-oss-20b
-  replicas: $(VLLM_REPLICAS)
+  replicas: !!int $(VLLM_REPLICAS)
   strategy:
     type: RollingUpdate
     rollingUpdate: { maxSurge: 0, maxUnavailable: 1 }
