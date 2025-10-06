@@ -5,7 +5,7 @@ metadata:
 spec:
     acme:
         server: https://acme-staging-v02.api.letsencrypt.org/directory
-        email: ENC[AES256_GCM,data:0ZOOcsDKhc5F3Lcy3Ns4VhGcO2Erss953flC,iv:bpiYFBVBe/zZbWUih+AuK96UC6DeVumxwJjzp7CEhJQ=,tag:BIl4xp7uvYxlpOZ57iPjoA==,type:str]
+        email: ENC[AES256_GCM,data:zvdvQom7dVmqssZIbyM2M18LeNFvsmp/cgxf,iv:Ww8jo2mtRCscSKqkxGVQT5JqDN4jMiGG7HZ5dosgd+0=,tag:w+Y7rpWH2ts17uHWrK4jpA==,type:str]
         privateKeySecretRef:
             name: letsencrypt-staging
         solvers:
@@ -17,19 +17,18 @@ spec:
               selector:
                 dnsZones:
                     - hosted.fail
-                    - hosted.fail
 sops:
     age:
         - recipient: age1mvx2tgja4uztmjrdnfp5m2vlf3j7saj9lynzvyauhmrjvkzu2u4s7sf387
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0WHNERXRPNnFJaFEvMjFl
-            MmtSbjgrcmU5U1VoS1B1L1NUdFB3T1JDdVgwClBxQzZpRDBaSk5oWnRiUjZLWU5n
-            M0MzcmQwaUxiTXZLdit6Q2VJRTZra00KLS0tIDN2NFN2SmZBU0ordktNTCtHQ1lL
-            cnFtQVpzTythVTRrOFE5aUliTzhHM1EKhkeBZ9xbpr6fu+6q5U1txz6wJXDZHBqu
-            zWhDlHvBZe8VFs8KkdAzr07dxBI0+DB+B+sEaHpmTAQmiETKs4VhSA==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA0MWtyQjRGdDNOTlpqbXJa
+            U01PQmI3VE8rN29venNPRFdSakc5Q0tLamkwCkc1ZDgyZmVxWVI4U24yL2t2eXpU
+            bWJ5MzlxSFowQ2xtdE5HMHVTalF0eDQKLS0tIEJkV05mN1MwZTdHMXc1QWFselph
+            L0N5RzlrUmtuUVFzaU41SkRFY2pzTDgKZS75PfRdcRAtRw8Qwy5/3IdjxChi4Y4k
+            7Ff0egf4JM5CIlSeaAdXHGG2Yer+3DCW+q6lObh+mB4JJaAPq8jMTg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-10-06T03:26:05Z"
-    mac: ENC[AES256_GCM,data:3V5QEfSSMqJBCDHPUbcoC+A5EKz9EZTqZK//1trWUHQqEx0WD9PLP569dnUDaZ3y/zZELjfqZQcVmizFYCXWMwcbMoMWb8DXVwkQcBb4mkuAlWSgubM1GIm+gYEKCXb2wWit7E6QxiziSizuUradn8r4g1eWkbt0pDaJoFLCsVI=,iv:U25tCGbLbqYj4F+lj2rf6KPZvAbY4FrEgszGn/rV6mM=,tag:Qt2HVkUq0rBKjiJ2SCNo0g==,type:str]
+    lastmodified: "2025-10-06T03:31:09Z"
+    mac: ENC[AES256_GCM,data:X5cyzsRJpjLJyYTfWaBIlx1OSVlPWcLZ1msFrDYIYVnIoU6S9QH7Uq0OLbzzXxYhpW19yFXA2GD4LrIVpNU0X4qk1WqrkJUIN1twlccaB4uPj6XK5N4mcAue2ghzPTs+TclycY2dVMzEMsww/UkGDBhzkgPmmV/HxEn/WQLAQuQ=,iv:RYEMM43TzZJy1l9+rPDcyHuQdarh8vMKsibSaUAPrNo=,tag:6naHu1T2HV2FVXn3bqjcFQ==,type:str]
     encrypted_regex: ^(email)$
     version: 3.11.0
