@@ -1,7 +1,8 @@
+# Traefik
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: jellyfin-https
+  name: traefik-jellyfin-https
   namespace: media
   labels:
     app.kubernetes.io/name: jellyfin
@@ -10,9 +11,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jellyfin.oglesby.io`)
+    - match: Host(`jellyfin.oglesby.io`) || Host(`jellyfin.hosted.fail`)
       kind: Rule
       middlewares:
+        # IP Whitelist
         - name: internal-whitelist
           namespace: ingress
       services:
@@ -20,47 +22,76 @@ spec:
           port: 8096
   tls: 
     secretName: oglesby-io-tls
+---
 
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+# NGINX
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: jellyfin-http
+  name: nginx-jellyfin-https
   namespace: media
-  labels:
-    app.kubernetes.io/name: jellyfin
-    app.kubernetes.io/managed-by: flux
+  annotations:
+    # IP Whitelist
+    nginx.ingress.kubernetes.io/whitelist-source-range: "192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,127.0.0.0/8"
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`jellyfin.oglesby.io`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-        - name: redirect-https
-          namespace: ingress
-      services:
-        - name: jellyfin
-          port: 8096
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - jellyfin.oglesby.io
+        - jellyfin.hosted.fail
+      # Certificate
+      secretName: oglesby-io-tls
+  rules:
+    - host: jellyfin.oglesby.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 8096
 ---
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+
+# HAProxy
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: jellyfin-external-https
+  name: haproxy-jellyfin-https
   namespace: media
+  annotations:
+    # IP Whitelist
+    haproxy.org/allowlist: "192.168.0.0/16,172.16.0.0/12,10.0.0.0/8,127.0.0.0/8"
+    
+    # HTTPS Redirect
+    haproxy.org/ssl-redirect: "true"
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`jellyfin.hosted.fail`)
-      kind: Rule
-      middlewares:
-        - name: internal-whitelist
-          namespace: ingress
-      services:
-        - name: jellyfin
-          port: 8096
-  tls: 
-    secretName: oglesby-io-tls
+  ingressClassName: haproxy
+  tls:
+    - hosts:
+        - jellyfin.oglesby.io
+        - jellyfin.hosted.fail
+      # Certificate
+      secretName: oglesby-io-tls
+  rules:
+    - host: jellyfin.oglesby.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 8096
+    - host: jellyfin.hosted.fail
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 8096

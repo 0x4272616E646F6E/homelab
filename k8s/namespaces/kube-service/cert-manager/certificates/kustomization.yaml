@@ -6,3 +6,4 @@ resources:
   - selfsigned-root-ca.yaml
   - selfsigned-intermediate-ca.yaml
   - letsencrypt-wildcard-oglesby-io.yaml
+  - letsencrypt-wildcard-hosted-fail.yaml

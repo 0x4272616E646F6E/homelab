@@ -5,6 +5,8 @@ metadata:
   name: autoscaler
   namespace: kube-service
 spec:
+  interval: 15m
+  timeout: 5m
   chart:
     spec:
       chart: vpa
@@ -13,8 +15,12 @@ spec:
         kind: HelmRepository
         name: fairwinds
         namespace: flux-system
-  interval: 15m
-  timeout: 5m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
   releaseName: autoscaler
   valuesFrom:
   - kind: ConfigMap
