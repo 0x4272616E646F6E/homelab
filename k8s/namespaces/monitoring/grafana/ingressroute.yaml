@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`grafana.oglesby.io`)
+    - match: Host(`grafana.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: grafana
           port: 80
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

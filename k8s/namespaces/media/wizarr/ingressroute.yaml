@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`wizarr.oglesby.io || wizarr.hosted.fail`)
+    - match: Host(`wizarr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: wizarr
           port: 5690
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

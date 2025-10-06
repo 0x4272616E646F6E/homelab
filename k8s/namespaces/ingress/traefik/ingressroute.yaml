@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`traefik.oglesby.io`)
+    - match: Host(`traefik.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist

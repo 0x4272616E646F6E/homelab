@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`syncthing.oglesby.io`)
+    - match: Host(`syncthing.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -18,4 +18,4 @@ spec:
         - name: syncthing
           port: 8384
   tls:
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`rtorrent.oglesby.io`)
+    - match: Host(`rtorrent.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: rtorrent
           port: 8080
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

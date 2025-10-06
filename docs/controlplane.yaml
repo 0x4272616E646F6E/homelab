@@ -135,7 +135,7 @@ cluster:
   id:
   secret:
   controlPlane:
-    endpoint: https://talos.oglesby.io:6443
+    endpoint: https://talos.hosted.fail:6443
     localAPIServerPort: 6443
   clusterName: talos
   network:

@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`librechat.oglesby.io`)
+    - match: Host(`librechat.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -19,4 +19,4 @@ spec:
         - name: librechat-librechat
           port: 3080
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

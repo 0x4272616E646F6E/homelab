@@ -14,7 +14,7 @@ data:
         ingressClassName: envoy
         enabled: false
         hosts:
-          - authentik.oglesby.io
+          - authentik.hosted.fail
     # Disable the built-in PostgreSQL
     postgresql:
       enabled: false

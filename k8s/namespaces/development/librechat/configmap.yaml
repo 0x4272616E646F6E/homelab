@@ -149,7 +149,7 @@ data:
         # kubernetes.io/ingress.class: nginx
         # kubernetes.io/tls-acme: "true"
       hosts:
-        - host: librechat.oglesby.io
+        - host: librechat.hosted.fail
           paths:
             - path: /
               pathType: ImplementationSpecific

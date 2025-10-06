@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`hubble.oglesby.io`)
+    - match: Host(`hubble.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,7 +16,7 @@ spec:
         - name: hubble-ui
           port: 80
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -27,7 +27,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`hubble.oglesby.io`)
+    - match: Host(`hubble.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist

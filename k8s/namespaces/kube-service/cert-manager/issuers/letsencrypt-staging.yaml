@@ -16,5 +16,5 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - "oglesby.io"
+            - "hosted.fail"
             - "hosted.fail"

@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`glance.oglesby.io`)
+    - match: Host(`glance.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: glance
           port: 80
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

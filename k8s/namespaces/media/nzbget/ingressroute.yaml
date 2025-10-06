@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`nzbget.oglesby.io`)
+    - match: Host(`nzbget.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: nzbget
           port: 6789
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

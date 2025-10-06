@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jellyseerr.oglesby.io`)
+    - match: Host(`jellyseerr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -19,4 +19,4 @@ spec:
         - name: jellyseerr
           port: 5055
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

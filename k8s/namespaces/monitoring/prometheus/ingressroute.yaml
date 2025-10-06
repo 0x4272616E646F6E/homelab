@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`prometheus.oglesby.io`)
+    - match: Host(`prometheus.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: prometheus-kube-prometheus-prometheus
           port: 9090
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`harbor.oglesby.io`)
+    - match: Host(`harbor.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -17,4 +17,4 @@ spec:
           port: 80
           passHostHeader: true
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

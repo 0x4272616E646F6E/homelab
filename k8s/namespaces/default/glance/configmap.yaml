@@ -17,53 +17,53 @@ data:
                 groups:
                   - links:
                       - title: Authentik
-                        url: https://authentik.oglesby.io/
+                        url: https://authentik.hosted.fail/
                       - title: Bazarr
-                        url: https://bazarr.oglesby.io/
+                        url: https://bazarr.hosted.fail/
                       - title: ComfyUI
-                        url: https://comfyui.oglesby.io/
+                        url: https://comfyui.hosted.fail/
                       - title: Grafana
-                        url: https://grafana.oglesby.io/
+                        url: https://grafana.hosted.fail/
                       - title: Harbor
-                        url: https://harbor.oglesby.io/
+                        url: https://harbor.hosted.fail/
                       - title: Home Assistant
-                        url: https://homeassistant.oglesby.io/
+                        url: https://homeassistant.hosted.fail/
                       - title: Huntarr
-                        url: https://huntarr.oglesby.io/
+                        url: https://huntarr.hosted.fail/
                       - title: Jellyfin
-                        url: https://jellyfin.oglesby.io/
+                        url: https://jellyfin.hosted.fail/
                       - title: JellySeerr
-                        url: https://jellyseerr.oglesby.io/
+                        url: https://jellyseerr.hosted.fail/
+                      - title: LibreChat
+                        url: https://librechat.hosted.fail/
                       - title: NzbGet
-                        url: https://nzbget.oglesby.io/
-                      - title: OpenWebUI
-                        url: https://openwebui.oglesby.io/
+                        url: https://nzbget.hosted.fail/
                       - title: Prometheus
-                        url: https://prometheus.oglesby.io/
+                        url: https://prometheus.hosted.fail/
                       - title: Prowlarr
-                        url: https://prowlarr.oglesby.io/
+                        url: https://prowlarr.hosted.fail/
                       - title: Proxmox Backup Server
-                        url: https://pve.oglesby.io:8007/
+                        url: https://pve.hosted.fail:8007/
                       - title: Proxmox VE
-                        url: https://pve.oglesby.io:8006/
+                        url: https://pve.hosted.fail:8006/
                       - title: Radarr
-                        url: https://radarr.oglesby.io/
+                        url: https://radarr.hosted.fail/
                       - title: Requestrr
-                        url: https://requestrr.oglesby.io/
+                        url: https://requestrr.hosted.fail/
                       - title: rTorrent
-                        url: https://rtorrent.oglesby.io/
+                        url: https://rtorrent.hosted.fail/
                       - title: Sonarr
-                        url: https://sonarr.oglesby.io/
+                        url: https://sonarr.hosted.fail/
                       - title: SonarQube
-                        url: https://sonarqube.oglesby.io/
+                        url: https://sonarqube.hosted.fail/
                       - title: Suwayomi
-                        url: https://suwayomi.oglesby.io/
+                        url: https://suwayomi.hosted.fail/
                       - title: Traefik
-                        url: https://traefik.oglesby.io/
+                        url: https://traefik.hosted.fail/
                       - title: Unifi
-                        url: https://unifi.oglesby.io/
+                        url: https://unifi.hosted.fail/
                       - title: Wizarr
-                        url: https://wizarr.oglesby.io/
+                        url: https://wizarr.hosted.fail/
           - size: full
             widgets:
               - type: rss

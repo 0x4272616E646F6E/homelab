@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`kestra.oglesby.io`)
+    - match: Host(`kestra.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: kestra
           port: 8080
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

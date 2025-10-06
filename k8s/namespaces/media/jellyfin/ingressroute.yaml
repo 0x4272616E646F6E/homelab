@@ -11,7 +11,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`jellyfin.oglesby.io`) || Host(`jellyfin.hosted.fail`)
+    - match: Host(`jellyfin.hosted.fail`) || Host(`jellyfin.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -20,7 +20,7 @@ spec:
         - name: jellyfin
           port: 8096
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls
 ---
 
 # NGINX

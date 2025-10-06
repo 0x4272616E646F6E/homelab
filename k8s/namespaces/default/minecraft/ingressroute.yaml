@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`minecraft.oglesby.io`)
+    - match: Host(`minecraft.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -18,4 +18,4 @@ spec:
         - name: minecraft
           port: 19132
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`suwayomi.oglesby.io`)
+    - match: Host(`suwayomi.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: suwayomi
           port: 4567
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

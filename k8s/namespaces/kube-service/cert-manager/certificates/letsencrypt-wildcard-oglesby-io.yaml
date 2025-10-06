@@ -8,9 +8,9 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "*.oglesby.io"
+  commonName: "*.hosted.fail"
   dnsNames:
-    - "*.oglesby.io"
+    - "*.hosted.fail"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"

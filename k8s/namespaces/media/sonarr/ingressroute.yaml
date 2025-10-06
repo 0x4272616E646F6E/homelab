@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarr.oglesby.io`)
+    - match: Host(`sonarr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: sonarr
           port: 8989
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

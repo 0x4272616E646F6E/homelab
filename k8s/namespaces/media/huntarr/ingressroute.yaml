@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`huntarr.oglesby.io`)
+    - match: Host(`huntarr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -21,4 +21,4 @@ spec:
         - name: huntarr
           port: 9705
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

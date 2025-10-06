@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`sonarqube.oglesby.io`)
+    - match: Host(`sonarqube.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: sonarqube-sonarqube
           port: 9000
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

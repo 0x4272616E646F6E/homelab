@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`flaresolverr.oglesby.io`)
+    - match: Host(`flaresolverr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -19,4 +19,4 @@ spec:
         - name: flaresolverr
           port: 8191
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`homeassistant.oglesby.io`)
+    - match: Host(`homeassistant.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -16,4 +16,4 @@ spec:
         - name: homeassistant
           port: 8123
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls

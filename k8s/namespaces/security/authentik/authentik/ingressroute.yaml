@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`authentik.oglesby.io || authentik.hosted.fail`)
+    - match: Host(`authentik.hosted.fail`)
       kind: Rule
       services:
       - name: authentik-server

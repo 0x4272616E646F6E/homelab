@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`requestrr.oglesby.io`)
+    - match: Host(`requestrr.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
@@ -19,4 +19,4 @@ spec:
         - name: requestrr
           port: 4545
   tls: 
-    secretName: oglesby-io-tls
+    secretName: hosted-fail-tls
