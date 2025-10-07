@@ -1,17 +1,16 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: sonarqube-postgres-17
   namespace: development
   labels:
     app.kubernetes.io/name: sonarqube-postgres-17
 spec:
+  serviceName: sonarqube-postgres-17
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: sonarqube-postgres-17
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -36,10 +35,11 @@ spec:
             secretKeyRef:
               name: sonarqube-secrets
               key: POSTGRES_PASSWORD
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
-          subPath: postgres
         resources:
           limits:
             memory: 1Gi
@@ -47,7 +47,14 @@ spec:
           requests:
             memory: 256Mi
             cpu: 200m
-      volumes:
-      - name: postgres-data
-        persistentVolumeClaim:
-          claimName: sonarqube-postgres-pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+      labels:
+        app.kubernetes.io/name: sonarqube-postgres-17
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-path-rwo"
+      resources:
+        requests:
+          storage: 10Gi
