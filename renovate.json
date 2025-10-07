@@ -166,7 +166,7 @@
         "index.docker.io/postgres"
       ],
       "matchFileNames": [
-        "k8s/namespaces/development/sonarqube/postgres/deployment.yaml",
+        "k8s/namespaces/development/sonarqube/postgres/statefulset.yaml",
         "k8s/namespaces/security/authentik/postgres/deployment.yaml"
       ],
       "allowedVersions": "/^17(\\.\\d+.*)?$/"
