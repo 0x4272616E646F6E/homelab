@@ -2,6 +2,39 @@
 
 ## Kubernetes
 
+**Postgres Backup and Restore**
+```bash
+# Backup (all databases)
+kubectl exec -n ns pod -- pg_dumpall -U user > backup.sql
+
+# Backup (single database)
+kubectl exec -n ns pod -- pg_dump -U user dbname > backup.sql
+
+# Backup (compressed with timestamp)
+kubectl exec -n ns pod -- pg_dumpall -U user | gzip > backup-$(date +%Y%m%d-%H%M%S).sql.gz
+
+# Restore (all databases - use postgres db)
+kubectl exec -i -n ns pod -- psql -U user -d postgres < backup.sql
+
+# Restore (single database)
+kubectl exec -i -n ns pod -- psql -U user -d dbname < backup.sql
+
+# Restore (from compressed)
+gunzip < backup.sql.gz | kubectl exec -i -n ns pod -- psql -U user -d postgres
+
+# Verify backup integrity
+kubectl exec -n ns pod -- pg_dumpall -U user | head -20
+
+# Copy backup from pod to local
+kubectl cp ns/pod:/tmp/backup.sql ./backup.sql
+
+# ⚠️  Important Notes:
+# - pg_dumpall requires superuser (typically 'postgres' user)
+# - Restore drops and recreates databases (destructive!)
+# - For large DBs, use --compress=9 or pipe through gzip
+# - Always test restores in non-production first
+```
+
 **Copy Local Files to Pod**
 ```bash
 # copy local to pod
