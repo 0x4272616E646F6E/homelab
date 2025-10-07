@@ -2,22 +2,6 @@
 
 ## Kubernetes
 
-**Turn vLLM ON, ComfyUI OFF**
-```bash
-kubectl -n development create configmap gpu-app-config \
-  --from-literal=COMFY_REPLICAS=0 \
-  --from-literal=VLLM_REPLICAS=1 \
-  -o yaml --dry-run=client | kubectl apply -f -
-```
-
-**Turn ComfyUI ON, vLLM OFF**
-```bash
-kubectl -n development create configmap gpu-app-config \
-  --from-literal=COMFY_REPLICAS=1 \
-  --from-literal=VLLM_REPLICAS=0 \
-  -o yaml --dry-run=client | kubectl apply -f -
-```
-
 **Copy Local Files to Pod**
 ```bash
 # copy local to pod
