@@ -5,6 +5,8 @@ metadata:
   namespace: development
   labels:
     app.kubernetes.io/name: sonarqube-postgres-17
+  annotations:
+    kustomize.toolkit.fluxcd.io/force: "enabled"
 spec:
   serviceName: sonarqube-postgres-17
   replicas: 1
