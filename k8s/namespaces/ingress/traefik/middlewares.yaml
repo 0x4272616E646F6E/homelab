@@ -42,4 +42,4 @@ metadata:
 spec:
   headers:
     customRequestHeaders:
-      X-Api-Key: ${radarr-api-key}
+      X-Api-Key: ${RADARR_API_KEY}
