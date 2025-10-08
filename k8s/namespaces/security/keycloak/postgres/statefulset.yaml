@@ -23,7 +23,7 @@ spec:
       containers:
       - name: postgres
         # renovate: datasource=docker depName=docker.io/postgres
-        image: docker.io/postgres:17.6@sha256:e6a4209d1a4893f2df3bdcde58f8926c3c929c4d51df90990ed1b36d83c1382a
+        image: docker.io/postgres:18.0@sha256:073e7c8b84e2197f94c8083634640ab37105effe1bc853ca4d5fbece3219b0e8
         ports:
         - containerPort: 5432
           name: postgres
