@@ -17,7 +17,7 @@ spec:
       name: sops-age
   dependsOn:
     - name: kube-system
-    - name: cluster-secrets
+    - name: flux-system-extras
   postBuild:
     substituteFrom:
       - kind: Secret
