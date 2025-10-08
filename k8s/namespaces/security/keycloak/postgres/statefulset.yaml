@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak-postgres-17
+  namespace: security
+  labels:
+    app.kubernetes.io/name: keycloak-postgres-17
+  annotations:
+    kustomize.toolkit.fluxcd.io/force: "enabled"
+spec:
+  serviceName: keycloak-postgres-17
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: keycloak-postgres-17
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: keycloak-postgres-17
+    spec:
+      securityContext:
+        fsGroup: 999
+      containers:
+      - name: postgres
+        # renovate: datasource=docker depName=docker.io/postgres
+        image: docker.io/postgres:17.6@sha256:e6a4209d1a4893f2df3bdcde58f8926c3c929c4d51df90990ed1b36d83c1382a
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: "keycloak"
+        - name: POSTGRES_USER
+          value: "keycloak"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak-secrets
+              key: POSTGRES_PASSWORD
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/pgdata"
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        resources:
+          limits:
+            memory: 1Gi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: 200m
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+      labels:
+        app.kubernetes.io/name: sonarqube-postgres-17
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-path-rwo"
+      resources:
+        requests:
+          storage: 10Gi

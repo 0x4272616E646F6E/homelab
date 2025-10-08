@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-config
+  namespace: security
+  labels:
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/managed-by: flux
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 8Gi
