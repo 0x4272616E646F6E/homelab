@@ -6,7 +6,6 @@ resources:
   - namespace.yaml
   - pvc.yaml
   - flaresolverr/
-  - rtorrent/
   - qbittorrent/
   - nzbget/
   - prowlarr/
