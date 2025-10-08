@@ -20,5 +20,4 @@ spec:
   postBuild:
     substituteFrom:
       - kind: Secret
-        name: traefik-secrets
-        namespace: ingress
+        name: cluster-secrets
