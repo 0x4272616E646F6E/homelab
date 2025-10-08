@@ -17,6 +17,8 @@ spec:
           namespace: ingress
         - name: authentik
           namespace: ingress
+        - name: radarr-api-key
+          namespace: ingress
       services:
         - name: radarr
           port: 7878
