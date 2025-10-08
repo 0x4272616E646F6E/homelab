@@ -25,8 +25,8 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: keycloak
-          # renovate: datasource=docker depName=quay.io/keycloak/keycloak
-          image: quay.io/keycloak/keycloak:latest
+          # renovate: datasource=docker depName=docker.io/keycloak/keycloak
+          image: docker.io/keycloak/keycloak:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
