@@ -70,56 +70,6 @@ spec:
             limits:
               cpu: "2000m"
               memory: "4Gi"
-        # - name: qb-port-sync
-        #   image: docker.io/debian:13@sha256:fd8f5a1df07b5195613e4b9a0b6a947d3772a151b81975db27d47f093f60c6e6
-        #   securityContext:
-        #     privileged: true
-        #     capabilities:
-        #       add: ["NET_ADMIN"]
-        #   resources:
-        #     requests:
-        #       cpu: "50m"
-        #       memory: "64Mi"
-        #     limits:
-        #       cpu: "500m"
-        #       memory: "256Mi"
-        #   env:
-        #     - name: GATEWAY
-        #       value: "10.2.0.1"
-        #     - name: LEASE
-        #       value: "60"
-        #     - name: QB_HOST
-        #       value: "127.0.0.1"
-        #     - name: QB_PORT
-        #       value: "8080"
-        #     - name: QB_USER
-        #       value: ""
-        #     - name: QB_PASS
-        #       value: ""
-        #     - name: STATE_FILE
-        #       value: "/run/protonvpn-forwarded-port"
-        #   volumeMounts:
-        #     - name: script
-        #       mountPath: /opt/qb
-        #     - name: dev-net-tun
-        #       mountPath: /dev/net/tun
-        #   command: ["/bin/bash","-lc"]
-        #   args:
-        #     - |
-        #       set -euo pipefail
-        #       apt-get update
-        #       DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        #         natpmpc iproute2 python3 python3-pip ca-certificates
-        #       pip3 install --no-cache-dir requests
-        #       chmod +x /opt/qb/qb_port_sync.py
-        #       exec /opt/qb/qb_port_sync.py
-        #       set -euo pipefail
-        #       apt-get update
-        #       DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        #         natpmpc iproute2 python3 python3-pip ca-certificates
-        #       pip3 install --no-cache-dir requests
-        #       chmod +x /opt/qb/qb_port_sync.py
-        #       exec /opt/qb/qb_port_sync.py
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -127,11 +77,3 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
-        - name: script
-          configMap:
-            name: qbittorrent-port-forward-sync
-            defaultMode: 0755
-        - name: dev-net-tun
-          hostPath:
-            path: /dev/net/tun
-            type: CharDevice
