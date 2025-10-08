@@ -17,3 +17,8 @@ spec:
       name: sops-age
   dependsOn:
     - name: kube-system
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: traefik-secrets
+        namespace: ingress
