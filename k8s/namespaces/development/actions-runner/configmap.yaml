@@ -97,17 +97,17 @@ data:
     ##
     ## If any customization is required for dind or kubernetes mode, containerMode should remain
     ## empty, and configuration should be applied to the template.
-    # containerMode:
-    #   type: "dind"  ## type can be set to dind or kubernetes
-    #   ## the following is required when containerMode.type=kubernetes
-    #   kubernetesModeWorkVolumeClaim:
-    #     accessModes: ["ReadWriteOnce"]
-    #     # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
-    #     storageClassName: "dynamic-blob-storage"
-    #     resources:
-    #       requests:
-    #         storage: 1Gi
-    #
+    containerMode:
+      type: "dind"  ## type can be set to dind or kubernetes
+      ## the following is required when containerMode.type=kubernetes
+      # kubernetesModeWorkVolumeClaim:
+      #   accessModes: ["ReadWriteOnce"]
+      #   # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
+      #   storageClassName: "dynamic-blob-storage"
+      #   resources:
+      #     requests:
+      #       storage: 1Gi
+      #
 
     ## listenerTemplate is the PodSpec for each listener Pod
     ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
@@ -357,11 +357,11 @@ data:
       ##               resources:
       ##                 requests:
       ##                   storage: 1Gi
-      spec:
-        containers:
-          - name: runner
-            image: ghcr.io/actions/actions-runner:latest@sha256:db0dcae6d28559e54277755a33aba7d0665f255b3bd2a66cdc5e132712f155e0
-            command: ["/home/runner/run.sh"]
+      # spec:
+      #   containers:
+      #     - name: runner
+      #       image: ghcr.io/actions/actions-runner:latest@sha256:db0dcae6d28559e54277755a33aba7d0665f255b3bd2a66cdc5e132712f155e0
+      #       command: ["/home/runner/run.sh"]
     ## Optional controller service account that needs to have required Role and RoleBinding
     ## to operate this gha-runner-scale-set installation.
     ## The helm chart will try to find the controller deployment and its service account at installation time.

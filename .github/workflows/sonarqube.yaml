@@ -23,6 +23,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_SCANNER_OPTS: >
-            -Dsonar.sources=k8s,terraform
-            -Dsonar.inclusions=**/*.java,**/*.kt,**/*.yaml,**/*.yml,**/*.json,**/*.tf
+            -Dsonar.sources=ansible,k8s,terraform
+            -Dsonar.inclusions=**/*.yaml,**/*.yml,**/*.json,**/*.tf,**/*.hcl
             -Dsonar.projectKey=homelab
