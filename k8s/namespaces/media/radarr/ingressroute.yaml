@@ -15,6 +15,8 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: ingress
+        - name: authentik
+          namespace: ingress
       services:
         - name: radarr
           port: 7878
