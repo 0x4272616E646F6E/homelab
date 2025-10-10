@@ -16,6 +16,7 @@ flux-system/*.gitops.yaml
 
 # Ignore local only files
 .local/*
+.ansible/*
 
 # Ignore backup and swap files
 *~
