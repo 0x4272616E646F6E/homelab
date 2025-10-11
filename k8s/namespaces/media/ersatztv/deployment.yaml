@@ -40,11 +40,12 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "200m"
+              memory: "256Mi"
+              nvidia.com/gpu: "1"
             limits:
-              cpu: "1"
-              memory: "1Gi"
+              cpu: "1500m"
+              memory: "1536Mi"
               nvidia.com/gpu: "1"
           securityContext:
             runAsNonRoot: false

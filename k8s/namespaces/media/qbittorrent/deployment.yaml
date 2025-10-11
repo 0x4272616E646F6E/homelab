@@ -65,11 +65,11 @@ spec:
               protocol: UDP
           resources:
             requests:
-              cpu: "100m"
+              cpu: "200m"
               memory: "256Mi"
             limits:
               cpu: "2000m"
-              memory: "4Gi"
+              memory: "4096Mi"
           volumeMounts:
             - name: config
               mountPath: /config

@@ -37,11 +37,12 @@ spec:
               value: "022"
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "200m"
+              memory: "256Mi"
+              nvidia.com/gpu: "1"
             limits:
-              cpu: "4"
-              memory: "4Gi"
+              cpu: "4000m"
+              memory: "4096Mi"
               nvidia.com/gpu: "1"
           volumeMounts:
             - name: config
