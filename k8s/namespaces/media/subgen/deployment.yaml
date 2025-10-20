@@ -24,20 +24,44 @@ spec:
         app.kubernetes.io/name: subgen
         app.kubernetes.io/managed-by: flux
     spec:
-      automountServiceAccountToken: false
-      securityContext:
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
       runtimeClassName: nvidia
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+        supplementalGroups:
+          - 44
+        seccompProfile:
+          type: RuntimeDefault
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: false
+        capabilities:
+          drop:
+            - NET_RAW
+            - MKNOD
+            - AUDIT_WRITE
+            - SETFCAP
+      automountServiceAccountToken: false
       containers:
         - name: subgen
           securityContext:
             runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: 10000
+            runAsGroup: 10000
+            fsGroup: 10000
+            supplementalGroups:
+              - 44
+            seccompProfile:
+              type: RuntimeDefault
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
             capabilities:
-              drop: ["ALL"]
+              drop:
+                - NET_RAW
+                - MKNOD
+                - AUDIT_WRITE
+                - SETFCAP
           # renovate: datasource=docker depName=docker.io/mccloud/subgen
           image: docker.io/mccloud/subgen:latest@sha256:bb49ae3a16d4ac09c8b6d5578278daa3be0e5b2bad1c525acb820ae1634f9abb
           env:
