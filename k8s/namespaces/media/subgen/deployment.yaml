@@ -25,6 +25,24 @@ spec:
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: nvidia
+      initContainers:
+        - name: fix-models-permissions
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Fixing /models ownership for UID 1000..."
+              chown -R 1000:1000 /models
+              chmod -R 755 /models
+              echo "Done. Current permissions:"
+              ls -la /models
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
+          volumeMounts:
+            - name: models
+              mountPath: /models
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -45,23 +63,6 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: subgen
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            supplementalGroups:
-              - 44
-            seccompProfile:
-              type: RuntimeDefault
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
-            capabilities:
-              drop:
-                - NET_RAW
-                - MKNOD
-                - AUDIT_WRITE
-                - SETFCAP
           # renovate: datasource=docker depName=docker.io/mccloud/subgen
           image: docker.io/mccloud/subgen:latest@sha256:bb49ae3a16d4ac09c8b6d5578278daa3be0e5b2bad1c525acb820ae1634f9abb
           env:
