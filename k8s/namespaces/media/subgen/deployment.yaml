@@ -27,7 +27,7 @@ spec:
       runtimeClassName: nvidia
       initContainers:
         - name: fix-models-permissions
-          image: busybox:1.36
+          image: busybox:1.37@sha256:2f590fc602ce325cbff2ccfc39499014d039546dc400ef8bbf5c6ffb860632e7
           command:
             - sh
             - -c
