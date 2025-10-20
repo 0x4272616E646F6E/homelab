@@ -72,11 +72,11 @@ spec:
             - name: USE_PATH_MAPPING
               value: "False"
             - name: PATH_MAPPING_FROM
-              value: "/tvshows"
+              value: ""
             - name: PATH_MAPPING_TO
-              value: "/Volumes/TV"
+              value: ""
             - name: TRANSCRIBE_DEVICE
-              value: "gpu"
+              value: "cuda"
             - name: CLEAR_VRAM_ON_COMPLETE
               value: "True"
             - name: MODEL_PATH
@@ -99,12 +99,6 @@ spec:
           volumeMounts:
             - name: models
               mountPath: /models
-            - name: media
-              mountPath: /tvshows
-              subPath: media/tvshows
-            - name: media
-              mountPath: /movies
-              subPath: media/movies
           resources:
             requests:
               cpu: "200m"
@@ -133,6 +127,3 @@ spec:
         - name: models
           persistentVolumeClaim:
             claimName: subgen-models
-        - name: media
-          persistentVolumeClaim:
-            claimName: media
