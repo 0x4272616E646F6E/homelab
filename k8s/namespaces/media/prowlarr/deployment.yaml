@@ -1,3 +1,4 @@
+# checkov:skip=CKV_K8S_22: Requires a writable filesystem (s6-overlay and app runtime)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,6 +7,8 @@ metadata:
   labels:
     app.kubernetes.io/name: prowlarr
     app.kubernetes.io/managed-by: flux
+  annotations:
+    checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
 spec:
   replicas: 1
   selector:
@@ -16,8 +19,23 @@ spec:
       labels:
         app.kubernetes.io/name: prowlarr
         app.kubernetes.io/managed-by: flux
+      annotations:
+        checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
     spec:
       runtimeClassName: youki
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+        seccompProfile:
+          type: RuntimeDefault
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: false
+        capabilities:
+          drop:
+            - ALL
+      automountServiceAccountToken: false
       containers:
         - name: prowlarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
@@ -33,6 +51,39 @@ spec:
             limits:
               cpu: "1500m"
               memory: "1536Mi"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10000
+            runAsGroup: 10000
+            fsGroup: 10000
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+          startupProbe:
+            tcpSocket:
+              port: 9696
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 18
+          livenessProbe:
+            tcpSocket:
+              port: 9696
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 9696
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /config
