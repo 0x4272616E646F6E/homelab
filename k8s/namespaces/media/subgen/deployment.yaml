@@ -27,9 +27,9 @@ spec:
       runtimeClassName: nvidia
       securityContext:
         runAsNonRoot: true
-        runAsUser: 10000
-        runAsGroup: 10000
-        fsGroup: 10000
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         supplementalGroups:
           - 44
         seccompProfile:
@@ -47,9 +47,9 @@ spec:
         - name: subgen
           securityContext:
             runAsNonRoot: true
-            runAsUser: 10000
-            runAsGroup: 10000
-            fsGroup: 10000
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             supplementalGroups:
               - 44
             seccompProfile:
@@ -96,9 +96,9 @@ spec:
             - name: USE_PATH_MAPPING
               value: "False"
             - name: PATH_MAPPING_FROM
-              value: ""
+              value: "/media"
             - name: PATH_MAPPING_TO
-              value: ""
+              value: "/media"
             - name: TRANSCRIBE_DEVICE
               value: "cuda"
             - name: CLEAR_VRAM_ON_COMPLETE
@@ -123,6 +123,9 @@ spec:
           volumeMounts:
             - name: models
               mountPath: /models
+            - name: media
+              mountPath: /media
+              subPath: media
           resources:
             requests:
               cpu: "200m"
@@ -151,3 +154,6 @@ spec:
         - name: models
           persistentVolumeClaim:
             claimName: subgen-models
+        - name: media
+          persistentVolumeClaim:
+            claimName: media
