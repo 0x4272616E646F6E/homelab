@@ -111,9 +111,9 @@ spec:
             - name: APPEND
               value: "False"
             - name: USE_MODEL_PROMPT
-              value: "False"
+              value: "True"
             - name: CUSTOM_MODEL_PROMPT
-              value: ""
+              value: "Translate all spoken dialogue, regardless of the original language, into natural English subtitles. Prioritize preserving emotional tone, character personality, and context as commonly done in high-quality Japanese show/anime subtitles, while still remaining natural for English viewers. Avoid overly literal translations. Output only English subtitles."
             - name: LRC_FOR_AUDIO_FILES
               value: "True"
             - name: CUSTOM_REGROUP
