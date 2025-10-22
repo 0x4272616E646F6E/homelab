@@ -50,7 +50,7 @@ spec:
       containers:
         - name: filebrowser
         # renovate: datasource=docker depName=docker.io/filebrowser/filebrowser
-          image: docker.io/filebrowser/filebrowser:latest@sha256:3882b41acee49a73c21cb20715a869f31c8c0b8b55dcd78f2f7c0235b5cfdd80
+          image: docker.io/filebrowser/filebrowser:latest@sha256:b79117d39ac0d6f5112ba7ea53aba06c25d95d334938e2f52521ec9aaf459c30
           ports:
             - containerPort: 80
               protocol: TCP
