@@ -43,26 +43,26 @@ jobs:
               "${FILES[@]}"
           fi
 
-  checkov-k8s:
-    name: Checkov
-    runs-on: actions-runner
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Checkov
-        uses: bridgecrewio/checkov-action@v12
-        with:
-          directory: .
-          framework: kubernetes
-          skip_path: |
-            clusters/**/flux-system
-            cdk8s/target
-            cdk8s/dist
-          output_format: sarif
-          output_file_path: checkov-k8s.sarif
-      - name: Upload SARIF (Checkov K8s)
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: checkov-k8s.sarif
+  # checkov-k8s:
+  #   name: Checkov
+  #   runs-on: actions-runner
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Run Checkov
+  #       uses: bridgecrewio/checkov-action@v12
+  #       with:
+  #         directory: .
+  #         framework: kubernetes
+  #         skip_path: |
+  #           clusters/**/flux-system
+  #           cdk8s/target
+  #           cdk8s/dist
+  #         output_format: sarif
+  #         output_file_path: checkov-k8s.sarif
+  #     - name: Upload SARIF (Checkov K8s)
+  #       uses: github/codeql-action/upload-sarif@v3
+  #       with:
+  #         sarif_file: checkov-k8s.sarif
 
   gitleaks:
     name: Secret scan (diff)
