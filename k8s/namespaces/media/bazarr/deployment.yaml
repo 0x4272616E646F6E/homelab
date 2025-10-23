@@ -34,9 +34,6 @@ spec:
       runtimeClassName: youki
       securityContext:
         runAsNonRoot: false
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       automountServiceAccountToken: false
@@ -62,8 +59,6 @@ spec:
               value: "1000"
           securityContext:
             runAsNonRoot: false
-            runAsUser: 1000
-            runAsGroup: 1000
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
