@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: nvdp
         namespace: flux-system
-      version: 0.17.4
+      version: 0.18.0
   install:
     remediation:
       retries: 3
