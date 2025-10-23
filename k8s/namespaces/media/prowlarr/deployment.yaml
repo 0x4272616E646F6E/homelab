@@ -24,10 +24,7 @@ spec:
     spec:
       runtimeClassName: youki
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
+        runAsNonRoot: false
         seccompProfile:
           type: RuntimeDefault
         allowPrivilegeEscalation: false
@@ -52,10 +49,7 @@ spec:
               cpu: "1500m"
               memory: "1536Mi"
           securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
+            runAsNonRoot: false
             seccompProfile:
               type: RuntimeDefault
             allowPrivilegeEscalation: false
