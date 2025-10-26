@@ -67,7 +67,7 @@ spec:
           image: docker.io/mccloud/subgen:latest@sha256:bb49ae3a16d4ac09c8b6d5578278daa3be0e5b2bad1c525acb820ae1634f9abb
           env:
             - name: WHISPER_MODEL
-              value: "large-v3-turbo"
+              value: "large-v3"
             - name: WHISPER_THREADS
               value: "4"
             - name: PROCADDEDMEDIA
