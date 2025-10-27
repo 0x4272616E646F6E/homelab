@@ -61,9 +61,9 @@ data:
           custom:
             - name: "vLLM"
               apiKey: "vllm"
-              baseURL: "http://vllm-gpt-oss-20b:8000/v1"
+              baseURL: "http://vllm-jan-nano:8000/v1"
               models:
-                default: ['unsloth/gpt-oss-20b']
+                default: ['Menlo/Jan-nano']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"
