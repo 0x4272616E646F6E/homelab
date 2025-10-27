@@ -64,7 +64,7 @@ spec:
           - --max-num-seqs
           - "1"
           - --gpu-memory-utilization
-          - "0.50"
+          - "0.63"
           - --enable-chunked-prefill
           - --enable-auto-tool-choice
           - --tool-call-parser

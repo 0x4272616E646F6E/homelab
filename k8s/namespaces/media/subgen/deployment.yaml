@@ -89,7 +89,7 @@ spec:
             - name: WEBHOOKPORT
               value: "9000"
             - name: CONCURRENT_TRANSCRIPTIONS
-              value: "2"
+              value: "1"
             - name: WORD_LEVEL_HIGHLIGHT
               value: "False"
             - name: DEBUG
