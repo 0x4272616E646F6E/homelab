@@ -298,11 +298,11 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "100 * (1 - (tor_snowflake_proxy_connection_timeouts_total{namespace=\"snowflake\"} / tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}))",
+              "expr": "100 * (1 - (rate(tor_snowflake_proxy_connection_timeouts_total{namespace=\"snowflake\"}[5m]) / (rate(tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}[5m]) + 0.0001)))",
               "refId": "A"
             }
           ],
-          "title": "Connection Success Rate",
+          "title": "Connection Success Rate (5m avg)",
           "type": "gauge"
         },
         {
