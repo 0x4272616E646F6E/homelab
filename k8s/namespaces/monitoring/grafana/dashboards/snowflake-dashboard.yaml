@@ -298,7 +298,7 @@ data:
                 "type": "prometheus",
                 "uid": "prometheus"
               },
-              "expr": "100 * clamp_min((sum(increase(tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}[5m])) - sum(increase(tor_snowflake_proxy_connection_timeouts_total{namespace=\"snowflake\"}[5m]))) / (sum(increase(tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}[5m])) + 0.0001), 0)",
+              "expr": "100 * sum(increase(tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}[5m])) / (sum(increase(tor_snowflake_proxy_connections_total{namespace=\"snowflake\"}[5m])) + sum(increase(tor_snowflake_proxy_connection_timeouts_total{namespace=\"snowflake\"}[5m])) + 0.0001)",
               "refId": "A"
             }
           ],
