@@ -26,6 +26,9 @@ spec:
           image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
           imagePullPolicy: IfNotPresent
           args:
+            - -verbose
+            - -capacity
+            - "20"
             - -metrics
             - -metrics-port
             - "9000"
