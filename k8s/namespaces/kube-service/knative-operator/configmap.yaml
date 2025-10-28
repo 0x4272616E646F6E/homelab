@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     knative_operator:
       knative_operator:
-        image: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256:f35beb8ba91767ee9e0b5739e1f65fa7ae5590bca99829fc1abba8f8940aa662
+        image: gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256:8a41464159607bddaa6c6f52e8e75a1476f5efe7544ee6241fef413c207c0d71
         tag: ""
         affinity: {}
         tolerations: []
