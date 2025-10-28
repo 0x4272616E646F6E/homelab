@@ -20,8 +20,12 @@ data:
                         url: https://authentik.hosted.fail/
                       - title: Bazarr
                         url: https://bazarr.hosted.fail/
+                      - title: Code Server
+                        url: https://vscode.hosted.fail/
                       - title: ComfyUI
                         url: https://comfyui.hosted.fail/
+                      - title: ErsatzTV
+                        url: https://ersatztv.hosted.fail/
                       - title: Grafana
                         url: https://grafana.hosted.fail/
                       - title: Harbor
@@ -34,6 +38,8 @@ data:
                         url: https://jellyfin.hosted.fail/
                       - title: JellySeerr
                         url: https://jellyseerr.hosted.fail/
+                      - title: Kestra
+                        url: https://kestra.hosted.fail/
                       - title: LibreChat
                         url: https://librechat.hosted.fail/
                       - title: NzbGet
@@ -46,12 +52,12 @@ data:
                         url: https://pve.hosted.fail:8007/
                       - title: Proxmox VE
                         url: https://pve.hosted.fail:8006/
+                      - title: Qbittorrent
+                        url: https://qbittorrent.hosted.fail/
                       - title: Radarr
                         url: https://radarr.hosted.fail/
                       - title: Requestrr
                         url: https://requestrr.hosted.fail/
-                      - title: rTorrent
-                        url: https://rtorrent.hosted.fail/
                       - title: Sonarr
                         url: https://sonarr.hosted.fail/
                       - title: SonarQube
