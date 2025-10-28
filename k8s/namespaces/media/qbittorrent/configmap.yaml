@@ -20,14 +20,17 @@ data:
 
     def get_forwarded_port():
         # Request random public UDP port; parse natpmpc output
-        # Note: Cilium egress gateway handles routing to WG gateway
+        # Note: Use -a 1 0 (not -a 0 0) - Proton requires public port=1 for auto-assignment
         try:
             out = subprocess.run(
-                ["natpmpc","-a","0","0","udp",str(LEASE),"-g",GATEWAY],
+                ["natpmpc","-a","1","0","udp",str(LEASE),"-g",GATEWAY],
                 capture_output=True, text=True, timeout=15
             ).stdout
-            m = re.search(r"external port (\d+)", out)
+            m = re.search(r"Mapped public port (\d+)", out)
             return int(m.group(1)) if m else None
+        except subprocess.TimeoutExpired:
+            print("[qb-sync] ERROR: natpmpc timed out after 15 seconds", file=sys.stderr, flush=True)
+            return None
         except Exception as e:
             print(f"[qb-sync] ERROR: natpmpc failed: {e}", file=sys.stderr)
             return None
@@ -65,7 +68,8 @@ data:
         else:
             print("[qb-sync] no QB credentials provided; skipping login", file=sys.stderr, flush=True)
 
-        print("[qb-sync] started - using Cilium egress gateway for routing", flush=True)
+        print("[qb-sync] started", flush=True)
+        print("[qb-sync] using Cilium egress gateway for routing", flush=True)
         while True:
             p = get_forwarded_port()
             if p and p > 0:
