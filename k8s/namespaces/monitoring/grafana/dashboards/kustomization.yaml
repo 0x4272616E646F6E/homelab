@@ -1,10 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - kubernetes-dashboard.yaml
   - coredns-dashboard.yaml
   - etcd-dashboard.yaml
   - flux-dashboard.yaml
   - haproxy-dashboard.yaml
+  - kubernetes-dashboard.yaml
   - nginx-dashboard.yaml
+  - snowflake-dashboard.yaml
   - traefik-dashboard.yaml
