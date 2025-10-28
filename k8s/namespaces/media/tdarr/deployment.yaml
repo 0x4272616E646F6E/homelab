@@ -24,7 +24,7 @@ spec:
       containers:
         - name: tdarr
           # renovate: datasource=docker depName=ghcr.io/haveagitgat/tdarr
-          image: ghcr.io/haveagitgat/tdarr:latest@sha256:d3d284e61157f89bfd21f4cae76a3005f6a3900e287338848138b1baf3df3339
+          image: ghcr.io/haveagitgat/tdarr:latest@sha256:698db91ff399fd9e41e5bd16b139103b897098baf890b017b05063a3fed1356f
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8265
