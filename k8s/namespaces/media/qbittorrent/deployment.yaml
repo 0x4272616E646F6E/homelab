@@ -83,7 +83,7 @@ spec:
           args:
             - |
               apt-get update && \
-              apt-get install -y --no-install-recommends natpmpc iproute2 && \
+              apt-get install -y --no-install-recommends natpmpc && \
               rm -rf /var/lib/apt/lists/* && \
               pip install --no-cache-dir requests && \
               python3 /scripts/qb_port_sync.py
@@ -104,9 +104,6 @@ spec:
               value: "/run/protonvpn-forwarded-port"
           securityContext:
             runAsUser: 0
-            capabilities:
-              add:
-                - NET_ADMIN
           resources:
             requests:
               cpu: "50m"

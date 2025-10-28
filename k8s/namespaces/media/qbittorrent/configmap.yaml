@@ -18,22 +18,19 @@ data:
     STATE     = os.getenv("STATE_FILE", "/run/protonvpn-forwarded-port")
     BASE      = f"http://{QB_HOST}:{QB_PORT}/api/v2"
 
-    def ensure_route():
-        try:
-            out = subprocess.run(["ip","route","get",GATEWAY], capture_output=True, text=True)
-            if out.returncode != 0 or " dev wg0 " not in out.stdout:
-                subprocess.run(["ip","route","add",GATEWAY,"dev","wg0"], check=False)
-        except Exception as e:
-            print(f"[qb-sync] warn: route check/add failed: {e}", file=sys.stderr)
-
     def get_forwarded_port():
         # Request random public UDP port; parse natpmpc output
-        out = subprocess.run(
-            ["natpmpc","-a","0","0","udp",str(LEASE),"-g",GATEWAY],
-            capture_output=True, text=True
-        ).stdout
-        m = re.search(r"external port (\d+)", out)
-        return int(m.group(1)) if m else None
+        # Note: Cilium egress gateway handles routing to WG gateway
+        try:
+            out = subprocess.run(
+                ["natpmpc","-a","0","0","udp",str(LEASE),"-g",GATEWAY],
+                capture_output=True, text=True, timeout=15
+            ).stdout
+            m = re.search(r"external port (\d+)", out)
+            return int(m.group(1)) if m else None
+        except Exception as e:
+            print(f"[qb-sync] ERROR: natpmpc failed: {e}", file=sys.stderr)
+            return None
 
     def qb_login(sess: requests.Session):
         r = sess.post(f"{BASE}/auth/login",
@@ -56,7 +53,6 @@ data:
             print(f"[qb-sync] warn: cannot write state file: {e}", file=sys.stderr)
 
     def main():
-        ensure_route()
         last = None
         s = requests.Session()
         # Skip login if no credentials provided; if creds present, attempt login but continue without auth on failure
@@ -69,7 +65,7 @@ data:
         else:
             print("[qb-sync] no QB credentials provided; skipping login", file=sys.stderr, flush=True)
 
-        print("[qb-sync] started", flush=True)
+        print("[qb-sync] started - using Cilium egress gateway for routing", flush=True)
         while True:
             p = get_forwarded_port()
             if p and p > 0:
