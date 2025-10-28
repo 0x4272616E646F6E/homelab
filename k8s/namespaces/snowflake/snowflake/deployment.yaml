@@ -19,16 +19,15 @@ spec:
         app.kubernetes.io/managed-by: flux
         app.kubernetes.io/egress: wireguard
     spec:
-      runtimeClassName: youki
       automountServiceAccountToken: false
       containers:
         - name: snowflake
           # renovate: datasource=docker depName=containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake
           image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
           imagePullPolicy: IfNotPresent
-          command:
-            - metrics
-            - metrics-port
+          args:
+            - -metrics
+            - -metrics-port
             - "9000"
           ports:
             - name: metrics
