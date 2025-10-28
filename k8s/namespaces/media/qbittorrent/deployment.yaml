@@ -76,6 +76,49 @@ spec:
             - name: media
               mountPath: /downloads
               subPath: downloads
+        - name: port-forward-sync
+          # renovate: datasource=docker depName=python
+          image: python:3.14-slim
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              apt-get update && \
+              apt-get install -y --no-install-recommends natpmpc iproute2 && \
+              rm -rf /var/lib/apt/lists/* && \
+              pip install --no-cache-dir requests && \
+              python3 /scripts/qb_port_sync.py
+          env:
+            - name: GATEWAY
+              value: "10.2.0.1"
+            - name: LEASE
+              value: "60"
+            - name: QB_HOST
+              value: "127.0.0.1"
+            - name: QB_PORT
+              value: "8080"
+            - name: QB_USER
+              value: ""
+            - name: QB_PASS
+              value: ""
+            - name: STATE_FILE
+              value: "/run/protonvpn-forwarded-port"
+          securityContext:
+            runAsUser: 0
+            capabilities:
+              add:
+                - NET_ADMIN
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          volumeMounts:
+            - name: port-sync-script
+              mountPath: /scripts
+            - name: run
+              mountPath: /run
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -83,3 +126,9 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: media
+        - name: port-sync-script
+          configMap:
+            name: qbittorrent-port-forward-sync
+            defaultMode: 0755
+        - name: run
+          emptyDir: {}
