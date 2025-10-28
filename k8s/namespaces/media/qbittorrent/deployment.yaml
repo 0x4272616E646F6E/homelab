@@ -19,7 +19,6 @@ spec:
         app.kubernetes.io/managed-by: flux
         app.kubernetes.io/egress: wireguard
     spec:
-      runtimeClassName: youki
       initContainers:
         - name: init-qb
           # renovate: datasource=docker depName=docker.io/busybox
