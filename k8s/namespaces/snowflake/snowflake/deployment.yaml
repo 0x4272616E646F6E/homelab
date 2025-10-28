@@ -30,6 +30,8 @@ spec:
             - -metrics
             - -metrics-port
             - "9000"
+            - -metrics-address
+            - "0.0.0.0"
           ports:
             - name: metrics
               containerPort: 9000
