@@ -190,6 +190,7 @@ The following resources are managed through Flux in this repository:
 - [**Requestrr**](https://github.com/thomst08/requestrr)
 - [**Reloader**](https://github.com/stakater/Reloader)
 - [**Renovate**](https://github.com/renovatebot/renovate)
+- [**Snowflake**](https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/tree/main/proxy?ref_type=heads#running-a-standalone-snowflake-proxy)
 - [**Sonarr**](https://github.com/Sonarr/Sonarr)
 - [**SonarQube**](https://github.com/SonarSource/sonarqube)
 - [**Subgen**](https://github.com/McCloudS/subgen)

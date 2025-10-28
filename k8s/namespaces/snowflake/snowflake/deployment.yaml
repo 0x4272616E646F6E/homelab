@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snowflake
+  namespace: snowflake
+  labels:
+    app.kubernetes.io/name: snowflake
+    app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/egress: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: snowflake
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: snowflake
+        app.kubernetes.io/managed-by: flux
+        app.kubernetes.io/egress: wireguard
+    spec:
+      runtimeClassName: youki
+      automountServiceAccountToken: false
+      containers:
+        - name: snowflake
+          # renovate: datasource=docker depName=containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake
+          image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest
+          imagePullPolicy: IfNotPresent
+          command:
+            - metrics
+            - metrics-port
+            - "9000"
+          ports:
+            - name: metrics
+              containerPort: 9000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
