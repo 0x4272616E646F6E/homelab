@@ -71,7 +71,7 @@ spec:
       containers:
         - name: clamd
           # renovate: datasource=docker depName=clamav/clamav
-          image: clamav/clamav:1.4.1
+          image: clamav/clamav:1.5.1@sha256:323cec50d1d950d9b5f5c42f64610a4a4102d6f18c38060af6d8513f43137805
           imagePullPolicy: IfNotPresent
           ports:
             - name: clamd
