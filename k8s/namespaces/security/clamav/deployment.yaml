@@ -85,11 +85,8 @@ spec:
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - -c
-                - "clamdscan --ping 2>&1 | grep -q PONG"
+            tcpSocket:
+              port: 3310
             initialDelaySeconds: 90
             periodSeconds: 10
             timeoutSeconds: 5
