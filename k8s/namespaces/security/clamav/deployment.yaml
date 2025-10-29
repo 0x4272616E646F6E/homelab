@@ -24,6 +24,20 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
+        - name: fix-permissions
+          image: docker.io/busybox:1.37
+          command:
+            - sh
+            - -c
+            - |
+              chown -R 100:101 /var/lib/clamav
+              chmod -R 755 /var/lib/clamav
+          volumeMounts:
+            - name: clamav-data
+              mountPath: /var/lib/clamav
+          securityContext:
+            runAsUser: 0
+            runAsNonRoot: false
         - name: init-db
           # renovate: datasource=docker depName=clamav/clamav
           image: docker.io/clamav/clamav:1.5
