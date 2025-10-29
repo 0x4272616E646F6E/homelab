@@ -104,6 +104,8 @@ spec:
               mountPath: /var/log/clamav
             - name: run
               mountPath: /run/clamav
+            - name: lock
+              mountPath: /var/lock
           resources:
             requests:
               cpu: "1000m"
@@ -130,4 +132,6 @@ spec:
         - name: logs
           emptyDir: {}
         - name: run
+          emptyDir: {}
+        - name: lock
           emptyDir: {}
