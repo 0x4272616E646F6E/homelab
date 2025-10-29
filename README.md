@@ -156,6 +156,7 @@ The following resources are managed through Flux in this repository:
 - [**BuildKit**](https://github.com/moby/buildkit)
 - [**Cert Manager**](https://github.com/cert-manager/cert-manager)
 - [**Cilium**](https://github.com/cilium/cilium)
+- [**ClamAV**](https://www.clamav.net/)
 - [**Cloudflared**](https://github.com/cloudflare/cloudflared)
 - [**Code-Server**](https://github.com/coder/code-server)
 - [**ComfyUI**](https://github.com/comfyanonymous/ComfyUI)

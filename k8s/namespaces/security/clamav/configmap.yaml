@@ -1,0 +1,169 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clamav-config
+  namespace: security
+  labels:
+    app.kubernetes.io/name: clamav
+    app.kubernetes.io/managed-by: flux
+data:
+  clamd.conf: |
+    # ClamAV daemon configuration
+    LogFile /var/log/clamav/clamd.log
+    LogTime yes
+    LogFileMaxSize 10M
+    LogRotate yes
+    LogVerbose no
+    
+    # Run as daemon
+    Foreground yes
+    
+    # Network settings
+    TCPSocket 3310
+    TCPAddr 0.0.0.0
+    MaxConnectionQueueLength 30
+    MaxThreads 12
+    
+    # Database and scanning
+    DatabaseDirectory /var/lib/clamav
+    
+    # Performance tuning
+    MaxScanSize 500M
+    MaxFileSize 100M
+    MaxRecursion 20
+    MaxFiles 10000
+    MaxEmbeddedPE 10M
+    MaxHTMLNormalize 10M
+    MaxHTMLNoTags 2M
+    MaxScriptNormalize 5M
+    MaxZipTypeRcg 1M
+    
+    # Scan options
+    ScanPE yes
+    ScanELF yes
+    DetectBrokenExecutables yes
+    ScanOLE2 yes
+    ScanPDF yes
+    ScanSWF yes
+    ScanMail yes
+    ScanHTML yes
+    ScanArchive yes
+    AlertBrokenExecutables yes
+    AlertEncrypted yes
+    AlertEncryptedArchive yes
+    AlertEncryptedDoc yes
+    AlertOLE2Macros yes
+    AlertPhishingSSLMismatch yes
+    AlertPhishingCloak yes
+    AlertPartitionIntersection yes
+    
+    # Heuristics
+    HeuristicAlerts yes
+    HeuristicScanPrecedence yes
+    
+    # PUA detection
+    DetectPUA yes
+    ExcludePUA NetTool
+    ExcludePUA PWTool
+    
+    # Limits
+    StreamMaxLength 100M
+    MaxScanTime 120000
+    
+    # Exclude quarantine directory to prevent circular scanning
+    # The quarantine PVC exists within /opt/local-path-provisioner on nodes
+    # We need to exclude it to prevent re-scanning quarantined files
+    ExcludePath ^.*/pvc-.*clamav-quarantine.*
+    
+    # Metrics (Prometheus compatible)
+    StatsEnabled yes
+    StatsPEDisabled no
+    StatsHostID clamav-daemon
+    StatsTimeout 10
+    
+  freshclam.conf: |
+    # FreshClam update configuration
+    DatabaseDirectory /var/lib/clamav
+    UpdateLogFile /var/log/clamav/freshclam.log
+    LogTime yes
+    LogVerbose no
+    LogRotate yes
+    
+    # Update settings
+    DatabaseMirror database.clamav.net
+    DNSDatabaseInfo current.cvd.clamav.net
+    MaxAttempts 5
+    Checks 24
+    
+    # Notifications
+    NotifyClamd /etc/clamav/clamd.conf
+    OnUpdateExecute /bin/echo "Virus signatures updated"
+    OnErrorExecute /bin/echo "FreshClam update error"
+    
+    # Bytecode
+    Bytecode yes
+    
+  scan-script.sh: |
+    #!/bin/sh
+    set -e
+    
+    echo "=== ClamAV Cluster Scan Started: $(date) ==="
+    echo "Waiting for clamd to be ready..."
+    
+    # Wait for clamd to be available
+    for i in $(seq 1 30); do
+      if clamdscan --ping 2>&1 | grep -q "PONG"; then
+        echo "clamd is ready"
+        break
+      fi
+      echo "Waiting for clamd... ($i/30)"
+      sleep 2
+    done
+    
+    if ! clamdscan --ping 2>&1 | grep -q "PONG"; then
+      echo "ERROR: clamd is not responding"
+      exit 1
+    fi
+    
+    # Scan paths
+    SCAN_PATHS="${SCAN_PATHS:-/media}"
+    QUARANTINE_DIR="/quarantine"
+    
+    echo "Scanning paths: $SCAN_PATHS"
+    echo "Quarantine directory: $QUARANTINE_DIR"
+    echo "Note: Quarantine PVC is excluded via ExcludePath in clamd.conf"
+    
+    # Create quarantine dir if it doesn't exist
+    mkdir -p "$QUARANTINE_DIR"
+    
+    # Run scan
+    # --multiscan: Use multiple threads
+    # --fdpass: Pass file descriptors (faster for clamd)
+    # --infected: Only show infected files
+    # --move: Move infected files to quarantine
+    # --log: Log to stdout
+    # Note: clamd.conf ExcludePath prevents scanning the quarantine PVC itself
+    
+    clamdscan \
+      --multiscan \
+      --fdpass \
+      --infected \
+      --move="$QUARANTINE_DIR" \
+      --log=/dev/stdout \
+      $SCAN_PATHS || EXIT_CODE=$?
+    
+    echo ""
+    echo "=== Scan Summary ==="
+    echo "Exit code: ${EXIT_CODE:-0}"
+    if [ -d "$QUARANTINE_DIR" ]; then
+      QUARANTINE_COUNT=$(find "$QUARANTINE_DIR" -type f | wc -l)
+      echo "Files in quarantine: $QUARANTINE_COUNT"
+      if [ "$QUARANTINE_COUNT" -gt 0 ]; then
+        echo "Quarantined files:"
+        find "$QUARANTINE_DIR" -type f -ls
+      fi
+    fi
+    echo "=== ClamAV Cluster Scan Completed: $(date) ==="
+    
+    exit ${EXIT_CODE:-0}
+

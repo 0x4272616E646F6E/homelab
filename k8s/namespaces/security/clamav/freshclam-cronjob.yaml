@@ -1,0 +1,70 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: clamav-freshclam
+  namespace: security
+  labels:
+    app.kubernetes.io/name: clamav
+    app.kubernetes.io/component: updater
+    app.kubernetes.io/managed-by: flux
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: clamav
+            app.kubernetes.io/component: updater
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: OnFailure
+          containers:
+            - name: freshclam
+              # renovate: datasource=docker depName=clamav/clamav
+              image: clamav/clamav:1.4.1@sha256:a52e9bc6ba5d05401c3c49ce2e1eeb56d16ee9b21edbb5f4ad1c98eef03e3ab3
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  echo "=== FreshClam Update Started: $(date) ==="
+                  freshclam --config-file=/etc/clamav/freshclam.conf --daemon-notify=/etc/clamav/clamd.conf
+                  echo "=== FreshClam Update Completed: $(date) ==="
+              volumeMounts:
+                - name: clamav-data
+                  mountPath: /var/lib/clamav
+                - name: config
+                  mountPath: /etc/clamav/freshclam.conf
+                  subPath: freshclam.conf
+                - name: config
+                  mountPath: /etc/clamav/clamd.conf
+                  subPath: clamd.conf
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "2000m"
+                  memory: "2Gi"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: false
+                runAsNonRoot: true
+                runAsUser: 100
+                runAsGroup: 101
+                capabilities:
+                  drop:
+                    - ALL
+          volumes:
+            - name: clamav-data
+              persistentVolumeClaim:
+                claimName: clamav-data
+            - name: config
+              configMap:
+                name: clamav-config
