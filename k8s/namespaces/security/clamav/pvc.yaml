@@ -12,7 +12,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: local-path
+  storageClassName: local-path-rwo
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -28,4 +28,4 @@ spec:
   resources:
     requests:
       storage: 20Gi
-  storageClassName: local-path
+  storageClassName: local-path-rwo
