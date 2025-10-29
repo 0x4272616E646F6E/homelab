@@ -88,6 +88,8 @@ spec:
               subPath: clamd.conf
             - name: logs
               mountPath: /var/log/clamav
+            - name: run
+              mountPath: /run/clamav
           resources:
             requests:
               cpu: "1000m"
@@ -112,4 +114,6 @@ spec:
           configMap:
             name: clamav-config
         - name: logs
+          emptyDir: {}
+        - name: run
           emptyDir: {}
