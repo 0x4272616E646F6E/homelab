@@ -41,14 +41,12 @@ data:
     # Scan options
     ScanPE yes
     ScanELF yes
-    DetectBrokenExecutables yes
     ScanOLE2 yes
     ScanPDF yes
     ScanSWF yes
     ScanMail yes
     ScanHTML yes
     ScanArchive yes
-    AlertBrokenExecutables yes
     AlertEncrypted yes
     AlertEncryptedArchive yes
     AlertEncryptedDoc yes
@@ -74,12 +72,6 @@ data:
     # The quarantine PVC exists within /opt/local-path-provisioner on nodes
     # We need to exclude it to prevent re-scanning quarantined files
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
-    
-    # Metrics (Prometheus compatible)
-    StatsEnabled yes
-    StatsPEDisabled no
-    StatsHostID clamav-daemon
-    StatsTimeout 10
     
   freshclam.conf: |
     # FreshClam update configuration
