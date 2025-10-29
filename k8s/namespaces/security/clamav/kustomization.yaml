@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - pvc.yaml
   - configmap.yaml
   - deployment.yaml
-  - freshclam-cronjob.yaml
-  - pvc.yaml
-  - scanner-cronjob.yaml
   - service.yaml
+  - freshclam-cronjob.yaml
+  - scanner-cronjob.yaml
   - servicemonitor.yaml
