@@ -26,7 +26,7 @@ spec:
           containers:
             - name: freshclam
               # renovate: datasource=docker depName=clamav/clamav
-              image: clamav/clamav:1.4.1@sha256:a52e9bc6ba5d05401c3c49ce2e1eeb56d16ee9b21edbb5f4ad1c98eef03e3ab3
+              image: docker.io/clamav/clamav:1.5
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh
