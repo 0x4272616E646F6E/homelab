@@ -80,7 +80,7 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 3310
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
@@ -90,7 +90,7 @@ spec:
                 - /bin/sh
                 - -c
                 - "clamdscan --ping 2>&1 | grep -q PONG"
-            initialDelaySeconds: 30
+            initialDelaySeconds: 90
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
