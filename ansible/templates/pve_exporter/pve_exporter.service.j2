@@ -1,0 +1,13 @@
+[Unit]
+Description=pve_exporter for Proxmox VE
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/local/bin/pve_exporter --pve-url={{ pve_exporter_url | default('http://127.0.0.1:8006') }} --listen-address={{ pve_exporter_listen_address | default('0.0.0.0:9221') }}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

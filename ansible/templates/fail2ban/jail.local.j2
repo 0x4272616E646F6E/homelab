@@ -1,0 +1,18 @@
+[sshd]
+backend = systemd
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = {{ fail2ban_maxretry | default(3) }}
+findtime = {{ fail2ban_findtime | default('2h') }}
+bantime = {{ fail2ban_bantime | default('1h') }}
+
+[proxmox]
+enabled = true
+port = https,http,8006
+filter = proxmox
+backend = systemd
+maxretry = {{ fail2ban_maxretry | default(3) }}
+findtime = {{ fail2ban_findtime | default('2h') }}
+bantime = {{ fail2ban_bantime | default('1h') }}

@@ -69,7 +69,7 @@ data:
     MaxScanTime 120000
     
     # Exclude quarantine directory to prevent circular scanning
-    # The quarantine PVC exists within /opt/local-path-provisioner on nodes
+    # The quarantine PVC exists within /var/mnt/storage/local-path-provisioner on nodes
     # We need to exclude it to prevent re-scanning quarantined files
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
     

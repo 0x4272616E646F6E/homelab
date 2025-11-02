@@ -1,0 +1,106 @@
+---
+dns_servers:
+  - 10.0.0.1
+
+ntp_servers:
+  - time.cloudflare.com
+
+syslog_enabled: true
+syslog_server: "syslog.hosted.fail"
+syslog_port: 514
+syslog_protocol: "udp"
+
+timezone: "America/Detroit"
+
+nut_enabled: true
+nut_mode: "netclient"  # Options: standalone, netserver, netclient
+nut_ups_name: "ups"
+nut_ups_driver: "usbhid-ups"  # Common for USB UPS; check NUT docs for your model
+nut_ups_port: "auto"
+nut_monitor_user: "monuser"
+nut_monitor_password: "secret"  # Change this!
+nut_server: "192.168.1.50"  # NUT server IP (if using netclient mode)
+
+notify_email: ""  # e.g., "admin@example.com"
+
+unattended_upgrades_enabled: true
+unattended_upgrades_email: ""  # e.g., "admin@example.com" - Leave empty to disable email
+unattended_upgrades_mail_report: "on-change"  # Options: always, only-on-error, on-change
+
+unattended_upgrades_proxmox_updates: false
+
+unattended_upgrades_auto_reboot: false 
+unattended_upgrades_reboot_with_users: false
+unattended_upgrades_reboot_time: "02:00"
+
+gpu_passthrough_enabled: true
+gpu_blacklist_modules:
+  - nvidiafb
+  - nouveau
+  - nvidia
+  - nvidia_drm
+  - nvidia_modeset
+  - rivafb
+  - snd_hda_codec_hdmi
+  - snd_hda_intel
+  - snd_hda_codec
+  - snd_hda_core
+  - radeon
+  - amdgpu
+  - i915
+  - xe
+
+enable_iommu: true
+iommu_vendor: 'auto'
+iommu_extra_options: ""
+iommu_update_grub: true
+iommu_require_reboot: true
+
+terraform_prov_role_name: "TerraformProv"
+terraform_prov_role_privs: "Datastore.AllocateSpace Datastore.AllocateTemplate Datastore.Audit Pool.Allocate Sys.Audit Sys.Console Sys.Modify VM.Allocate VM.Audit VM.Clone VM.Config.CDROM VM.Config.Cloudinit VM.Config.CPU VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Migrate VM.PowerMgmt SDN.Use"
+terraform_prov_username: "terraform-prov@pve"
+terraform_prov_user_password: ""
+
+fail2ban_enabled: false
+fail2ban_ignore_ip:
+  - 127.0.0.1
+fail2ban_maxretry: 3
+fail2ban_findtime: "2h"
+fail2ban_bantime: "1h"
+smtp_relay_enabled: false
+smtp_relay_host: ""
+smtp_relay_port: 25
+smtp_relay_use_tls: false
+smtp_relay_auth: false
+smtp_relay_user: ""
+smtp_relay_password: ""
+
+zfs_tuning_enabled: false
+zfs_tuning:
+  zfs_arc_max: "4G"
+  zfs_arc_min: "1G"
+  zfs_vdev_aggregation_limit: 4
+
+host_antivirus_enabled: false
+host_antivirus_scan_paths:
+  - /var/lib/vz
+  - /srv
+  - /etc
+clamav_freshclam_update: true
+clamav_scan_opts: "--recursive --infected --bell"
+
+rkhunter_enabled: false
+rkhunter_update_databases: true
+rkhunter_scan_opts: "--checkall"
+
+pve_exporter_enabled: false
+pve_exporter_version: "latest"
+pve_exporter_listen_address: "127.0.0.1:9221"
+
+audit_pve_rules_enabled: true
+audit_pve_rules_path: /etc/audit/rules.d/90-pve.rules
+audit_pve_watch_path: /etc/pve
+
+apt_include_non_free_firmware: true
+
+

@@ -1,0 +1,491 @@
+---
+- name: Configure Proxmox Host Baseline
+  hosts: proxmox
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Set timezone
+      community.general.timezone:
+        name: "{{ timezone }}"
+      notify: Restart systemd-timesyncd
+
+    - name: Configure DNS servers in resolv.conf
+      ansible.builtin.template:
+        src: templates/network/resolv.conf.j2
+        dest: /etc/resolv.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: dns_servers is defined and dns_servers | length > 0
+
+    - name: Install chrony for NTP
+      ansible.builtin.apt:
+        name: chrony
+        state: present
+        update_cache: true
+
+    - name: Configure chrony NTP servers
+      ansible.builtin.template:
+        src: templates/timesync/chrony.conf.j2
+        dest: /etc/chrony/chrony.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart chrony
+
+    - name: Enable and start chrony service
+      ansible.builtin.systemd:
+        name: chrony
+        enabled: true
+        state: started
+
+    - name: Configure rsyslog for remote logging
+      ansible.builtin.template:
+        src: templates/logging/rsyslog-remote.conf.j2
+        dest: /etc/rsyslog.d/50-remote.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: syslog_enabled and syslog_server != ''
+      notify: Restart rsyslog
+
+    - name: Install NUT packages
+      ansible.builtin.apt:
+        name:
+          - nut
+          - nut-client
+        state: present
+      when: nut_enabled
+
+    - name: Configure NUT mode
+      ansible.builtin.lineinfile:
+        path: /etc/nut/nut.conf
+        regexp: '^MODE='
+        line: 'MODE={{ nut_mode }}'
+        create: true
+        owner: root
+        group: nut
+        mode: '0640'
+      when: nut_enabled
+      notify: Restart nut-client
+
+    - name: Configure NUT upsmon for netclient mode
+      ansible.builtin.template:
+        src: templates/nut/upsmon.conf.j2
+        dest: /etc/nut/upsmon.conf
+        owner: root
+        group: nut
+        mode: '0640'
+      when: nut_enabled and nut_mode == 'netclient'
+      notify: Restart nut-client
+
+    - name: Configure NUT ups.conf for standalone/netserver mode
+      ansible.builtin.template:
+        src: templates/nut/ups.conf.j2
+        dest: /etc/nut/ups.conf
+        owner: root
+        group: nut
+        mode: '0640'
+      when: nut_enabled and nut_mode in ['standalone', 'netserver']
+      notify:
+        - Restart nut-server
+        - Restart nut-client
+
+    - name: Configure NUT upsd.conf for netserver mode
+      ansible.builtin.template:
+        src: templates/nut/upsd.conf.j2
+        dest: /etc/nut/upsd.conf
+        owner: root
+        group: nut
+        mode: '0640'
+      when: nut_enabled and nut_mode == 'netserver'
+      notify: Restart nut-server
+
+    - name: Configure NUT users for netserver mode
+      ansible.builtin.template:
+        src: templates/nut/upsd.users.j2
+        dest: /etc/nut/upsd.users
+        owner: root
+        group: nut
+        mode: '0640'
+      when: nut_enabled and nut_mode == 'netserver'
+      notify: Restart nut-server
+
+    - name: Enable and start NUT services
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - nut-monitor
+      when: nut_enabled
+
+    - name: Enable NUT server service (netserver mode)
+      ansible.builtin.systemd:
+        name: nut-server
+        enabled: true
+        state: started
+      when: nut_enabled and nut_mode == 'netserver'
+
+    - name: Disable enterprise repository warning
+      ansible.builtin.replace:
+        path: /etc/apt/sources.list.d/pve-enterprise.list
+        regexp: '^deb'
+        replace: '#deb'
+      failed_when: false
+
+    - name: Add Proxmox no-subscription repository
+      ansible.builtin.apt_repository:
+        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription"
+        state: present
+        filename: pve-no-subscription
+      when: ansible_distribution == 'Debian'
+
+    - name: Install unattended-upgrades package
+      ansible.builtin.apt:
+        name:
+          - unattended-upgrades
+          - apt-listchanges
+        state: present
+
+    - name: Configure unattended-upgrades periodic updates
+      ansible.builtin.template:
+        src: templates/unattended-upgrades/20auto-upgrades.j2
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+      when: unattended_upgrades_enabled
+
+    - name: Configure unattended-upgrades settings
+      ansible.builtin.template:
+        src: templates/unattended-upgrades/50unattended-upgrades.j2
+        dest: /etc/apt/apt.conf.d/50unattended-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+      when: unattended_upgrades_enabled
+
+    - name: Configure GPU passthrough blacklist
+      ansible.builtin.template:
+        src: templates/pve-blacklist.conf.j2
+        dest: /etc/modprobe.d/pve-blacklist.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: gpu_passthrough_enabled
+      notify: Update initramfs
+
+    - name: Ensure apt sources include non-free-firmware for Proxmox
+      when: apt_include_non_free_firmware
+      block:
+        - name: Read pve sources file (if exists)
+          ansible.builtin.slurp:
+            src: /etc/apt/sources.list.d/pve-no-subscription.list
+          register: _pve_sources
+          failed_when: false
+
+        - name: Add non-free-firmware to pve-no-subscription repo line if missing
+          ansible.builtin.replace:
+            path: /etc/apt/sources.list.d/pve-no-subscription.list
+            regexp: "(deb .* pve-no-subscription)"
+            replace: '\\1 non-free-firmware'
+          when: _pve_sources is defined and _pve_sources.content is defined
+
+        - name: Apt-get update after changing repo
+          ansible.builtin.apt:
+            update_cache: true
+
+    - name: Deploy audit rules for Proxmox config
+      when: audit_pve_rules_enabled
+      block:
+        - name: Create audit rules file for /etc/pve
+          ansible.builtin.template:
+            src: templates/audit/90-pve.rules.j2
+            dest: "{{ audit_pve_rules_path }}"
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Load audit rules via augenrules if available
+          ansible.builtin.command: augenrules --load
+          register: _augen
+          failed_when: false
+          changed_when: false
+
+        - name: Fallback - rebuild /etc/audit/audit.rules from rules.d
+          ansible.builtin.command: /sbin/augenrules --load
+          register: _augen_fallback
+          failed_when: false
+          changed_when: false
+
+        - name: Restart auditd to apply rules
+          ansible.builtin.systemd:
+            name: auditd
+            state: restarted
+
+        - name: Verify audit rule present
+          ansible.builtin.command: auditctl -l | grep pve-config
+          register: _audit_verify
+          failed_when: false
+          changed_when: false
+
+    - name: Install and configure pve_exporter for Prometheus
+      when: pve_exporter_enabled
+      block:
+        - name: Try to install pve-exporter package from apt
+          ansible.builtin.apt:
+            name: pve-exporter
+            state: present
+          register: _pve_exporter_pkg
+          failed_when: false
+
+        - name: Download pve_exporter binary if package not available
+          ansible.builtin.get_url:
+            url: "https://github.com/prometheus-community/pve_exporter/releases/{{ pve_exporter_version }}/download/pve_exporter-linux-amd64"
+            dest: /usr/local/bin/pve_exporter
+            mode: '0755'
+          when: _pve_exporter_pkg is defined and _pve_exporter_pkg.failed
+
+        - name: Deploy pve_exporter systemd unit
+          ansible.builtin.template:
+            src: templates/pve_exporter/pve_exporter.service.j2
+            dest: /etc/systemd/system/pve_exporter.service
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Reload systemd and enable pve_exporter
+          ansible.builtin.systemd:
+            daemon_reload: true
+            name: pve_exporter
+            enabled: true
+            state: started
+
+
+    - name: Install and configure Fail2Ban
+      block:
+        - name: Install fail2ban
+          ansible.builtin.apt:
+            name: fail2ban
+            state: present
+
+        - name: Deploy fail2ban jail.local
+          ansible.builtin.template:
+            src: templates/fail2ban/jail.local.j2
+            dest: /etc/fail2ban/jail.local
+            owner: root
+            group: root
+            mode: '0644'
+          notify: Restart fail2ban
+
+        - name: Deploy Fail2Ban proxmox filter
+          ansible.builtin.template:
+            src: templates/fail2ban/filter.d/proxmox.conf.j2
+            dest: /etc/fail2ban/filter.d/proxmox.conf
+            owner: root
+            group: root
+            mode: '0644'
+          notify: Restart fail2ban
+
+        - name: Ensure fail2ban is running
+          ansible.builtin.systemd:
+            name: fail2ban
+            enabled: true
+            state: started
+    - name: Install and configure Postfix relay (simple)
+      block:
+        - name: Install postfix
+          ansible.builtin.apt:
+            name: postfix
+            state: present
+            update_cache: true
+
+        - name: Deploy Postfix main.cf
+          ansible.builtin.template:
+            src: templates/postfix/main.cf.j2
+            dest: /etc/postfix/main.cf
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Deploy sasl_passwd if auth enabled
+          ansible.builtin.template:
+            src: templates/postfix/sasl_passwd.j2
+            dest: /etc/postfix/sasl_passwd
+            owner: root
+            group: root
+            mode: '0600'
+          when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
+
+        - name: Postmap sasl_passwd if auth enabled
+          ansible.builtin.command: postmap /etc/postfix/sasl_passwd
+          when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
+          changed_when: false
+
+        - name: Restart postfix
+          ansible.builtin.systemd:
+            name: postfix
+            state: restarted
+    - name: Apply ZFS tunables
+      block:
+        - name: Deploy ZFS tuning file
+          ansible.builtin.template:
+            src: templates/99-zfs-tuning.conf.j2
+            dest: /etc/modprobe.d/99-zfs-tuning.conf
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Reload sysctl to apply ZFS tunables
+          ansible.builtin.command: sysctl -p /etc/modprobe.d/99-zfs-tuning.conf
+          changed_when: false
+    - name: Install and configure host ClamAV
+      when: host_antivirus_enabled
+      block:
+        - name: Install clamav packages
+          ansible.builtin.apt:
+            name:
+              - clamav
+              - clamav-freshclam
+            state: present
+            update_cache: true
+
+        - name: Deploy ClamAV host scan cron script
+          ansible.builtin.template:
+            src: templates/cron/clamav-host-scan.j2
+            dest: /etc/cron.daily/clamav-host-scan
+            owner: root
+            group: root
+            mode: '0755'
+
+        - name: Ensure log directory exists for ClamAV host scan
+          ansible.builtin.file:
+            path: /var/log
+            state: directory
+            owner: root
+            group: root
+            mode: '0755'
+
+    - name: Install and configure rkhunter
+      when: rkhunter_enabled
+      block:
+        - name: Install rkhunter
+          ansible.builtin.apt:
+            name: rkhunter
+            state: present
+            update_cache: true
+
+        - name: Deploy rkhunter daily update/scan script
+          ansible.builtin.template:
+            src: templates/cron/rkhunter-update-scan.j2
+            dest: /etc/cron.daily/rkhunter-update-scan
+            owner: root
+            group: root
+            mode: '0755'
+
+    - name: Determine CPU vendor for IOMMU (if auto)
+      ansible.builtin.set_fact:
+        _detected_cpu_vendor: >-
+          {% if 'Intel' in ansible_facts['processor'] | join(' ') or ansible_facts['vendor_id'] == 'GenuineIntel' %}
+          intel
+          {% else %}
+          amd
+          {% endif %}
+      when: enable_iommu and iommu_vendor == 'auto'
+
+    - name: Set IOMMU kernel base param for Intel
+      ansible.builtin.set_fact:
+        _iommu_base: "intel_iommu=on iommu=pt"
+      when: enable_iommu and (iommu_vendor == 'intel' or (_detected_cpu_vendor is defined and _detected_cpu_vendor == 'intel'))
+
+    - name: Set IOMMU kernel base param for AMD
+      ansible.builtin.set_fact:
+        _iommu_base: "amd_iommu=on iommu=pt"
+      when: enable_iommu and (iommu_vendor == 'amd' or (iommu_vendor == 'auto' and (_detected_cpu_vendor is defined and _detected_cpu_vendor == 'amd')))
+
+    - name: Build IOMMU kernel param
+      ansible.builtin.set_fact:
+        _iommu_param: "{{ _iommu_base }} {{ iommu_extra_options }}"
+      when: enable_iommu
+
+    - name: Ensure GRUB_CMDLINE_LINUX_DEFAULT contains IOMMU params
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
+        line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet {{ _iommu_param | trim }}"'
+        backup: true
+      when: enable_iommu
+      notify: Update-grub
+
+    - name: Check if Terraform role exists
+      ansible.builtin.command: pveum role list
+      register: pveum_roles
+      changed_when: false
+
+    - name: Create Terraform role if missing
+      ansible.builtin.command: pveum role add {{ terraform_prov_role_name }} -privs "{{ terraform_prov_role_privs }}"
+      when: terraform_prov_role_name not in (pveum_roles.stdout | default(''))
+      changed_when: terraform_prov_role_name not in (pveum_roles.stdout | default(''))
+
+    - name: Check if Terraform user exists
+      ansible.builtin.command: pveum user list
+      register: pveum_users
+      changed_when: false
+
+    - name: Create Terraform user if missing
+      ansible.builtin.command: pveum user add {{ terraform_prov_username }} --password '{{ terraform_prov_user_password }}'
+      when: terraform_prov_username not in (pveum_users.stdout | default('')) and terraform_prov_user_password != ''
+      changed_when: terraform_prov_username not in (pveum_users.stdout | default(''))
+
+    - name: Check ACL for Terraform user at /
+      ansible.builtin.command: pveum acl list /
+      register: pveum_acls
+      changed_when: false
+
+    - name: Add ACL for Terraform user at root if missing
+      ansible.builtin.command: pveum aclmod / -user {{ terraform_prov_username }} -role {{ terraform_prov_role_name }}
+      when: terraform_prov_username not in (pveum_acls.stdout | default(''))
+      changed_when: terraform_prov_username not in (pveum_acls.stdout | default(''))
+
+  handlers:
+    - name: Restart systemd-timesyncd
+      ansible.builtin.systemd:
+        name: systemd-timesyncd
+        state: restarted
+
+    - name: Restart chrony
+      ansible.builtin.systemd:
+        name: chrony
+        state: restarted
+
+    - name: Restart rsyslog
+      ansible.builtin.systemd:
+        name: rsyslog
+        state: restarted
+
+    - name: Restart nut-server
+      ansible.builtin.systemd:
+        name: nut-server
+        state: restarted
+
+    - name: Restart nut-client
+      ansible.builtin.systemd:
+        name: nut-monitor
+        state: restarted
+
+    - name: Restart fail2ban
+      ansible.builtin.systemd:
+        name: fail2ban
+        state: restarted
+
+    - name: Update initramfs
+      ansible.builtin.command: update-initramfs -u -k all
+      when: gpu_passthrough_enabled
+      changed_when: false
+
+    - name: Update-grub
+      ansible.builtin.command: update-grub
+      when: enable_iommu
+      changed_when: false

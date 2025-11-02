@@ -1,0 +1,3 @@
+-w /etc/pve -p wa -k pve
+## Audit rules for Proxmox VE configuration directory
+-w {{ audit_pve_watch_path }} -p wa -k pve-config

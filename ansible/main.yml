@@ -1,4 +1,0 @@
----
-# file: main.yml
-- ansible.builtin.import_playbook: playbook_group1.yml
-- ansible.builtin.import_playbook: playbook_group2.yml

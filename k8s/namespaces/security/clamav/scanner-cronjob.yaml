@@ -37,10 +37,10 @@ spec:
                 - name: CLAMD_PORT
                   value: "3310"
                 - name: SCAN_PATHS
-                  value: "/data/local-path-provisioner"
+                  value: "/data/storage"
               volumeMounts:
                 - name: local-path-data
-                  mountPath: /data/local-path-provisioner
+                  mountPath: /data/storage
                   readOnly: true
                 - name: quarantine
                   mountPath: /quarantine
@@ -65,7 +65,7 @@ spec:
           volumes:
             - name: local-path-data
               hostPath:
-                path: /opt/local-path-provisioner
+                path: /var/mnt/storage/local-path-provisioner
                 type: Directory
             - name: quarantine
               persistentVolumeClaim:

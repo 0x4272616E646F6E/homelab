@@ -1,6 +1,8 @@
-# ---
-# collections:
-  # Install a collection from Ansible Galaxy.
-  # - name: ansible.windows
-    # version: 1.11.0
-  # - name: chocolatey.chocolatey
+---
+collections:
+  - name: community.general
+    version: ">=8.0.0"
+    source: https://galaxy.ansible.com
+  - name: ansible.posix
+    version: ">=1.5.0"
+    source: https://galaxy.ansible.com
