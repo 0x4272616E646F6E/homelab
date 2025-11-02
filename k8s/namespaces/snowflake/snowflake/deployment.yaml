@@ -26,7 +26,7 @@ spec:
           args:
             - -verbose
             - -capacity
-            - "20"
+            - "10"
             - -metrics
             - -metrics-port
             - "9000"
