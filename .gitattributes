@@ -9,3 +9,7 @@
 *.yaml linguist-detectable linguist-language=YAML
 *.hcl linguist-detectable linguist-language=HCL
 *.tf linguist-detectable linguist-language=HCL
+*.j2 linguist-detectable linguist-language=JINJA
+*.jinja2 linguist-detectable linguist-language=JINJA
+*.jinja linguist-detectable linguist-language=JINJA
+*.nix linguist-detectable linguist-language=NIX
