@@ -1,7 +1,7 @@
 # Secrets Encrypted With SOPS
 locals {
   # Decrypt SOPS secrets at runtime
-  secrets = yamldecode(sops_decrypt_file("${get_terragrunt_dir()}/secrets.yaml"))
+  secrets = yamldecode(sops_decrypt_file("${get_terragrunt_dir()}/secrets.enc.yaml"))
 
   # AWS
   aws_access_key = local.secrets.aws.access_key
