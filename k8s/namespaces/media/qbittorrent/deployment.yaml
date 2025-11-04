@@ -77,7 +77,7 @@ spec:
               subPath: downloads
         - name: port-forward-sync
           # renovate: datasource=docker depName=python
-          image: python:3.14-slim@sha256:4ed33101ee7ec299041cc41dd268dae17031184be94384b1ce7936dc4e5dead3
+          image: python:3.14-slim@sha256:1eb04922e62cb3c19dda7c7883f28b0017e1fd55ee1e0a3b0498370f72a64362
           command: ["/bin/sh", "-c"]
           args:
             - |
