@@ -20,7 +20,7 @@ data:
     image:
       name: stakater/reloader
       repository: ghcr.io/stakater/reloader
-      tag: v1.4.9
+      tag: v1.4.10
       pullPolicy: IfNotPresent
 
     reloader:
