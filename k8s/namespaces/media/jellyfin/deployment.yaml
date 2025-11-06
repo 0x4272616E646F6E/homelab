@@ -17,7 +17,6 @@ spec:
         app.kubernetes.io/name: jellyfin
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: nvidia
       securityContext:
         supplementalGroups:
           - 44 
