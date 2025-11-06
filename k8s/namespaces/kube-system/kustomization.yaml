@@ -8,6 +8,7 @@ resources:
   - cilium/
   - coredns/
   - kubelet-csr-approver/
+  - intel-gpu-plugin/
   - nvidia-device-plugin/
   - metrics-server/
   - talos-debug/

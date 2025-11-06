@@ -67,21 +67,7 @@ kubectl scale deployment pod -n ns --replicas=0
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
- factory.talos.dev/nocloud-installer/00cd01c7b8612cfd0c5e4394a20fe0c12b1c398ddbf6b554d909179411659e6a:v1.11.1 
-```
-
-**Extensions**
-```bash
-customization:
-    systemExtensions:
-        officialExtensions:
-            - siderolabs/crun
-            - siderolabs/gasket-driver
-            - siderolabs/nonfree-kmod-nvidia-production
-            - siderolabs/nvidia-container-toolkit-production
-            - siderolabs/qemu-guest-agent
-            - siderolabs/util-linux-tools
-            - siderolabs/youki
+  factory.talos.dev/nocloud-installer/df161ca9e93cc8c47bf4af62e0eb06c4c40323c51c8883ded75006d59c55b81b:v1.11.5
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.

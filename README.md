@@ -170,6 +170,7 @@ The following resources are managed through Flux in this repository:
 - [**Harbor**](https://github.com/goharbor/harbor)
 - [**Home Assistant**](https://github.com/home-assistant/core)
 - [**Huntarr**](https://github.com/plexguide/Huntarr.io)
+- [**Intel GPU Plugin**](https://github.com/intel/intel-device-plugins-for-kubernetes)
 - [**Jellyfin**](https://github.com/jellyfin/jellyfin)
 - [**Jellyseerr**](https://github.com/fallenbagel/jellyseerr)
 - [**Kestra**](https://github.com/kestra-io/kestra)
