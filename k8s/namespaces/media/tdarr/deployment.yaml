@@ -68,11 +68,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
-              gpu.intel.com/i915: "1"
+              nvidia.com/gpu: "1"
             limits:
               cpu: "1500m"
               memory: "1536Mi"
-              gpu.intel.com/i915: "1"
+              nvidia.com/gpu: "1"
           volumeMounts:
             - name: config
               mountPath: /app/configs
