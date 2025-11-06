@@ -42,11 +42,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/i915: "1"
             limits:
               cpu: "1500m"
               memory: "1536Mi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/i915: "1"
           securityContext:
             runAsNonRoot: false
             allowPrivilegeEscalation: false
