@@ -27,7 +27,7 @@ spec:
       containers:
         - name: minecraft
           # renovate: datasource=docker depName=docker.io/itzg/minecraft-server
-          image: docker.io/itzg/minecraft-server:java21-graalvm@sha256:cf9d36a04c4ed1edbbd23b26ff8e77ebf878474eba416d312afff24a987be4fb
+          image: docker.io/itzg/minecraft-server:java21-graalvm@sha256:9e22475752ebaaa92e7753ab88ef5113038cb2f0be29d10d5fcb3f807b3f172f
           imagePullPolicy: IfNotPresent
           env:
             - name: ENABLE_ROLLING_LOGS
