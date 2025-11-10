@@ -138,7 +138,9 @@ Below is information on the hardware this homelab runs on:
 - HBA: [LSI SAS 9300-8i](https://docs.broadcom.com/doc/12352000)
 - OS Disks (2x): [Intel Optane SSD 1600X Series](https://www.intel.com/content/www/us/en/products/sku/211868/intel-optane-ssd-p1600x-series-58gb-m-2-80mm-pcie-3-0-x4-3d-xpoint/specifications.html)
 - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
-- GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
+- GPU1: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
+- GPU2: [Intel Arc A310 Low Profile](https://www.sparkle.com.tw/en/A310-ECO)
+- GPU2 Riser: [PCIE 4.0 X4 To X16 Riser Graphics Card Extension Cable](https://www.ebay.com/itm/195849039024?var=495695011149)
 - TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
 </details>
 
