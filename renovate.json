@@ -170,7 +170,7 @@
         "k8s/namespaces/security/authentik/postgres/deployment.yaml",
         "k8s/namespaces/security/keycloak/postgres/statefulset.yaml"
       ],
-      "allowedVersions": "/^17(\\.\\d+.*)?$/"
+      "allowedVersions": "/^17\\.6(\\.\\d+.*)?$/"
     },
     {
       "description": "Auto-merge minor updates for trusted managers",
