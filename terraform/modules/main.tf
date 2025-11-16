@@ -1,25 +1,25 @@
 # Cloudflare Config
 module "cloudflare" {
-  source = "./modules/cloudflare"
+  source = "./cloudflare"
 
 }
 
 # Proxmox Config
 module "proxmox" {
-  source = "./modules/proxmox"
+  source = "./proxmox"
 
   depends_on = [module.unifi]
 }
 
 # Talos Config
 module "talos" {
-  source = "./modules/talos"
+  source = "./talos"
 
   depends_on = [module.proxmox]
 }
 
 # UniFi Config
 module "unifi" {
-  source = "./modules/unifi"
+  source = "./unifi"
 
 }

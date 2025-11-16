@@ -1,38 +1,88 @@
 ---
+# General Configurations
 dns_servers:
   - 10.0.0.1
-
+domains:
+  - hosted.fail
 ntp_servers:
   - time.cloudflare.com
+notify_email: ""  # e.g., "admin@example.com"
+timezone: "America/Detroit"
 
+# ACME / TLS Configurations
+acme_enabled: false
+acme_account_name: "production"
+acme_account_email: "admin@hosted.fail"
+acme_directory_url: "https://acme-v02.api.letsencrypt.org/directory"
+acme_plugin_name: "standalone"  # Matches plugin ID listed under Datacenter -> ACME
+acme_plugin_type: "standalone"   # standalone (http-01) or dns
+acme_plugin_api: ""             # Required when acme_plugin_type == "dns"
+acme_plugin_nodes: []            # Optional list of nodes when using DNS plugins
+acme_plugin_validation_delay: 30
+acme_plugin_data_b64: ""        # Base64-encoded KEY=VALUE lines for DNS API secrets
+acme_domains:
+  - domain: "pve.hosted.fail"
+    plugin: "standalone"
+    alias: ""                   # Optional DNS alias target when delegating challenges
+acme_force_renew: false
+
+# Syslog Configurations
 syslog_enabled: true
 syslog_server: "syslog.hosted.fail"
 syslog_port: 514
 syslog_protocol: "udp"
 
-timezone: "America/Detroit"
+# Log Rotation Configurations
+logrotate_custom_enabled: false
+logrotate_configs:
+  - name: "clamav-host-scan"
+    paths:
+      - /var/log/clamav-host-scan.log
+    rotate: 7
+    interval: daily
+    compress: true
+    missingok: true
+    notifempty: true
+  - name: "rkhunter-daily"
+    paths:
+      - /var/log/rkhunter-daily.log
+    rotate: 7
+    interval: weekly
+    compress: true
+    missingok: true
+    notifempty: true
 
+# NUT (Network UPS Tools) Configurations
 nut_enabled: true
-nut_mode: "netclient"  # Options: standalone, netserver, netclient
-nut_ups_name: "ups"
-nut_ups_driver: "usbhid-ups"  # Common for USB UPS; check NUT docs for your model
+nut_mode: "standalone"  # Options: standalone, netserver, netclient
+nut_ups_name: "cyberpower"
+nut_ups_driver: "usbhid-ups"
 nut_ups_port: "auto"
-nut_monitor_user: "monuser"
-nut_monitor_password: "secret"  # Change this!
-nut_server: "192.168.1.50"  # NUT server IP (if using netclient mode)
+nut_ups_vendor_id: "0764"
+nut_ups_product_id: "0501"
+nut_ups_serial: ""
+nut_monitor_user: "upsmon"
+nut_monitor_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          63633738353761313066656331643038613534653664626631323632366466636565343737663231
+          3637656537366561323134623534316430366239646632330a626461393236613536613736346564
+          31366435653163616131326361383733666164366661666532623830343739333538613766343563
+          6463633830316336380a353237663061663964336165333335376130306632336534643865353562
+          66616638636536356238623937366462643338636237636662343332666134666235616166613761
+          6437363764313162643038616466336237336563656161353365
+nut_server: "127.0.0.1"  # Only used for netclient mode
 
-notify_email: ""  # e.g., "admin@example.com"
-
+# Unattended Upgrades Configurations
+apt_include_non_free_firmware: true
 unattended_upgrades_enabled: true
 unattended_upgrades_email: ""  # e.g., "admin@example.com" - Leave empty to disable email
 unattended_upgrades_mail_report: "on-change"  # Options: always, only-on-error, on-change
-
 unattended_upgrades_proxmox_updates: false
-
 unattended_upgrades_auto_reboot: false 
 unattended_upgrades_reboot_with_users: false
 unattended_upgrades_reboot_time: "02:00"
 
+# GPU Passthrough and IOMMU Configurations
 gpu_passthrough_enabled: true
 gpu_blacklist_modules:
   - nvidiafb
@@ -49,24 +99,59 @@ gpu_blacklist_modules:
   - amdgpu
   - i915
   - xe
-
 enable_iommu: true
 iommu_vendor: 'auto'
 iommu_extra_options: ""
 iommu_update_grub: true
 iommu_require_reboot: true
 
+# Sysctl Hardening Configurations
+sysctl_hardening_enabled: false
+sysctl_hardening_values:
+  kernel.kptr_restrict: 2
+  kernel.dmesg_restrict: 1
+  kernel.perf_event_paranoid: 3
+  kernel.yama.ptrace_scope: 1
+  kernel.unprivileged_bpf_disabled: 1
+  kernel.kexec_load_disabled: 1
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv4.conf.all.log_martians: 1
+  net.ipv4.conf.default.log_martians: 1
+  net.ipv4.conf.all.rp_filter: 1
+  net.ipv4.conf.default.rp_filter: 1
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  net.ipv4.tcp_syncookies: 1
+  net.ipv6.conf.all.accept_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  vm.mmap_rnd_bits: 32
+  vm.mmap_rnd_compat_bits: 16
+
+# Kernel Lockdown Configurations
+kernel_lockdown_enabled: false
+kernel_lockdown_mode: "integrity"
+kernel_lockdown_sig_enforce: true
+kernel_extra_cmdline_params: []
+
+# Terraform Provisioner Configurations
 terraform_prov_role_name: "TerraformProv"
 terraform_prov_role_privs: "Datastore.AllocateSpace Datastore.AllocateTemplate Datastore.Audit Pool.Allocate Sys.Audit Sys.Console Sys.Modify VM.Allocate VM.Audit VM.Clone VM.Config.CDROM VM.Config.Cloudinit VM.Config.CPU VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Migrate VM.PowerMgmt SDN.Use"
 terraform_prov_username: "terraform-prov@pve"
 terraform_prov_user_password: ""
 
-fail2ban_enabled: false
+# Fail2Ban Configurations
+fail2ban_enabled: true
 fail2ban_ignore_ip:
   - 127.0.0.1
+  - 10.0.1.126
 fail2ban_maxretry: 3
 fail2ban_findtime: "2h"
 fail2ban_bantime: "1h"
+
+# SMTP Relay Configurations
 smtp_relay_enabled: false
 smtp_relay_host: ""
 smtp_relay_port: 25
@@ -75,13 +160,15 @@ smtp_relay_auth: false
 smtp_relay_user: ""
 smtp_relay_password: ""
 
+# ZFS Tuning Configurations
 zfs_tuning_enabled: false
 zfs_tuning:
   zfs_arc_max: "4G"
   zfs_arc_min: "1G"
   zfs_vdev_aggregation_limit: 4
 
-host_antivirus_enabled: false
+# Antivirus Configurations
+host_antivirus_enabled: true
 host_antivirus_scan_paths:
   - /var/lib/vz
   - /srv
@@ -89,18 +176,28 @@ host_antivirus_scan_paths:
 clamav_freshclam_update: true
 clamav_scan_opts: "--recursive --infected --bell"
 
-rkhunter_enabled: false
+# Rootkit Hunter Configurations
+rkhunter_enabled: true
 rkhunter_update_databases: true
 rkhunter_scan_opts: "--checkall"
 
-pve_exporter_enabled: false
+# Proxmox Exporter Configurations
+pve_exporter_enabled: true
 pve_exporter_version: "latest"
 pve_exporter_listen_address: "127.0.0.1:9221"
 
+# Auditd Configurations
 audit_pve_rules_enabled: true
 audit_pve_rules_path: /etc/audit/rules.d/90-pve.rules
 audit_pve_watch_path: /etc/pve
-
-apt_include_non_free_firmware: true
-
-
+auditd_hardening_enabled: false
+auditd_hardening_rules:
+  - "-w /etc/passwd -p wa -k identity"
+  - "-w /etc/shadow -p wa -k identity"
+  - "-w /etc/group -p wa -k identity"
+  - "-w /etc/sudoers -p wa -k sudoers"
+  - "-w /etc/ssh/sshd_config -p wa -k sshd"
+  - "-w /var/log/auth.log -p wa -k auth"
+  - "-w /var/log/syslog -p wa -k syslog"
+  - "-a always,exit -F arch=b64 -S execve -k exec_log"
+  - "-a always,exit -F arch=b32 -S execve -k exec_log"

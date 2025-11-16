@@ -17,7 +17,7 @@
         owner: root
         group: root
         mode: '0644'
-      when: dns_servers is defined and dns_servers | length > 0
+      when: (dns_servers | default([])) | length > 0
 
     - name: Install chrony for NTP
       ansible.builtin.apt:
@@ -49,6 +49,234 @@
         mode: '0644'
       when: syslog_enabled and syslog_server != ''
       notify: Restart rsyslog
+
+    - name: Configure ACME certificates for Proxmox API
+      when: acme_enabled
+      block:
+        - name: Ensure ACME domain list is defined
+          ansible.builtin.assert:
+            that:
+              - (acme_domains | default([])) | length > 0
+            fail_msg: "ACME is enabled but no domains were defined."
+
+        - name: Initialize normalized ACME domain list
+          ansible.builtin.set_fact:
+            _acme_domains_normalized: []
+
+        - name: Normalize ACME domain definitions
+          vars:
+            normalized_domain_map:
+              domain: "{{ item.domain if item is mapping else item }}"
+              alias: "{{ item.alias if (item is mapping and ('alias' in item)) else '' }}"
+              plugin: "{{ item.plugin if (item is mapping and ('plugin' in item)) else acme_plugin_name }}"
+          ansible.builtin.set_fact:
+            _acme_domains_normalized: "{{ _acme_domains_normalized + [normalized_domain_map] }}"
+          loop: "{{ acme_domains }}"
+          loop_control:
+            label: "{{ item.domain if (item is mapping) else item }}"
+
+        - name: Build ACME domain string
+          ansible.builtin.set_fact:
+            _acme_domain_string: "{{ _acme_domains_normalized | map(attribute='domain') | join(';') }}"
+
+        - name: Record Proxmox node name for ACME operations
+          ansible.builtin.set_fact:
+            _acme_node_name: "{{ ansible_nodename | default(inventory_hostname) }}"
+
+        - name: Retrieve ACME metadata (ToS)
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - get
+              - /cluster/acme/meta
+              - --directory
+              - "{{ acme_directory_url }}"
+              - --output-format
+              - json
+          register: _acme_meta_raw
+          changed_when: false
+
+        - name: Parse ACME metadata response
+          ansible.builtin.set_fact:
+            _acme_meta: "{{ _acme_meta_raw.stdout | default('{}') | from_json }}"
+
+        - name: List existing ACME accounts
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - get
+              - /cluster/acme/account
+              - --output-format
+              - json
+          register: _acme_accounts_raw
+          changed_when: false
+
+        - name: Cache ACME account names
+          ansible.builtin.set_fact:
+            _acme_account_names: "{{ _acme_accounts_raw.stdout | default('[]') | from_json | map(attribute='name') | list }}"
+
+        - name: Register ACME account if missing
+          ansible.builtin.command: "{{ [
+              'pvesh create /cluster/acme/account',
+              '--name ' ~ (acme_account_name | quote),
+              '--contact ' ~ (acme_account_email | quote),
+              '--directory ' ~ (acme_directory_url | quote),
+              ('--tos_url ' ~ (_acme_meta.termsOfService | quote)) if (_acme_meta.termsOfService | default('')) | length > 0 else ''
+            ] | reject('equalto', '') | join(' ') }}"
+          when: acme_account_name not in _acme_account_names
+          changed_when: true
+
+        - name: Ensure ACME DNS plugin configuration is valid
+          ansible.builtin.assert:
+            that:
+              - acme_plugin_api | length > 0
+            fail_msg: "acme_plugin_api must be set when acme_plugin_type is 'dns'."
+          when: acme_plugin_type == 'dns'
+
+        - name: Build ACME plugin node list string
+          ansible.builtin.set_fact:
+            _acme_plugin_nodes_str: "{{ acme_plugin_nodes | join(',') }}"
+          when: acme_plugin_type == 'dns'
+
+        - name: List existing ACME plugins
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - get
+              - /cluster/acme/plugins
+              - --output-format
+              - json
+          register: _acme_plugins_raw
+          changed_when: false
+          when: acme_plugin_type == 'dns'
+
+        - name: Cache ACME plugin identifiers
+          ansible.builtin.set_fact:
+            _acme_plugin_names: "{{ _acme_plugins_raw.stdout | default('[]') | from_json | map(attribute='plugin') | list }}"
+          when: acme_plugin_type == 'dns'
+
+        - name: Create ACME DNS plugin when missing
+          ansible.builtin.command: "{{ [
+              'pvesh create /cluster/acme/plugins',
+              '--id ' ~ (acme_plugin_name | quote),
+              '--type dns',
+              '--api ' ~ (acme_plugin_api | quote),
+              '--validation-delay ' ~ (acme_plugin_validation_delay | string),
+              ('--nodes ' ~ (_acme_plugin_nodes_str | quote)) if (_acme_plugin_nodes_str | default('')) | length > 0 else '',
+              ('--data ' ~ (acme_plugin_data_b64 | quote)) if (acme_plugin_data_b64 | length) > 0 else ''
+            ] | reject('equalto', '') | join(' ') }}"
+          when:
+            - acme_plugin_type == 'dns'
+            - acme_plugin_name not in _acme_plugin_names
+          changed_when: true
+
+        - name: Read ACME plugin details
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - get
+              - "/cluster/acme/plugins/{{ acme_plugin_name }}"
+              - --output-format
+              - json
+          register: _acme_plugin_info_raw
+          changed_when: false
+          when:
+            - acme_plugin_type == 'dns'
+            - acme_plugin_name in _acme_plugin_names
+
+        - name: Parse ACME plugin details
+          ansible.builtin.set_fact:
+            _acme_plugin_current: "{{ _acme_plugin_info_raw.stdout | default('{}') | from_json }}"
+          when:
+            - acme_plugin_type == 'dns'
+            - acme_plugin_name in _acme_plugin_names
+
+        - name: Update ACME DNS plugin options when changed
+          ansible.builtin.command: "{{ [
+              'pvesh set /cluster/acme/plugins/' ~ acme_plugin_name,
+              '--api ' ~ (acme_plugin_api | quote),
+              '--validation-delay ' ~ (acme_plugin_validation_delay | string),
+              ('--nodes ' ~ (_acme_plugin_nodes_str | quote)) if (_acme_plugin_nodes_str | default('')) | length > 0 else '',
+              ('--data ' ~ (acme_plugin_data_b64 | quote)) if (acme_plugin_data_b64 | length) > 0 else ''
+            ] | reject('equalto', '') | join(' ') }}"
+          when:
+            - acme_plugin_type == 'dns'
+            - acme_plugin_name in _acme_plugin_names
+            - (
+                (_acme_plugin_current.api | default('')) != acme_plugin_api
+                or ((_acme_plugin_current['validation-delay'] | default(0)) | int) != (acme_plugin_validation_delay | int)
+                or ((_acme_plugin_current.nodes | default('')) != (_acme_plugin_nodes_str | default('')))
+              )
+          changed_when: true
+
+        - name: Fetch existing node ACME configuration
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - get
+              - "/nodes/{{ _acme_node_name }}/config"
+              - --output-format
+              - json
+          register: _acme_node_config_raw
+          changed_when: false
+
+        - name: Parse node ACME configuration
+          ansible.builtin.set_fact:
+            _acme_node_config: "{{ _acme_node_config_raw.stdout | default('{}') | from_json }}"
+
+        - name: Determine ACME domain keys to remove
+          ansible.builtin.set_fact:
+            _acme_domain_keys_to_remove: "{{ _acme_node_config | dict2items | selectattr('key', 'match', '^acmedomain') | map(attribute='key') | list }}"
+
+        - name: Remove previously defined ACME domain entries
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - set
+              - "/nodes/{{ _acme_node_name }}/config"
+              - --delete
+              - "{{ _acme_domain_keys_to_remove | join(',') }}"
+          when: (_acme_domain_keys_to_remove | length) > 0
+          changed_when: true
+
+        - name: Configure node-wide ACME defaults
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - set
+              - "/nodes/{{ _acme_node_name }}/config"
+              - --acme
+              - "account={{ acme_account_name }}{{ (',domains=' ~ _acme_domain_string) if (_acme_domain_string | length) > 0 else '' }}"
+          changed_when: true
+
+        - name: Configure ACME domain-specific plugins
+          ansible.builtin.command:
+            argv:
+              - pvesh
+              - set
+              - "/nodes/{{ _acme_node_name }}/config"
+              - "--acmedomain{{ loop.index0 }}"
+              - >-
+                {{ 'domain=' ~ item.domain
+                   ~ (',plugin=' ~ item.plugin if (item.plugin | length) > 0 else '')
+                   ~ (',alias=' ~ item.alias if (item.alias | length) > 0 else '') }}
+          loop: "{{ _acme_domains_normalized }}"
+          loop_control:
+            label: "{{ item.domain }}"
+          changed_when: true
+
+        - name: Order/renew ACME certificate for node
+          ansible.builtin.command: "{{ [
+              'pvesh set /nodes/' ~ _acme_node_name ~ '/certificates/acme/certificate',
+              '--force 1' if acme_force_renew else ''
+            ] | reject('equalto', '') | join(' ') }}"
+          when: not ansible_check_mode
+          changed_when: true
+
+    - name: Initialize kernel command line parameter list
+      ansible.builtin.set_fact:
+        _kernel_cmdline_params: []
+      when: _kernel_cmdline_params is not defined
 
     - name: Install NUT packages
       ansible.builtin.apt:
@@ -198,7 +426,7 @@
             update_cache: true
 
     - name: Deploy audit rules for Proxmox config
-      when: audit_pve_rules_enabled
+      when: audit_pve_rules_enabled or auditd_hardening_enabled
       block:
         - name: Create audit rules file for /etc/pve
           ansible.builtin.template:
@@ -207,6 +435,16 @@
             owner: root
             group: root
             mode: '0644'
+          when: audit_pve_rules_enabled
+
+        - name: Deploy audit hardening rules
+          ansible.builtin.template:
+            src: templates/audit/99-hardening.rules.j2
+            dest: /etc/audit/rules.d/99-hardening.rules
+            owner: root
+            group: root
+            mode: '0644'
+          when: auditd_hardening_enabled
 
         - name: Load audit rules via augenrules if available
           ansible.builtin.command: augenrules --load
@@ -224,12 +462,22 @@
           ansible.builtin.systemd:
             name: auditd
             state: restarted
+          register: _auditd_restart
+          failed_when: false
+          changed_when: _auditd_restart is defined and _auditd_restart.state is defined and _auditd_restart.state == 'restarted'
 
         - name: Verify audit rule present
           ansible.builtin.command: auditctl -l | grep pve-config
           register: _audit_verify
           failed_when: false
           changed_when: false
+          when: audit_pve_rules_enabled
+
+    - name: Remove audit hardening rules when disabled
+      ansible.builtin.file:
+        path: /etc/audit/rules.d/99-hardening.rules
+        state: absent
+      when: not auditd_hardening_enabled
 
     - name: Install and configure pve_exporter for Prometheus
       when: pve_exporter_enabled
@@ -262,9 +510,13 @@
             name: pve_exporter
             enabled: true
             state: started
+          register: _pve_exporter_systemd
+          failed_when: false
+          changed_when: _pve_exporter_systemd is defined and (_pve_exporter_systemd.state | default('')) == 'started'
 
 
     - name: Install and configure Fail2Ban
+      when: fail2ban_enabled
       block:
         - name: Install fail2ban
           ansible.builtin.apt:
@@ -294,7 +546,9 @@
             name: fail2ban
             enabled: true
             state: started
+          when: not ansible_check_mode
     - name: Install and configure Postfix relay (simple)
+      when: smtp_relay_enabled
       block:
         - name: Install postfix
           ansible.builtin.apt:
@@ -329,6 +583,7 @@
             name: postfix
             state: restarted
     - name: Apply ZFS tunables
+      when: zfs_tuning_enabled
       block:
         - name: Deploy ZFS tuning file
           ansible.builtin.template:
@@ -362,7 +617,7 @@
 
         - name: Ensure log directory exists for ClamAV host scan
           ansible.builtin.file:
-            path: /var/log
+            path: /var/log/clamav
             state: directory
             owner: root
             group: root
@@ -384,6 +639,81 @@
             owner: root
             group: root
             mode: '0755'
+
+    - name: Manage custom logrotate policies
+      when: logrotate_custom_enabled
+      block:
+        - name: Ensure logrotate directory exists
+          ansible.builtin.file:
+            path: /etc/logrotate.d
+            state: directory
+            owner: root
+            group: root
+            mode: '0755'
+
+        - name: Deploy managed logrotate entries
+          ansible.builtin.template:
+            src: templates/logging/logrotate-entry.j2
+            dest: "/etc/logrotate.d/homelab-{{ item.name }}"
+            owner: root
+            group: root
+            mode: '0644'
+          loop: "{{ logrotate_configs }}"
+          loop_control:
+            label: "{{ item.name }}"
+          vars:
+            logrotate_item: "{{ item }}"
+          when: (logrotate_configs | default([])) | length > 0
+
+    - name: Remove managed logrotate configs when disabled
+      ansible.builtin.file:
+        path: "/etc/logrotate.d/homelab-{{ item.name }}"
+        state: absent
+      loop: "{{ logrotate_configs }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when:
+        - not logrotate_custom_enabled
+        - (logrotate_configs | default([])) | length > 0
+
+    - name: Apply sysctl hardening values
+      when: sysctl_hardening_enabled
+      block:
+        - name: Deploy sysctl hardening configuration
+          ansible.builtin.template:
+            src: templates/sysctl/99-homelab-hardening.conf.j2
+            dest: /etc/sysctl.d/99-homelab-hardening.conf
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Reload sysctl settings for hardening profile
+          ansible.builtin.command: sysctl -p /etc/sysctl.d/99-homelab-hardening.conf
+          changed_when: false
+          when: not ansible_check_mode
+
+    - name: Remove sysctl hardening file when disabled
+      ansible.builtin.file:
+        path: /etc/sysctl.d/99-homelab-hardening.conf
+        state: absent
+      when: not sysctl_hardening_enabled
+
+    - name: Include user-defined kernel parameters
+      ansible.builtin.set_fact:
+        _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + (kernel_extra_cmdline_params | default([])) }}"
+      when: (kernel_extra_cmdline_params | default([])) | length > 0
+
+    - name: Configure kernel lockdown command line
+      when: kernel_lockdown_enabled
+      block:
+        - name: Append kernel lockdown mode argument
+          ansible.builtin.set_fact:
+            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['lockdown=' ~ kernel_lockdown_mode] }}"
+
+        - name: Enforce kernel module signatures when requested
+          ansible.builtin.set_fact:
+            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['module.sig_enforce=1'] }}"
+          when: kernel_lockdown_sig_enforce
 
     - name: Determine CPU vendor for IOMMU (if auto)
       ansible.builtin.set_fact:
@@ -408,15 +738,29 @@
     - name: Build IOMMU kernel param
       ansible.builtin.set_fact:
         _iommu_param: "{{ _iommu_base }} {{ iommu_extra_options }}"
-      when: enable_iommu
+      when:
+        - enable_iommu
+        - _iommu_base is defined
 
-    - name: Ensure GRUB_CMDLINE_LINUX_DEFAULT contains IOMMU params
+    - name: Append IOMMU parameters to kernel cmdline
+      ansible.builtin.set_fact:
+        _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + [_iommu_param | trim] }}"
+      when:
+        - enable_iommu
+        - _iommu_param is defined
+
+    - name: Build kernel command line string
+      ansible.builtin.set_fact:
+        _kernel_cmdline_combined: "{{ (_kernel_cmdline_params | default([])) | map('trim') | reject('equalto', '') | list | unique | join(' ') }}"
+      when: (_kernel_cmdline_params | default([])) | length > 0
+
+    - name: Ensure GRUB_CMDLINE_LINUX_DEFAULT contains custom parameters
       ansible.builtin.lineinfile:
         path: /etc/default/grub
         regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
-        line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet {{ _iommu_param | trim }}"'
+        line: "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet{{ ' ' + _kernel_cmdline_combined if (_kernel_cmdline_combined | default('') | length) > 0 else '' }}\""
         backup: true
-      when: enable_iommu
+      when: (_kernel_cmdline_params | default([])) | length > 0
       notify: Update-grub
 
     - name: Check if Terraform role exists
@@ -443,10 +787,14 @@
       ansible.builtin.command: pveum acl list /
       register: pveum_acls
       changed_when: false
+      when: terraform_prov_username != '' and terraform_prov_user_password != ''
 
     - name: Add ACL for Terraform user at root if missing
       ansible.builtin.command: pveum aclmod / -user {{ terraform_prov_username }} -role {{ terraform_prov_role_name }}
-      when: terraform_prov_username not in (pveum_acls.stdout | default(''))
+      when:
+        - terraform_prov_username != ''
+        - terraform_prov_user_password != ''
+        - terraform_prov_username not in (pveum_acls.stdout | default(''))
       changed_when: terraform_prov_username not in (pveum_acls.stdout | default(''))
 
   handlers:
@@ -479,6 +827,7 @@
       ansible.builtin.systemd:
         name: fail2ban
         state: restarted
+      when: not ansible_check_mode
 
     - name: Update initramfs
       ansible.builtin.command: update-initramfs -u -k all
@@ -487,5 +836,4 @@
 
     - name: Update-grub
       ansible.builtin.command: update-grub
-      when: enable_iommu
       changed_when: false
