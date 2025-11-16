@@ -10,20 +10,27 @@ notify_email: ""  # e.g., "admin@example.com"
 timezone: "America/Detroit"
 
 # ACME / TLS Configurations
-acme_enabled: false
+acme_enabled: true
 acme_account_name: "production"
 acme_account_email: "admin@hosted.fail"
 acme_directory_url: "https://acme-v02.api.letsencrypt.org/directory"
-acme_plugin_name: "standalone"  # Matches plugin ID listed under Datacenter -> ACME
-acme_plugin_type: "standalone"   # standalone (http-01) or dns
-acme_plugin_api: ""             # Required when acme_plugin_type == "dns"
-acme_plugin_nodes: []            # Optional list of nodes when using DNS plugins
+acme_plugin_name: "cloudflare-dns"  # Matches plugin ID listed under Datacenter -> ACME
+acme_plugin_type: "dns"             # standalone (http-01) or dns
+acme_plugin_api: "cloudflare"       # Required when acme_plugin_type == "dns"
+acme_plugin_nodes: []               # Optional list of nodes when using DNS plugins
 acme_plugin_validation_delay: 30
-acme_plugin_data_b64: ""        # Base64-encoded KEY=VALUE lines for DNS API secrets
+acme_cloudflare_api_token: "replaceme"       # Use an API token with Zone.DNS edit + Zone.Zone read
+acme_cloudflare_account_id: "replaceme"      # Optional: only needed for some Cloudflare setups
+acme_cloudflare_zone_id: "replaceme"         # Optional: set when scoping token to a single zone
+acme_plugin_data_b64: "{{ [
+    ('CF_Token=' ~ acme_cloudflare_api_token) if (acme_cloudflare_api_token | length) > 0 else '',
+    ('CF_Account_ID=' ~ acme_cloudflare_account_id) if (acme_cloudflare_account_id | length) > 0 else '',
+    ('CF_Zone_ID=' ~ acme_cloudflare_zone_id) if (acme_cloudflare_zone_id | length) > 0 else ''
+  ] | reject('equalto','') | join('\n') | b64encode }}"
 acme_domains:
   - domain: "pve.hosted.fail"
-    plugin: "standalone"
-    alias: ""                   # Optional DNS alias target when delegating challenges
+    plugin: "{{ acme_plugin_name }}"
+    alias: ""                       # Optional DNS alias target when delegating challenges
 acme_force_renew: false
 
 # Syslog Configurations
@@ -33,7 +40,7 @@ syslog_port: 514
 syslog_protocol: "udp"
 
 # Log Rotation Configurations
-logrotate_custom_enabled: false
+logrotate_custom_enabled: true
 logrotate_configs:
   - name: "clamav-host-scan"
     paths:
@@ -106,7 +113,7 @@ iommu_update_grub: true
 iommu_require_reboot: true
 
 # Sysctl Hardening Configurations
-sysctl_hardening_enabled: false
+sysctl_hardening_enabled: true
 sysctl_hardening_values:
   kernel.kptr_restrict: 2
   kernel.dmesg_restrict: 1
@@ -131,7 +138,7 @@ sysctl_hardening_values:
   vm.mmap_rnd_compat_bits: 16
 
 # Kernel Lockdown Configurations
-kernel_lockdown_enabled: false
+kernel_lockdown_enabled: true
 kernel_lockdown_mode: "integrity"
 kernel_lockdown_sig_enforce: true
 kernel_extra_cmdline_params: []
@@ -152,7 +159,7 @@ fail2ban_findtime: "2h"
 fail2ban_bantime: "1h"
 
 # SMTP Relay Configurations
-smtp_relay_enabled: false
+smtp_relay_enabled: true
 smtp_relay_host: ""
 smtp_relay_port: 25
 smtp_relay_use_tls: false
@@ -161,7 +168,7 @@ smtp_relay_user: ""
 smtp_relay_password: ""
 
 # ZFS Tuning Configurations
-zfs_tuning_enabled: false
+zfs_tuning_enabled: true
 zfs_tuning:
   zfs_arc_max: "4G"
   zfs_arc_min: "1G"

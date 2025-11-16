@@ -98,7 +98,7 @@
 
         - name: Parse ACME metadata response
           ansible.builtin.set_fact:
-            _acme_meta: "{{ _acme_meta_raw.stdout | default('{}') | from_json }}"
+            _acme_meta: "{{ _acme_meta_raw.stdout | default('{}', true) | from_json }}"
 
         - name: List existing ACME accounts
           ansible.builtin.command:
@@ -113,7 +113,7 @@
 
         - name: Cache ACME account names
           ansible.builtin.set_fact:
-            _acme_account_names: "{{ _acme_accounts_raw.stdout | default('[]') | from_json | map(attribute='name') | list }}"
+            _acme_account_names: "{{ _acme_accounts_raw.stdout | default('[]', true) | from_json | map(attribute='name') | list }}"
 
         - name: Register ACME account if missing
           ansible.builtin.command: "{{ [
@@ -152,7 +152,7 @@
 
         - name: Cache ACME plugin identifiers
           ansible.builtin.set_fact:
-            _acme_plugin_names: "{{ _acme_plugins_raw.stdout | default('[]') | from_json | map(attribute='plugin') | list }}"
+            _acme_plugin_names: "{{ _acme_plugins_raw.stdout | default('[]', true) | from_json | map(attribute='plugin') | list }}"
           when: acme_plugin_type == 'dns'
 
         - name: Create ACME DNS plugin when missing
@@ -222,7 +222,7 @@
 
         - name: Parse node ACME configuration
           ansible.builtin.set_fact:
-            _acme_node_config: "{{ _acme_node_config_raw.stdout | default('{}') | from_json }}"
+            _acme_node_config: "{{ _acme_node_config_raw.stdout | default('{}', true) | from_json }}"
 
         - name: Determine ACME domain keys to remove
           ansible.builtin.set_fact:
@@ -255,14 +255,16 @@
               - pvesh
               - set
               - "/nodes/{{ _acme_node_name }}/config"
-              - "--acmedomain{{ loop.index0 }}"
+              - "--acmedomain{{ acme_domain_index }}"
               - >-
-                {{ 'domain=' ~ item.domain
-                   ~ (',plugin=' ~ item.plugin if (item.plugin | length) > 0 else '')
-                   ~ (',alias=' ~ item.alias if (item.alias | length) > 0 else '') }}
+                {{ 'domain=' ~ acme_domain.domain
+                   ~ (',plugin=' ~ acme_domain.plugin if (acme_domain.plugin | length) > 0 else '')
+                   ~ (',alias=' ~ acme_domain.alias if (acme_domain.alias | length) > 0 else '') }}
           loop: "{{ _acme_domains_normalized }}"
           loop_control:
-            label: "{{ item.domain }}"
+            loop_var: acme_domain
+            index_var: acme_domain_index
+            label: "{{ acme_domain.domain }}"
           changed_when: true
 
         - name: Order/renew ACME certificate for node
@@ -284,6 +286,24 @@
           - nut
           - nut-client
         state: present
+      when: nut_enabled
+
+    - name: Gather service facts for NUT
+      ansible.builtin.service_facts:
+      when: nut_enabled
+
+    - name: Determine NUT client service unit
+      ansible.builtin.set_fact:
+        _nut_client_service_unit: >-
+          {{
+            'nut-monitor'
+            if 'nut-monitor.service' in (ansible_facts.services | default({}))
+            else (
+              'nut-client'
+              if 'nut-client.service' in (ansible_facts.services | default({}))
+              else 'nut-client'
+            )
+          }}
       when: nut_enabled
 
     - name: Configure NUT mode
@@ -340,14 +360,14 @@
       when: nut_enabled and nut_mode == 'netserver'
       notify: Restart nut-server
 
-    - name: Enable and start NUT services
+    - name: Enable and start NUT client service
       ansible.builtin.systemd:
-        name: "{{ item }}"
+        name: "{{ _nut_client_service_unit | default('nut-monitor') }}"
         enabled: true
         state: started
-      loop:
-        - nut-monitor
-      when: nut_enabled
+      when:
+        - nut_enabled
+        - not ansible_check_mode or (( (_nut_client_service_unit | default('nut-monitor')) ~ '.service') in (ansible_facts.services | default({})) )
 
     - name: Enable NUT server service (netserver mode)
       ansible.builtin.systemd:
@@ -817,11 +837,18 @@
       ansible.builtin.systemd:
         name: nut-server
         state: restarted
+      when:
+        - nut_enabled
+        - nut_mode == 'netserver'
+        - not ansible_check_mode or ('nut-server.service' in (ansible_facts.services | default({})))
 
     - name: Restart nut-client
       ansible.builtin.systemd:
-        name: nut-monitor
+        name: "{{ _nut_client_service_unit | default('nut-monitor') }}"
         state: restarted
+      when:
+        - nut_enabled
+        - not ansible_check_mode or (( (_nut_client_service_unit | default('nut-monitor')) ~ '.service') in (ansible_facts.services | default({})) )
 
     - name: Restart fail2ban
       ansible.builtin.systemd:
