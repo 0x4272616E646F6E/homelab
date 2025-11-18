@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: download-model
-          image: python:3.14-slim@sha256:9813eecff3a08a6ac88aea5b43663c82a931fd9557f6aceaa847f0d8ce738978
+          image: python:3.14-slim@sha256:33f49bd9704688fee190a27dc6e86c797ed24542454aacc5f0755e9cd766ad2b
           command:
             - /bin/bash
             - -c
