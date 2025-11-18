@@ -1,0 +1,59 @@
+# OS / Editor junk
+.DS_Store
+.vscode/
+.idea/
+
+# Python / venv / caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+
+# Ansible runtime artifacts
+*.retry
+ansible.log
+.ansible/
+.ansible/tmp/
+
+# Ansible Galaxy collections
+collections/
+
+# Molecule
+.molecule/
+molecule/.cache/
+
+# Vault password files and secrets
+vault_pass.txt
+.vault_pass
+.vault_pass.txt
+.vault-password-file
+secrets/
+.secrets/
+*.vault.yml
+*.vault.yaml
+*.secret.yml
+*.secret.yaml
+*.secrets.yml
+*.secrets.yaml
+
+# Inventory/group/host secret conventions
+inventories/*/group_vars/*/vault.yml
+inventories/*/host_vars/*/vault.yml
+group_vars/*/vault.yml
+host_vars/*/vault.yml
+
+# Local overrides
+*.local.yml
+*.local.yaml
+*.local.json
+data/*.local.json
+data/*.local.yml
+data/*.local.yaml
+
+# SSH keys and certs
+**/id_rsa
+**/id_rsa.pub
+**/*.pem
+**/*.key

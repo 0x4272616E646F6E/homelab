@@ -14,7 +14,7 @@ acme_enabled: true
 acme_account_name: "production"
 acme_account_email: "admin@hosted.fail"
 acme_directory_url: "https://acme-v02.api.letsencrypt.org/directory"
-acme_plugin_name: "cloudflare-dns"  # Matches plugin ID listed under Datacenter -> ACME
+acme_plugin_name: "cloudflare-dns"  # Matches plugin ID
 acme_plugin_type: "dns"             # standalone (http-01) or dns
 acme_plugin_api: "cloudflare"       # Required when acme_plugin_type == "dns"
 acme_plugin_nodes: []               # Optional list of nodes when using DNS plugins
