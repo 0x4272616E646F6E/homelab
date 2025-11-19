@@ -21,7 +21,7 @@ data:
       # -- List of image pull secrets to use
       imagePullSecrets: []
       # -- Container image for the operator
-      image: ghcr.io/stacklok/toolhive/operator:v0.6.5@sha256:071d051baaeb85cba6dc69597645ca012fb019e4a3cf3e32dd95e21f58b08a8a
+      image: ghcr.io/stacklok/toolhive/operator:v0.6.6@sha256:e9c7d6f6d23ff663246b57c1950f61c7e93c078cfc3e3b072cc800bb3d05d070
       # -- Image pull policy for the operator container
       imagePullPolicy: IfNotPresent
 
