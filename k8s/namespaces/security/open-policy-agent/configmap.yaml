@@ -74,7 +74,7 @@ data:
         enabled: false
         image:
           repository: openpolicyagent/gatekeeper-crds
-          tag: v3.20.1
+          tag: v3.21.0
           pullPolicy: IfNotPresent
           pullSecrets: []
         extraNamespaces: []
@@ -108,7 +108,7 @@ data:
         extraRules: []
         image:
           repository: openpolicyagent/gatekeeper-crds
-          tag: v3.20.1
+          tag: v3.21.0
           pullPolicy: IfNotPresent
           pullSecrets: []
         extraNamespaces: []
@@ -152,7 +152,7 @@ data:
         enabled: false
         image:
           repository: openpolicyagent/gatekeeper-crds
-          tag: v3.20.1
+          tag: v3.21.0
           pullPolicy: IfNotPresent
           pullSecrets: []
         priorityClassName: ""
