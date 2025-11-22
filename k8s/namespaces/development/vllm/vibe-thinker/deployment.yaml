@@ -30,6 +30,7 @@ spec:
           - sh
           - -c
           - >
+            chown -R 0:0 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true &&
             mkdir -p \
               /home/vllm/.cache \
               /home/vllm/.cache/huggingface \
@@ -37,8 +38,7 @@ spec:
               /home/vllm/.cache/torch \
               /vllm-workspace \
               /tmp/torchinductor_cache \
-              /tmp/triton &&
-            chown -R 0:0 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
+              /tmp/triton
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
