@@ -39,6 +39,12 @@ spec:
               /tmp/torchinductor_cache \
               /tmp/triton &&
             chown -R 0:0 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true
+        securityContext:
+          runAsUser: 0
+          runAsNonRoot: false
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
         volumeMounts:
         - { name: cache-volume,   mountPath: /home/vllm/.cache }
         - { name: shm,            mountPath: /dev/shm }
