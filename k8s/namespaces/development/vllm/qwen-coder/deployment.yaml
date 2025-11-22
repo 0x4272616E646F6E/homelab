@@ -35,15 +35,14 @@ spec:
           - --tensor-parallel-size
           - "1"
           - --max-model-len
-          - "131072"
+          - "32768"
           - --max-num-batched-tokens
-          - "131072"
+          - "32768"
           - --max-num-seqs
           - "4"
           - --gpu-memory-utilization
           - "0.55"
           - --enable-chunked-prefill
-          - --enable-auto-tool-choice
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
