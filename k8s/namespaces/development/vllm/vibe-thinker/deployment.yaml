@@ -22,34 +22,6 @@ spec:
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
-      initContainers:
-      - name: fix-permissions
-        # renovate: datasource=docker depName=docker.io/busybox
-        image: busybox:1.37@sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee
-        command:
-          - sh
-          - -c
-          - >
-            chown -R 0:0 /home/vllm/.cache /dev/shm /tmp /var/tmp /vllm-workspace || true &&
-            mkdir -p \
-              /home/vllm/.cache/huggingface \
-              /home/vllm/.cache/hf \
-              /home/vllm/.cache/torch \
-              /vllm-workspace \
-              /tmp/torchinductor_cache \
-              /tmp/triton
-        securityContext:
-          runAsUser: 0
-          runAsNonRoot: false
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities: { drop: ["ALL"] }
-        volumeMounts:
-        - { name: cache-volume,   mountPath: /home/vllm/.cache }
-        - { name: shm,            mountPath: /dev/shm }
-        - { name: tmp,            mountPath: /tmp }
-        - { name: var-tmp,        mountPath: /var/tmp }
-        - { name: vllm-workspace, mountPath: /vllm-workspace }
       containers:
       - name: vllm
         # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
