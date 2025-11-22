@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm-jan-nano
+  name: vllm-vibe-thinker
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-jan-nano
+    app.kubernetes.io/name: vllm-vibe-thinker
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: vllm-jan-nano
+      app.kubernetes.io/name: vllm-vibe-thinker
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vllm-jan-nano
+        app.kubernetes.io/name: vllm-vibe-thinker
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: nvidia
@@ -52,19 +52,19 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - Menlo/Jan-nano
+          - WeiboAI/VibeThinker-1.5B
           - --block-size
           - "32"
           - --tensor-parallel-size
           - "1"
           - --max-model-len
-          - "32768"
-          - --max-num-batched-tokens 
-          - "2048"
+          - "40960"
+          - --max-num-batched-tokens
+          - "40960"
           - --max-num-seqs
           - "1"
           - --gpu-memory-utilization
-          - "0.63"
+          - "0.50"
           - --enable-chunked-prefill
           - --enable-auto-tool-choice
           - --tool-call-parser
@@ -121,7 +121,7 @@ spec:
               command: ["bash","-lc","nvidia-smi || true; ls -l /dev/nvidia* || true"]
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: jan-nano-pvc }
+        persistentVolumeClaim: { claimName: vibe-thinker-pvc }
       - name: shm
         emptyDir: { medium: Memory, sizeLimit: "16Gi" }
       - name: tmp

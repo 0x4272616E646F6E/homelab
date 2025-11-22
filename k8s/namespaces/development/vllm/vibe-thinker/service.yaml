@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm-jan-nano
+  name: vllm-vibe-thinker
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-jan-nano
+    app.kubernetes.io/name: vllm-vibe-thinker
 spec:
   ports:
-  - name: vllm-jan-nano
+  - name: vllm-vibe-thinker
     port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: vllm-jan-nano
+    app.kubernetes.io/name: vllm-vibe-thinker
   sessionAffinity: None
   type: ClusterIP

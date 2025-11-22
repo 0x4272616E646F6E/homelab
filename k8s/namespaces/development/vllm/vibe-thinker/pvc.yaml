@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jan-nano-pvc
+  name: vibe-thinker-pvc
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-jan-nano
+    app.kubernetes.io/name: vllm-vibe-thinker
 spec:
   accessModes:
     - ReadWriteOnce
