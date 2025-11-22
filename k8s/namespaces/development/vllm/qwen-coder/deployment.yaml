@@ -41,7 +41,7 @@ spec:
           - --max-num-seqs
           - "4"
           - --gpu-memory-utilization
-          - "0.85"
+          - "0.55"
           - --enable-chunked-prefill
           - --enable-auto-tool-choice
         env:
