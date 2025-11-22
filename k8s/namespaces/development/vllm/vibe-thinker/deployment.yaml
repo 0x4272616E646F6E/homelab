@@ -30,9 +30,8 @@ spec:
           - sh
           - -c
           - >
-            chown -R 0:0 /home/vllm /dev/shm /tmp /var/tmp /vllm-workspace || true &&
+            chown -R 0:0 /home/vllm/.cache /dev/shm /tmp /var/tmp /vllm-workspace || true &&
             mkdir -p \
-              /home/vllm/.cache \
               /home/vllm/.cache/huggingface \
               /home/vllm/.cache/hf \
               /home/vllm/.cache/torch \
@@ -43,7 +42,7 @@ spec:
           runAsUser: 0
           runAsNonRoot: false
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
+          readOnlyRootFilesystem: false
           capabilities: { drop: ["ALL"] }
         volumeMounts:
         - { name: cache-volume,   mountPath: /home/vllm/.cache }
