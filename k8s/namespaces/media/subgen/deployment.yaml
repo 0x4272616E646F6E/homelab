@@ -64,7 +64,7 @@ spec:
       containers:
         - name: subgen
           # renovate: datasource=docker depName=docker.io/mccloud/subgen
-          image: docker.io/mccloud/subgen:latest@sha256:bb49ae3a16d4ac09c8b6d5578278daa3be0e5b2bad1c525acb820ae1634f9abb
+          image: docker.io/mccloud/subgen:latest@sha256:15ad9c295eb85999160a1b39055abbd1db536a005a461c7581c6d5bd119a49cc
           env:
             - name: WHISPER_MODEL
               value: "large-v3"
