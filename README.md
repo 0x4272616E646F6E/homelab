@@ -197,7 +197,6 @@ The following resources are managed through Flux in this repository:
 - [**Snowflake**](https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/tree/main/proxy?ref_type=heads#running-a-standalone-snowflake-proxy)
 - [**Sonarr**](https://github.com/Sonarr/Sonarr)
 - [**SonarQube**](https://github.com/SonarSource/sonarqube)
-- [**Subgen**](https://github.com/McCloudS/subgen)
 - [**Suwayomi**](https://github.com/Suwayomi/Suwayomi-Server)
 - [**Syncthing**](https://github.com/syncthing/syncthing)
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)

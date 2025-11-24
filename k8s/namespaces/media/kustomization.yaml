@@ -10,7 +10,6 @@ resources:
   - nzbget/
   - prowlarr/
   - bazarr/
-  - subgen/
   - radarr/
   - sonarr/
   - jellyfin/
