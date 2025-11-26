@@ -28,7 +28,6 @@ spec:
         image: docker.io/vllm/vllm-openai:v0.11.2@sha256:2c908d5a84ed251b6a17d179f42d06df1aff353007779ac5eecd8a0ea3fe9331
         imagePullPolicy: IfNotPresent
         args:
-          - --model
           - Qwen/Qwen3-4B-Thinking-2507
           - --block-size
           - "32"
@@ -43,8 +42,6 @@ spec:
           - --gpu-memory-utilization
           - "0.70"
           - --enable-chunked-prefill
-          - --enable-reasoning 
-          - --reasoning-parser deepseek_r1
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
@@ -58,7 +55,7 @@ spec:
         - { name: TEMP,   value: /tmp }
         - { name: TMP,    value: /tmp }
         - { name: VLLM_LOGGING_LEVEL,        value: "INFO" }
-        - { name: PYTORCH_CUDA_ALLOC_CONF,   value: "expandable_segments:True" }
+        - { name: PYTORCH_ALLOC_CONF,        value: "expandable_segments:True" }
         - { name: NCCL_P2P_DISABLE,          value: "1" }
         - { name: NCCL_IB_DISABLE,           value: "1" }
         - { name: HF_HUB_ENABLE_HF_TRANSFER, value: "1" }
