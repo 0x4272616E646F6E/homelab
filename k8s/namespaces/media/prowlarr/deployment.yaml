@@ -36,7 +36,7 @@ spec:
       containers:
         - name: prowlarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest@sha256:3dd3a316f60ea4e6714863286549a6ccaf0b8cf4efe5578ce3fe0e85475cb1cf
+          image: lscr.io/linuxserver/prowlarr:latest@sha256:475853535de3de8441b87c1457c30f2e695f4831228b12b6b7274e9da409d874
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 9696
