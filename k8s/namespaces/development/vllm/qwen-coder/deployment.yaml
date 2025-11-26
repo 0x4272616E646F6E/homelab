@@ -43,6 +43,8 @@ spec:
           - --gpu-memory-utilization
           - "0.70"
           - --enable-chunked-prefill
+          - --enable-reasoning 
+          - --reasoning-parser deepseek_r1
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
