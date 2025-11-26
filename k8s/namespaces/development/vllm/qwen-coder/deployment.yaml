@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - unsloth/Qwen2.5-Coder-3B-Instruct
+          - Qwen/Qwen2.5-Coder-32B-Instruct-GPTQ-Int4
           - --block-size
           - "32"
           - --tensor-parallel-size
@@ -37,11 +37,11 @@ spec:
           - --max-model-len
           - "32768"
           - --max-num-batched-tokens
-          - "32768"
+          - "8192"
           - --max-num-seqs
           - "4"
           - --gpu-memory-utilization
-          - "0.55"
+          - "0.70"
           - --enable-chunked-prefill
         env:
         - name: HUGGING_FACE_HUB_TOKEN
