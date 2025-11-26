@@ -29,7 +29,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --model
-          - Qwen/Qwen2.5-Coder-32B-Instruct-GPTQ-Int4
+          - Qwen/Qwen2.5-Coder-14B-Instruct-GPTQ-Int4
           - --block-size
           - "32"
           - --tensor-parallel-size
