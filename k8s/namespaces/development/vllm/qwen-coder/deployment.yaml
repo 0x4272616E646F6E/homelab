@@ -28,7 +28,7 @@ spec:
         image: docker.io/vllm/vllm-openai:v0.11.2@sha256:2c908d5a84ed251b6a17d179f42d06df1aff353007779ac5eecd8a0ea3fe9331
         imagePullPolicy: IfNotPresent
         args:
-          - Qwen/Qwen3-4B-Thinking-2507
+          - Qwen/Qwen2.5-Coder-3B-Instruct
           - --block-size
           - "32"
           - --tensor-parallel-size
