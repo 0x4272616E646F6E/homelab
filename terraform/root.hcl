@@ -100,8 +100,3 @@ generate "provider" {
     }
     EOF
 }
-
-# Inputs
-inputs = {
-  # pass decrypted values here to modules
-}
