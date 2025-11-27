@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: keycloak
+  name: tinyauth
   namespace: security
   labels:
-    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/name: tinyauth
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
-    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/name: tinyauth
     app.kubernetes.io/managed-by: flux
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 3000
+      targetPort: 3000
       protocol: TCP
-      name: keycloak
+      name: tinyauth
   type: ClusterIP

@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: keycloak-network-policy
+  name: tinyauth
   namespace: security
   labels:
-    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/name: tinyauth
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: keycloak
+      app.kubernetes.io/name: tinyauth
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
@@ -20,14 +20,7 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 8080
-          protocol: TCP
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: security
-      ports:
-        - port: 8080
+        - port: 3000
           protocol: TCP
   egress:
     - {}

@@ -1,0 +1,94 @@
+# checkov:skip=CKV_K8S_22: Requires write file system access
+# checkov:skip=CKV_K8S_37: Requires capabilities
+# checkov:skip=CKV_K8S_40: Requires UID/GID 1000 to match permissions on mounted volumes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinyauth
+  namespace: security
+  labels:
+    app.kubernetes.io/name: tinyauth
+    app.kubernetes.io/managed-by: flux
+  annotations:
+    checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
+    checkov.io/skip2: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
+    checkov.io/skip3: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tinyauth
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tinyauth
+        app.kubernetes.io/managed-by: flux
+      annotations:
+        checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
+        checkov.io/skip2: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
+        checkov.io/skip3: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
+    spec:
+      runtimeClassName: youki
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      automountServiceAccountToken: false
+      containers:
+        - name: tinyauth
+          # renovate: datasource=docker depName=ghcr.io/steveiliop56/tinyauth
+          image: ghcr.io/steveiliop56/tinyauth:v4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1024Mi"
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: APP_URL
+              value: "http://auth.hosted.fail"
+            - name: USERS
+              valueFrom:
+                secretKeyRef:
+                  name: tinyauth-secrets
+                  key: CREDENTIALS
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - NET_RAW
+                - MKNOD
+                - AUDIT_WRITE
+                - SETFCAP
+          startupProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 18
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
