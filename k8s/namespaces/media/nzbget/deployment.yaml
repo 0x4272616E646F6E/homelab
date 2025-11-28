@@ -46,7 +46,7 @@ spec:
       containers:
         - name: nzbget
           # renovate: datasource=docker depName=lscr.io/linuxserver/nzbget
-          image: lscr.io/linuxserver/nzbget:latest@sha256:945288598984fc68fccd35303ed6017d09914f5c0a4955091f6ef640b9536e62
+          image: lscr.io/linuxserver/nzbget:latest@sha256:8cb461358b8c473390cba79dd7405ecaf7d3e3bf5ed7106528351c7719de98c8
           imagePullPolicy: IfNotPresent
           env:
             - name: PUID
