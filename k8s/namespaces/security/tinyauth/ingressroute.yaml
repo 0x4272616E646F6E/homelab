@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`tinyauth.hosted.fail`)
+    - match: Host(`auth.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
