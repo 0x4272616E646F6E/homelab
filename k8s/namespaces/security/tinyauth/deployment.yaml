@@ -54,6 +54,8 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+            - name: APP_TITLE
+              value: "Auth"
             - name: APP_URL
               value: "http://auth.hosted.fail"
             - name: USERS
@@ -61,6 +63,8 @@ spec:
                 secretKeyRef:
                   name: tinyauth-secrets
                   key: CREDENTIALS
+            - name: DISABLE_ANALYTICS
+              value: "true"
           securityContext:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
