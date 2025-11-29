@@ -18,26 +18,6 @@ resource "unifi_dns_record" "btc" {
   value       = "btc.hosted.fail"
 }
 
-resource "unifi_dns_record" "haproxy" {
-  name        = "10.0.0.247"
-  enabled     = true
-  port        = 0
-  priority    = 10
-  record_type = "A"
-  ttl         = 300
-  value       = "haproxy.hosted.fail"
-}
-
-resource "unifi_dns_record" "nginx" {
-  name        = "10.0.0.248"
-  enabled     = true
-  port        = 0
-  priority    = 10
-  record_type = "A"
-  ttl         = 300
-  value       = "nginx.hosted.fail"
-}
-
 resource "unifi_dns_record" "traefik" {
   name        = "10.0.0.249"
   enabled     = true

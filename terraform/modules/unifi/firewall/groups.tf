@@ -14,7 +14,7 @@ resource "unifi_firewall_group" "rfc1918" {
 resource "unifi_firewall_group" "server_hosts" {
   name = "server_hosts"
   type = "address-group"
-  members = ["10.0.0.247", "10.0.0.248", "10.0.0.249"]
+  members = ["10.0.0.249"]
 }
 
 # Port Groups

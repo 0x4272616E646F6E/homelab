@@ -6,5 +6,3 @@ metadata:
 spec:
   blocks:
     - cidr: 10.0.0.249/32
-    - cidr: 10.0.0.248/32
-    - cidr: 10.0.0.247/32
