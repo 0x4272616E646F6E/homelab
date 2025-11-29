@@ -72,7 +72,7 @@ flowchart TD
     CRI[Containerd]
     CIL[Cilium]
     DNS[CoreDNS]
-    TRF[HAProxy/Nginx/Traefik]
+    TRF[Traefik]
     CFD[Cloudflared]
   end
 
