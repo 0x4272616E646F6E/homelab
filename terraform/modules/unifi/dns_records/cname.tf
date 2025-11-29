@@ -1,5 +1,5 @@
 locals {
-  cname_hosts  = toset(["authentik",
+  cname_hosts  = toset(["auth",
                         "bazarr",
                         "comfyui",
                         "falco",

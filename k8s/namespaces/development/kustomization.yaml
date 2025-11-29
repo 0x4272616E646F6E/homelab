@@ -7,7 +7,6 @@ resources:
   - renovate/
   - buildkit/
   - code-server/
-  - kestra/
   - harbor/
   - sonarqube/
   - actions-runner-controller/
@@ -15,4 +14,3 @@ resources:
   - vllm/
   - librechat/
   - comfyui/
-  - toolhive/

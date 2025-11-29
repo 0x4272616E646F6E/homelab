@@ -16,8 +16,6 @@ data:
               - type: bookmarks
                 groups:
                   - links:
-                      - title: Authentik
-                        url: https://authentik.hosted.fail/
                       - title: Bazarr
                         url: https://bazarr.hosted.fail/
                       - title: Code Server
@@ -38,8 +36,6 @@ data:
                         url: https://jellyfin.hosted.fail/
                       - title: JellySeerr
                         url: https://jellyseerr.hosted.fail/
-                      - title: Kestra
-                        url: https://kestra.hosted.fail/
                       - title: LibreChat
                         url: https://librechat.hosted.fail/
                       - title: NzbGet

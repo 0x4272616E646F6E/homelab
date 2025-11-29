@@ -15,7 +15,7 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: ingress
-        - name: authentik
+        - name: tinyauth
           namespace: ingress
       services:
         - name: tdarr

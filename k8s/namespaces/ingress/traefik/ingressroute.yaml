@@ -11,7 +11,7 @@ spec:
       kind: Rule
       middlewares:
         - name: internal-whitelist
-        - name: authentik
+        - name: tinyauth
       services:
         - name: api@internal
           kind: TraefikService

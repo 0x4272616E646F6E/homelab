@@ -58,7 +58,7 @@ spec:
             - name: PGID
               value: "1000"
             - name: APP_TITLE
-              value: "Auth"
+              value: "Domain: Hosted.Fail"
             - name: APP_URL
               value: "https://auth.hosted.fail"
             - name: USERS
