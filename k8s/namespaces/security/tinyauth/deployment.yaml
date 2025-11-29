@@ -60,7 +60,7 @@ spec:
             - name: APP_TITLE
               value: "Auth"
             - name: APP_URL
-              value: "http://auth.hosted.fail"
+              value: "https://auth.hosted.fail"
             - name: USERS
               valueFrom:
                 secretKeyRef:
