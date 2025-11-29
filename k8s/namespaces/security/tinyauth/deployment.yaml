@@ -67,7 +67,7 @@ spec:
                   name: tinyauth-secrets
                   key: CREDENTIALS
             - name: TRUSTED_PROXIES
-              value: "10.244.0.0/16, 10.96.0.0/12"
+              value: "10.244.0.0/16,10.96.0.0/12"
             - name: DISABLE_ANALYTICS
               value: "true"
           securityContext:
