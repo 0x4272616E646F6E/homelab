@@ -1,4 +1,5 @@
 # checkov:skip=CKV_K8S_22: Requires write file system access
+# checkov:skip=CKV_K8S_23: Requires privileged access
 # checkov:skip=CKV_K8S_37: Requires capabilities
 # checkov:skip=CKV_K8S_40: Requires UID/GID 1000 to match permissions on mounted volumes
 apiVersion: apps/v1
@@ -11,8 +12,9 @@ metadata:
     app.kubernetes.io/managed-by: flux
   annotations:
     checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
-    checkov.io/skip2: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
-    checkov.io/skip3: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
+    checkov.io/skip2: CKV_K8S_23=Requires privileged access for certain operations
+    checkov.io/skip3: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
+    checkov.io/skip4: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
 spec:
   replicas: 1
   selector:
@@ -25,8 +27,9 @@ spec:
         app.kubernetes.io/managed-by: flux
       annotations:
         checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
-        checkov.io/skip2: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
-        checkov.io/skip3: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
+        checkov.io/skip2: CKV_K8S_23=Requires privileged access for certain operations
+        checkov.io/skip3: CKV_K8S_37=Requires specific Linux capabilities; risky ones are dropped
+        checkov.io/skip4: CKV_K8S_40=Requires UID/GID 1000 to match permissions on mounted volumes
     spec:
       runtimeClassName: youki
       securityContext:
@@ -68,7 +71,7 @@ spec:
             - name: DISABLE_ANALYTICS
               value: "true"
           securityContext:
-            runAsNonRoot: true
+            runAsNonRoot: false
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
