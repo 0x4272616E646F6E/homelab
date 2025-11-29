@@ -4,6 +4,7 @@ commonLabels:
   app.kubernetes.io/name: pocketid
   app.kubernetes.io/managed-by: flux
 resources:
+  - secrets.enc.yaml
   - deployment.yaml
   - service.yaml
   - ingressroute.yaml
