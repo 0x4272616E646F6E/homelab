@@ -5,8 +5,6 @@
     ":semanticCommits",
     ":semanticCommitTypeAll(chore)"
   ],
-  "reviewersFromCodeOwners": true,
-  "assigneesFromCodeOwners": true,
   "dependencyDashboard": true,
   "prHourlyLimit": 6,
   "prConcurrentLimit": 10,
@@ -123,9 +121,10 @@
         "custom.regex"
       ],
       "matchUpdateTypes": [
-        "patch"
+        "patch",
+        "minor"
       ],
-      "automerge": false
+      "automerge": true
     },
     {
       "description": "Pin image digests in Kubernetes manifests",
