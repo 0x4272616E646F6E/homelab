@@ -28,7 +28,7 @@ spec:
         image: docker.io/vllm/vllm-openai:v0.12.0@sha256:6766ce0c459e24b76f3e9ba14ffc0442131ef4248c904efdcbf0d89e38be01fe
         imagePullPolicy: IfNotPresent
         args:
-          - Qwen/Qwen2.5-Coder-3B-Instruct
+          - nvidia/Nemotron-Flash-3B-Instruct
           - --block-size
           - "32"
           - --tensor-parallel-size

@@ -63,7 +63,7 @@ data:
               apiKey: "vllm"
               baseURL: "http://vllm-qwen-coder:8000/v1"
               models:
-                default: ['Qwen/Qwen2.5-Coder-3B-Instruct']
+                default: ['nvidia/Nemotron-Flash-3B-Instruct']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"
