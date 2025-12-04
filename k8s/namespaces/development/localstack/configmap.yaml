@@ -96,7 +96,7 @@ data:
     mountDind:
       enabled: false
       forceTLS: true
-      image: "docker:29.1-dind@sha256:9b20eb23e1f0443655673efb9db76c4b18cc1b45de1fcf82b3c1b749b9647bdf"
+      image: "docker:29.1-dind@sha256:d47faf85fc5cb4283d7a20c95b6b02d012250b46ec26567554076e2767cb9093"
 
     ## All the parameters from the configuatioan can be added using extraEnvVars.
     ## Ref. https://docs.localstack.cloud/references/configuration/
