@@ -29,6 +29,7 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - nvidia/Nemotron-Flash-3B-Instruct
+          - --trust-remote-code
           - --block-size
           - "32"
           - --tensor-parallel-size
