@@ -198,7 +198,7 @@ data:
         # @schema
         override: ~
         repository: "quay.io/cilium/cilium"
-        tag: "v1.17.3"
+        tag: "v1.18.4"
         pullPolicy: "IfNotPresent"
         # cilium-digest
         digest: ""
@@ -215,7 +215,7 @@ data:
         # `kube-scheduler` mode forgoes the anti-affinity rule for full scheduling throughput.
         # Kube-scheduler avoids host port conflict when scheduling pods.
         # @default -- Defaults to apply a pod anti-affinity rule to the agent pod - `anti-affinity`
-        mode: anti-affinity
+        mode: kube-scheduler
       # -- Affinity for cilium-agent.
       affinity:
         podAntiAffinity:
@@ -382,7 +382,7 @@ data:
           # @schema
           # type: [integer, string]
           # @schema
-          maxUnavailable: 2
+          maxUnavailable: 1
       # Configuration Values for cilium-agent
       aksbyocni:
         # -- Enable AKS BYOCNI integration.
@@ -838,7 +838,7 @@ data:
         # -- The slicing mode to use for CiliumEndpointSlices.
         # identity groups together CiliumEndpoints that share the same identity.
         # fcfs groups together CiliumEndpoints in a first-come-first-serve basis, filling in the largest non-full slice first.
-        sliceMode: identity
+        # sliceMode removed in v1.18+
       envoyConfig:
         # -- Enable CiliumEnvoyConfig CRD
         # CiliumEnvoyConfig CRD can also be implicitly enabled by other options.
@@ -1451,7 +1451,7 @@ data:
             # @schema
             override: ~
             repository: "quay.io/cilium/hubble-relay"
-            tag: "v1.17.3"
+            tag: "v1.18.4"
             # hubble-relay-digest
             digest: ""
             useDigest: false
@@ -2720,7 +2720,7 @@ data:
           # @schema
           override: ~
           repository: "quay.io/cilium/operator"
-          tag: "v1.17.3"
+          tag: "v1.18.4"
           # operator-generic-digest
           genericDigest: ""
           # operator-azure-digest
@@ -3005,7 +3005,7 @@ data:
           # @schema
           override: ~
           repository: "quay.io/cilium/cilium"
-          tag: "v1.17.3"
+          tag: "v1.18.4"
           # cilium-digest
           digest: ""
           useDigest: false
@@ -3154,7 +3154,7 @@ data:
             # @schema
             override: ~
             repository: "quay.io/cilium/clustermesh-apiserver"
-            tag: "v1.17.3"
+            tag: "v1.18.4"
             # clustermesh-apiserver-digest
             digest: ""
             useDigest: false
