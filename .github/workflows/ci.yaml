@@ -36,7 +36,8 @@ jobs:
           mapfile -t FILES < <(git ls-files \
             'k8s/namespaces/**/*.y*ml' \
             'k8s/clusters/**/*.y*ml' \
-            ':!:k8s/clusters/**/flux-system/**')
+            ':!:k8s/clusters/**/flux-system/**' \
+            ':!:**/*.enc.yaml')
           if [ ${#FILES[@]} -eq 0 ]; then
             echo "No manifests to validate."
           else
