@@ -13,10 +13,8 @@ data:
 
     image:
       repository: cloudflare/cloudflared
+      tag: "2025.11.1"
       pullPolicy: IfNotPresent
-      # If supplied, this overrides "latest"
-      # renovate: datasource=docker tag=cloudflare/cloudflared
-      tag: "2025.9.1"
 
     replicaCount: 1
 
