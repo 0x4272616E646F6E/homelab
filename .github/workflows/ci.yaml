@@ -17,23 +17,26 @@ jobs:
   kube-validate:
     name: Validate Kubernetes Manifests
     runs-on: actions-runner
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Install kubeconform
         run: |
           set -euo pipefail
+          # renovate: datasource=github-releases depName=yannh/kubeconform
           KUBECONFORM_VERSION=0.6.7
           curl -sL "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
             | sudo tar -xz -C /usr/local/bin kubeconform
           kubeconform -v
+
       - name: Validate manifests with kubeconform
         run: |
           set -euo pipefail
           mapfile -t FILES < <(git ls-files \
-            'namespace/**/*.y*ml' \
-            'clusters/**/*.y*ml' \
-            'talos/**/*.y*ml' \
-            ':!:clusters/**/flux-system/**')
+            'k8s/namespaces/**/*.y*ml' \
+            'k8s/clusters/**/*.y*ml' \
+            ':!:k8s/clusters/**/flux-system/**')
           if [ ${#FILES[@]} -eq 0 ]; then
             echo "No manifests to validate."
           else
@@ -42,27 +45,6 @@ jobs:
               -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}-standalone/{{.ResourceKind}}.json' \
               "${FILES[@]}"
           fi
-
-  # checkov-k8s:
-  #   name: Checkov
-  #   runs-on: actions-runner
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Run Checkov
-  #       uses: bridgecrewio/checkov-action@v12
-  #       with:
-  #         directory: .
-  #         framework: kubernetes
-  #         skip_path: |
-  #           clusters/**/flux-system
-  #           cdk8s/target
-  #           cdk8s/dist
-  #         output_format: sarif
-  #         output_file_path: checkov-k8s.sarif
-  #     - name: Upload SARIF (Checkov K8s)
-  #       uses: github/codeql-action/upload-sarif@v3
-  #       with:
-  #         sarif_file: checkov-k8s.sarif
 
   gitleaks:
     name: Secret scan (diff)
@@ -75,4 +57,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: '--verbose --redact --staged'
+          args: '--verbose --redact --log-opts="origin/main..HEAD"'

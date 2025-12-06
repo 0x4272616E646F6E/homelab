@@ -16,7 +16,8 @@
   "enabledManagers": [
     "kubernetes",
     "helm-values",
-    "custom.regex"
+    "custom.regex",
+    "github-actions"
   ],
   "kubernetes": {
     "managerFilePatterns": [
@@ -90,6 +91,27 @@
       ]
     },
     {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "labels": [
+        "deps",
+        "github-actions"
+      ]
+    },
+    {
+      "description": "Pin GitHub Actions to commit SHAs for security",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "pinDigests": true,
+      "labels": [
+        "deps",
+        "github-actions",
+        "digest"
+      ]
+    },
+    {
       "description": "Keep lscr.io/linuxserver/jellyfin on semver tags; ignore non-semver/date-style tags",
       "matchManagers": ["kubernetes", "custom.regex"],
       "matchDatasources": ["docker"],
@@ -119,6 +141,16 @@
     {
       "matchManagers": [
         "custom.regex"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "minor"
+      ],
+      "automerge": true
+    },
+    {
+      "matchManagers": [
+        "github-actions"
       ],
       "matchUpdateTypes": [
         "patch",
