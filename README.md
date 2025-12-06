@@ -163,7 +163,6 @@ The following applications are managed through flux in this repository:
 - [**ClamAV**](https://www.clamav.net/)
 - [**Cloudflared**](https://github.com/cloudflare/cloudflared)
 - [**Code-Server**](https://github.com/coder/code-server)
-- [**ComfyUI**](https://github.com/comfyanonymous/ComfyUI)
 - [**Debian**](https://hub.docker.com/_/debian)
 - [**Falco**](https://github.com/falcosecurity/falco)
 - [**Flaresolverr**](https://github.com/FlareSolverr/FlareSolverr)

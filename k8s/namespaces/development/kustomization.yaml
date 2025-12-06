@@ -13,4 +13,3 @@ resources:
   - actions-runner/
   - vllm/
   - librechat/
-  - comfyui/
