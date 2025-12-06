@@ -19,6 +19,7 @@ spec:
       labels:
         app.kubernetes.io/name: intel-gpu-plugin
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: intel-gpu-plugin
         args: 
@@ -47,9 +48,11 @@ spec:
           requests:
             memory: "45Mi"
             cpu: 40m
+            ephemeral-storage: "100Mi"
           limits:
             memory: "90Mi"
             cpu: 100m
+            ephemeral-storage: "500Mi"
         volumeMounts:
         - name: devfs
           mountPath: /dev/dri
