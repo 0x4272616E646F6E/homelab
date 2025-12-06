@@ -17,6 +17,7 @@ spec:
         app.kubernetes.io/name: comfyui
         app.kubernetes.io/managed-by: flux
     spec:
+      automountServiceAccountToken: false
       runtimeClassName: nvidia
       containers:
         - name: comfyui
@@ -36,10 +37,12 @@ spec:
             requests:
               cpu: "2"
               memory: "20Gi"
+              ephemeral-storage: "10Gi"
               nvidia.com/gpu: "1"
             limits:
               cpu: "4"
               memory: "20Gi"
+              ephemeral-storage: "20Gi"
               nvidia.com/gpu: "1"
       volumes:
         - name: config

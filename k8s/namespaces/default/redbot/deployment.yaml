@@ -18,6 +18,7 @@ spec:
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: youki
+      automountServiceAccountToken: false
       containers:
         - name: redbot
           # renovate: datasource=docker depName=docker.io/phasecorex/red-discordbot
@@ -27,9 +28,11 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1"
               memory: "1Gi"
+              ephemeral-storage: "5Gi"
           env:
             - name: TOKEN
               valueFrom:

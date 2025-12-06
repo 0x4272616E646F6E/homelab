@@ -22,6 +22,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      automountServiceAccountToken: false
       containers:
         - name: radarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
@@ -34,9 +35,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1500m"
               memory: "1536Mi"
+              ephemeral-storage: "5Gi"
           volumeMounts:
             - name: config
               mountPath: /config

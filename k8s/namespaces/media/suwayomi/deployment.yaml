@@ -22,6 +22,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      automountServiceAccountToken: false
       containers:
         - name: suwayomi
           # renovate: datasource=docker depName=ghcr.io/suwayomi/tachidesk
@@ -34,9 +35,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "2000m"
               memory: "4096Mi"
+              ephemeral-storage: "5Gi"
           env:
             - name: FLARESOLVERR_ENABLED
               value: "true"

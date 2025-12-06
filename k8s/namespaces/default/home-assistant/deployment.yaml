@@ -18,6 +18,7 @@ spec:
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: youki
+      automountServiceAccountToken: false
       containers:
         - name: homeassistant
           # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
@@ -30,9 +31,11 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1"
               memory: "1Gi"
+              ephemeral-storage: "5Gi"
           volumeMounts:
             - name: config
               mountPath: /config

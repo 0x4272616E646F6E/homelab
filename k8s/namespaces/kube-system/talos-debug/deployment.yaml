@@ -26,6 +26,7 @@ spec:
       nodeName: talos-4m3-8nj
       securityContext:
         runAsUser: 0
+      automountServiceAccountToken: false
       containers:
       - name: talos-debug
         # renovate: datasource=docker depName=docker.io/debian
@@ -40,9 +41,11 @@ spec:
           requests:
             cpu: "1"
             memory: "1Gi"
+            ephemeral-storage: "1Gi"
           limits:
             cpu: "2"
             memory: "2Gi"
+            ephemeral-storage: "5Gi"
       volumes:
       - name: hostroot
         hostPath:

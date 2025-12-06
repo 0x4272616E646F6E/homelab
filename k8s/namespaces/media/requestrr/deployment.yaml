@@ -18,6 +18,7 @@ spec:
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: youki
+      automountServiceAccountToken: false
       containers:
         - name: requestrr
           # renovate: datasource=docker depName=docker.io/thomst08/requestrr
@@ -29,9 +30,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1500m"
               memory: "1536Mi"
+              ephemeral-storage: "5Gi"
           volumeMounts:
             - name: config
               mountPath: /root/config

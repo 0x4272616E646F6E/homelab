@@ -20,6 +20,7 @@ spec:
     spec:
       securityContext:
         fsGroup: 999
+      automountServiceAccountToken: false
       containers:
       - name: postgres
         # renovate: datasource=docker depName=docker.io/postgres
@@ -43,12 +44,14 @@ spec:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
         resources:
-          limits:
-            memory: 1Gi
-            cpu: "1"
           requests:
             memory: 256Mi
             cpu: 200m
+            ephemeral-storage: "20Gi"
+          limits:
+            memory: 1Gi
+            cpu: "1"
+            ephemeral-storage: "50Gi"
   volumeClaimTemplates:
   - metadata:
       name: postgres-data

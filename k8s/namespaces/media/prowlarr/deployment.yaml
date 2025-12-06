@@ -45,9 +45,11 @@ spec:
             requests:
               cpu: "200m"
               memory: "256Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1500m"
               memory: "1536Mi"
+              ephemeral-storage: "5Gi"
           securityContext:
             runAsNonRoot: false
             seccompProfile:

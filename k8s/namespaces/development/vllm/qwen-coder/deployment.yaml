@@ -22,6 +22,7 @@ spec:
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 3600
+      automountServiceAccountToken: false
       containers:
       - name: vllm
         # renovate: datasource=docker depName=docker.io/vllm/vllm-openai
@@ -65,8 +66,8 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "2", memory: "16Gi", nvidia.com/gpu: "1" }
-          limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: "1" }
+          requests: { cpu: "2", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false

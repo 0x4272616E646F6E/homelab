@@ -36,9 +36,11 @@ spec:
             requests:
               cpu: "1"
               memory: "2Gi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "2"
               memory: "4Gi"
+              ephemeral-storage: "5Gi"
           volumeMounts:
             - name: config
               mountPath: /home/coder

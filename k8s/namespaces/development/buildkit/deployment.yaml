@@ -17,6 +17,7 @@ spec:
         app.kubernetes.io/name: buildkit
         app.kubernetes.io/managed-by: flux
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: buildkitd
         # renovate: datasource=docker depName=docker.io/moby/buildkit
@@ -36,9 +37,11 @@ spec:
           requests:
             cpu: "1"
             memory: "256Mi"
+            ephemeral-storage: "20Gi"
           limits:
             cpu: "2"
             memory: "2Gi"
+            ephemeral-storage: "50Gi"
         volumeMounts:
         - name: cache
           mountPath: /cache
