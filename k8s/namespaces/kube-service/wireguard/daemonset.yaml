@@ -17,6 +17,7 @@ spec:
         app.kubernetes.io/name: wireguard
         app.kubernetes.io/managed-by: flux
     spec:
+      automountServiceAccountToken: false
       hostNetwork: true
       hostPID: true
       containers:
@@ -36,5 +37,14 @@ spec:
               ip route add 10.2.0.1 dev wg0 table 100             2>/dev/null || true
               ip route add default dev wg0 table 100              2>/dev/null || true
               sleep infinity
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+              ephemeral-storage: "500Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+              ephemeral-storage: "1Gi"
       tolerations:
         - operator: Exists
