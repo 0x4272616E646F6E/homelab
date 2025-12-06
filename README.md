@@ -91,11 +91,11 @@ flowchart RL
   DNS --> APIS
   APIS --> TRF
   CFD --> TRF
-  NET -. 10Gb .-> CFD
-  LOCALNET -. 10Gb .-> TRF
+  NET -. Ingress .-> CFD
+  LOCALNET -. Ingress .-> TRF
   CIL --> DNS
   CIL --> TRF
-  WRG -. 10Gb .-> NET
+  WRG -. Egress .-> NET
   LPP --> APIS
   KUBE --> LPP
   APIS --> APP
@@ -103,7 +103,7 @@ flowchart RL
   TRF --> APP
   APP --> LPP
   APP --> LOCALNET
-  APP --> NET
+  APP -. Egress .-> NET
   APP --> WRG
 
   %% Talos management
