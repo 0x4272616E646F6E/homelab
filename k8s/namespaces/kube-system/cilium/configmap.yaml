@@ -22,6 +22,12 @@ data:
       scheduling:
         mode: kube-scheduler
       
+      # Single-node cluster: only allow 1 pod unavailable during updates
+      updateStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+      
       devices: "eth0,wg0"
       
       routingMode: "native"
