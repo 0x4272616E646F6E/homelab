@@ -5,20 +5,12 @@ metadata:
   namespace: kube-system
 data:
   values.yaml: |-
-    image:
-      repository: rancher/local-path-provisioner
-      tag: v0.0.32
-      pullPolicy: IfNotPresent
+    # Local Path Provisioner Configuration - Only Custom Values
+    # Chart defaults are used for all other settings
 
-    helperImage:
-      repository: busybox
-      tag: "1.36.1"
-
-    # Disable the single default SC. define both classes below
     storageClass:
       create: false
 
-    # Where volumes live on the node
     nodePathMap:
       - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
         paths:
@@ -50,7 +42,6 @@ data:
           allowVolumeExpansion: true
         sharedFileSystemPath: /var/mnt/storage/local-path-provisioner/rwx
 
-    # Talos control-plane taint tolerance (single-node)
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"
@@ -58,22 +49,3 @@ data:
       - key: "node-role.kubernetes.io/master"
         operator: "Exists"
         effect: "NoSchedule"
-
-    podSecurityContext: {}
-
-    # setup/teardown scripts ConfigMap used by the controller
-    configmap:
-      name: local-path-config
-      setup: |-
-        #!/bin/sh
-        set -eu
-        mkdir -m 0777 -p "$VOL_DIR"
-      teardown: |-
-        #!/bin/sh
-        set -eu
-        rm -rf "$VOL_DIR"
-      helperPod:
-        name: "helper-pod"
-        namespaceOverride: ""
-        annotations: {}
-        tolerations: []
