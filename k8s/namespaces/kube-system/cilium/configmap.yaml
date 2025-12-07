@@ -994,9 +994,9 @@ data:
       enableXTSocketFallback: true
       encryption:
         # -- Enable transparent network encryption.
-        enabled: false
+        enabled: true
         # -- Encryption method. Can be either ipsec or wireguard.
-        type: ipsec
+        type: wireguard
         # -- Enable encryption for pure node to node traffic.
         # This option is only effective when encryption.type is set to "wireguard".
         nodeEncryption: false
@@ -3643,7 +3643,7 @@ data:
           # Settings for SPIRE
           spire:
             # -- Enable SPIRE integration (beta)
-            enabled: false
+            enabled: true
             # -- Annotations to be added to all top-level spire objects (resources under templates/spire)
             annotations: {}
             # Settings to control the SPIRE installation and configuration
@@ -3652,9 +3652,9 @@ data:
               # This will only take effect only if authentication.mutual.spire.enabled is true
               enabled: true
               # -- SPIRE namespace to install into
-              namespace: cilium-spire
+              namespace: kube-service
               # -- SPIRE namespace already exists. Set to true if Helm should not create, manage, and import the SPIRE namespace.
-              existingNamespace: false
+              existingNamespace: true
               # -- init container image of SPIRE agent and server
               initImage:
                 # @schema
