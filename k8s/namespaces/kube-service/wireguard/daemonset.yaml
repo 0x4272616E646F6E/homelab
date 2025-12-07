@@ -39,11 +39,11 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "64Mi"
+              memory: "128Mi"
               ephemeral-storage: "500Mi"
             limits:
               cpu: "200m"
-              memory: "128Mi"
+              memory: "256Mi"
               ephemeral-storage: "1Gi"
       tolerations:
         - operator: Exists
