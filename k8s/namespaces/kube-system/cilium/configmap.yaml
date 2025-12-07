@@ -94,18 +94,19 @@ data:
             - SYS_ADMIN
             - SYS_CHROOT
       
-      encryption:
-        enabled: true
-        type: wireguard
-        nodeEncryption: false
+      # Temporarily disabled to test
+      # encryption:
+      #   enabled: true
+      #   type: wireguard
+      #   nodeEncryption: false
       
-      authentication:
-        enabled: true
-        mutual:
-          spire:
-            enabled: true
-            install:
-              enabled: true
-              namespace: kube-service
-              existingNamespace: true
+      # authentication:
+      #   enabled: true
+      #   mutual:
+      #     spire:
+      #       enabled: true
+      #       install:
+      #         enabled: true
+      #         namespace: kube-service
+      #         existingNamespace: true
 
