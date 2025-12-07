@@ -80,7 +80,6 @@ data:
             - SETUID
           cleanCiliumState:
             - NET_ADMIN
-            - SYS_MODULE
             - SYS_ADMIN
             - SYS_RESOURCE
           mountCgroup:
