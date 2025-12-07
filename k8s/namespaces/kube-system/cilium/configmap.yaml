@@ -9,7 +9,7 @@ data:
       # Chart defaults are used for all other settings
       
       cluster:
-        name: talos
+        name: default
         id: 0
       
       k8sServiceHost: "127.0.0.1"
