@@ -22,7 +22,6 @@ data:
       scheduling:
         mode: kube-scheduler
       
-      # Single-node cluster: only allow 1 pod unavailable during updates
       updateStrategy:
         type: RollingUpdate
         rollingUpdate:
@@ -37,15 +36,29 @@ data:
       loadBalancer:
         algorithm: maglev
       
-      # L2 Announcements
+      kubeProxyReplacement: "true"
+      
+      ipam:
+        mode: "kubernetes"
+      
       l2announcements:
         enabled: true
+        interface: "eth0"
       
       l2podAnnouncements:
         enabled: true
+        interface: "eth0"
       
       bpf:
         masquerade: true
+      
+      cgroup:
+        autoMount:
+          enabled: false
+        hostRoot: /sys/fs/cgroup
+      
+      sysctlfix:
+        enabled: true
       
       egressGateway:
         enabled: true
@@ -70,6 +83,9 @@ data:
             - SYS_MODULE
             - SYS_ADMIN
             - SYS_RESOURCE
+          mountCgroup:
+            - SYS_ADMIN
+            - SYS_CHROOT
       
       encryption:
         enabled: true
