@@ -7,346 +7,117 @@ data:
   values.yaml: |-
     image:
       repository: ghcr.io/mend/renovate-ce
-      tag: 13.0.0
       useFull: true
       pullPolicy: IfNotPresent
-
     nameOverride: ""
     fullnameOverride: ""
-
     renovate:
-      # Additional env vars
       extraEnvVars: [ ]
-
-      # You must accept the Mend Terms of Service to use the image.
-      # Please read https://www.mend.io/terms-of-service/
-      # Set this value to 'y' to consent.
       mendRnvAcceptTos: "y"
-
-      # Provide a valid license key for Renovate Community Edition.
-      # Use this key for up to 10 repos: eyJsaW1pdCI6IjEwIn0=.30440220457941b71ea8eb345c729031718b692169f0ce2cf020095fd328812f4d7d5bc1022022648d1a29e71d486f89f27bdc8754dfd6df0ddda64a23155000a61a105da2a1
-      # For a free unrestricted repo Community Edition license key register at https://www.mend.io/renovate-community/
       mendRnvLicenseKey:
-
-      # Which platform Mend Renovate will connect to.
-      # valid values: "bitbucket-server", "github" or "gitlab"
       mendRnvPlatform: "github"
-
-      # API endpoint, include trailing slash. Examples: https://api.github.com/, https://gitlab.com/api/v4/
       mendRnvEndpoint: "https://api.github.com/"
-
-      # Personal Access Token for bot account (GitLab only)
       mendRnvGitlabPat:
-
-      # The GitHub App ID provided when you provisioned the Mend Renovate app. Force string format by quoting value.
       mendRnvGithubAppId:
-
-      # Optional: The GitHub bot user ID that can be found by calling `https://api.github.com/users/{appName}[bot]` under the `id` key.
-      #  Force string format by quoting value.
       mendRnvGithubBotUserId:
-
-      # A string representation of the private key provided by GitHub Enterprise when you provisioned Mend Renovate
       mendRnvGithubAppKey:
-
-      # Renovate Bot user account (Bitbucket "User" access only)
       mendRnvBitbucketUser:
-
-      # BitBucket access token for the bot user
       mendRnvBitbucketPat:
-
-      # Optional: The URL of the Renovate Server plus '/webhook' suffix.
-      # Must be accessible to receive incoming calls from BitBucket Data Center.
       mendRnvWebhookURL:
-
-      # Optional: A token used for searching/adding/removing repository webhooks.
-      # required if MEND_RNV_WEBHOOK_URL is set.
       mendRnvAdminToken:
-
-      # Optional: Provide a path to persist the SQLite database (eg. '/db/renovate-ce.sqlite', where 'db' is defined as a volume)
-      # If you set cachePersistence.enabled to true, the default value for this setting will persist the SQLite database automatically
       mendRnvSqliteFilePath: '/tmp/renovate/renovate-ce.sqlite'
-
-      # Optional: Set User Agent Mend Renovate-ce will use to query the registries, Defaults to 'mend-renovate'
       mendRnvUserAgent:
-
-      # Required if Admin APIs are enabled.
       mendRnvServerApiSecret:
-
-      # Optional: Set to 'true' to enable Admin APIs. Defaults to 'false'.
-      #
-      # deprecated: use mendRnvApiEnabled instead.
       mendRnvAdminApiEnabled:
-
-      # Optional: Set to 'true' to enable APIs. Defaults to 'false'.
       mendRnvApiEnabled:
-
-      # Optional: Set to 'true' to enable system APIs. Defaults to 'false'.
       mendRnvSystemApiEnabled:
-
-      # Optional: Set to 'true' to enable jobs APIs. Defaults to 'false'.
       mendRnvJobsApiEnabled:
-
-      # Optional: Set to 'true' to enable Reporting APIs. Defaults to 'false'.
-      #
-      # deprecated: use mendRnvReportingApiEnabled instead.
       mendRnvReportingEnabled:
-
-      # Optional: Set to 'true' to enable Reporting APIs. Defaults to 'false'.
       mendRnvReportingApiEnabled:
-
-      # Optional, defaults to 'renovate'
       mendRnvWebhookSecret:
-
-      # Optional: Controls whether to enqueue webhook based jobs for disabled repositories.
-      # Accepted values:
-      #   "full":     Always enqueue jobs.
-      #   "minimal":  Don’t enqueue jobs for disabled repositories. Default.
-      #
-      # Note: Scheduled and API based jobs will still be triggered for these repositories.
       mendRnvWebhookSkipDisabledRepoJobs:
-
-      # Personal Access Token for github.com (used for retrieving changelogs)
       githubComToken:
-
-      # PIP index url to get packages from. Will be mounted as a secret
       pipIndexUrl:
-
-      # Existing secret with secret values with the following keys:
-      #   mendRnvLicenseKey:
-      #   mendRnvGitlabPat:
-      #   mendRnvGithubAppId:
-      #   mendRnvGithubAppKey:
-      #   mendRnvWebhookSecret:
-      #   mendRnvServerApiSecret:
-      #   githubComToken:
-      #   pipIndexUrl:
       existingSecret: "renovate-secrets"
-
-      # Optional, defaults to '0 * * * *' (hourly)
       mendRnvCronJobSchedulerAll:
-
-      # Optional, defaults to '0 0,4,8,12,16,20 * * *' (every 4 hours)
       mendRnvCronAppSync:
-
-      # defaults to 'true'
       mendRnvSyncOnStartup:
-
-      # defaults to 'bulk'
-      # GitHub users only: can be set to 'batch'
       mendRnvSyncMode:
-
-      # Optional. Format: s3://bucket/dir1/dir2. Defines S3 storage location for saving job logs
       mendRnvLogHistoryS3:
-
-      # Optional, a string of a comma separated values. (e.g. `org1/*, org2/test*, org2/test*`). Same behavior as Renovate cli 'autodiscoverFilter' feature
-      # Warning: The Renovate CLI 'autodiscover' configuration option is disabled.
-      # Repository filtering should solely rely on server-side filtering using 'mendRnvAutoDiscoverFilter'.
       mendRnvAutoDiscoverFilter:
-
-      # Optional. Accepted values: 'enabled', 'discovered', and 'disabled'. Defaults to 'discovered'.
       mendRnvEnqueueJobsOnStartup:
-
-      # Optional. Specify a directory path to save Renovate job log files.
-      # It is recommended to use an external volume to preserve history.
       mendRnvLogHistoryDir:
-
-      # Optional: The number of days to save log files. Defaults to 30.
       mendRnvLogHistoryTTLDays:
-
-      # Optional: Specifies a 5-part cron schedule. Defaults to `0 0 * * *` (every midnight).
-      # This cron job cleans up log history in the directory defined by `mendRnvLogHistoryDir`.
-      # It deletes any log file that exceeds the `mendRnvLogHistoryTTLDays` value.
       mendRnvLogHistoryCleanupCron:
-
-      # Optional. valid values: 'disabled', 'enabled', 'managed' and default to unset (see documentation)
       mendRnvForksProcessing:
-
-      # Optional: Sets the maximum execution duration of a Renovate CLI scan in minutes. Defaults to 60.
       mendRnvWorkerExecutionTimeout:
-
-      # optional: valid values are 'off', 'always', a cron (example: '0 0 * * *' daily at midnight)
       mendRnvWorkerCleanup: off
-
-      # defaults to: '/tmp/renovate/cache, /tmp/renovate/repos, /home/ubuntu'
-      # Note: setting this value will override the default value
       mendRnvWorkerCleanupDirs:
-
-      # optional: A numeric percentage threshold for disk storage warnings. The default to 70
-      # note: setting the value to zero "0" will turn off this feature
       mendRnvDiskUsageWarnThreshold:
-
-      # optional: A comma-separated list of regex or glob patterns for matching device paths. Default is /dev/**
       mendRnvDiskUsageFilter:
-
-      # optional: mainly added to allow support for the '--security-revert=CVE-2023-46809' value
       mendRnvWorkerNodeArgs:
-
-      # Optional. Set to 'true' to enable Prometheus /metrics endpoint. Defaults to 'false'.
       mendRnvPrometheusMetricsEnabled:
-
-      # Optional. Set to 'true' to disable GlobalProxyAgent. Defaults to 'false'.
       mendRnvDisableGlobalAgent:
-
-      # Optional. Set to 'true' to enable HTTP/2 support. Defaults to 'false'.
       mendRnvEnableHttp2:
-
-      # Optional. Set to 'true' to ensure that non-secure requests are rejected.
       mendRnvHttpServerDisabled:
-
-      # TLS server config (YAML format, stringified to JSON in template).
-      # Takes precedence over 'mendRnvServerHttpsConfigPath'.
-      #
-      # https://github.com/mend/renovate-ce-ee/blob/main/docs/tls.md#https-server-configuration
       mendRnvServerHttpsConfig:
-      #    SNIConfig:
-      #      domain1.com:
-      #        key: "file:///path/to/key.pem"      # or "base64://..." or plain string
-      #        cert: "file:///path/to/cert.pem"    # or "base64://..." or plain string
-      #    baseConfig:
-      #      key: "file:///default/key.pem"
-      #      cert: "file:///default/cert.pem"
-      #      maxVersion: "TLSv1.3",
-      #      minVersion: "TLSv1.2"
-
-      # Path to the TLS server config.
       mendRnvServerHttpsConfigPath:
-
-      # Self-hosted renovate configuration file, will be mounted as a config map
       config: |
         module.exports = {
           // Enter self-hosted configuration options here.
           // https://docs.renovatebot.com/self-hosted-configuration/
         }
-
-      #  # Npmrc file. Will be mounted as a secret
-      #  npmrc: |
-      #    //registry.npmjs.org/:_authToken=xxxxxx
-
-      # Existing secret with npmrc configuration with key:
-      #   .npmrc:
       npmrcExistingSecret:
-
-      # Disable NodeJS SSL verify (do not use for production)
       noNodeTlsVerify: false
-
-      # Disable GIT SSL verify (do not use for production)
       noGitTlsVerify: false
-
-      # Set User Agent Mend Renovate will use to query the registries
-      # defaults to https://github.com/renovatebot/renovate
       renovateUserAgent:
-
-      # Set log level, defaults to 'info'. Allowed values: fatal, error, warn, info, debug, trace
       logLevel: info
-
-      # Set log format, defaults to pretty format. Allowed values: undefined or 'json'
       logFormat: json
-
     postgresql:
-      # if to use PostgreSQL, if set to 'false' SQLite will be used instead
       enabled: false
       host:
       port:
       database:
       user:
       password:
-
-
     disableCacheVolume: false
-
-    ## Cache Persistence Parameters
-    ## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
-    ##
     cachePersistence:
-      ## Enable persistence using Persistent Volume Claims
       enabled: false
-      ## Persistent Volume storage class
-      ## If defined, storageClassName: <storageClass>
-      ## If set to "-", storageClassName: "", which disables dynamic provisioning
-      ## If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner
       storageClass: ""
-      ## @param Persistent Volume access modes
       accessModes:
         - ReadWriteOnce
-      ## Persistent Volume size
       size: 1Gi
-      ## The name of an existing PVC to use for persistence
       existingClaim: ""
-
-    ## Cache in Memory
-    ## ref: https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
-    ## cachePersistence.enabled takes precedence, make sure its disabled
-    ##
     cacheInMemory:
-      ## Place the cache in memory (tmpfs)
       enabled: false
-
     service:
       type: ClusterIP
       ports:
         http: 80
         https: 443
       annotations: { }
-      # cloud.google.com/load-balancer-type: "Internal"
-
     ingress:
       enabled: false
-
-      # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-      # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-      # ingressClassName: nginx
-
       annotations: { }
-      # kubernetes.io/tls-acme: "true"
       hosts:
         { }
-        # mend-renovate.local:
-        #   paths:
-        #     - path: "/"
-        #       pathType: ImplementationSpecific
       tls: [ ]
-      #  - secretName: mend-renovate-tls
-      #    hosts:
-      #      - mend-renovate.local
-
     serviceAccount:
       create: false
       existingName:
       annotations: { }
-
     resources: { }
-
     annotations: { }
-
     labels:
       pods: { }
-
     nodeSelector: { }
-
     tolerations: [ ]
-
     affinity: { }
-
     podSecurityContext: { }
-    #   runAsNonRoot: true
-    #   seccompProfile:
-    #     type: RuntimeDefault
-
     containerSecurityContext: { }
-    #   allowPrivilegeEscalation: false
-    #   readOnlyRootFilesystem: true
-    #   capabilities:
-    #     drop:
-    #       - ALL
-
     initContainers: [ ]
-
-    # name of the image pull secret
     imagePullSecrets: ""
-
-    # This allows renovate to finish running for a repo and then gracefully exit
     terminationGracePeriodSeconds: 60
-
     livenessProbe:
       initialDelaySeconds: 2
       httpGet:
@@ -356,7 +127,6 @@ data:
       timeoutSeconds: 1
       failureThreshold: 3
       successThreshold: 1
-
     readinessProbe:
       httpGet:
         path: /health
@@ -365,37 +135,7 @@ data:
       timeoutSeconds: 1
       failureThreshold: 3
       successThreshold: 1
-
-    # Extra ConfigMaps to be created by the chart
-    # These are full Kubernetes ConfigMap definitions
     extraConfigMaps: [ ]
-    #  - apiVersion: v1
-    #    kind: ConfigMap
-    #    metadata:
-    #      name: my-extra-config-map
-    #    data:
-    #      MY_ENV_VAR: "my-value"
-    #      ANOTHER_VAR: "123"
-
-    # List of ConfigMaps to be loaded as environment variables
-    # Ref: https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps-as-environment-variables
     extraEnvFromConfigMaps: [ ]
-    #  - name: my-extra-config
-
     extraVolumes: [ ]
-    #  - name: secrets-store-inline
-    #    csi:
-    #      driver: secrets-store.csi.k8s.io
-    #      readOnly: true
-    #      volumeAttributes:
-    #      secretProviderClass: "some-secret-store"
-    #  - name: my-extra-config-map-volume
-    #    configMap:
-    #      name: my-extra-config
-
     extraVolumeMounts: [ ]
-    #  - name: secrets-store-inline
-    #    mountPath: "/mnt/secrets-store"
-    #    readOnly: true
-    #  - name: my-extra-config-map-volume
-    #    mountPath: /path

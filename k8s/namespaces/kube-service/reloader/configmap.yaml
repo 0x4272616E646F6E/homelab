@@ -15,17 +15,16 @@ data:
     image:
       name: stakater/reloader
       repository: ghcr.io/stakater/reloader
-      tag: v1.4.10
       pullPolicy: IfNotPresent
     reloader:
-      autoReloadAll: false
+      autoReloadAll: true
       isArgoRollouts: false
       isOpenshift: false
       ignoreSecrets: false
       ignoreConfigMaps: false
       ignoreJobs: false
       ignoreCronJobs: false
-      reloadOnCreate: false
+      reloadOnCreate: true
       reloadOnDelete: false
       syncAfterRestart: false
       reloadStrategy: default
@@ -35,7 +34,7 @@ data:
       logFormat: "json"
       logLevel: info
       watchGlobally: true
-      enableHA: false
+      enableHA: true
       enablePProf: false
       pprofAddr: ":6060"
       readOnlyRootFileSystem: true
@@ -45,7 +44,7 @@ data:
       enableMetricsByNamespace: false
       deployment:
         dnsConfig: {}
-        replicas: 1
+        replicas: 2
         revisionHistoryLimit: 2
         nodeSelector:
         affinity: {}
