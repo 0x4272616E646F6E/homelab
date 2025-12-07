@@ -9,11 +9,8 @@ data:
     # Chart defaults are used for all other settings
 
     providerRegex: "talos-4m3-8nj"
-    
     maxExpirationSeconds: "86400"
-    
     providerIpPrefixes:
       - 10.0.0.250/32
-    
     leaderElection: false
     replicas: 1

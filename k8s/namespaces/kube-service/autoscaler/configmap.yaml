@@ -17,7 +17,6 @@ data:
           memory: 300Mi
       podMonitor:
         enabled: true
-
     admissionController:
       enabled: false
       registerWebhook: true
@@ -26,9 +25,7 @@ data:
         namespaceSelector:
           matchLabels:
             autoscale.hosted.fail: "enabled"
-
     updater:
       enabled: false
-
     metrics-server:
       enabled: false

@@ -10,12 +10,10 @@ data:
 
     storageClass:
       create: false
-
     nodePathMap:
       - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
         paths:
           - /var/mnt/storage/local-path-provisioner
-
     storageClassConfigs:
       local-path-rwo:
         storageClass:
@@ -30,7 +28,6 @@ data:
           - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
             paths:
               - /var/mnt/storage/local-path-provisioner/rwo
-
       local-path-rwx:
         storageClass:
           create: true
@@ -41,7 +38,6 @@ data:
           volumeBindingMode: Immediate
           allowVolumeExpansion: true
         sharedFileSystemPath: /var/mnt/storage/local-path-provisioner/rwx
-
     tolerations:
       - key: "node-role.kubernetes.io/control-plane"
         operator: "Exists"

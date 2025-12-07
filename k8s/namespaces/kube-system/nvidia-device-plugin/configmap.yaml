@@ -10,8 +10,6 @@ data:
     
     config:
       name: "time-slicing-config-all"
-    
     gfd:
       enabled: true
-    
     runtimeClassName: "nvidia"
