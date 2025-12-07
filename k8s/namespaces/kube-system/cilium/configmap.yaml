@@ -64,6 +64,10 @@ data:
         enabled: true
       
       securityContext:
+        privileged: false
+        seLinuxOptions:
+          level: 's0'
+          type: 'spc_t'
         capabilities:
           ciliumAgent:
             - CHOWN
