@@ -85,7 +85,7 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 60  # 60 * 10s = 10 minutes max startup time
+            failureThreshold: 60
           livenessProbe:
             tcpSocket:
               port: 3310
