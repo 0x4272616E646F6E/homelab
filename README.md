@@ -94,20 +94,20 @@ flowchart RL
   CIL -. CNI .- KUBE
   DNS --> APIS
   APIS --> TRF
-  CFD --> TRF
-  NET -. Ingress .-> CFD
-  LOCALNET -. Ingress .-> TRF
+  CFD -. Reverse<br>Proxy<br>Chain .-> TRF
+  NET -. WAN<br>Ingress .-> CFD
+  LOCALNET -. LAN<br>Ingress .-> TRF
   CIL --> DNS
   CIL --> TRF
-  WRG -. Egress .-> NET
+  WRG -. WAN<br>Egress .-> NET
   LPP --> APIS
   KUBE --> LPP
   APIS --> APP
-  CIL --> APP
-  TRF --> APP
-  APP --> LPP
-  APP --> LOCALNET
-  APP -. Egress .-> NET
+  CIL -. mTLS .-> APP
+  TRF -. Reverse<br>Proxy .-> APP
+  APP -. Storage .-> LPP
+  APP -. LAN<br>Egress .-> LOCALNET
+  APP -. WAN<br>Egress .-> NET
   APP --> WRG
 
   %% Talos management
