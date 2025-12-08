@@ -12,12 +12,10 @@ data:
       limits:
         cpu: 500m
         memory: 512Mi
-
     admin:
       existingSecret: "grafana-secrets"
       userKey: admin-user
       passwordKey: admin-password
-
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
@@ -25,7 +23,6 @@ data:
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
-
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -61,7 +58,6 @@ data:
                 datasourceUid: prometheus
               lokiSearch:
                 datasourceUid: loki
-
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -74,7 +70,6 @@ data:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/homelab
-
     sidecar:
       dashboards:
         enabled: true

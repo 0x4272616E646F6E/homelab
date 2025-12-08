@@ -5,11 +5,8 @@ metadata:
   namespace: monitoring
 data:
   values.yaml: |-
-    # Disable the bundled Grafana since we're managing it separately
     grafana:
       enabled: false
-
-    # Prometheus Operator configuration
     prometheusOperator:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
@@ -18,8 +15,6 @@ data:
         - key: node-role.kubernetes.io/master
           operator: Exists
           effect: NoSchedule
-
-    # Prometheus instance configuration
     prometheus:
       prometheusSpec:
         replicas: 1
@@ -46,11 +41,8 @@ data:
               resources:
                 requests:
                   storage: 20Gi
-        # ServiceMonitor selector - match all ServiceMonitors (empty selector = match all)
         serviceMonitorSelector: {}
-        # PodMonitor selector - match all PodMonitors (empty selector = match all)
         podMonitorSelector: {}
-        # Additional scrape configs for services without ServiceMonitor
         additionalScrapeConfigs:
           - job_name: alloy
             kubernetes_sd_configs:
@@ -66,8 +58,6 @@ data:
               - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
                 action: keep
                 regex: monitoring;tempo;tempo-http
-
-    # AlertManager configuration
     alertmanager:
       enabled: true
       alertmanagerSpec:
@@ -79,15 +69,11 @@ data:
           - key: node-role.kubernetes.io/master
             operator: Exists
             effect: NoSchedule
-
-    # kube-state-metrics configuration
     kube-state-metrics:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
-
-    # prometheus-node-exporter configuration
     prometheus-node-exporter:
       tolerations:
         - key: node-role.kubernetes.io/control-plane

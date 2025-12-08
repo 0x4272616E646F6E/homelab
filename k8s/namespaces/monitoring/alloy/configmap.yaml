@@ -6,7 +6,6 @@ metadata:
 data:
   values.yaml: |-
     nameOverride: alloy
-
     alloy:
       controller:
         type: daemonset
@@ -66,13 +65,11 @@ data:
             level  = "info"
             format = "logfmt"
           }
-
           loki.write "default" {
             endpoint {
               url = "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
             }
           }
-
           loki.source.syslog "syslog" {
             listener {
               address        = "0.0.0.0:1514"
@@ -96,7 +93,6 @@ data:
             }
             forward_to = [loki.write.default.receiver]
           }
-
     service:
       enabled: true
       type: ClusterIP
@@ -112,7 +108,6 @@ data:
           protocol: TCP
           port: 1514
           targetPort: 1514
-
     serviceMonitor:
       enabled: true
       interval: 30s

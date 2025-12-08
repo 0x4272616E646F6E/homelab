@@ -6,7 +6,6 @@ metadata:
 data:
   values.yaml: |-
     replicas: 1
-
     tempo:
       resources:
         requests:
@@ -64,7 +63,6 @@ data:
         storageClassName: local-path-rwo
         accessModes: ["ReadWriteOnce"]
         size: 20Gi
-
     service:
       ports:
         - name: tempo-http
@@ -76,12 +74,10 @@ data:
         - name: otlp-http
           port: 4318
           targetPort: 4318
-
     serviceMonitor:
       enabled: true
       interval: 30s
       additionalLabels: {}
-
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists

@@ -26,7 +26,6 @@ data:
         image: gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:e5e1464e7b4a81fda6d56ee63cec9abd91d78450734b3de95ba46bff3d648639
         tag: ""
         affinity:
-          # To avoid node becoming SPOF, spread our replicas to different nodes.
           podAntiAffinity:
             preferredDuringSchedulingIgnoredDuringExecution:
               - podAffinityTerm:
