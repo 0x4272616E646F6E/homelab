@@ -19,7 +19,10 @@ This repository contains Kubernetes manifests for deploying and managing resourc
 
 ## Prerequisites
 
-Before using this repository, ensure you have:
+Before using this repository, ensure you have the following:
+
+<details>
+  <summary><b>Click here to view Prerequisites</b></summary>
 
 - **Kubernetes Cluster**: A working Kubernetes cluster.
 - **Cilium CLI**: [Install Cilium CLI](https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli)
@@ -34,13 +37,14 @@ Before using this repository, ensure you have:
 Or use nix.
 
 - **Nix**: [Install Nix](https://github.com/DeterminateSystems/nix-installer)
+</details>
 
 ## Diagram
 
 This diagram is a general cluster architecture diagram for this single node deployment:
 
 <details>
-  <summary>Click to View Diagram</summary>
+  <summary><b>Click here to view Diagram</b></summary>
 
 ```mermaid
 flowchart RL
@@ -121,7 +125,7 @@ flowchart RL
 Information regarding the hardware this homelab runs on:
 
 <details>
-  <summary>Click to view Hardware</summary>
+  <summary><b>Click here to view Hardware</b></summary>
 
 <img src="./docs/server_rack.jpeg" alt="Homelab Rack" width="300"/>
 
@@ -152,7 +156,7 @@ Information regarding the hardware this homelab runs on:
 The following applications are managed through flux in this repository:
 
 <details>
-  <summary>Click here to view Applications</summary>
+  <summary><b>Click here to view Applications</b></summary>
 
 - [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
 - [**Alloy**](https://github.com/grafana/alloy/tree/main)
