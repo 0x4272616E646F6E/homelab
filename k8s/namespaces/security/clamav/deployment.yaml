@@ -79,17 +79,22 @@ spec:
             - name: clamd
               containerPort: 3310
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 3310
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 60  # 60 * 10s = 10 minutes max startup time
           livenessProbe:
             tcpSocket:
               port: 3310
-            initialDelaySeconds: 120
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             tcpSocket:
               port: 3310
-            initialDelaySeconds: 90
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
