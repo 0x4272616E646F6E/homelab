@@ -1312,7 +1312,7 @@ data:
         enabled: false
       enableNonDefaultDenyPolicies: true
       authentication:
-        enabled: true
+        enabled: false
         queueSize: 1024
         rotatedIdentitiesQueueSize: 1024
         gcInterval: "5m0s"
@@ -1320,10 +1320,10 @@ data:
           port: 4250
           connectTimeout: 5s
           spire:
-            enabled: true
+            enabled: false
             annotations: {}
             install:
-              enabled: true
+              enabled: false
               namespace: kube-service
               existingNamespace: true
               initImage:
