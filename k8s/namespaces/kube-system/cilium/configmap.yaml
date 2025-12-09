@@ -1320,10 +1320,10 @@ data:
           port: 4250
           connectTimeout: 5s
           spire:
-            enabled: true
+            enabled: false
             annotations: {}
             install:
-              enabled: true
+              enabled: false
               namespace: kube-service
               existingNamespace: true
               initImage:
