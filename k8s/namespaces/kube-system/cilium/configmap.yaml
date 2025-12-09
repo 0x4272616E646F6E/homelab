@@ -1311,7 +1311,7 @@ data:
         enabled: false
       enableNonDefaultDenyPolicies: true
       authentication:
-        enabled: true
+        enabled: false
         queueSize: 1024
         rotatedIdentitiesQueueSize: 1024
         gcInterval: "5m0s"
