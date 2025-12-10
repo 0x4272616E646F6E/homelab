@@ -41,7 +41,7 @@ spec:
           - --max-num-seqs
           - "1"
           - --gpu-memory-utilization
-          - "0.75"
+          - "0.95"
           - --enable-chunked-prefill
           - --cpu-offload-gb
           - "16"
