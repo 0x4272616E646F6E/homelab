@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm-gpt-oss
+  name: llamacpp-gpt-oss
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-gpt-oss
+    app.kubernetes.io/name: llamacpp-gpt-oss
 spec:
   ports:
-  - name: vllm-gpt-oss
+  - name: llamacpp-gpt-oss
     port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: vllm-gpt-oss
+    app.kubernetes.io/name: llamacpp-gpt-oss
   sessionAffinity: None
   type: ClusterIP

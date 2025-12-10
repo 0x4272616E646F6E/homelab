@@ -4,7 +4,7 @@ metadata:
   name: gpt-oss-pvc
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-gpt-oss
+    app.kubernetes.io/name: llamacpp-gpt-oss
 spec:
   accessModes:
     - ReadWriteOnce
