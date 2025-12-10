@@ -28,8 +28,6 @@ spec:
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
         image: ghcr.io/ggml-org/llama.cpp:server-cuda
         imagePullPolicy: IfNotPresent
-        command:
-          - /llama-server
         args:
           - --hf-repo
           - mradermacher/gpt-oss-20b-heretic-v2-GGUF
