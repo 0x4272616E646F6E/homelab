@@ -33,9 +33,9 @@ data:
           custom:
             - name: "vLLM"
               apiKey: "vllm"
-              baseURL: "http://vllm-qwen-coder:8000/v1"
+              baseURL: "http://vllm-gpt-oss:8000/v1"
               models:
-                default: ['Qwen/Qwen2.5-Coder-3B-Instruct']
+                default: ['p-e-w/gpt-oss-20b-heretic-v2']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"

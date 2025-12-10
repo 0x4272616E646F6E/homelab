@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm-qwen-coder
+  name: vllm-gpt-oss
   namespace: development
   labels:
-    app.kubernetes.io/name: vllm-qwen-coder
+    app.kubernetes.io/name: vllm-gpt-oss
 spec:
   ports:
-  - name: vllm-qwen-coder
+  - name: vllm-gpt-oss
     port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: vllm-qwen-coder
+    app.kubernetes.io/name: vllm-gpt-oss
   sessionAffinity: None
   type: ClusterIP
