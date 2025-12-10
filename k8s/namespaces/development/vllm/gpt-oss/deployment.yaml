@@ -25,8 +25,8 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: llamacpp
-        # renovate: datasource=docker depName=ghcr.io/ggerganov/llama.cpp
-        image: ghcr.io/ggerganov/llama.cpp:server-cuda
+        # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda
         imagePullPolicy: IfNotPresent
         command:
           - /llama-server
