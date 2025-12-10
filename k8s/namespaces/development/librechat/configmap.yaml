@@ -31,9 +31,9 @@ data:
             openNewTab: true
         endpoints:
           custom:
-            - name: "vLLM"
-              apiKey: "vllm"
-              baseURL: "http://vllm-gpt-oss:8000/v1"
+            - name: "llamacpp"
+              apiKey: ""
+              baseURL: "http://llamacpp-gpt-oss:8000/v1"
               models:
                 default: ['p-e-w/gpt-oss-20b-heretic-v2']
                 fetch: true
