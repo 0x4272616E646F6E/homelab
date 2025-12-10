@@ -71,8 +71,8 @@ spec:
           requests: { cpu: "2", memory: "20Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
           limits:   { cpu: "4", memory: "20Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
-          runAsUser: 1000
-          runAsNonRoot: true
+          runAsUser: 0
+          runAsNonRoot: false
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
           capabilities: { drop: ["ALL"] }
