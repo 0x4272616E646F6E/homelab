@@ -73,7 +73,7 @@ spec:
           readOnlyRootFilesystem: false
           capabilities: { drop: ["ALL"] }
         volumeMounts:
-        - { name: cache-volume, mountPath: /models }
+        - { name: cache-volume, mountPath: /root/.cache/llama.cpp }
         - { name: tmp,          mountPath: /tmp }
         readinessProbe:
           httpGet: { path: /health, port: http }
