@@ -32,7 +32,7 @@ data:
         endpoints:
           custom:
             - name: "llamacpp"
-              apiKey: ""
+              apiKey: "llamacpp"
               baseURL: "http://llamacpp-gpt-oss:8000/v1"
               models:
                 default: ['p-e-w/gpt-oss-20b-heretic-v2']
