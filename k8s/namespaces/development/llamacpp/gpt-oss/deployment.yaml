@@ -61,6 +61,15 @@ spec:
           - q8_0
           - --cache-type-v
           - q8_0
+          - --temp
+          - "1.0"
+          - --top-p
+          - "1.0"
+          - --top-k
+          - "40"
+          - --min-p
+          - "0.001"
+          - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
