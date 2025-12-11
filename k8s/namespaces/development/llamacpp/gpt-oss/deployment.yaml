@@ -58,9 +58,9 @@ spec:
           - --flash-attn
           - auto
           - --cache-type-k
-          - q4_0
+          - q8_0
           - --cache-type-v
-          - q4_0
+          - q8_0
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
