@@ -181,6 +181,7 @@ The following applications are managed through flux in this repository:
 - [**Knative**](https://github.com/knative/serving)
 - [**Kubelet CSR Approver**](https://github.com/postfinance/kubelet-csr-approver)
 - [**LibreChat**](https://github.com/danny-avila/LibreChat)
+- [**LlamaCPP**](https://github.com/ggml-org/llama.cpp)
 - [**Local Path Provisioner**](https://github.com/rancher/local-path-provisioner)
 - [**LocalStack**](https://github.com/localstack/localstack)
 - [**Loki**](https://github.com/grafana/loki)
@@ -203,7 +204,6 @@ The following applications are managed through flux in this repository:
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)
 - [**Traefik**](https://github.com/traefik/traefik)
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
-- [**VLLM**](https://github.com/vllm-project/vllm)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
 </details>
 

@@ -11,6 +11,6 @@ resources:
   - sonarqube/
   - actions-runner-controller/
   - actions-runner/
-  - vllm/
+  - llamacpp/
   - librechat/
   - localstack/
