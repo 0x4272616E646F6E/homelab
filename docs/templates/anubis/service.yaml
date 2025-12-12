@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: anubis
+  namespace: security
+  labels:
+    app.kubernetes.io/name: anubis
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    app.kubernetes.io/name: anubis
+    app.kubernetes.io/managed-by: flux
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: anubis
+  type: ClusterIP

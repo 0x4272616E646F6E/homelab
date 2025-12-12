@@ -160,6 +160,7 @@ The following applications are managed through flux in this repository:
 
 - [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
 - [**Alloy**](https://github.com/grafana/alloy/tree/main)
+- [**Anubis**](https://github.com/TecharoHQ/anubis)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
 - [**BuildKit**](https://github.com/moby/buildkit)
 - [**Cert Manager**](https://github.com/cert-manager/cert-manager)
