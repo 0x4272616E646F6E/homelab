@@ -356,6 +356,12 @@ data:
             default: true
           exposedPort: 1514
           protocol: TCP
+        ssh:
+          port: 22
+          expose:
+            default: true
+          exposedPort: 22
+          protocol: TCP
       tlsOptions: {}
       tlsStore: {}
       service:
