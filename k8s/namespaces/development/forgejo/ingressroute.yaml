@@ -12,8 +12,6 @@ spec:
       middlewares:
         - name: internal-whitelist
           namespace: ingress
-        - name: tinyauth
-          namespace: ingress
       services:
         - name: forgejo-http
           port: 3000
