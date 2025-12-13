@@ -43,6 +43,9 @@ spec:
           # renovate: datasource=docker depName=codeberg.org/forgejo/forgejo
           image: codeberg.org/forgejo/forgejo:13
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TMPDIR
+              value: /data/tmp
           ports:
             - containerPort: 3000
               protocol: TCP
