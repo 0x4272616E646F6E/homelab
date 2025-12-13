@@ -63,7 +63,11 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: forgejo-data
+        - name: tmp
+          emptyDir: {}
