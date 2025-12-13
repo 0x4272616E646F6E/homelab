@@ -30,9 +30,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-20b-heretic-v2-GGUF
+          - mradermacher/gpt-oss-20b-heretic-scanner-V1-2-i1-GGUF
           - --hf-file
-          - gpt-oss-20b-heretic-v2.MXFP4_MOE.gguf
+          - gpt-oss-20b-heretic-scanner-V1-2.i1-IQ4_XS.gguf
           - --alias
           - gpt-oss-20b
           - --host
@@ -40,7 +40,7 @@ spec:
           - --port
           - "8000"
           - --ctx-size
-          - "128000"
+          - "65536"
           - --n-gpu-layers
           - "99"
           - --tensor-split
@@ -105,11 +105,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - gaianet/jina-embeddings-v3-GGUF
+          - jinaai/jina-embeddings-v4-text-retrieval-GGUF
           - --hf-file
-          - jina-embeddings-v3-Q8_0.gguf
+          - jina-embeddings-v4-text-retrieval-IQ4_XS.gguf
           - --alias
-          - jina-embeddings-v3
+          - jina-embeddings-v4
           - --host
           - "0.0.0.0"
           - --port
@@ -148,6 +148,55 @@ spec:
           failureThreshold: 30
         startupProbe:
           httpGet: { path: /health, port: embeddings }
+          periodSeconds: 15
+          failureThreshold: 60
+      - name: llamacpp-reranker
+        # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:306f9d8d9d42951762c5a4e8ef7d6e033e2537c291cd1075eae503fc9a82bdcc
+        imagePullPolicy: IfNotPresent
+        args:
+          - --hf-repo
+          - jinaai/jina-reranker-v3-GGUF
+          - --hf-file
+          - jina-reranker-v3-IQ4_XS.gguf
+          - --alias
+          - jina-reranker-v3
+          - --host
+          - "0.0.0.0"
+          - --port
+          - "8002"
+          - --ctx-size
+          - "8192"
+          - --n-gpu-layers
+          - "99"
+          - --reranking
+        env:
+        - name: HUGGING_FACE_HUB_TOKEN
+          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+        - { name: HF_HOME,               value: /models/.cache/hf }
+        - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
+        - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
+        ports:
+        - { containerPort: 8002, name: reranker }
+        resources:
+          requests: { cpu: "1", memory: "2Gi", ephemeral-storage: "5Gi" }
+          limits:   { cpu: "2", memory: "4Gi", ephemeral-storage: "10Gi" }
+        securityContext:
+          runAsUser: 0
+          runAsNonRoot: false
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: cache-volume, mountPath: /root/.cache/llama.cpp }
+        - { name: tmp,          mountPath: /tmp }
+        readinessProbe:
+          httpGet: { path: /health, port: reranker }
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          failureThreshold: 30
+        startupProbe:
+          httpGet: { path: /health, port: reranker }
           periodSeconds: 15
           failureThreshold: 60
       volumes:
