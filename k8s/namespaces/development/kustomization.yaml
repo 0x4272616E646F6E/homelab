@@ -7,7 +7,7 @@ resources:
   - renovate/
   - buildkit/
   - code-server/
-  - harbor/
+  - forgejo/
   - sonarqube/
   - actions-runner-controller/
   - actions-runner/

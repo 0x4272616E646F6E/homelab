@@ -1,20 +1,21 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: traefik-harbor-https
+  name: traefik-forgejo-https
   namespace: development
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`harbor.hosted.fail`)
+    - match: Host(`forgejo.hosted.fail`)
       kind: Rule
       middlewares:
         - name: internal-whitelist
           namespace: ingress
+        - name: tinyauth
+          namespace: ingress
       services:
-        - name: harbor
-          port: 80
-          passHostHeader: true
+        - name: forgejo-http
+          port: 3000
   tls: 
     secretName: hosted-fail-tls

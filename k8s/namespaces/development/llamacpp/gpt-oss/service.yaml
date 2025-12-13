@@ -11,6 +11,10 @@ spec:
     port: 8000
     protocol: TCP
     targetPort: 8000
+  - name: embeddings
+    port: 8001
+    protocol: TCP
+    targetPort: 8001
   selector:
     app.kubernetes.io/name: llamacpp-gpt-oss
   sessionAffinity: None

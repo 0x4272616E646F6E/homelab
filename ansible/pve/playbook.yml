@@ -81,7 +81,7 @@
 
         - name: Record Proxmox node name for ACME operations
           ansible.builtin.set_fact:
-            _acme_node_name: "{{ ansible_nodename | default(inventory_hostname) }}"
+            _acme_node_name: "{{ ansible_facts.nodename | default(inventory_hostname) }}"
 
         - name: Retrieve ACME metadata (ToS)
           ansible.builtin.command:
@@ -816,51 +816,3 @@
         - terraform_prov_user_password != ''
         - terraform_prov_username not in (pveum_acls.stdout | default(''))
       changed_when: terraform_prov_username not in (pveum_acls.stdout | default(''))
-
-  handlers:
-    - name: Restart systemd-timesyncd
-      ansible.builtin.systemd:
-        name: systemd-timesyncd
-        state: restarted
-
-    - name: Restart chrony
-      ansible.builtin.systemd:
-        name: chrony
-        state: restarted
-
-    - name: Restart rsyslog
-      ansible.builtin.systemd:
-        name: rsyslog
-        state: restarted
-
-    - name: Restart nut-server
-      ansible.builtin.systemd:
-        name: nut-server
-        state: restarted
-      when:
-        - nut_enabled
-        - nut_mode == 'netserver'
-        - not ansible_check_mode or ('nut-server.service' in (ansible_facts.services | default({})))
-
-    - name: Restart nut-client
-      ansible.builtin.systemd:
-        name: "{{ _nut_client_service_unit | default('nut-monitor') }}"
-        state: restarted
-      when:
-        - nut_enabled
-        - not ansible_check_mode or (( (_nut_client_service_unit | default('nut-monitor')) ~ '.service') in (ansible_facts.services | default({})) )
-
-    - name: Restart fail2ban
-      ansible.builtin.systemd:
-        name: fail2ban
-        state: restarted
-      when: not ansible_check_mode
-
-    - name: Update initramfs
-      ansible.builtin.command: update-initramfs -u -k all
-      when: gpu_passthrough_enabled
-      changed_when: false
-
-    - name: Update-grub
-      ansible.builtin.command: update-grub
-      changed_when: false
