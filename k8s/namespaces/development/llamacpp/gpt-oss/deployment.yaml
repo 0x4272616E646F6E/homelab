@@ -30,9 +30,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-20b-heretic-scanner-V1-2-i1-GGUF
+          - mradermacher/gpt-oss-20b-heretic-v2-GGUF
           - --hf-file
-          - gpt-oss-20b-heretic-scanner-V1-2.i1-IQ4_XS.gguf
+          - gpt-oss-20b-heretic-v2.IQ4_XS.gguf
           - --alias
           - gpt-oss-20b
           - --host
