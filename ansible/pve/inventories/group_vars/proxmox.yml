@@ -30,7 +30,7 @@ acme_plugin_data_b64: "{{ [
 acme_domains:
   - domain: "pve.hosted.fail"
     plugin: "{{ acme_plugin_name }}"
-    alias: ""                       # Optional DNS alias target when delegating challenges
+    alias: ""
 acme_force_renew: false
 
 # Syslog Configurations
@@ -170,9 +170,8 @@ smtp_relay_password: ""
 # ZFS Tuning Configurations
 zfs_tuning_enabled: true
 zfs_tuning:
-  zfs_arc_max: "4G"
-  zfs_arc_min: "1G"
-  zfs_vdev_aggregation_limit: 4
+  zfs_arc_max: "48G"
+  zfs_vdev_aggregation_limit: 1048576
 
 # Antivirus Configurations
 host_antivirus_enabled: true

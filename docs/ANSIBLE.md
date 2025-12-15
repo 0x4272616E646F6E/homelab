@@ -781,9 +781,8 @@ echo "Test email" | mail -s "Proxmox test" user@example.com
    ```yaml
    zfs_tuning_enabled: true
    zfs_tuning:
-      zfs_arc_max: "4G"
-      zfs_arc_min: "1G"
-      zfs_vdev_aggregation_limit: 4
+      zfs_arc_max: "48G"
+      zfs_vdev_aggregation_limit: 1048576
    ```
 
    The playbook will write a simple ZFS tunables file; adjust values for your hardware. Reboot or reload ZFS modules as appropriate for your setup.

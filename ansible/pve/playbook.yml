@@ -3,6 +3,9 @@
   hosts: proxmox
   become: true
   gather_facts: true
+  handlers:
+    - name: Import handlers
+      ansible.builtin.import_tasks: handlers/main.yml
 
   tasks:
     - name: Set timezone
@@ -385,10 +388,10 @@
 
     - name: Add Proxmox no-subscription repository
       ansible.builtin.apt_repository:
-        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription"
+        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription"
         state: present
         filename: pve-no-subscription
-      when: ansible_distribution == 'Debian'
+      when: ansible_facts['distribution'] == 'Debian'
 
     - name: Install unattended-upgrades package
       ansible.builtin.apt:
@@ -612,10 +615,11 @@
             owner: root
             group: root
             mode: '0644'
+          notify: Update initramfs
 
-        - name: Reload sysctl to apply ZFS tunables
-          ansible.builtin.command: sysctl -p /etc/modprobe.d/99-zfs-tuning.conf
-          changed_when: false
+        - name: Notify user that ZFS tuning requires reboot
+          ansible.builtin.debug:
+            msg: "ZFS tuning parameters deployed. A reboot (or ZFS module reload) is required for changes to take effect."
     - name: Install and configure host ClamAV
       when: host_antivirus_enabled
       block:
@@ -718,23 +722,6 @@
         state: absent
       when: not sysctl_hardening_enabled
 
-    - name: Include user-defined kernel parameters
-      ansible.builtin.set_fact:
-        _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + (kernel_extra_cmdline_params | default([])) }}"
-      when: (kernel_extra_cmdline_params | default([])) | length > 0
-
-    - name: Configure kernel lockdown command line
-      when: kernel_lockdown_enabled
-      block:
-        - name: Append kernel lockdown mode argument
-          ansible.builtin.set_fact:
-            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['lockdown=' ~ kernel_lockdown_mode] }}"
-
-        - name: Enforce kernel module signatures when requested
-          ansible.builtin.set_fact:
-            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['module.sig_enforce=1'] }}"
-          when: kernel_lockdown_sig_enforce
-
     - name: Determine CPU vendor for IOMMU (if auto)
       ansible.builtin.set_fact:
         _detected_cpu_vendor: >-
@@ -768,6 +755,23 @@
       when:
         - enable_iommu
         - _iommu_param is defined
+
+    - name: Include user-defined kernel parameters
+      ansible.builtin.set_fact:
+        _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + (kernel_extra_cmdline_params | default([])) }}"
+      when: (kernel_extra_cmdline_params | default([])) | length > 0
+
+    - name: Configure kernel lockdown command line
+      when: kernel_lockdown_enabled
+      block:
+        - name: Append kernel lockdown mode argument
+          ansible.builtin.set_fact:
+            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['lockdown=' ~ kernel_lockdown_mode] }}"
+
+        - name: Enforce kernel module signatures when requested
+          ansible.builtin.set_fact:
+            _kernel_cmdline_params: "{{ (_kernel_cmdline_params | default([])) + ['module.sig_enforce=1'] }}"
+          when: kernel_lockdown_sig_enforce
 
     - name: Build kernel command line string
       ansible.builtin.set_fact:

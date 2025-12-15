@@ -3,15 +3,15 @@
 // Allowed origins for automatic upgrades
 Unattended-Upgrade::Origins-Pattern {
     // Debian security updates (CRITICAL - always enabled)
-    "origin=Debian,codename=${distro_codename},label=Debian-Security";
-    "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
+    "origin=Debian,codename={{ ansible_facts['distribution_release'] }},label=Debian-Security";
+    "origin=Debian,codename={{ ansible_facts['distribution_release'] }}-security,label=Debian-Security";
     
     // Debian stable updates
-    "origin=Debian,codename=${distro_codename},label=Debian";
+    "origin=Debian,codename={{ ansible_facts['distribution_release'] }},label=Debian";
 {% if unattended_upgrades_proxmox_updates %}
     
     // Proxmox VE updates (enable with caution!)
-    "origin=Proxmox,codename=${distro_codename},label=Proxmox Debian Repository";
+    "origin=Proxmox,codename={{ ansible_facts['distribution_release'] }},label=Proxmox Debian Repository";
 {% endif %}
 };
 
