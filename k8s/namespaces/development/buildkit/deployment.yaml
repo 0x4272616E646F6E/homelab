@@ -21,7 +21,7 @@ spec:
       containers:
       - name: buildkitd
         # renovate: datasource=docker depName=docker.io/moby/buildkit
-        image: docker.io/moby/buildkit:latest@sha256:de10faf919fc71ba4eb1dd7bd6449566d012b0c9436b1c61bfee21d621b009aa
+        image: docker.io/moby/buildkit:latest@sha256:5601811fde88bb9e8a577bfe804af82bccb712e1cd07ff94663bded5e628cf75
         securityContext:
           privileged: true
           allowPrivilegeEscalation: true
