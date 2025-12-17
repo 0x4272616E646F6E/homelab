@@ -157,7 +157,7 @@ cluster:
   serviceAccount:
     key:
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.34.3@sha256:5af1030676ceca025742ef5e73a504d11b59be0e5551cdb8c9cf0d3c1231b460
+    image: registry.k8s.io/kube-apiserver:v1.35.0@sha256:32f98b308862e1cf98c900927d84630fb86a836a480f02752a779eb85c1489f3
     certSANs:
       - 10.0.0.250
       - 127.0.0.1
