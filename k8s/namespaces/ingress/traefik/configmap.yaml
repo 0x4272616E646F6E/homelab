@@ -345,13 +345,13 @@ data:
           exposedPort: 9100
           protocol: TCP
         syslogudp:
-          port: 1514
+          port: 514
           expose:
             default: true
           exposedPort: 1514
           protocol: UDP
         syslogtcp:
-          port: 1514
+          port: 514
           expose:
             default: true
           exposedPort: 1514
