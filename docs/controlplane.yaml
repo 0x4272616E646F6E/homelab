@@ -188,7 +188,7 @@ cluster:
       default-not-ready-toleration-seconds: "60"
       default-unreachable-toleration-seconds: "60"
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.34.3@sha256:716a210d31ee5e27053ea0e1a3a3deb4910791a85ba4b1120410b5a4cbcf1954
+    image: registry.k8s.io/kube-controller-manager:v1.35.0@sha256:3e343fd915d2e214b9a68c045b94017832927edb89aafa471324f8d05a191111
   proxy:
     disabled: true
   scheduler:
