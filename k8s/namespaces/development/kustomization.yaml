@@ -8,7 +8,7 @@ resources:
   - buildkit/
   - code-server/
   - forgejo/
-  # - forgejo-runner/
+  - forgejo-runner/
   - sonarqube/
   - actions-runner-controller/
   - actions-runner/
