@@ -1,0 +1,148 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forgejo-runner
+  namespace: development
+  labels:
+    app.kubernetes.io/name: forgejo-runner
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: forgejo-runner
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: forgejo-runner
+        app.kubernetes.io/managed-by: flux
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: Always
+      initContainers:
+        - name: runner-register
+          # renovate: datasource=docker depName=codeberg.org/forgejo/runner
+          image: code.forgejo.org/forgejo/runner:6.4.0
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while : ; do
+                forgejo-runner register --no-interactive --token "$RUNNER_SECRET" --name "$RUNNER_NAME" --instance "$FORGEJO_INSTANCE_URL" && break ;
+                sleep 1 ;
+              done ;
+              forgejo-runner generate-config > /data/config.yml ;
+              sed -i -e "s|network: .*|network: host|" /data/config.yml ;
+              sed -i -e "s|^  envs:$$|  envs:\n    DOCKER_HOST: tcp://localhost:2376\n    DOCKER_TLS_VERIFY: 1\n    DOCKER_CERT_PATH: /certs/client|" /data/config.yml ;
+              sed -i -e "s|^  options:|  options: -v /certs/client:/certs/client|" /data/config.yml ;
+              sed -i -e "s|  valid_volumes: \[\]$$|  valid_volumes:\n    - /certs/client|" /data/config.yml
+          env:
+            - name: RUNNER_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: RUNNER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-runner-secrets
+                  key: token
+            - name: FORGEJO_INSTANCE_URL
+              value: http://forgejo:3000
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 100Mi
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: '0'
+              memory: 64Mi
+          volumeMounts:
+            - name: runner-data
+              mountPath: /data
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+      containers:
+        - name: runner
+          # renovate: datasource=docker depName=codeberg.org/forgejo/runner
+          image: code.forgejo.org/forgejo/runner:6.4.0
+          command:
+            - /bin/bash
+            - -c
+          args:
+            - |
+              while ! nc -z localhost 2376 </dev/null ; do
+                echo 'waiting for docker daemon...' ;
+                sleep 5 ;
+                done ;
+              forgejo-runner --config /data/config.yml daemon
+          env:
+            - name: DOCKER_HOST
+              value: tcp://localhost:2376
+            - name: DOCKER_CERT_PATH
+              value: /certs/client
+            - name: DOCKER_TLS_VERIFY
+              value: '1'
+          resources:
+            limits:
+              cpu: '1'
+              ephemeral-storage: 3Gi
+              memory: 4Gi
+            requests:
+              cpu: 100m
+              ephemeral-storage: '0'
+              memory: 64Mi
+          volumeMounts:
+            - name: docker-certs
+              mountPath: /certs
+            - name: runner-data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+        - name: daemon
+          # renovate: datasource=docker depName=docker/docker-ce
+          image: docker.io/docker:28.3.0-dind
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: /certs
+          resources:
+            limits:
+              cpu: '1'
+              ephemeral-storage: 3Gi
+              memory: 4Gi
+            requests:
+              cpu: 100m
+              ephemeral-storage: '0'
+              memory: 64Mi
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: docker-certs
+              mountPath: /certs
+      volumes:
+        - name: docker-certs
+          emptyDir: {}
+        - name: runner-data
+          persistentVolumeClaim:
+            claimName: forgejo-runner-data
+        - name: tmp
+          emptyDir: {}
