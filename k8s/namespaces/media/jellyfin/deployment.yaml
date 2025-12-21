@@ -35,6 +35,8 @@ spec:
           env:
             - name: UMASK
               value: "022"
+            - name: DOCKER_MODS
+              value: linuxserver/mods:jellyfin-opencl-intel
           resources:
             requests:
               cpu: "200m"
