@@ -134,7 +134,7 @@ data:
           enabled: false
           experimentalChannel: false
           namespaces: []
-          labelselector: ""
+          labelSelector: ""
           nativeLBByDefault: false
           statusAddress:
             ip: ""
