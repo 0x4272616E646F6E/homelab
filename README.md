@@ -127,12 +127,12 @@ Information regarding the hardware this homelab runs on:
 <details>
   <summary><b>Click here to view Hardware</b></summary>
 
-<img src="./docs/server_rack.jpeg" alt="Homelab Rack" width="300"/>
+<img src="./docs/server_rack.jpg" alt="Homelab Rack" width="300"/>
 
 - [12u StarTech Rack](https://www.startech.com/en-us/server-management/4postrack12u)
 - [UniFi Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro)
 - [UniFi Enterprise 24 PoE](https://store.ui.com/us/en/products/usw-enterprise-24-poe)
-- **Coming Soon** [Unifi UNAS PRO 8](https://store.ui.com/us/en/category/all-integrations/products/unas-pro-8)
+- [Unifi UNAS PRO 8](https://store.ui.com/us/en/category/all-integrations/products/unas-pro-8)
 - Basic Patch Panel
 - <details>
   <summary>Supermicro Server</summary>

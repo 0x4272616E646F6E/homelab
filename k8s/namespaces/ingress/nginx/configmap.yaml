@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-gateway-fabric-config-map
+  namespace: ingress
+data:
+  values.yaml: |-
+    clusterDomain: cluster.local
+
+    nginxGateway:
+      kind: deployment
+      name: ""
+      gatewayClassName: nginx
+      podAnnotations: {}
+      labels: {}
+      gatewayClassAnnotations: {}
+      gatewayControllerName: gateway.nginx.org/nginx-gateway-controller
+      replicas: 2
+      image:
+        repository: ghcr.io/nginx/nginx-gateway-fabric
+        tag: 2.3.0
+        pullPolicy: IfNotPresent
+      productTelemetry:
+        enable: false
+      tolerations: []
+      autoscaling:
+        enable: false
+      metrics:
+        enable: true
+        port: 9113
+        secure: false
+      gwAPIExperimentalFeatures:
+        enable: false
+      gwAPIInferenceExtension:
+        enable: false
+        endpointPicker:
+          disableTLS: false
+          skipVerify: true
+      snippetsFilters:
+        enable: false
+
+    nginx:
+      kind: deployment
+      replicas: 2
+      patches: []
+      autoscaling:
+        enable: false
+      image:
+        repository: ghcr.io/nginx/nginx-gateway-fabric/nginx
+        tag: 2.3.0
+        pullPolicy: IfNotPresent
+      plus: false
+      nginxOneConsole:
+        dataplaneKeySecretName: ""
+        endpointHost: ""
+        endpointPort: 443
+        skipVerify: false
+      productTelemetry:
+        enable: false
+      imagePullSecret: ""
+      imagePullSecrets: []
+      usage:
+        secretName: ""
+        endpoint: ""
+        resolver: ""
+        skipVerify: false
+        caSecretName: ""
+        clientSSLSecretName: ""
+        enforceInitialReport: false
+      service:
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        loadBalancerIP: "10.0.0.248"
+        loadBalancerClass: ""
+        loadBalancerSourceRanges: []
+    certGenerator:
+      enable: false

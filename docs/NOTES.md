@@ -83,10 +83,10 @@ talosctl upgrade -n ${NODE_IP} --image factory.talos.dev/nocloud-installer/${IMA
 **Talos Kubernetes Upgrade**
 ```bash
 # Validate
-talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.1 --dry-run
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.3 --dry-run
 
 # Run
-talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.1
+talosctl --nodes 10.0.0.250 upgrade-k8s --to 1.34.3
 ```
 
 **ETCD Backup**

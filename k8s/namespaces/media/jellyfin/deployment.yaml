@@ -40,12 +40,12 @@ spec:
           resources:
             requests:
               cpu: "200m"
-              memory: "256Mi"
+              memory: "4096Mi"
               gpu.intel.com/i915: "1"
               ephemeral-storage: "10Gi"
             limits:
               cpu: "4000m"
-              memory: "4096Mi"
+              memory: "8192Mi"
               gpu.intel.com/i915: "1"
               ephemeral-storage: "20Gi"
           volumeMounts:
