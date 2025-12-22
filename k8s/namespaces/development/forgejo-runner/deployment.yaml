@@ -46,7 +46,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: forgejo-runner-secrets
-                  key: token
+                  key: RUNNER_SECRET
             - name: FORGEJO_INSTANCE_URL
               value: http://forgejo:3000
           resources:
