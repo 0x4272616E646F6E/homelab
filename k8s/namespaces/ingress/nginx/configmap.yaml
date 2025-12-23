@@ -74,4 +74,4 @@ data:
         loadBalancerClass: ""
         loadBalancerSourceRanges: []
     certGenerator:
-      enable: false
+      enable: true
