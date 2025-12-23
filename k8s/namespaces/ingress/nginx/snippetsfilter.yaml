@@ -22,3 +22,17 @@ spec:
         proxy_set_header Content-Length "";
         proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
       }
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: internal-whitelist
+  namespace: ingress
+spec:
+  snippets:
+    - |
+      allow 192.168.0.0/16;
+      allow 172.16.0.0/12;
+      allow 10.0.0.0/8;
+      allow 127.0.0.0/8;
+      deny all;

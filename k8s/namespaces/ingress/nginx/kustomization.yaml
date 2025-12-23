@@ -7,6 +7,5 @@ resources:
   - configmap.yaml
   - helmrelease.yaml
   - gateway.yaml
-  - clientsettingspolicy.yaml
   - snippetsfilter.yaml
   - redirect.yaml
