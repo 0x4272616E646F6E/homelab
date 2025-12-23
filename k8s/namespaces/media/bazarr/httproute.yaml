@@ -18,7 +18,13 @@ spec:
           extensionRef:
             group: gateway.nginx.org
             kind: SnippetsFilter
-            name: tinyauth-forwarder
+            name: internal-whitelist
+            namespace: ingress
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: tinyauth-forward
             namespace: ingress
       backendRefs:
         - name: bazarr
