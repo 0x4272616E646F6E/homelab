@@ -44,12 +44,12 @@ data:
           port: 9464
           targetPort: 9464
         - name: syslog-udp
-          port: 1514
-          targetPort: 1514
+          port: 514
+          targetPort: 514
           protocol: UDP
         - name: syslog-tcp
-          port: 1514
-          targetPort: 1514
+          port: 514
+          targetPort: 514
           protocol: TCP
       resources:
         requests:
@@ -72,7 +72,7 @@ data:
           }
           loki.source.syslog "syslog" {
             listener {
-              address        = "0.0.0.0:1514"
+              address        = "0.0.0.0:514"
               protocol       = "tcp"
               syslog_format  = "rfc3164"
               labels   = {
@@ -82,7 +82,7 @@ data:
               }
             }
             listener {
-              address        = "0.0.0.0:1514"
+              address        = "0.0.0.0:514"
               protocol       = "udp"
               syslog_format  = "rfc3164"
               labels   = {
@@ -100,14 +100,6 @@ data:
         - name: prom-metrics
           port: 9464
           targetPort: 9464
-        - name: syslog-udp
-          protocol: UDP
-          port: 1514
-          targetPort: 1514
-        - name: syslog-tcp
-          protocol: TCP
-          port: 1514
-          targetPort: 1514
     serviceMonitor:
       enabled: true
       interval: 30s
