@@ -21,7 +21,7 @@ spec:
       restartPolicy: Always
       initContainers:
         - name: runner-register
-          # renovate: datasource=docker depName=codeberg.org/forgejo/runner
+          # renovate: datasource=docker depName=forgejo/runner registryUrl=https://code.forgejo.org
           image: code.forgejo.org/forgejo/runner:12.3.0@sha256:fc01289e42aa2c0594f643b80ad8075c7106d9a6912a693b50c8b656f34242be
           command:
             - /bin/bash
