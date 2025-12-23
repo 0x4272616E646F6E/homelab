@@ -348,13 +348,13 @@ data:
           port: 514
           expose:
             default: true
-          exposedPort: 1514
+          exposedPort: 514
           protocol: UDP
         syslogtcp:
           port: 514
           expose:
             default: true
-          exposedPort: 1514
+          exposedPort: 514
           protocol: TCP
         ssh:
           port: 22
