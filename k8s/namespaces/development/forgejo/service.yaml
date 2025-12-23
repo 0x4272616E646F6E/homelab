@@ -13,23 +13,8 @@ spec:
       targetPort: 3000
       protocol: TCP
       name: forgejo-http
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: forgejo-ssh
-  namespace: development
-  labels:
-    app.kubernetes.io/name: forgejo
-spec:
-  type: ClusterIP
-  externalIPs:
-    - 10.0.0.248
-  selector:
-    app.kubernetes.io/name: forgejo
-  ports:
     - port: 22
       targetPort: 22
       protocol: TCP
-      name: ssh
+      name: forgejo-ssh
+  type: ClusterIP
