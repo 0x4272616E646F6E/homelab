@@ -15,6 +15,7 @@ spec:
         proxy_set_header Remote-Name $auth_name;
         proxy_set_header Remote-Email $auth_email;
         proxy_set_header Remote-Groups $auth_groups;
+        error_page 401 = @error401;
     - context: http.server
       value: |
         location = /auth {
@@ -23,6 +24,9 @@ spec:
           proxy_pass_request_body off;
           proxy_set_header Content-Length "";
           proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+        }
+        location @error401 {
+          return 302 https://auth.hosted.fail/?redirect=$scheme://$http_host$request_uri;
         }
 ---
 apiVersion: gateway.nginx.org/v1alpha1
