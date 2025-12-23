@@ -26,5 +26,5 @@ spec:
             kind: SnippetsFilter
             name: tinyauth-forward
       backendRefs:
-        - name: prometheus
+        - name: prometheus-kube-prometheus-prometheus
           port: 9090
