@@ -20,14 +20,10 @@ data:
                         url: https://bazarr.hosted.fail/
                       - title: Code Server
                         url: https://vscode.hosted.fail/
-                      - title: ComfyUI
-                        url: https://comfyui.hosted.fail/
-                      - title: ErsatzTV
-                        url: https://ersatztv.hosted.fail/
+                      - title: Forgejo
+                        url: https://forgejo.hosted.fail/
                       - title: Grafana
                         url: https://grafana.hosted.fail/
-                      - title: Harbor
-                        url: https://harbor.hosted.fail/
                       - title: Home Assistant
                         url: https://homeassistant.hosted.fail/
                       - title: Huntarr
@@ -62,6 +58,8 @@ data:
                         url: https://suwayomi.hosted.fail/
                       - title: Traefik
                         url: https://traefik.hosted.fail/
+                      - title: UNAS
+                        url: https://unas.hosted.fail/
                       - title: Unifi
                         url: https://unifi.hosted.fail/
                       - title: Wizarr
@@ -101,12 +99,12 @@ data:
                     subreddit: selfhosted
                     show-thumbnails: true
                   - type: reddit
-                    subreddit: kubernetes
+                    subreddit: terraform
                     show-thumbnails: true
               - type: split-column
                 widgets:
                   - type: reddit
-                    subreddit: java
+                    subreddit: kubernetes
                     show-thumbnails: true
                   - type: reddit
                     subreddit: localllama
@@ -121,10 +119,6 @@ data:
                 collapse-after: 99
                 cache: 1d
                 repositories:
-                  - cilium/cilium
                   - fluxcd/flux2
-                  - helm/helm
                   - kubernetes/kubernetes
-                  - NixOS/nix
                   - siderolabs/talos
-                  - torvalds/linux
