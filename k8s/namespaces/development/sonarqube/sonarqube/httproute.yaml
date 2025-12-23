@@ -20,6 +20,11 @@ spec:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: internal-whitelist
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: large-client-body
       backendRefs:
         - name: sonarqube-sonarqube
           port: 9000

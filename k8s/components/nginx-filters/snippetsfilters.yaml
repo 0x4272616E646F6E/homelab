@@ -44,3 +44,13 @@ spec:
         allow 10.0.0.0/8;
         allow 127.0.0.0/8;
         deny all;
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: large-client-body
+spec:
+  snippets:
+    - context: http.server.location
+      value: |
+        client_max_body_size 100m;

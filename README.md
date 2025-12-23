@@ -69,7 +69,7 @@ flowchart RL
     CRI[Containerd]
     CIL[Cilium]
     DNS[CoreDNS]
-    TRF[Traefik]
+    NGX[NGINX]
     CFD[Cloudflared]
     WRG[WireGuard]
     LPP[Local-Path-Provisioner]
@@ -93,18 +93,18 @@ flowchart RL
   CRI -. Runtime .- KUBE
   CIL -. CNI .- KUBE
   DNS --> APIS
-  APIS --> TRF
-  CFD -. Reverse<br>Proxy<br>Chain .-> TRF
+  APIS --> NGX
+  CFD -. Reverse<br>Proxy<br>Chain .-> NGX
   NET -. WAN<br>Ingress .-> CFD
-  LOCALNET -. LAN<br>Ingress .-> TRF
+  LOCALNET -. LAN<br>Ingress .-> NGX
   CIL --> DNS
-  CIL --> TRF
+  CIL --> NGX
   WRG -. WAN<br>Egress .-> NET
   LPP --> APIS
   KUBE --> LPP
   APIS --> APP
   CIL -. mTLS .-> APP
-  TRF -. Reverse<br>Proxy .-> APP
+  NGX -. Reverse<br>Proxy .-> APP
   APP -. Storage .-> LPP
   APP -. LAN<br>Egress .-> LOCALNET
   APP -. WAN<br>Egress .-> NET
