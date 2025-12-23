@@ -5,23 +5,26 @@ metadata:
   namespace: ingress
 spec:
   snippets:
-    - |
-      auth_request /auth;
-      auth_request_set $auth_user $upstream_http_remote_user;
-      auth_request_set $auth_name $upstream_http_remote_name;
-      auth_request_set $auth_email $upstream_http_remote_email;
-      auth_request_set $auth_groups $upstream_http_remote_groups;
-      proxy_set_header Remote-User $auth_user;
-      proxy_set_header Remote-Name $auth_name;
-      proxy_set_header Remote-Email $auth_email;
-      proxy_set_header Remote-Groups $auth_groups;
-    - location = /auth {
-        internal;
-        proxy_pass http://tinyauth.security.svc.cluster.local:3000/api/auth/nginx;
-        proxy_pass_request_body off;
-        proxy_set_header Content-Length "";
-        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
-      }
+    - context: http.server.location
+      value: |
+        auth_request /auth;
+        auth_request_set $auth_user $upstream_http_remote_user;
+        auth_request_set $auth_name $upstream_http_remote_name;
+        auth_request_set $auth_email $upstream_http_remote_email;
+        auth_request_set $auth_groups $upstream_http_remote_groups;
+        proxy_set_header Remote-User $auth_user;
+        proxy_set_header Remote-Name $auth_name;
+        proxy_set_header Remote-Email $auth_email;
+        proxy_set_header Remote-Groups $auth_groups;
+    - context: http.server
+      value: |
+        location = /auth {
+          internal;
+          proxy_pass http://tinyauth.security.svc.cluster.local:3000/api/auth/nginx;
+          proxy_pass_request_body off;
+          proxy_set_header Content-Length "";
+          proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+        }
 ---
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
@@ -30,9 +33,10 @@ metadata:
   namespace: ingress
 spec:
   snippets:
-    - |
-      allow 192.168.0.0/16;
-      allow 172.16.0.0/12;
-      allow 10.0.0.0/8;
-      allow 127.0.0.0/8;
-      deny all;
+    - context: http.server.location
+      value: |
+        allow 192.168.0.0/16;
+        allow 172.16.0.0/12;
+        allow 10.0.0.0/8;
+        allow 127.0.0.0/8;
+        deny all;
