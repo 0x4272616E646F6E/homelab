@@ -21,5 +21,5 @@ spec:
             kind: SnippetsFilter
             name: internal-whitelist
       backendRefs:
-        - name: librechat
+        - name: librechat-librechat
           port: 3080
