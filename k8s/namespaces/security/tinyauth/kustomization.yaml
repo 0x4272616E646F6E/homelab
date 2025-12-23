@@ -8,4 +8,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingressroute.yaml
+  - httproute.yaml
   - networkpolicy.yaml

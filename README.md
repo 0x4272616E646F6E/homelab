@@ -186,6 +186,7 @@ The following applications are managed through flux in this repository:
 - [**Local Path Provisioner**](https://github.com/rancher/local-path-provisioner)
 - [**LocalStack**](https://github.com/localstack/localstack)
 - [**Loki**](https://github.com/grafana/loki)
+- [**NGINX Gateway Fabric**](https://github.com/nginx/nginx-gateway-fabric/tree/main)
 - [**Nvidia Device Plugin**](https://github.com/NVIDIA/k8s-device-plugin)
 - [**NzbGet**](https://github.com/nzbgetcom/nzbget)
 - [**Prometheus**](https://github.com/prometheus/prometheus)
