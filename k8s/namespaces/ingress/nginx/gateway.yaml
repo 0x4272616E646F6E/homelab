@@ -1,0 +1,27 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: nginx-gateway
+  namespace: ingress
+spec:
+  gatewayClassName: nginx
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.hosted.fail"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.hosted.fail"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: hosted-fail-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: All

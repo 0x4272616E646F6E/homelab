@@ -1,0 +1,16 @@
+apiVersion: gateway.nginx.org/v1alpha1
+kind: ClientSettingsPolicy
+metadata:
+  name: internal-whitelist
+  namespace: ingress
+spec:
+  targetRef:
+    group: gateway.networking.k8s.io
+    kind: Gateway
+    name: nginx-gateway
+  ipRestriction:
+    allowedIPs:
+      - 192.168.0.0/16
+      - 172.16.0.0/12
+      - 10.0.0.0/8
+      - 127.0.0.0/8

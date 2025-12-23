@@ -1,0 +1,24 @@
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: tinyauth-forwarder
+  namespace: ingress
+spec:
+  snippets:
+    - |
+      auth_request /auth;
+      auth_request_set $auth_user $upstream_http_remote_user;
+      auth_request_set $auth_name $upstream_http_remote_name;
+      auth_request_set $auth_email $upstream_http_remote_email;
+      auth_request_set $auth_groups $upstream_http_remote_groups;
+      proxy_set_header Remote-User $auth_user;
+      proxy_set_header Remote-Name $auth_name;
+      proxy_set_header Remote-Email $auth_email;
+      proxy_set_header Remote-Groups $auth_groups;
+    - location = /auth {
+        internal;
+        proxy_pass http://tinyauth.security.svc.cluster.local:3000/api/auth/nginx;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+      }

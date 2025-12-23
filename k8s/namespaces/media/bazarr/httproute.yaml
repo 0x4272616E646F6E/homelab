@@ -1,0 +1,25 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bazarr
+  namespace: media
+  labels:
+    app.kubernetes.io/name: bazarr
+    app.kubernetes.io/managed-by: flux
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+  hostnames:
+    - "bazarr.hosted.fail"
+  rules:
+    - filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: tinyauth-forwarder
+            namespace: ingress
+      backendRefs:
+        - name: bazarr
+          port: 6767
