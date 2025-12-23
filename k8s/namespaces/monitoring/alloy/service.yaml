@@ -22,9 +22,10 @@ metadata:
   namespace: monitoring
   labels:
     app.kubernetes.io/name: alloy
+  annotations:
+    io.cilium/lb-ipam-ips: "10.0.0.248"
 spec:
   type: LoadBalancer
-  loadBalancerIP: "10.0.0.248"
   selector:
     app.kubernetes.io/name: alloy
   ports:
