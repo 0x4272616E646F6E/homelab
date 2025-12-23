@@ -7,7 +7,19 @@ spec:
   from:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      namespace: "*"
+      namespace: default
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: development
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: media
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: monitoring
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: security
   to:
     - group: gateway.nginx.org
       kind: SnippetsFilter
