@@ -8,5 +8,3 @@ resources:
   - helmrelease.yaml
   - gateway.yaml
   - redirect.yaml
-  - snippetsfilter.yaml
-  - referencegrant.yaml

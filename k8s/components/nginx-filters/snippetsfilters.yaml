@@ -1,8 +1,7 @@
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
-  name: tinyauth-forwarder
-  namespace: ingress
+  name: tinyauth-forward
 spec:
   snippets:
     - context: http.server.location
@@ -30,7 +29,6 @@ apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
   name: internal-whitelist
-  namespace: ingress
 spec:
   snippets:
     - context: http.server.location

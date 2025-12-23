@@ -19,13 +19,11 @@ spec:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: internal-whitelist
-            namespace: ingress
         - type: ExtensionRef
           extensionRef:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: tinyauth-forward
-            namespace: ingress
       backendRefs:
         - name: bazarr
           port: 6767
