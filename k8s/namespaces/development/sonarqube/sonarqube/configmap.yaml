@@ -145,7 +145,7 @@ data:
           add: ["CHOWN"]
         readOnlyRootFilesystem: true
     prometheusExporter:
-      enabled: false
+      enabled: true
       version: "0.17.2"
       noCheckCertificate: false
       webBeanPort: 8000
@@ -155,7 +155,7 @@ data:
           - pattern: ".*"
     prometheusMonitoring:
       podMonitor:
-        enabled: false
+        enabled: true
         interval: 30s
     plugins:
       install: []

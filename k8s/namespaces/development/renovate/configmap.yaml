@@ -56,7 +56,7 @@ data:
       mendRnvDiskUsageWarnThreshold:
       mendRnvDiskUsageFilter:
       mendRnvWorkerNodeArgs:
-      mendRnvPrometheusMetricsEnabled:
+      mendRnvPrometheusMetricsEnabled: true
       mendRnvDisableGlobalAgent:
       mendRnvEnableHttp2:
       mendRnvHttpServerDisabled:

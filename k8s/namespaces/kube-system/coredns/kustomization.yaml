@@ -5,3 +5,4 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - configmap.yaml
+  - servicemonitor.yaml

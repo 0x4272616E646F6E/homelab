@@ -108,7 +108,7 @@ data:
           - size: small
             widgets:
               - type: calendar
-                first-day-of-week: monday
+                first-day-of-week: sunday
               - type: weather
                 location: Edgewater, Florida, United States
                 units: imperial

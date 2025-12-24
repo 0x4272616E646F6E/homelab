@@ -567,10 +567,10 @@ data:
           sortBufferLenMax: ~
           sortBufferDrainTimeout: ~
           prometheus:
-            enabled: false
+            enabled: true
             port: 9966
             serviceMonitor:
-              enabled: false
+              enabled: true
               labels: {}
               annotations: {}
               interval: "10s"
@@ -784,11 +784,11 @@ data:
         address: localhost
         port: 6060
       prometheus:
-        metricsService: false
-        enabled: false
+        metricsService: true
+        enabled: true
         port: 9962
         serviceMonitor:
-          enabled: false
+          enabled: true
           labels: {}
           annotations: {}
           jobLabel: ""
@@ -1023,11 +1023,11 @@ data:
           address: localhost
           port: 6061
         prometheus:
-          metricsService: false
+          metricsService: true
           enabled: true
           port: 9963
           serviceMonitor:
-            enabled: false
+            enabled: true
             labels: {}
             annotations: {}
             jobLabel: ""
@@ -1272,7 +1272,7 @@ data:
               mode: basic
               port: 9963
             serviceMonitor:
-              enabled: false
+              enabled: true
               labels: {}
               annotations: {}
               interval: "10s"
