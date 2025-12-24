@@ -38,6 +38,8 @@ data:
         - /etc/falco/rules.d
       metrics:
         enabled: true
+        interval: 1h
+        output_rule: true
       plugins:
         - name: k8saudit
           library_path: libk8saudit.so
