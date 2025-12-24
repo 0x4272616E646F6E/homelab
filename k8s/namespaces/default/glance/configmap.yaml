@@ -11,8 +11,6 @@ data:
         columns:
           - size: small
             widgets:
-              - type: calendar
-                first-day-of-week: monday
               - type: bookmarks
                 groups:
                   - links:
@@ -101,8 +99,6 @@ data:
                   - type: reddit
                     subreddit: terraform
                     show-thumbnails: true
-              - type: split-column
-                widgets:
                   - type: reddit
                     subreddit: kubernetes
                     show-thumbnails: true
@@ -111,6 +107,8 @@ data:
                     show-thumbnails: true
           - size: small
             widgets:
+              - type: calendar
+                first-day-of-week: monday
               - type: weather
                 location: Edgewater, Florida, United States
                 units: imperial
