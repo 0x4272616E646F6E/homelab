@@ -49,6 +49,40 @@ data:
         repository: ghcr.io/nginx/nginx-gateway-fabric/nginx
         tag: 2.3.0
         pullPolicy: IfNotPresent
+      config:
+        entries:
+          # Security headers
+          server-tokens: "off"
+          # Performance tuning
+          worker-processes: "auto"
+          worker-connections: "10240"
+          keepalive-requests: "1000"
+          keepalive-timeout: "75s"
+          # Buffer sizes
+          client-body-buffer-size: "16k"
+          client-header-buffer-size: "1k"
+          large-client-header-buffers: "4 8k"
+          # Timeouts
+          client-body-timeout: "60s"
+          client-header-timeout: "60s"
+          send-timeout: "60s"
+          # Rate limiting & connections
+          limit-req-status-code: "429"
+          limit-conn-status-code: "429"
+          # Logging
+          error-log-level: "warn"
+          access-log-off: "false"
+          # Security
+          ssl-protocols: "TLSv1.2 TLSv1.3"
+          ssl-ciphers: "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305"
+          ssl-prefer-server-ciphers: "on"
+          ssl-session-cache: "shared:SSL:10m"
+          ssl-session-timeout: "10m"
+          ssl-session-tickets: "off"
+          # HTTP/2
+          http2-max-concurrent-streams: "128"
+          http2-max-field-size: "4k"
+          http2-max-header-size: "16k"
       plus: false
       nginxOneConsole:
         dataplaneKeySecretName: ""
