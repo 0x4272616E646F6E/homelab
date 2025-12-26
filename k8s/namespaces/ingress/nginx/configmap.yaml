@@ -51,8 +51,6 @@ data:
         pullPolicy: IfNotPresent
       config:
         entries:
-          # Security headers
-          server-tokens: "off"
           # Performance tuning
           worker-processes: "auto"
           worker-connections: "10240"
@@ -88,6 +86,7 @@ data:
           limit-req-status-code: "429"
           limit-conn-status-code: "429"
           # Security headers
+          server-tokens: "off"
           hide-headers: "X-Powered-By,Server"
           add-headers: "ingress/nginx-security-headers"
           # Logging
@@ -111,7 +110,7 @@ data:
           # Hash sizes (for many routes/variables)
           variables-hash-bucket-size: "256"
           variables-hash-max-size: "2048"
-          # Real IP (if behind proxy/CDN)
+          # Real IP
           use-forwarded-headers: "true"
           compute-full-forwarded-for: "true"
           forwarded-for-header: "X-Forwarded-For"
