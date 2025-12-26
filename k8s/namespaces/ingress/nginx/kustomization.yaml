@@ -4,6 +4,7 @@ commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - gateway-api-crds.yaml
+  - security-headers.yaml
   - configmap.yaml
   - helmrelease.yaml
   - gateway.yaml
