@@ -6,6 +6,5 @@ resources:
   - secrets.enc.yaml 
   - configmap.yaml
   - helmrelease.yaml
-  - ingressroute.yaml
   - httproute.yaml
   - dashboards/
