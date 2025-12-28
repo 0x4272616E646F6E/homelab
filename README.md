@@ -179,7 +179,6 @@ The following applications are managed through flux in this repository:
 - [**Intel GPU Plugin**](https://github.com/intel/intel-device-plugins-for-kubernetes)
 - [**Jellyfin**](https://github.com/jellyfin/jellyfin)
 - [**Jellyseerr**](https://github.com/fallenbagel/jellyseerr)
-- [**Knative**](https://github.com/knative/serving)
 - [**Kubelet CSR Approver**](https://github.com/postfinance/kubelet-csr-approver)
 - [**LibreChat**](https://github.com/danny-avila/LibreChat)
 - [**LlamaCPP**](https://github.com/ggml-org/llama.cpp)

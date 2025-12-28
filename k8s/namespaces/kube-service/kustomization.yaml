@@ -8,5 +8,4 @@ resources:
   - wireguard/
   - reflector/
   - reloader/
-  # - knative-operator/
   - autoscaler/
