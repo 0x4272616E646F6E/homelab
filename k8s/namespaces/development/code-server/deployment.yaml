@@ -34,8 +34,8 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "1"
-              memory: "2Gi"
+              cpu: "100m"
+              memory: "128Mi"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "2"

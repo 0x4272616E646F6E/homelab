@@ -50,14 +50,14 @@ spec:
             - name: FORGEJO_INSTANCE_URL
               value: http://forgejo:3000
           resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: 500m
-              ephemeral-storage: 100Mi
-              memory: 64Mi
-            requests:
-              cpu: 100m
-              ephemeral-storage: '0'
-              memory: 64Mi
+              memory: 512Mi
+              ephemeral-storage: 2Gi
           volumeMounts:
             - name: runner-data
               mountPath: /data

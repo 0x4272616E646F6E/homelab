@@ -67,12 +67,12 @@ spec:
               value: "1000"
           resources:
             requests:
-              cpu: "1000m"
-              memory: "8192Mi"
+              cpu: "100m"
+              memory: "128Mi"
               nvidia.com/gpu: "1"
-              ephemeral-storage: "10Gi"
+              ephemeral-storage: "1Gi"
             limits:
-              cpu: "2000m"
+              cpu: "4000m"
               memory: "16384Mi"
               nvidia.com/gpu: "1"
               ephemeral-storage: "20Gi"

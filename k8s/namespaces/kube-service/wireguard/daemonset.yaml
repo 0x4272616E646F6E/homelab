@@ -38,12 +38,12 @@ spec:
               sleep infinity
           resources:
             requests:
-              cpu: "50m"
+              cpu: "100m"
               memory: "128Mi"
               ephemeral-storage: "500Mi"
             limits:
-              cpu: "200m"
-              memory: "256Mi"
+              cpu: "500m"
+              memory: "512Mi"
               ephemeral-storage: "1Gi"
       tolerations:
         - operator: Exists

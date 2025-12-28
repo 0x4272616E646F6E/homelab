@@ -39,12 +39,12 @@ spec:
           mountPath: /host
         resources:
           requests:
-            cpu: "1"
-            memory: "1Gi"
+            cpu: "100m"
+            memory: "128Mi"
             ephemeral-storage: "1Gi"
           limits:
-            cpu: "2"
-            memory: "2Gi"
+            cpu: "2000m"
+            memory: "4Gi"
             ephemeral-storage: "5Gi"
       volumes:
       - name: hostroot

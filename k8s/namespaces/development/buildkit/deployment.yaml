@@ -35,8 +35,8 @@ spec:
           name: buildkit
         resources:
           requests:
-            cpu: "1"
-            memory: "256Mi"
+            cpu: "100m"
+            memory: "128Mi"
             ephemeral-storage: "20Gi"
           limits:
             cpu: "2"
