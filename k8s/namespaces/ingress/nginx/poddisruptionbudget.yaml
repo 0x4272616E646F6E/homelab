@@ -1,0 +1,25 @@
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx-gateway-fabric
+  namespace: ingress
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-gateway-fabric
+      app.kubernetes.io/instance: nginx-gateway-fabric
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx-gateway-fabric-nginx
+  namespace: ingress
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-gateway-fabric
+      app.kubernetes.io/instance: nginx-gateway-fabric
+      app.kubernetes.io/component: nginx

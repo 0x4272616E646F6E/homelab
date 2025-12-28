@@ -18,7 +18,7 @@ data:
       podMonitor:
         enabled: true
     admissionController:
-      enabled: false
+      enabled: true
       registerWebhook: true
       mutatingWebhookConfiguration:
         failurePolicy: Ignore
@@ -26,6 +26,13 @@ data:
           matchLabels:
             autoscale.hosted.fail: "enabled"
     updater:
-      enabled: false
+      enabled: true
+      extraArgs:
+        v: "2"
+        min-replicas: 1
+      resources:
+        requests:
+          cpu: 50m
+          memory: 300Mi
     metrics-server:
       enabled: false

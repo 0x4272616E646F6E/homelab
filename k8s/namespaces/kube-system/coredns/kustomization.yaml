@@ -6,3 +6,4 @@ commonLabels:
 resources:
   - configmap.yaml
   - servicemonitor.yaml
+  - poddisruptionbudget.yaml

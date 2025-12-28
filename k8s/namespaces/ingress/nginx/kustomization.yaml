@@ -10,3 +10,4 @@ resources:
   - gateway.yaml
   - redirect.yaml
   - servicemonitor.yaml
+  - poddisruptionbudget.yaml
