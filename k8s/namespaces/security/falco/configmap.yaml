@@ -38,8 +38,14 @@ data:
         - /etc/falco/rules.d
       metrics:
         enabled: true
-        interval: 1h
+        interval: "1h"
         output_rule: true
+        output_file: /tmp/falco_stats.json
+        resource_utilization_enabled: true
+        state_counters_enabled: true
+        kernel_event_counters_enabled: true
+        libbpf_stats_enabled: true
+        plugins_metrics_enabled: true
       plugins:
         - name: k8saudit
           library_path: libk8saudit.so
