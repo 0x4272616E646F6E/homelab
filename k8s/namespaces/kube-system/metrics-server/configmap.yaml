@@ -5,7 +5,6 @@ metadata:
   namespace: kube-system
 data:
   values.yaml: |-
-    # Metrics Server Configuration - Only Custom Values
-    # Chart defaults are used for all settings
-    # All settings match chart defaults - no customization needed
-    {}
+    # Metrics Server Configuration
+    args:
+      - --kubelet-insecure-tls

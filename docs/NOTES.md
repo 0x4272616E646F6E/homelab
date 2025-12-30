@@ -99,6 +99,11 @@ talosctl -n 10.0.0.250 etcd snapshot etcd.snapshot
 talosctl -n 10.0.0.250 bootstrap --recover-from ./etcd.snapshot
 ```
 
+**ETCD Defrag**
+```bash
+talosctl -n talos-4m3-8nj etcd defrag
+```
+
 ## SOPS
 **Encrypting Secrets with SOPS**
 [SOPS](https://github.com/getsops/sops) is a tool for managing encrypted files, commonly used for encrypting Kubernetes secrets. To encrypt your `secrets.yaml` file, use the following command:
