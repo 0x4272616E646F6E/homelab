@@ -1317,7 +1317,7 @@ data:
         rotatedIdentitiesQueueSize: 1024
         gcInterval: "5m0s"
         mutual:
-          enabled: false
+          enabled: true
           port: 4250
           connectTimeout: 5s
           spire:
