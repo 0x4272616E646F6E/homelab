@@ -1317,13 +1317,14 @@ data:
         rotatedIdentitiesQueueSize: 1024
         gcInterval: "5m0s"
         mutual:
+          enabled: false
           port: 4250
           connectTimeout: 5s
           spire:
-            enabled: false
+            enabled: true
             annotations: {}
             install:
-              enabled: false
+              enabled: true
               namespace: kube-service
               existingNamespace: true
               initImage:
