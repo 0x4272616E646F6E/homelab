@@ -1385,7 +1385,28 @@ data:
                 serviceAccount:
                   create: true
                   name: spire-server
-                initContainers: []
+                initContainers:
+                  - name: socket-permissions
+                    image: "ghcr.io/spiffe/spire-server:1.9.6"
+                    command:
+                      - /bin/sh
+                      - -c
+                      - |
+                        mkdir -p /tmp/spire-server/private
+                        chmod 770 /tmp/spire-server/private
+                        chown 1000:1000 /tmp/spire-server/private
+                    volumeMounts:
+                      - name: spire-server-socket
+                        mountPath: /tmp/spire-server/private
+                    securityContext:
+                      runAsUser: 0
+                      allowPrivilegeEscalation: true
+                      capabilities:
+                        add:
+                          - CHOWN
+                          - DAC_OVERRIDE
+                        drop:
+                          - ALL
                 annotations: {}
                 labels: {}
                 resources: {}
