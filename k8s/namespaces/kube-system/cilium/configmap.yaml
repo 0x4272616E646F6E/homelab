@@ -1312,7 +1312,7 @@ data:
         enabled: false
       enableNonDefaultDenyPolicies: true
       authentication:
-        enabled: false
+        enabled: true
         queueSize: 1024
         rotatedIdentitiesQueueSize: 1024
         gcInterval: "5m0s"
