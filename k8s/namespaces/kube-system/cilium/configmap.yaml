@@ -1426,7 +1426,7 @@ data:
                     commonName: "Cilium SPIRE CA"
             serverAddress: ~
             trustDomain: spiffe.cilium
-            adminSocketPath: /run/spire/sockets/admin.sock
+            adminSocketPath: /run/spire/sockets/server/api.sock
             agentSocketPath: /run/spire/sockets/agent/agent.sock
             connectionTimeout: 30s
       enableInternalTrafficPolicy: true
