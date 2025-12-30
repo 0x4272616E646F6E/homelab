@@ -1339,9 +1339,9 @@ data:
                 image:
                   override: ~
                   repository: "ghcr.io/spiffe/spire-agent"
-                  tag: "1.9.6"
+                  tag: "1.14.0"
                   digest: "sha256:5106ac601272a88684db14daf7f54b9a45f31f77bb16a906bd5e87756ee7b97c"
-                  useDigest: true
+                  useDigest: false
                   pullPolicy: "IfNotPresent"
                 serviceAccount:
                   create: true
@@ -1365,9 +1365,8 @@ data:
                 affinity: {}
                 nodeSelector: {}
                 podSecurityContext:
-                  fsGroup: 1000
-                  runAsUser: 1000
-                  runAsGroup: 1000
+                  runAsUser: 0
+                  runAsGroup: 0
                 securityContext:
                   allowPrivilegeEscalation: false
                   capabilities:
@@ -1378,16 +1377,16 @@ data:
                 image:
                   override: ~
                   repository: "ghcr.io/spiffe/spire-server"
-                  tag: "1.9.6"
+                  tag: "1.14.0"
                   digest: "sha256:59a0b92b39773515e25e68a46c40d3b931b9c1860bc445a79ceb45a805cab8b4"
-                  useDigest: true
+                  useDigest: false
                   pullPolicy: "IfNotPresent"
                 serviceAccount:
                   create: true
                   name: spire-server
                 initContainers:
                   - name: socket-permissions
-                    image: "busybox:1.36"
+                    image: "busybox:1.37"
                     command:
                       - /bin/sh
                       - -c
