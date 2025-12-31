@@ -2,6 +2,16 @@
 
 ## Kubernetes
 
+**Clean up Error Pods**
+```bash
+kubectl delete pod --field-selector=status.phase==Failed --all-namespaces
+```
+
+**Clean up Completed Pods**
+```bash
+kubectl delete pod --field-selector=status.phase==Succeeded --all-namespaces
+```
+
 **Postgres Backup and Restore**
 ```bash
 # Backup (all databases)

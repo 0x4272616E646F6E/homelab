@@ -191,6 +191,9 @@ data:
         enabled: false
       l2announcements:
         enabled: true
+        leaseDuration: 60s
+        leaseRenewDeadline: 30s
+        leaseRetryPeriod: 10s
       l2podAnnouncements:
         enabled: true
         interface: "eth0"
