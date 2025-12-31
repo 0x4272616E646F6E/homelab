@@ -63,7 +63,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: cleanup
-            image: alpine/k8s:1.35.0
+            image: alpine/k8s:1.35.0@sha256:b01ed7ee5807e1abce433fba29447595b6157851054a649c2aafd6c22a3aa16c
             command:
             - /bin/sh
             - -c
@@ -137,7 +137,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: audit
-            image: alpine/k8s:1.35.0
+            image: alpine/k8s:1.35.0@sha256:b01ed7ee5807e1abce433fba29447595b6157851054a649c2aafd6c22a3aa16c
             command:
             - /bin/sh
             - -c
