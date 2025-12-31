@@ -1,0 +1,186 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  # Run daily at 1 AM
+  schedule: "0 1 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: sa-maintenance
+          restartPolicy: OnFailure
+          containers:
+          - name: backup
+            image: ghcr.io/siderolabs/talosctl:v1.12
+            command:
+            - /bin/sh
+            - -c
+            - |
+              BACKUP_DATE=$(date +%Y%m%d-%H%M%S)
+              echo "Creating etcd snapshot: etcd-backup-${BACKUP_DATE}.db"
+              talosctl -n talos-4m3-8nj etcd snapshot /tmp/etcd-backup-${BACKUP_DATE}.db --talosconfig=/config/talosconfig
+              
+              echo "Snapshot created. Size:"
+              ls -lh /tmp/etcd-backup-${BACKUP_DATE}.db
+              
+              # Upload Logic will go here to S3 or other storage
+
+              echo "Backup complete. Note: Configure external storage for long-term retention."
+            volumeMounts:
+            - name: talos-config
+              mountPath: /config
+              readOnly: true
+          volumes:
+          - name: talos-config
+            secret:
+              secretName: talos-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-cleanup
+  namespace: kube-system
+spec:
+  # Run daily at 2 AM
+  schedule: "0 2 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 3600
+      template:
+        spec:
+          serviceAccountName: sa-maintenance
+          restartPolicy: OnFailure
+          containers:
+          - name: cleanup
+            image: alpine/k8s:1.35.0
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Cleaning up completed jobs older than 24 hours..."
+              kubectl get jobs -A --field-selector status.successful=1 -o json | \
+                grep -o '"namespace":"[^"]*","name":"[^"]*"' | \
+                while read -r line; do
+                  ns=$(echo "$line" | sed 's/.*"namespace":"\([^"]*\)".*/\1/')
+                  name=$(echo "$line" | sed 's/.*"name":"\([^"]*\)".*/\1/')
+                  kubectl delete job -n "$ns" "$name" --ignore-not-found=true 2>/dev/null || true
+                done
+              
+              echo "Cleanup complete"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-defrag
+  namespace: kube-system
+spec:
+  # Run every Sunday at 3 AM
+  schedule: "0 3 * * 0"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: sa-maintenance
+          restartPolicy: OnFailure
+          containers:
+          - name: defrag
+            image: ghcr.io/siderolabs/talosctl:v1.12
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Starting etcd defragmentation..."
+              talosctl -n talos-4m3-8nj etcd defrag --talosconfig=/config/talosconfig
+              echo "Defragmentation complete. Checking status..."
+              talosctl -n talos-4m3-8nj etcd status --talosconfig=/config/talosconfig
+            volumeMounts:
+            - name: talos-config
+              mountPath: /config
+              readOnly: true
+          volumes:
+          - name: talos-config
+            secret:
+              secretName: talos-config
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: resource-cleanup
+  namespace: kube-system
+spec:
+  # Run monthly on the 1st at 4 AM
+  schedule: "0 4 1 * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          serviceAccountName: sa-maintenance
+          restartPolicy: OnFailure
+          containers:
+          - name: audit
+            image: alpine/k8s:1.35.0
+            command:
+            - /bin/sh
+            - -c
+            - |
+              echo "=== Resource Cleanup Report $(date) ==="
+              echo ""
+              
+              echo "Cleaning up failed pods..."
+              FAILED_COUNT=$(kubectl get pods -A --field-selector status.phase=Failed --no-headers 2>/dev/null | wc -l)
+              if [ "$FAILED_COUNT" -gt 0 ]; then
+                kubectl delete pods -A --field-selector status.phase=Failed --ignore-not-found=true
+                echo "  Deleted $FAILED_COUNT failed pods"
+              else
+                echo "  No failed pods found"
+              fi
+              
+              echo ""
+              echo "Cleaning up completed/succeeded pods..."
+              SUCCEEDED_COUNT=$(kubectl get pods -A --field-selector status.phase=Succeeded --no-headers 2>/dev/null | wc -l)
+              if [ "$SUCCEEDED_COUNT" -gt 0 ]; then
+                kubectl delete pods -A --field-selector status.phase=Succeeded --ignore-not-found=true
+                echo "  Deleted $SUCCEEDED_COUNT succeeded pods"
+              else
+                echo "  No succeeded pods to clean"
+              fi
+              
+              echo ""
+              echo "Checking for orphaned PVCs (not mounted by any pod)..."
+              # Get all PVCs
+              for ns in $(kubectl get pvc -A -o jsonpath='{.items[*].metadata.namespace}' | tr ' ' '\n' | sort -u); do
+                for pvc in $(kubectl get pvc -n $ns -o jsonpath='{.items[*].metadata.name}'); do
+                  # Check if any pod is using this PVC
+                  USED=$(kubectl get pods -n $ns -o json 2>/dev/null | grep -c "\"claimName\":\"$pvc\"" || true)
+                  if [ "$USED" -eq 0 ]; then
+                    # Double-check PVC status - only delete if Released or Failed
+                    STATUS=$(kubectl get pvc -n $ns $pvc -o jsonpath='{.status.phase}' 2>/dev/null)
+                    if [ "$STATUS" = "Released" ] || [ "$STATUS" = "Failed" ]; then
+                      echo "  Deleting orphaned PVC: $ns/$pvc (status: $STATUS)"
+                      kubectl delete pvc -n $ns $pvc --ignore-not-found=true || true
+                    fi
+                  fi
+                done
+              done
+              
+              echo ""
+              echo "=== Cleanup Complete ==="

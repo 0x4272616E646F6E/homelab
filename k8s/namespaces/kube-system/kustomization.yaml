@@ -12,3 +12,4 @@ resources:
   - nvidia-device-plugin/
   - metrics-server/
   - talos-debug/
+  # - maintenance/
