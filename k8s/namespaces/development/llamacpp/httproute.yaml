@@ -1,10 +1,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llamacpp-gpt-oss
+  name: llamacpp-model
   namespace: development
   labels:
-    app.kubernetes.io/name: llamacpp-gpt-oss
+    app.kubernetes.io/name: llamacpp-model
     app.kubernetes.io/managed-by: flux
 spec:
   parentRefs:
@@ -12,7 +12,7 @@ spec:
       namespace: ingress
       sectionName: https
   hostnames:
-    - "gpt-oss.hosted.fail"
+    - "llm.hosted.fail"
   rules:
     - filters:
         - type: ExtensionRef
@@ -21,5 +21,7 @@ spec:
             kind: SnippetsFilter
             name: internal-whitelist
       backendRefs:
-        - name: llamacpp-gpt-oss
+        - name: llamacpp-model
           port: 8000
+        - name: llamacpp-embedding
+          port: 8001

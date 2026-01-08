@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: gpt-oss-pvc
+  name: llamacpp-model-pvc
   namespace: development
   labels:
-    app.kubernetes.io/name: llamacpp-gpt-oss
+    app.kubernetes.io/name: llamacpp-model
 spec:
   accessModes:
     - ReadWriteOnce

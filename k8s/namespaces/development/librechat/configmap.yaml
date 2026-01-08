@@ -33,9 +33,9 @@ data:
           custom:
             - name: "llamacpp"
               apiKey: "llamacpp"
-              baseURL: "http://llamacpp-gpt-oss:8000/v1"
+              baseURL: "http://llamacpp-model:8000/v1"
               models:
-                default: ['gpt-oss-20b']
+                default: ['llama-3.3-8b']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"

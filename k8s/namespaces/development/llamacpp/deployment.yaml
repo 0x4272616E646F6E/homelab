@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llamacpp-gpt-oss
+  name: llamacpp-model
   namespace: development
   labels:
-    app.kubernetes.io/name: llamacpp-gpt-oss
+    app.kubernetes.io/name: llamacpp-model
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: llamacpp-gpt-oss
+      app.kubernetes.io/name: llamacpp-model
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -17,30 +17,30 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: llamacpp-gpt-oss
+        app.kubernetes.io/name: llamacpp-model
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 300
       automountServiceAccountToken: false
       containers:
-      - name: llamacpp-gpt-oss
+      - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
         image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:ebe287463194ef45adbfa27e2332884113057397f1f23e96e8c4e89dbd15ea39
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-20b-heretic-v2-GGUF
+          - mradermacher/Llama-3.3-8B-Instruct-128K-i1-GGUF
           - --hf-file
-          - gpt-oss-20b-heretic-v2.IQ4_XS.gguf
+          - Llama-3.3-8B-Instruct-128K.i1-Q4_K_M.gguf
           - --alias
-          - gpt-oss-20b
+          - llama-3.3-8b
           - --host
           - "0.0.0.0"
           - --port
           - "8000"
           - --ctx-size
-          - "65536"
+          - "128256"
           - --n-gpu-layers
           - "99"
           - --tensor-split
@@ -62,9 +62,9 @@ spec:
           - --cache-type-v
           - q8_0
           - --temp
-          - "1.0"
+          - "0.6"
           - --top-p
-          - "1.0"
+          - "0.9"
           - --top-k
           - "0"
           - --min-p
@@ -107,7 +107,7 @@ spec:
           - --hf-repo
           - jinaai/jina-embeddings-v4-text-retrieval-GGUF
           - --hf-file
-          - jina-embeddings-v4-text-retrieval-IQ4_XS.gguf
+          - jina-embeddings-v4-text-retrieval-Q4_K_M.gguf
           - --alias
           - jina-embeddings-v4
           - --host
@@ -158,7 +158,7 @@ spec:
           - --hf-repo
           - jinaai/jina-reranker-v3-GGUF
           - --hf-file
-          - jina-reranker-v3-IQ4_XS.gguf
+          - jina-reranker-v3-Q4_K_M.gguf
           - --alias
           - jina-reranker-v3
           - --host
@@ -201,6 +201,6 @@ spec:
           failureThreshold: 60
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: gpt-oss-pvc }
+        persistentVolumeClaim: { claimName: llamacpp-model-pvc }
       - name: tmp
         emptyDir: {}
