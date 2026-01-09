@@ -120,7 +120,7 @@ spec:
               type: RuntimeDefault
         - name: daemon
           # renovate: datasource=docker depName=docker/docker-ce
-          image: docker.io/docker:29.1.3-dind@sha256:173f284a4299164772a90f52b373e73e087583c0963f1334c9995f190ef6f3f5
+          image: docker.io/docker:29.1.4-dind@sha256:8fda538b5f69cf3fddd85f13ac405c5516c21721617841947885f4f963e88f4a
           env:
             - name: DOCKER_TLS_CERTDIR
               value: /certs
