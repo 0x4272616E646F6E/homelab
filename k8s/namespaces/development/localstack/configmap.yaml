@@ -35,7 +35,7 @@ data:
     mountDind:
       enabled: false
       forceTLS: true
-      image: "docker:29.1-dind@sha256:173f284a4299164772a90f52b373e73e087583c0963f1334c9995f190ef6f3f5"
+      image: "docker:29.1-dind@sha256:14f03eade02118ca9c2b2050d455fefadb12b5a01b6f8f6ff246e71df08f57d9"
     extraEnvVars:
       - name: DEFAULT_REGION
         value: "us-east-1"
