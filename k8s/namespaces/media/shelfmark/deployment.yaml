@@ -20,7 +20,7 @@ spec:
       runtimeClassName: youki
       initContainers:
         - name: init-log-perms
-          image: busybox:1.36
+          image: busybox:1.37@sha256:2383baad1860bbe9d8a7a843775048fd07d8afe292b94bd876df64a69aae7cb1
           command:
             - sh
             - -c
