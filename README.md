@@ -163,7 +163,6 @@ The following applications are managed through flux in this repository:
 - [**Anubis**](https://github.com/TecharoHQ/anubis)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
 - [**BuildKit**](https://github.com/moby/buildkit)
-- [**Calibre-Web**](https://github.com/janeczku/calibre-web)
 - [**Cert Manager**](https://github.com/cert-manager/cert-manager)
 - [**Cilium**](https://github.com/cilium/cilium)
 - [**ClamAV**](https://www.clamav.net/)
