@@ -20,7 +20,7 @@ spec:
       runtimeClassName: youki
       initContainers:
         - name: init-log-perms
-          image: busybox:1.36
+          image: busybox:1.36@sha256:4059babd1b7f9ad15525d28c5cdc7243eb75b4e4131aca2b4232c66eadce2250
           command:
             - sh
             - -c
@@ -33,7 +33,7 @@ spec:
       containers:
         - name: shelfmark
           # renovate: datasource=docker depName=ghcr.io/calibrain/shelfmark-lite
-          image: ghcr.io/calibrain/shelfmark-lite:latest
+          image: ghcr.io/calibrain/shelfmark-lite:latest@sha256:b65492d177f29446e43f1acbf4cc5c47457b8665571e42a489ca266e46677f94
           imagePullPolicy: IfNotPresent
           environment:
             - name: EXT_BYPASSER_URL
