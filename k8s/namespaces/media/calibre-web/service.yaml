@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: calibre-web
+  namespace: media
+  labels:
+    app.kubernetes.io/name: calibre-web
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    app.kubernetes.io/name: calibre-web
+    app.kubernetes.io/managed-by: flux
+  ports:
+    - port: 8083
+      targetPort: 8083
+      protocol: TCP
+      name: calibre-web
+  type: ClusterIP
