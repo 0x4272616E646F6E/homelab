@@ -26,7 +26,7 @@ spec:
       containers:
         - name: calibre-web
           # renovate: datasource=docker depName=lscr.io/linuxserver/calibre-web
-          image: lscr.io/linuxserver/calibre-web:latest
+          image: lscr.io/linuxserver/calibre-web:latest@sha256:38e1cd557dea7f7816849feb30364141dab7f819e2dbdfa652ce19b948162896
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8083
