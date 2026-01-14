@@ -37,7 +37,7 @@ spec:
           # renovate: datasource=docker depName=ghcr.io/calibrain/shelfmark-lite
           image: ghcr.io/calibrain/shelfmark-lite:latest@sha256:b65492d177f29446e43f1acbf4cc5c47457b8665571e42a489ca266e46677f94
           imagePullPolicy: IfNotPresent
-          environment:
+          env:
             - name: EXT_BYPASSER_URL
               value: "http://flaresolverr:8191"
           ports:
