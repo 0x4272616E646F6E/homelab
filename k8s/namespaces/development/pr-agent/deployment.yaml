@@ -40,11 +40,13 @@ spec:
                   name: pr-agent-secrets
                   key: GITEA_WEBHOOK_SECRET
             - name: OPENAI__API_BASE
-              value: "http://llamacpp-model:8000"
+              value: "http://llamacpp-model:8000/v1"
+            - name: OPENAI__API_KEY
+              value: "empty"
             - name: CONFIG__MODEL
-              value: "llama-3.3-8b"
+              value: "openai/llama-3.3-8b"
             - name: CONFIG__FALLBACK_MODELS
-              value: "llama-3.3-8b"
+              value: "openai/llama-3.3-8b"
             - name: CONFIG__CUSTOM_MODEL_MAX_TOKENS
               value: "128256"
           resources:
