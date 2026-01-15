@@ -133,10 +133,9 @@ Information regarding the hardware this homelab runs on:
 - [UniFi Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro)
 - [UniFi Enterprise 24 PoE](https://store.ui.com/us/en/products/usw-enterprise-24-poe)
 - [Unifi UNAS PRO 8](https://store.ui.com/us/en/category/all-integrations/products/unas-pro-8)
+  - Disks (8x): [Seagate Exos 24TB ST24000NM000C](https://www.seagate.com/products/enterprise-drives/exos-x/x24/)
 - Basic Patch Panel
-- <details>
-  <summary>Supermicro Server</summary>
-
+- Supermicro Server
   - Chassis: [SuperMicro SuperChassis 216](https://www.supermicro.com/en/products/chassis/2u/216/sc216be2c-r609jbod)
   - PSU (2x): [SuperMicro 920W Platinum Super Quiet](https://store.supermicro.com/media/wysiwyg/productspecs/PWS-920P-SQ/PWS-920P-SQ_quick_spec.pdf)
   - Motherboard: [Supermicro X13SAE-F](https://www.supermicro.com/en/products/motherboard/x13sae-f)
@@ -147,7 +146,6 @@ Information regarding the hardware this homelab runs on:
   - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
   - GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
   - TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
-  </details>
 - [CyberPower UPS](https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfcrm2u/)
 </details>
 
