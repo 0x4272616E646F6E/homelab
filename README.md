@@ -190,6 +190,7 @@ The following applications are managed through flux in this repository:
 - [**NzbGet**](https://github.com/nzbgetcom/nzbget)
 - [**Prometheus**](https://github.com/prometheus/prometheus)
 - [**Prowlarr**](https://github.com/Prowlarr/Prowlarr)
+- [**Qodo-PR-Agent**](https://github.com/qodo-ai/pr-agent)
 - [**Radarr**](https://github.com/Radarr/Radarr)
 - [**Redbot**](https://github.com/Cog-Creators/Red-DiscordBot)
 - [**Reflector**](https://github.com/emberstack/kubernetes-reflector)

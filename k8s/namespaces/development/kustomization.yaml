@@ -12,6 +12,7 @@ resources:
   - code-server/
   - forgejo/
   - forgejo-runner/
+  - pr-agent/
   - sonarqube/
   - actions-runner-controller/
   - actions-runner/
