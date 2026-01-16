@@ -22,7 +22,7 @@ spec:
       containers:
         - name: pr-agent
           # renovate: datasource=docker depName=docker.io/codiumai/pr-agent
-          image: docker.io/codiumai/pr-agent:0.31-gitea_app
+          image: docker.io/codiumai/pr-agent:0.31-gitea_app@sha256:bb6a6ff4969c9d70e9d734b72646dd7c09a4bf07afbab72dd348f56c861a979c
           imagePullPolicy: IfNotPresent
           env:
             - name: CONFIG__GIT_PROVIDER
