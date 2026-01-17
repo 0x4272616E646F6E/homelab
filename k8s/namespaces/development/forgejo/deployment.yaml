@@ -22,7 +22,7 @@ spec:
       containers:
         - name: forgejo
           # renovate: datasource=docker depName=codeberg.org/forgejo/forgejo
-          image: codeberg.org/forgejo/forgejo:14@sha256:dedd15bf792d538a6bb63808992538fa74ec901f7dd87d4da64bf49dde4c0e44
+          image: codeberg.org/forgejo/forgejo:14@sha256:d59b504313ef3107d9f2e8ce04dd133b4c78218810174a1b2592c1232b0aa888
           imagePullPolicy: IfNotPresent
           env:
             - name: USER_UID
