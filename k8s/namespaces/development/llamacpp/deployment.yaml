@@ -40,7 +40,7 @@ spec:
           - --port
           - "8000"
           - --ctx-size
-          - "128256"
+          - "98304"
           - --n-gpu-layers
           - "99"
           - --tensor-split
