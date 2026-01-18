@@ -32,7 +32,7 @@ spec:
           - --hf-repo
           - mradermacher/Llama-3.3-8B-Instruct-128K-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-128K.Q8_0.gguf
+          - Llama-3.3-8B-Instruct-128K.Q6_K.gguf
           - --alias
           - llama-3.3-8b
           - --host
@@ -40,7 +40,7 @@ spec:
           - --port
           - "8000"
           - --ctx-size
-          - "98304"
+          - "131072"
           - --n-gpu-layers
           - "99"
           - --tensor-split
