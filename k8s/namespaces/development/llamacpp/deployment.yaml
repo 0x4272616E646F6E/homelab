@@ -30,9 +30,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Llama-3.3-8B-Instruct-128K-GGUF
+          - mradermacher/Llama-3.3-8B-Instruct-128K-i1-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-128K.Q6_K.gguf
+          - Llama-3.3-8B-Instruct-128K.i1-Q4_K_M.gguf
           - --alias
           - llama-3.3-8b
           - --host
