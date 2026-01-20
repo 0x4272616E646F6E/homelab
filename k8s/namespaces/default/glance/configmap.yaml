@@ -48,6 +48,8 @@ data:
                         url: https://radarr.hosted.fail/
                       - title: Requestrr
                         url: https://requestrr.hosted.fail/
+                      - title: Shelfmark
+                        url: https://shelfmark.hosted.fail/
                       - title: Sonarr
                         url: https://sonarr.hosted.fail/
                       - title: SonarQube
