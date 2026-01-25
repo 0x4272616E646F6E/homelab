@@ -35,7 +35,7 @@ data:
               apiKey: "llamacpp"
               baseURL: "http://llamacpp-model:8000/v1"
               models:
-                default: ['llama-3.3-8b']
+                default: ['']
                 fetch: true
               titleConvo: true
               titleModel: "current_model"

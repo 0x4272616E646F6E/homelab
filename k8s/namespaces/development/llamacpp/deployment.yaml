@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Llama-3.3-8B-Instruct-128K-i1-GGUF
+          - mradermacher/Huihui-Ministral-3-3B-Reasoning-2512-abliterated-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-128K.i1-Q4_K_M.gguf
+          - Huihui-Ministral-3-3B-Reasoning-2512-abliterated.Q8_0.gguf
           - --alias
-          - llama-3.3-8b
+          - mistral-3-3b
           - --host
           - "0.0.0.0"
           - --port
@@ -62,9 +62,9 @@ spec:
           - --cache-type-v
           - q8_0
           - --temp
-          - "0.6"
+          - "0.7"
           - --top-p
-          - "0.9"
+          - "0.95"
           - --top-k
           - "0"
           - --min-p
@@ -79,8 +79,8 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "2", memory: "24Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-          limits:   { cpu: "8", memory: "32Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
+          requests: { cpu: "2", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "8", memory: "24Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
