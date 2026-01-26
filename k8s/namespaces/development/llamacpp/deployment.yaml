@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Huihui-Ministral-3-3B-Reasoning-2512-abliterated-GGUF
+          - mradermacher/Llama-3.3-8B-Instruct-128K-i1-GGUF
           - --hf-file
-          - Huihui-Ministral-3-3B-Reasoning-2512-abliterated.Q8_0.gguf
+          - Llama-3.3-8B-Instruct-128K.i1-Q4_K_M.gguf
           - --alias
-          - mistral-3-3b
+          - llama-3.3-8b
           - --host
           - "0.0.0.0"
           - --port
@@ -52,9 +52,9 @@ spec:
           - --parallel
           - "1"
           - --batch-size
-          - "512"
-          - --ubatch-size
           - "256"
+          - --ubatch-size
+          - "128"
           - --flash-attn
           - auto
           - --cache-type-k
@@ -62,13 +62,13 @@ spec:
           - --cache-type-v
           - q8_0
           - --temp
-          - "0.7"
+          - "0.2"
           - --top-p
-          - "0.95"
+          - "0.9"
           - --top-k
-          - "0"
+          - "40"
           - --min-p
-          - "0.001"
+          - "0.05"
           - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
