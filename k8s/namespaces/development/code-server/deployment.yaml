@@ -27,7 +27,7 @@ spec:
       containers:
         - name: code-server
           # renovate: datasource=docker depName=docker.io/codercom/code-server:latest
-          image: docker.io/codercom/code-server:latest@sha256:867b9a9dedd68f1b46e308cad9525e419db7b0ce0c83831f6a350f37ee7ff6fd
+          image: docker.io/codercom/code-server:latest@sha256:31ad23cda720476e7eb3371a9b02fd7a5738843f6ef43beef97e9edf1960fc47
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
