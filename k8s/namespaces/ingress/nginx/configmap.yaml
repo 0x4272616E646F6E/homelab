@@ -47,7 +47,7 @@ data:
         enable: false
       image:
         repository: ghcr.io/nginx/nginx-gateway-fabric/nginx
-        tag: 2.3.0
+        tag: 2.4.0
         pullPolicy: IfNotPresent
       config:
         entries:
