@@ -26,7 +26,7 @@ spec:
       containers:
         - name: huntarr
           # renovate: datasource=docker depName=docker.io/huntarr/huntarr
-          image: docker.io/huntarr/huntarr:latest@sha256:3a0422dd2201bfcee0d38526d170362b467847c611ddcf68ea8aba94b4a54133
+          image: docker.io/huntarr/huntarr:latest@sha256:bb8dbf18a90a02090b979bc71514995b4c6239dbd14598fab3a2416e37cd94a5
           imagePullPolicy: IfNotPresent
           env:
             - name: HUNTARR_PORT
