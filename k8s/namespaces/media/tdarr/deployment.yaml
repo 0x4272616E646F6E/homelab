@@ -69,12 +69,12 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/xe: "1"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
               memory: "16384Mi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/xe: "1"
               ephemeral-storage: "20Gi"
           volumeMounts:
             - name: config

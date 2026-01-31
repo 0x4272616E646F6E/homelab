@@ -41,12 +41,12 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/xe: "1"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
               memory: "8192Mi"
-              gpu.intel.com/i915: "1"
+              gpu.intel.com/xe: "1"
               ephemeral-storage: "20Gi"
           volumeMounts:
             - name: config
