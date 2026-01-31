@@ -128,6 +128,7 @@ Information regarding the hardware this homelab runs on:
   <summary><b>Click here to view Hardware</b></summary>
 
 <img src="./docs/server_rack.jpg" alt="Homelab Rack" width="300"/>
+<img src="./docs/server_internals.jpg" alt="Server Internals" width="300"/>
 
 - [12u StarTech Rack](https://www.startech.com/en-us/server-management/4postrack12u)
 - [UniFi Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro)
@@ -144,7 +145,9 @@ Information regarding the hardware this homelab runs on:
   - HBA: [Lenovo 430-16i](https://lenovopress.lenovo.com/lp0649-thinksystem-430-8i-16i-internal-sas-hba)
   - OS Disks (2x): [Intel Optane SSD 1600X Series](https://www.intel.com/content/www/us/en/products/sku/211868/intel-optane-ssd-p1600x-series-58gb-m-2-80mm-pcie-3-0-x4-3d-xpoint/specifications.html)
   - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
-  - GPU: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
+  - NIC: [Intel X710-DA2](https://www.intel.com/content/www/us/en/products/sku/83964/intel-ethernet-converged-network-adapter-x710da2/specifications.html)
+  - GPU 1: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
+  - GPU 2:  [Intel Arc A310](https://www.sparkle.com.tw/en/products/view/f22F9bC73c50)
   - TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
 - [CyberPower UPS](https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfcrm2u/)
 </details>
