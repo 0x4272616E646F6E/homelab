@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Llama-3.3-8B-Instruct-heretic-i1-GGUF
+          - mradermacher/gpt-oss-nano-i1-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-heretic.i1-Q4_K_M.gguf
+          - gpt-oss-nano.i1-Q4_K_M.gguf
           - --alias
-          - llama-3.3-8b
+          - gpt-oss-nano
           - --host
           - "0.0.0.0"
           - --port
