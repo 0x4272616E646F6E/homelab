@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - seanbailey518/Step3-VL-10B-GGUF
+          - mradermacher/Llama-3.3-8B-Instruct-heretic-i1-GGUF
           - --hf-file
-          - Step3-VL-10B-Q4_K_M.gguf
+          - Llama-3.3-8B-Instruct-heretic.i1-Q4_K_M.gguf
           - --alias
-          - step3-vl-10b
+          - llama-3.3-8b
           - --host
           - "0.0.0.0"
           - --port
