@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-nano-i1-GGUF
+          - seanbailey518/Step3-VL-10B-GGUF
           - --hf-file
-          - gpt-oss-nano.i1-Q4_K_M.gguf
+          - Step3-VL-10B-Q4_K_M.gguf
           - --alias
-          - gpt-oss-nano
+          - step3-vl-10b
           - --host
           - "0.0.0.0"
           - --port
