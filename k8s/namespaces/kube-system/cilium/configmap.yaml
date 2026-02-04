@@ -196,7 +196,7 @@ data:
         leaseRetryPeriod: 10s
       l2podAnnouncements:
         enabled: true
-        interface: "eth0"
+        interfacePattern: "eth0"
       bgpControlPlane:
         enabled: false
         secretsNamespace:
