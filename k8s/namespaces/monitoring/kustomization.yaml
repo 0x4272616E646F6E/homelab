@@ -3,6 +3,8 @@ kind: Kustomization
 namespace: monitoring
 commonLabels:
   app.kubernetes.io/managed-by: flux
+components:
+  - ../../components/nginx-filters
 resources:
   - namespace.yaml
   - clickstack/

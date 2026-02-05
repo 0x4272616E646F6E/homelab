@@ -25,3 +25,39 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: ssh
+      protocol: TCP
+      port: 22
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: syslog-tcp
+      protocol: TCP
+      port: 514
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: syslog-udp
+      protocol: UDP
+      port: 514
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-stream-tcp
+      protocol: TCP
+      port: 47984
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-stream-udp
+      protocol: UDP
+      port: 47984
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-pairing
+      protocol: TCP
+      port: 47989
+      allowedRoutes:
+        namespaces:
+          from: All

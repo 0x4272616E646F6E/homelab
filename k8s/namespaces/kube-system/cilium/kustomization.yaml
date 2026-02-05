@@ -8,3 +8,4 @@ resources:
   - cilium-loadbalancer-ip-pool.yaml
   - cilium-l2announcement-policy.yaml
   - poddisruptionbudget.yaml
+  - httproute.yaml

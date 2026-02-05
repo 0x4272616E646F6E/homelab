@@ -30,7 +30,7 @@ data:
         port: 9113
         secure: false
       gwAPIExperimentalFeatures:
-        enable: false
+        enable: true
       gwAPIInferenceExtension:
         enable: false
         endpointPicker:

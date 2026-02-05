@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: forgejo-ssh
+  namespace: development
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: ssh
+  rules:
+    - backendRefs:
+        - name: forgejo
+          port: 22

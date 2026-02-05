@@ -203,7 +203,6 @@ The following applications are managed through flux in this repository:
 - [**Suwayomi**](https://github.com/Suwayomi/Suwayomi-Server)
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)
-- [**Traefik**](https://github.com/traefik/traefik)
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
 </details>
