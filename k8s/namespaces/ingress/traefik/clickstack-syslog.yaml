@@ -1,21 +1,21 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteUDP
 metadata:
-  name: alloy-syslog
+  name: clickstack-syslog
   namespace: ingress
 spec:
   entryPoints:
     - syslogudp
   routes:
     - services:
-        - name: alloy
+        - name: clickstack-otel-syslog
           namespace: monitoring
           port: 514
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: alloy-syslog-tcp
+  name: clickstack-syslog-tcp
   namespace: ingress
 spec:
   entryPoints:
@@ -23,6 +23,6 @@ spec:
   routes:
     - match: "HostSNI(`*`)"
       services:
-        - name: alloy
+        - name: clickstack-otel-syslog
           namespace: monitoring
           port: 514

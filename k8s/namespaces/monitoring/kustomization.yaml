@@ -1,14 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: monitoring
-components:
-  - ../../components/nginx-filters
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
   - namespace.yaml
-  - alloy/
-  - prometheus/
-  - loki/
-  - tempo/
-  - grafana/
+  - clickstack/

@@ -9,5 +9,4 @@ resources:
   - helmrelease.yaml
   - gateway.yaml
   - redirect.yaml
-  - servicemonitor.yaml
   - poddisruptionbudget.yaml

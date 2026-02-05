@@ -7,5 +7,5 @@ resources:
   - helmrelease.yaml
   - middlewares.yaml
   - ingressroute.yaml
-  - alloy-syslog.yaml
+  - clickstack-syslog.yaml
   - forgejo-ssh.yaml

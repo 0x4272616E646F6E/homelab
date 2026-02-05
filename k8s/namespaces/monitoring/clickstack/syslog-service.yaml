@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickstack-otel-syslog
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: clickstack
+    app.kubernetes.io/managed-by: flux
+spec:
+  ports:
+    - name: syslog-tcp
+      port: 514
+      targetPort: 514
+      protocol: TCP
+    - name: syslog-udp
+      port: 514
+      targetPort: 514
+      protocol: UDP
+  selector:
+    app.kubernetes.io/name: clickstack
+    app.kubernetes.io/instance: clickstack
+    app: otel-collector

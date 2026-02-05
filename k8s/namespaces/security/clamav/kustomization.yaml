@@ -7,4 +7,3 @@ resources:
   - service.yaml
   - freshclam-cronjob.yaml
   - scanner-cronjob.yaml
-  - servicemonitor.yaml

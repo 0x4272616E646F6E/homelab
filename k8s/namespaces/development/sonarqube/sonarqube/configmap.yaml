@@ -155,7 +155,7 @@ data:
           - pattern: ".*"
     prometheusMonitoring:
       podMonitor:
-        enabled: true
+        enabled: false
         interval: 30s
     plugins:
       install: []

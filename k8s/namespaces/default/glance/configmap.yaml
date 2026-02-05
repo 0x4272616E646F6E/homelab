@@ -20,8 +20,8 @@ data:
                         url: https://vscode.hosted.fail/
                       - title: Forgejo
                         url: https://forgejo.hosted.fail/
-                      - title: Grafana
-                        url: https://grafana.hosted.fail/
+                      - title: HyperDX
+                        url: https://hyperdx.hosted.fail/
                       - title: Home Assistant
                         url: https://homeassistant.hosted.fail/
                       - title: Huntarr
@@ -34,8 +34,6 @@ data:
                         url: https://librechat.hosted.fail/
                       - title: NzbGet
                         url: https://nzbget.hosted.fail/
-                      - title: Prometheus
-                        url: https://prometheus.hosted.fail/
                       - title: Prowlarr
                         url: https://prowlarr.hosted.fail/
                       - title: Proxmox Backup Server
