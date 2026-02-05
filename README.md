@@ -200,6 +200,7 @@ The following applications are managed through flux in this repository:
 - [**Snowflake**](https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/tree/main/proxy?ref_type=heads#running-a-standalone-snowflake-proxy)
 - [**Sonarr**](https://github.com/Sonarr/Sonarr)
 - [**SonarQube**](https://github.com/SonarSource/sonarqube)
+- [**Steam-Headless**](https://github.com/Steam-Headless/docker-steam-headless)
 - [**Suwayomi**](https://github.com/Suwayomi/Suwayomi-Server)
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)

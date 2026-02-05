@@ -2,6 +2,7 @@
 .vscode/
 .continue/
 .github/instructions/
+.omc/
 
 # Ignore MacOS-specific files
 .DS_Store

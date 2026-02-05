@@ -1,0 +1,44 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: steam-headless-video
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-video
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 47998
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: steam-headless-control
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-control
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 47999
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: UDPRoute
+metadata:
+  name: steam-headless-audio
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-audio
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 48000

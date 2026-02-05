@@ -1,0 +1,59 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: steam-headless-https
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-https
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 47984
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: steam-headless-http
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-http
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 47989
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: steam-headless-rtsp
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-rtsp
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 47990
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: steam-headless-tcp
+  namespace: default
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: ingress
+      sectionName: sunshine-tcp
+  rules:
+    - backendRefs:
+        - name: steam-headless
+          port: 48010

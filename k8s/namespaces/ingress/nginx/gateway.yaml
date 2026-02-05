@@ -43,21 +43,45 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: sunshine-stream-tcp
+    - name: sunshine-https
       protocol: TCP
       port: 47984
       allowedRoutes:
         namespaces:
           from: All
-    - name: sunshine-stream-udp
-      protocol: UDP
-      port: 47984
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: sunshine-pairing
+    - name: sunshine-http
       protocol: TCP
       port: 47989
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-rtsp
+      protocol: TCP
+      port: 47990
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-tcp
+      protocol: TCP
+      port: 48010
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-video
+      protocol: UDP
+      port: 47998
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-control
+      protocol: UDP
+      port: 47999
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: sunshine-audio
+      protocol: UDP
+      port: 48000
       allowedRoutes:
         namespaces:
           from: All

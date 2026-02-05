@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: steam-headless-home
+  namespace: default
+  labels:
+    app.kubernetes.io/name: steam-headless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: steam-headless-games
+  namespace: default
+  labels:
+    app.kubernetes.io/name: steam-headless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 500Gi

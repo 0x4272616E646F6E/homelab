@@ -10,3 +10,4 @@ resources:
   - glance/
   - home-assistant/
   - redbot/
+  - steam-headless/

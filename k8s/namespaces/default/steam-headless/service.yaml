@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: steam-headless
+  namespace: default
+  labels:
+    app.kubernetes.io/name: steam-headless
+spec:
+  selector:
+    app.kubernetes.io/name: steam-headless
+  ports:
+    - port: 8083
+      targetPort: 8083
+      protocol: TCP
+      name: novnc
+    - port: 47984
+      targetPort: 47984
+      protocol: TCP
+      name: sunshine-https
+    - port: 47989
+      targetPort: 47989
+      protocol: TCP
+      name: sunshine-http
+    - port: 47990
+      targetPort: 47990
+      protocol: TCP
+      name: sunshine-rtsp
+    - port: 48010
+      targetPort: 48010
+      protocol: TCP
+      name: sunshine-tcp
+    - port: 47998
+      targetPort: 47998
+      protocol: UDP
+      name: sunshine-video
+    - port: 47999
+      targetPort: 47999
+      protocol: UDP
+      name: sunshine-ctrl
+    - port: 48000
+      targetPort: 48000
+      protocol: UDP
+      name: sunshine-audio
+  type: ClusterIP
