@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 5m
   releaseName: falco
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: falco-config-map

@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 5m
   releaseName: actions-runner
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: actions-runner-config-map

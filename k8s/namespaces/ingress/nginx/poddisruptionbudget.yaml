@@ -5,7 +5,7 @@ metadata:
   name: nginx-gateway-fabric
   namespace: ingress
 spec:
-  minAvailable: 1
+  minAvailable: 0
   selector:
     matchLabels:
       app.kubernetes.io/name: nginx-gateway-fabric
@@ -17,7 +17,7 @@ metadata:
   name: nginx-gateway-fabric-nginx
   namespace: ingress
 spec:
-  minAvailable: 1
+  minAvailable: 0
   selector:
     matchLabels:
       app.kubernetes.io/name: nginx-gateway-fabric

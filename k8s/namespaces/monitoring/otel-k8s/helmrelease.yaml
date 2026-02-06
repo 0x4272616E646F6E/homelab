@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 10m
   releaseName: otel-k8s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: otel-k8s-config-map

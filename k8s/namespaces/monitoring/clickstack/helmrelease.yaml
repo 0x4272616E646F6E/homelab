@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 10m
   releaseName: clickstack
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: clickstack-config-map

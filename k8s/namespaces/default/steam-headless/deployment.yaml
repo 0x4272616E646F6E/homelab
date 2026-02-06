@@ -24,7 +24,8 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: steam-headless
-          image: josh5/steam-headless:latest
+          # renovate: datasource=docker depName=docker.io/josh5/steam-headless
+          image: docker.io/josh5/steam-headless:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
@@ -51,6 +52,21 @@ spec:
             - containerPort: 48000
               protocol: UDP
               name: sunshine-audio
+          startupProbe:
+            tcpSocket:
+              port: 8083
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8083
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8083
+            failureThreshold: 3
+            periodSeconds: 10
           envFrom:
             - secretRef:
                 name: steam-headless-secrets

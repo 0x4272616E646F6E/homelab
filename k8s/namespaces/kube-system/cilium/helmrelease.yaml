@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 5m
   releaseName: cilium
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
   valuesFrom:
   - kind: ConfigMap
     name: cilium-config-map
