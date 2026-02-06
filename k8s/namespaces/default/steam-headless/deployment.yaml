@@ -25,7 +25,7 @@ spec:
       containers:
         - name: steam-headless
           # renovate: datasource=docker depName=docker.io/josh5/steam-headless
-          image: docker.io/josh5/steam-headless:latest
+          image: docker.io/josh5/steam-headless:latest@sha256:b9f20320b3ce60efb86daec5cd99565ef182f0496863c6c6590564dd836befc4
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
