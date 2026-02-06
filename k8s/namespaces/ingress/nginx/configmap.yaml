@@ -135,7 +135,7 @@ data:
       service:
         type: LoadBalancer
         externalTrafficPolicy: Local
-        loadBalancerIP: "10.0.0.248"
+        loadBalancerIP: "10.0.0.249"
         loadBalancerClass: ""
         loadBalancerSourceRanges: []
     certGenerator:
