@@ -32,6 +32,21 @@ spec:
               protocol: TCP
             - containerPort: 8266
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 8265
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8265
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8265
+            failureThreshold: 3
+            periodSeconds: 10
           env:
             - name: UMASK_SET
               value: "002"

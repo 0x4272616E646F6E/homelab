@@ -24,6 +24,13 @@ spec:
           # renovate: datasource=docker depName=docker.io/phasecorex/red-discordbot
           image: docker.io/phasecorex/red-discordbot:core@sha256:d8e5ef620664b96e896bcda7f7cf6b073851bfd8d7ed1e3ff83ef3eaeedc5596
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: "100m"

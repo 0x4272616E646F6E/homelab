@@ -3,6 +3,7 @@ kind: Kustomization
 commonLabels:
   app.kubernetes.io/managed-by: flux
 resources:
-  - secrets.enc.yaml 
+  - secrets.enc.yaml
   - postgres/
   - sonarqube/
+  - networkpolicy.yaml

@@ -26,9 +26,31 @@ spec:
           # renovate: datasource=docker depName=docker.io/flaresolverr/flaresolverr
           image: docker.io/flaresolverr/flaresolverr:latest@sha256:7962759d99d7e125e108e0f5e7f3cdbcd36161776d058d1d9b7153b92ef1af9e
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: 8191
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 8191
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8191
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8191
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

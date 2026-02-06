@@ -8,3 +8,4 @@ resources:
   - service.yaml
   - httproute.yaml
   - tcproute.yaml
+  - networkpolicy.yaml

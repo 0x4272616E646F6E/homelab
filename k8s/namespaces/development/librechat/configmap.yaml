@@ -97,7 +97,13 @@ data:
             - path: /
               pathType: ImplementationSpecific
       tls: []
-    resources: {}
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
     autoscaling:
       enabled: false
       minReplicas: 1

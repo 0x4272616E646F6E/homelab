@@ -33,6 +33,21 @@ spec:
         ports:
         - containerPort: 1234
           name: buildkit
+        startupProbe:
+          tcpSocket:
+            port: 1234
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 1234
+          failureThreshold: 3
+          periodSeconds: 30
+        readinessProbe:
+          tcpSocket:
+            port: 1234
+          failureThreshold: 3
+          periodSeconds: 10
         resources:
           requests:
             cpu: "100m"

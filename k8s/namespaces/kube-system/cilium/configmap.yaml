@@ -120,8 +120,13 @@ data:
           type: "Unconfined"
       podAnnotations: {}
       podLabels: {}
-      resources: {}
-
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
       initResources: {}
       securityContext:
         privileged: false
@@ -508,7 +513,13 @@ data:
             digest: ""
             useDigest: false
             pullPolicy: "IfNotPresent"
-          resources: {}
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
           replicas: 1
           affinity:
             podAffinity:
@@ -614,7 +625,13 @@ data:
               enabled: false
             readinessProbe:
               enabled: false
-            resources: {}
+            resources:
+              requests:
+                cpu: 25m
+                memory: 32Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
           frontend:
             image:
               override: ~
@@ -627,7 +644,13 @@ data:
             extraEnv: []
             extraVolumes: []
             extraVolumeMounts: []
-            resources: {}
+            resources:
+              requests:
+                cpu: 25m
+                memory: 32Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
             server:
               ipv6:
                 enabled: true
@@ -860,7 +883,13 @@ data:
             type: "Unconfined"
         podAnnotations: {}
         podLabels: {}
-        resources: {}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
         startupProbe:
           failureThreshold: 105
           periodSeconds: 2
@@ -1015,7 +1044,13 @@ data:
           enabled: false
           minAvailable: null
           maxUnavailable: 1
-        resources: {}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
         securityContext: {}
         endpointGCInterval: "5m0s"
         nodeGCInterval: "5m0s"

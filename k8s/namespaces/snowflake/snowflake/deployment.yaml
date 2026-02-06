@@ -23,6 +23,13 @@ spec:
           # renovate: datasource=docker depName=containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake
           image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest@sha256:1ddc5069d35489a87257b90ccd6a93444e59a2dd3b9b240dbee75a578d6c92ca
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           args:
             - -verbose
             - -capacity

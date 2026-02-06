@@ -62,9 +62,24 @@ spec:
               value: "8080"
           ports:
             - containerPort: 8080
-            - containerPort: 6881 
+            - containerPort: 6881
             - containerPort: 6881
               protocol: UDP
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

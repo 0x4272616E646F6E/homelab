@@ -32,6 +32,21 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

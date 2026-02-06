@@ -1,43 +1,33 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: jellyfin
-  namespace: media
+  name: buildkit
+  namespace: development
   labels:
-    app.kubernetes.io/name: jellyfin
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: jellyfin
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
     - Egress
   ingress:
+    # Allow connections from the development namespace for builds
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: ingress
+              kubernetes.io/metadata.name: development
       ports:
-        - port: 7359
-          protocol: UDP
-        - port: 1900
-          protocol: UDP
-        - port: 8096
+        - port: 1234
           protocol: TCP
+    # Monitoring
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: media
-      ports:
-        - port: 7359
-          protocol: UDP
-        - port: 1900
-          protocol: UDP
-        - port: 8096
-          protocol: TCP
+              kubernetes.io/metadata.name: monitoring
   egress:
+    # DNS
     - to:
         - namespaceSelector:
             matchLabels:
@@ -46,7 +36,17 @@ spec:
             matchLabels:
               k8s-app: kube-dns
       ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # Container registries (Docker Hub, ghcr.io, etc.)
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 443
+          protocol: TCP
+        - port: 80
+          protocol: TCP
+        - port: 5000
+          protocol: TCP

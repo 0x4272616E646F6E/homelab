@@ -34,6 +34,21 @@ spec:
           ports:
             - containerPort: 9705
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 9705
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9705
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 9705
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

@@ -42,7 +42,13 @@ data:
       - clusterissuers.cert-manager.io/*
       extraArgs: []
       extraEnv: []
-      resources: {}
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -124,7 +130,13 @@ data:
         extraArgs: []
         extraEnv: []
         featureGates: ""
-        resources: {}
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
         livenessProbe:
           failureThreshold: 3
           initialDelaySeconds: 60
@@ -200,7 +212,13 @@ data:
         extraArgs: []
         extraEnv: []
         featureGates: ""
-        resources: {}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
         nodeSelector:
           kubernetes.io/os: linux
         affinity: {}
@@ -242,7 +260,13 @@ data:
         extraArgs:
         - -v
         extraEnv: []
-        resources: {}
+        resources:
+          requests:
+            cpu: 25m
+            memory: 32Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
         nodeSelector:
           kubernetes.io/os: linux
         affinity: {}

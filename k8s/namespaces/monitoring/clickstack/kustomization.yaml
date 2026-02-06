@@ -8,3 +8,4 @@ resources:
   - httproute.yaml
   - syslog-service.yaml
   - syslog-routes.yaml
+  - networkpolicy.yaml

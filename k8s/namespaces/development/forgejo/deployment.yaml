@@ -24,6 +24,13 @@ spec:
           # renovate: datasource=docker depName=codeberg.org/forgejo/forgejo
           image: codeberg.org/forgejo/forgejo:14@sha256:fa8ce5aba7c20e106c649e00da1f568e8f39c58f1706bcf4f6921f16aaf5ba48
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: USER_UID
               value: "1000"
@@ -34,6 +41,24 @@ spec:
               protocol: TCP
             - containerPort: 22
               protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

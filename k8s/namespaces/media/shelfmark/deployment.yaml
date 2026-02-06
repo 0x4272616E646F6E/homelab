@@ -43,6 +43,21 @@ spec:
           ports:
             - containerPort: 8084
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 8084
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8084
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 8084
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

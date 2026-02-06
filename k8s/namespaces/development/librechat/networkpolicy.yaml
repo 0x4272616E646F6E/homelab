@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: requestrr
-  namespace: media
+  name: librechat
+  namespace: development
   labels:
-    app.kubernetes.io/name: requestrr
+    app.kubernetes.io/name: librechat
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: requestrr
+      app.kubernetes.io/name: librechat
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
@@ -20,16 +20,17 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 4545
+        - port: 3080
           protocol: TCP
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: media
+              kubernetes.io/metadata.name: development
       ports:
-        - port: 4545
+        - port: 3080
           protocol: TCP
   egress:
+    # DNS access
     - to:
         - namespaceSelector:
             matchLabels:
@@ -42,27 +43,38 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
+    # llamacpp LLM service
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: media
+              kubernetes.io/metadata.name: development
           podSelector:
             matchLabels:
-              app.kubernetes.io/name: sonarr
+              app.kubernetes.io/name: llamacpp
       ports:
         - protocol: TCP
-          port: 8989
+          port: 8000
+        - protocol: TCP
+          port: 8001
+        - protocol: TCP
+          port: 8002
+    # MongoDB (internal helm dependency)
     - to:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: media
-          podSelector:
-            matchLabels:
-              app.kubernetes.io/name: radarr
+              kubernetes.io/metadata.name: development
       ports:
         - protocol: TCP
-          port: 7878
-    # Discord API access
+          port: 27017
+    # Meilisearch (internal helm dependency)
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: development
+      ports:
+        - protocol: TCP
+          port: 7700
+    # External LLM APIs (OpenAI, Anthropic, etc.)
     - to:
         - ipBlock:
             cidr: 0.0.0.0/0

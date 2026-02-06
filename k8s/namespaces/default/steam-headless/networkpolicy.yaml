@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: steam-headless
+  namespace: default
+  labels:
+    app.kubernetes.io/name: steam-headless
+    app.kubernetes.io/managed-by: flux
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: steam-headless
+      app.kubernetes.io/managed-by: flux
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress
+      ports:
+        - port: 8083
+          protocol: TCP
+        - port: 47984
+          protocol: TCP
+        - port: 47989
+          protocol: TCP
+        - port: 47990
+          protocol: TCP
+        - port: 48010
+          protocol: TCP
+        - port: 47998
+          protocol: UDP
+        - port: 47999
+          protocol: UDP
+        - port: 48000
+          protocol: UDP
+  egress:
+    - {}

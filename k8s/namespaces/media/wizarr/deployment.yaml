@@ -24,12 +24,34 @@ spec:
           # renovate: datasource=docker depName=ghcr.io/wizarrrr/wizarr
           image: ghcr.io/wizarrrr/wizarr:latest@sha256:83fc0b50985d196226b7c28a27062a1c4e63124a5d6d2448710aee222637b79e
           imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
           env:
             - name: DISABLE_BUILTIN_AUTH
               value: "true"
           ports:
             - containerPort: 5690
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 5690
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5690
+            failureThreshold: 3
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: 5690
+            failureThreshold: 3
+            periodSeconds: 10
           resources:
             requests:
               cpu: "100m"

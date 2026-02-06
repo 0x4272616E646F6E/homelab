@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: jellyfin
-  namespace: media
+  name: forgejo
+  namespace: development
   labels:
-    app.kubernetes.io/name: jellyfin
+    app.kubernetes.io/name: forgejo
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: jellyfin
+      app.kubernetes.io/name: forgejo
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
@@ -20,24 +20,19 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 7359
-          protocol: UDP
-        - port: 1900
-          protocol: UDP
-        - port: 8096
+        - port: 3000
+          protocol: TCP
+        - port: 22
           protocol: TCP
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: media
+              kubernetes.io/metadata.name: monitoring
       ports:
-        - port: 7359
-          protocol: UDP
-        - port: 1900
-          protocol: UDP
-        - port: 8096
+        - port: 3000
           protocol: TCP
   egress:
+    # DNS
     - to:
         - namespaceSelector:
             matchLabels:
@@ -46,7 +41,21 @@ spec:
             matchLabels:
               k8s-app: kube-dns
       ports:
-        - protocol: UDP
-          port: 53
-        - protocol: TCP
-          port: 53
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    # Internet access for git operations, webhooks, updates
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 443
+          protocol: TCP
+        - port: 80
+          protocol: TCP
+    # SSH git operations
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 22
+          protocol: TCP
