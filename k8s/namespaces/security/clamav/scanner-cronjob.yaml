@@ -26,7 +26,7 @@ spec:
           containers:
             - name: scanner
               # renovate: datasource=docker depName=clamav/clamav
-              image: docker.io/clamav/clamav:1.5@sha256:2810ac770a9808a8c01ad1f29be9223960889460ff754bc65bef1dff46d08620
+              image: docker.io/clamav/clamav:1.5@sha256:bb4f25aad81c7a430ed49ee24ee8c69caa56d81d59884901e31a407aaaa19b4d
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh
