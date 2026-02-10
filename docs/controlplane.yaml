@@ -221,7 +221,7 @@ cluster:
       watch-cache-sizes: "events#100,pods#1000"
 
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.35.0@sha256:3e343fd915d2e214b9a68c045b94017832927edb89aafa471324f8d05a191111
+    image: registry.k8s.io/kube-controller-manager:v1.35.1@sha256:9fb295baa9d68543d7bbecc23e16fcdf85c8c06680f91e628535aa6fbe180dbd
     extraArgs:
       kube-api-qps: "100"
       kube-api-burst: "150"
