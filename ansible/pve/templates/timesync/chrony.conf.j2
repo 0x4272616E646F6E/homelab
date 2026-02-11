@@ -5,6 +5,11 @@
 server {{ ntp }} iburst
 {% endfor %}
 
+# Allow NTP clients from RFC1918 private networks
+allow 10.0.0.0/8
+allow 172.16.0.0/12
+allow 192.168.0.0/16
+
 # Record the rate at which the system clock gains/losses time
 driftfile /var/lib/chrony/drift
 
