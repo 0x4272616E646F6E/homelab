@@ -1,0 +1,29 @@
+# renovate: registryUrl=https://helm.goharbor.io
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: harbor
+  namespace: development
+spec:
+  interval: 10m
+  timeout: 10m
+  targetNamespace: development
+  releaseName: harbor
+  chart:
+    spec:
+      chart: harbor
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+        namespace: flux-system
+      version: 1.16.2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  valuesFrom:
+    - kind: ConfigMap
+      name: harbor-config-map
+      valuesKey: values.yaml

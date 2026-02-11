@@ -19,3 +19,7 @@ resources:
   - llamacpp/
   - librechat/
   - localstack/
+  - harbor/
+  - apt-mirror/
+  - proxmox-mirror/
+  - talos-mirror/

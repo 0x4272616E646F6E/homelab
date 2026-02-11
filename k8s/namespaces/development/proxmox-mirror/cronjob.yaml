@@ -1,0 +1,90 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: proxmox-mirror-sync
+  namespace: development
+  labels:
+    app.kubernetes.io/name: proxmox-mirror
+    app.kubernetes.io/managed-by: flux
+spec:
+  # Run weekly on Sunday at 4 AM
+  schedule: "0 4 * * 0"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 21600  # 6 hours max
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: proxmox-mirror-sync
+            app.kubernetes.io/managed-by: flux
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: false
+            seccompProfile:
+              type: RuntimeDefault
+          automountServiceAccountToken: false
+          containers:
+            - name: sync
+              # renovate: datasource=docker depName=docker.io/library/debian
+              image: docker.io/library/debian:13@sha256:2c91e484d93f0830a7e05a2b9d92a7b102be7cab562198b984a84fdbc7806d91
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/bash
+                - /scripts/sync-proxmox.sh
+              resources:
+                requests:
+                  cpu: "250m"
+                  memory: "256Mi"
+                  ephemeral-storage: "1Gi"
+                limits:
+                  cpu: "1000m"
+                  memory: "1024Mi"
+                  ephemeral-storage: "5Gi"
+              securityContext:
+                runAsNonRoot: false
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: false
+                capabilities:
+                  drop:
+                    - ALL
+              volumeMounts:
+                - name: proxmox-mirror-data
+                  mountPath: /var/spool/proxmox-mirror
+                - name: scripts
+                  mountPath: /scripts
+          initContainers:
+            - name: install-deps
+              # renovate: datasource=docker depName=docker.io/library/debian
+              image: docker.io/library/debian:13@sha256:2c91e484d93f0830a7e05a2b9d92a7b102be7cab562198b984a84fdbc7806d91
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  apt-get update && apt-get install -y wget curl ca-certificates
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "512Mi"
+              securityContext:
+                runAsNonRoot: false
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: false
+                capabilities:
+                  drop:
+                    - ALL
+          volumes:
+            - name: proxmox-mirror-data
+              persistentVolumeClaim:
+                claimName: proxmox-mirror-data
+            - name: scripts
+              configMap:
+                name: proxmox-mirror-config
+                defaultMode: 0755

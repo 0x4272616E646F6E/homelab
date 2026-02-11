@@ -1,0 +1,116 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apt-mirror-config
+  namespace: development
+  labels:
+    app.kubernetes.io/name: apt-mirror
+    app.kubernetes.io/managed-by: flux
+data:
+  mirror.list: |
+    ############# config #################
+    set base_path    /var/spool/apt-mirror
+    set mirror_path  $base_path/mirror
+    set skel_path    $base_path/skel
+    set var_path     $base_path/var
+    set postmirror_script $var_path/postmirror.sh
+    set defaultarch  amd64
+    set nthreads     4
+    set limit_rate   0
+    set _tilde       0
+    set run_postmirror 1
+
+    ############# Debian Bookworm (Stable/12) #################
+    deb-amd64 http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+    deb-amd64 http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware
+    deb-amd64 http://deb.debian.org/debian bookworm-backports main contrib non-free non-free-firmware
+    deb-amd64 http://security.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+
+    ############# Debian Trixie (Testing/13) #################
+    deb-amd64 http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+    deb-amd64 http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+
+    ############# clean up #################
+    clean http://deb.debian.org/debian
+    clean http://security.debian.org/debian-security
+
+  postmirror.sh: |
+    #!/bin/bash
+    echo "Post-mirror script completed at $(date)"
+
+  nginx.conf: |
+    user nginx;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log notice;
+    pid /run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        sendfile on;
+        tcp_nopush on;
+        keepalive_timeout 65;
+        gzip on;
+
+        server {
+            listen 80;
+            server_name _;
+
+            # Debian mirror
+            location /debian/ {
+                alias /var/spool/apt-mirror/mirror/deb.debian.org/debian/;
+                autoindex on;
+            }
+
+            # Debian security mirror
+            location /debian-security/ {
+                alias /var/spool/apt-mirror/mirror/security.debian.org/debian-security/;
+                autoindex on;
+            }
+
+            # Health check
+            location /health {
+                return 200 "OK\n";
+                add_header Content-Type text/plain;
+            }
+
+            # Status page
+            location / {
+                root /usr/share/nginx/html;
+                index index.html;
+            }
+        }
+    }
+
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Debian Mirror</title></head>
+    <body>
+      <h1>Homelab Debian Mirror</h1>
+      <ul>
+        <li><a href="/debian/">Debian (bookworm, trixie)</a></li>
+        <li><a href="/debian-security/">Debian Security</a></li>
+      </ul>
+      <p>Configure your sources.list:</p>
+      <pre>
+    # Bookworm (Debian 12)
+    deb http://apt-mirror.development.svc.cluster.local/debian/ bookworm main contrib non-free non-free-firmware
+    deb http://apt-mirror.development.svc.cluster.local/debian/ bookworm-updates main contrib non-free non-free-firmware
+    deb http://apt-mirror.development.svc.cluster.local/debian-security/ bookworm-security main contrib non-free non-free-firmware
+
+    # Trixie (Debian 13)
+    deb http://apt-mirror.development.svc.cluster.local/debian/ trixie main contrib non-free non-free-firmware
+      </pre>
+    </body>
+    </html>

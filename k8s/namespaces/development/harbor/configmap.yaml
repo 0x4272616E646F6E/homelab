@@ -1,0 +1,139 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: harbor-config-map
+  namespace: development
+  labels:
+    app.kubernetes.io/name: harbor
+    app.kubernetes.io/managed-by: flux
+data:
+  values.yaml: |
+    expose:
+      type: clusterIP
+      tls:
+        enabled: false
+      clusterIP:
+        name: harbor
+        ports:
+          httpPort: 80
+
+    externalURL: https://harbor.hosted.fail
+
+    persistence:
+      enabled: true
+      persistentVolumeClaim:
+        registry:
+          existingClaim: harbor-registry
+        jobservice:
+          jobLog:
+            existingClaim: harbor-jobservice
+        database:
+          existingClaim: harbor-database
+        redis:
+          existingClaim: harbor-redis
+        trivy:
+          existingClaim: harbor-trivy
+
+    # Proxy cache configuration for pull-through registries
+    # These are configured via the Harbor UI after deployment:
+    # - docker.io (Docker Hub)
+    # - ghcr.io (GitHub Container Registry)
+    # - lscr.io (LinuxServer.io)
+    # - quay.io (Red Hat Quay)
+    # - gcr.io (Google Container Registry)
+    # - registry.k8s.io (Kubernetes Registry)
+    # - codeberg.org (Codeberg)
+    # - code.forgejo.org (Forgejo)
+    # - containers.torproject.org (Tor Project)
+
+    harborAdminPassword: ""
+    existingSecretAdminPassword: harbor-admin-password
+    existingSecretAdminPasswordKey: password
+
+    # Secret key for encrypting
+    existingSecretSecretKey: harbor-secret-key
+
+    core:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1024Mi
+
+    jobservice:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1024Mi
+
+    registry:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 2000m
+          memory: 2048Mi
+
+    trivy:
+      enabled: true
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 1000m
+          memory: 1024Mi
+
+    database:
+      type: internal
+      internal:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+
+    redis:
+      type: internal
+      internal:
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+    portal:
+      replicas: 1
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+
+    # Garbage collection for unused images
+    gc:
+      enabled: true
+      cron: "0 2 * * *"
+      timeWindowHours: 4
+      deleteUntagged: true
+
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: false

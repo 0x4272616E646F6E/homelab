@@ -1,0 +1,208 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: talos-mirror-config
+  namespace: development
+  labels:
+    app.kubernetes.io/name: talos-mirror
+    app.kubernetes.io/managed-by: flux
+data:
+  sync-talos.sh: |
+    #!/bin/bash
+    set -e
+
+    MIRROR_DIR="/var/spool/talos-mirror"
+    GITHUB_API="https://api.github.com/repos/siderolabs/talos/releases"
+
+    # Talos versions to mirror (add more as needed)
+    TALOS_VERSIONS=("v1.9.5" "v1.9.4" "v1.8.4" "v1.7.7")
+
+    # Extensions to mirror
+    EXTENSIONS=(
+      "siderolabs/nvidia-container-toolkit"
+      "siderolabs/nvidia-open-gpu-kernel-modules"
+      "siderolabs/intel-ucode"
+      "siderolabs/i915"
+      "siderolabs/iscsi-tools"
+      "siderolabs/util-linux-tools"
+    )
+
+    echo "=== Starting Talos Mirror Sync at $(date) ==="
+
+    # Create directory structure
+    mkdir -p "$MIRROR_DIR/releases"
+    mkdir -p "$MIRROR_DIR/talosctl"
+    mkdir -p "$MIRROR_DIR/extensions"
+    mkdir -p "$MIRROR_DIR/installer"
+
+    # Download Talos releases
+    for VERSION in "${TALOS_VERSIONS[@]}"; do
+      echo "Processing Talos $VERSION..."
+      VERSION_DIR="$MIRROR_DIR/releases/$VERSION"
+      mkdir -p "$VERSION_DIR"
+
+      # Download ISO
+      if [ ! -f "$VERSION_DIR/talos-amd64.iso" ]; then
+        echo "  Downloading talos-amd64.iso..."
+        wget -q -O "$VERSION_DIR/talos-amd64.iso" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/talos-amd64.iso" || true
+      fi
+
+      # Download metal image
+      if [ ! -f "$VERSION_DIR/metal-amd64.raw.xz" ]; then
+        echo "  Downloading metal-amd64.raw.xz..."
+        wget -q -O "$VERSION_DIR/metal-amd64.raw.xz" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/metal-amd64.raw.xz" || true
+      fi
+
+      # Download nocloud image (for Proxmox/cloud-init)
+      if [ ! -f "$VERSION_DIR/nocloud-amd64.raw.xz" ]; then
+        echo "  Downloading nocloud-amd64.raw.xz..."
+        wget -q -O "$VERSION_DIR/nocloud-amd64.raw.xz" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/nocloud-amd64.raw.xz" || true
+      fi
+
+      # Download checksums
+      if [ ! -f "$VERSION_DIR/sha256sum.txt" ]; then
+        echo "  Downloading checksums..."
+        wget -q -O "$VERSION_DIR/sha256sum.txt" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/sha256sum.txt" || true
+      fi
+    done
+
+    # Download talosctl binaries
+    echo "Downloading talosctl binaries..."
+    for VERSION in "${TALOS_VERSIONS[@]}"; do
+      TALOSCTL_DIR="$MIRROR_DIR/talosctl/$VERSION"
+      mkdir -p "$TALOSCTL_DIR"
+
+      if [ ! -f "$TALOSCTL_DIR/talosctl-linux-amd64" ]; then
+        echo "  Downloading talosctl-linux-amd64 $VERSION..."
+        wget -q -O "$TALOSCTL_DIR/talosctl-linux-amd64" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/talosctl-linux-amd64" || true
+        chmod +x "$TALOSCTL_DIR/talosctl-linux-amd64" 2>/dev/null || true
+      fi
+
+      if [ ! -f "$TALOSCTL_DIR/talosctl-darwin-amd64" ]; then
+        echo "  Downloading talosctl-darwin-amd64 $VERSION..."
+        wget -q -O "$TALOSCTL_DIR/talosctl-darwin-amd64" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/talosctl-darwin-amd64" || true
+      fi
+
+      if [ ! -f "$TALOSCTL_DIR/talosctl-darwin-arm64" ]; then
+        echo "  Downloading talosctl-darwin-arm64 $VERSION..."
+        wget -q -O "$TALOSCTL_DIR/talosctl-darwin-arm64" \
+          "https://github.com/siderolabs/talos/releases/download/$VERSION/talosctl-darwin-arm64" || true
+      fi
+    done
+
+    # Download installer images info (these are container images, store references)
+    echo "Creating installer image references..."
+    for VERSION in "${TALOS_VERSIONS[@]}"; do
+      INSTALLER_DIR="$MIRROR_DIR/installer/$VERSION"
+      mkdir -p "$INSTALLER_DIR"
+      echo "ghcr.io/siderolabs/installer:$VERSION" > "$INSTALLER_DIR/image-ref.txt"
+    done
+
+    echo "=== Sync completed at $(date) ==="
+    echo "Disk usage:"
+    du -sh "$MIRROR_DIR"/*
+
+  nginx.conf: |
+    user nginx;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log notice;
+    pid /run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        sendfile on;
+        tcp_nopush on;
+        keepalive_timeout 65;
+        gzip on;
+
+        server {
+            listen 80;
+            server_name _;
+
+            # Talos releases
+            location /releases/ {
+                alias /var/spool/talos-mirror/releases/;
+                autoindex on;
+            }
+
+            # talosctl binaries
+            location /talosctl/ {
+                alias /var/spool/talos-mirror/talosctl/;
+                autoindex on;
+            }
+
+            # Extensions info
+            location /extensions/ {
+                alias /var/spool/talos-mirror/extensions/;
+                autoindex on;
+            }
+
+            # Installer references
+            location /installer/ {
+                alias /var/spool/talos-mirror/installer/;
+                autoindex on;
+            }
+
+            # Health check
+            location /health {
+                return 200 "OK\n";
+                add_header Content-Type text/plain;
+            }
+
+            # Status page
+            location / {
+                root /usr/share/nginx/html;
+                index index.html;
+            }
+        }
+    }
+
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Talos Linux Mirror</title></head>
+    <body>
+      <h1>Homelab Talos Linux Mirror</h1>
+      <ul>
+        <li><a href="/releases/">Talos Releases (ISOs, images)</a></li>
+        <li><a href="/talosctl/">talosctl Binaries</a></li>
+        <li><a href="/extensions/">Extensions Info</a></li>
+        <li><a href="/installer/">Installer Image References</a></li>
+      </ul>
+
+      <h2>Quick Download</h2>
+      <pre>
+    # Download talosctl
+    curl -LO http://talos.hosted.fail/talosctl/v1.9.5/talosctl-linux-amd64
+    chmod +x talosctl-linux-amd64
+    sudo mv talosctl-linux-amd64 /usr/local/bin/talosctl
+
+    # Download ISO
+    curl -LO http://talos.hosted.fail/releases/v1.9.5/talos-amd64.iso
+      </pre>
+
+      <h2>Container Images</h2>
+      <p>For offline installer images, use Harbor pull-through cache:</p>
+      <pre>
+    # Configure containerd to use local Harbor
+    # Then pull: harbor.hosted.fail/ghcr.io/siderolabs/installer:v1.9.5
+      </pre>
+    </body>
+    </html>

@@ -1,0 +1,217 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxmox-mirror-config
+  namespace: development
+  labels:
+    app.kubernetes.io/name: proxmox-mirror
+    app.kubernetes.io/managed-by: flux
+data:
+  sync-proxmox.sh: |
+    #!/bin/bash
+    set -e
+
+    MIRROR_DIR="/var/spool/proxmox-mirror"
+
+    echo "=== Starting Proxmox Mirror Sync at $(date) ==="
+
+    # Create directory structure
+    mkdir -p "$MIRROR_DIR/pve"
+    mkdir -p "$MIRROR_DIR/pbs"
+    mkdir -p "$MIRROR_DIR/iso/pve"
+    mkdir -p "$MIRROR_DIR/iso/pbs"
+
+    # ============================================
+    # Sync PVE no-subscription repository (PVE 8.x)
+    # ============================================
+    echo "Syncing PVE no-subscription repository..."
+    cd "$MIRROR_DIR/pve"
+
+    # Download repository metadata
+    wget -N --no-parent -r -l1 -A "Release*,Packages*,InRelease*" \
+      "http://download.proxmox.com/debian/pve/dists/bookworm/" \
+      2>&1 || true
+
+    # Download packages
+    wget -N --no-parent -r -l2 -A "*.deb" \
+      --reject-regex=".*i386.*" \
+      "http://download.proxmox.com/debian/pve/dists/bookworm/pve-no-subscription/binary-amd64/" \
+      2>&1 || true
+
+    # ============================================
+    # Sync PBS no-subscription repository (PBS 3.x)
+    # ============================================
+    echo "Syncing PBS no-subscription repository..."
+    cd "$MIRROR_DIR/pbs"
+
+    # Download repository metadata
+    wget -N --no-parent -r -l1 -A "Release*,Packages*,InRelease*" \
+      "http://download.proxmox.com/debian/pbs/dists/bookworm/" \
+      2>&1 || true
+
+    # Download packages
+    wget -N --no-parent -r -l2 -A "*.deb" \
+      --reject-regex=".*i386.*" \
+      "http://download.proxmox.com/debian/pbs/dists/bookworm/pbs-no-subscription/binary-amd64/" \
+      2>&1 || true
+
+    # ============================================
+    # Download PVE ISOs
+    # ============================================
+    echo "Downloading Proxmox VE ISOs..."
+    cd "$MIRROR_DIR/iso/pve"
+
+    # Download available PVE ISOs from the ISO directory
+    for ISO in proxmox-ve_8.3-1.iso proxmox-ve_8.2-2.iso; do
+      if [ ! -f "$ISO" ]; then
+        echo "  Downloading $ISO..."
+        wget -c "https://enterprise.proxmox.com/iso/$ISO" 2>&1 || \
+        wget -c "http://download.proxmox.com/iso/$ISO" 2>&1 || true
+      fi
+    done
+
+    # Download SHA256 checksums
+    wget -N "https://enterprise.proxmox.com/iso/SHA256SUMS" 2>&1 || true
+
+    # ============================================
+    # Download PBS ISOs
+    # ============================================
+    echo "Downloading Proxmox Backup Server ISOs..."
+    cd "$MIRROR_DIR/iso/pbs"
+
+    # Download available PBS ISOs
+    for ISO in proxmox-backup-server_3.3-1.iso proxmox-backup-server_3.2-1.iso; do
+      if [ ! -f "$ISO" ]; then
+        echo "  Downloading $ISO..."
+        wget -c "https://enterprise.proxmox.com/iso/$ISO" 2>&1 || \
+        wget -c "http://download.proxmox.com/iso/$ISO" 2>&1 || true
+      fi
+    done
+
+    # ============================================
+    # Download PBS client packages (for backing up from other systems)
+    # ============================================
+    echo "Downloading PBS client packages..."
+    mkdir -p "$MIRROR_DIR/pbs-client"
+    cd "$MIRROR_DIR/pbs-client"
+
+    wget -N --no-parent -r -l2 -A "proxmox-backup-client*.deb,proxmox-backup-file-restore*.deb" \
+      --reject-regex=".*i386.*" \
+      "http://download.proxmox.com/debian/pbs-client/dists/bookworm/main/binary-amd64/" \
+      2>&1 || true
+
+    echo "=== Sync completed at $(date) ==="
+    echo "Disk usage:"
+    du -sh "$MIRROR_DIR"/*
+
+  nginx.conf: |
+    user nginx;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log notice;
+    pid /run/nginx.pid;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                        '$status $body_bytes_sent "$http_referer" '
+                        '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        sendfile on;
+        tcp_nopush on;
+        keepalive_timeout 65;
+        gzip on;
+
+        server {
+            listen 80;
+            server_name _;
+
+            # PVE repository mirror
+            location /debian/pve/ {
+                alias /var/spool/proxmox-mirror/pve/download.proxmox.com/debian/pve/;
+                autoindex on;
+            }
+
+            # PBS repository mirror
+            location /debian/pbs/ {
+                alias /var/spool/proxmox-mirror/pbs/download.proxmox.com/debian/pbs/;
+                autoindex on;
+            }
+
+            # PBS client repository
+            location /debian/pbs-client/ {
+                alias /var/spool/proxmox-mirror/pbs-client/download.proxmox.com/debian/pbs-client/;
+                autoindex on;
+            }
+
+            # PVE ISOs
+            location /iso/pve/ {
+                alias /var/spool/proxmox-mirror/iso/pve/;
+                autoindex on;
+            }
+
+            # PBS ISOs
+            location /iso/pbs/ {
+                alias /var/spool/proxmox-mirror/iso/pbs/;
+                autoindex on;
+            }
+
+            # All ISOs (combined view)
+            location /iso/ {
+                alias /var/spool/proxmox-mirror/iso/;
+                autoindex on;
+            }
+
+            # Health check
+            location /health {
+                return 200 "OK\n";
+                add_header Content-Type text/plain;
+            }
+
+            # Status page
+            location / {
+                root /usr/share/nginx/html;
+                index index.html;
+            }
+        }
+    }
+
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Proxmox Mirror</title></head>
+    <body>
+      <h1>Homelab Proxmox Mirror</h1>
+
+      <h2>Repositories</h2>
+      <ul>
+        <li><a href="/debian/pve/">PVE Repository (pve-no-subscription)</a></li>
+        <li><a href="/debian/pbs/">PBS Repository (pbs-no-subscription)</a></li>
+        <li><a href="/debian/pbs-client/">PBS Client Repository</a></li>
+      </ul>
+
+      <h2>ISOs</h2>
+      <ul>
+        <li><a href="/iso/pve/">Proxmox VE ISOs</a></li>
+        <li><a href="/iso/pbs/">Proxmox Backup Server ISOs</a></li>
+      </ul>
+
+      <h2>Configure Proxmox VE APT Sources</h2>
+      <p>Edit /etc/apt/sources.list.d/pve-no-subscription.list:</p>
+      <pre>deb http://proxmox.hosted.fail/debian/pve bookworm pve-no-subscription</pre>
+
+      <h2>Configure Proxmox Backup Server APT Sources</h2>
+      <p>Edit /etc/apt/sources.list.d/pbs-no-subscription.list:</p>
+      <pre>deb http://proxmox.hosted.fail/debian/pbs bookworm pbs-no-subscription</pre>
+
+      <h2>Configure PBS Client on Debian/Ubuntu</h2>
+      <p>Edit /etc/apt/sources.list.d/pbs-client.list:</p>
+      <pre>deb http://proxmox.hosted.fail/debian/pbs-client bookworm main</pre>
+    </body>
+    </html>

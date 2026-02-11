@@ -1,0 +1,82 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: apt-mirror-sync
+  namespace: development
+  labels:
+    app.kubernetes.io/name: apt-mirror
+    app.kubernetes.io/managed-by: flux
+spec:
+  # Run daily at 3 AM
+  schedule: "0 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 43200  # 12 hours max
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: apt-mirror-sync
+            app.kubernetes.io/managed-by: flux
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: false
+            seccompProfile:
+              type: RuntimeDefault
+          automountServiceAccountToken: false
+          containers:
+            - name: apt-mirror
+              # renovate: datasource=docker depName=docker.io/library/debian
+              image: docker.io/library/debian:13@sha256:2c91e484d93f0830a7e05a2b9d92a7b102be7cab562198b984a84fdbc7806d91
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  set -e
+                  echo "Installing apt-mirror..."
+                  apt-get update && apt-get install -y apt-mirror wget
+
+                  echo "Starting apt-mirror sync at $(date)"
+                  apt-mirror /etc/apt/mirror.list
+
+                  echo "Sync completed at $(date)"
+                  echo "Disk usage:"
+                  du -sh /var/spool/apt-mirror/mirror/*
+              resources:
+                requests:
+                  cpu: "500m"
+                  memory: "512Mi"
+                  ephemeral-storage: "1Gi"
+                limits:
+                  cpu: "2000m"
+                  memory: "2048Mi"
+                  ephemeral-storage: "5Gi"
+              securityContext:
+                runAsNonRoot: false
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: false
+                capabilities:
+                  drop:
+                    - ALL
+              volumeMounts:
+                - name: apt-mirror-data
+                  mountPath: /var/spool/apt-mirror
+                - name: mirror-config
+                  mountPath: /etc/apt/mirror.list
+                  subPath: mirror.list
+                - name: mirror-config
+                  mountPath: /var/spool/apt-mirror/var/postmirror.sh
+                  subPath: postmirror.sh
+          volumes:
+            - name: apt-mirror-data
+              persistentVolumeClaim:
+                claimName: apt-mirror-data
+            - name: mirror-config
+              configMap:
+                name: apt-mirror-config
+                defaultMode: 0755
