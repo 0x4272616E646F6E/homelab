@@ -203,7 +203,7 @@ host_antivirus_scan_paths:
   - /srv
   - /etc
 clamav_freshclam_update: true
-clamav_scan_opts: "--recursive --infected --bell"
+clamav_scan_opts: "--multiscan --infected"
 
 # Rootkit Hunter Configurations
 rkhunter_enabled: true

@@ -10,4 +10,4 @@ if [ "$FRESHCLAM" = "true" ]; then
   freshclam || true
 fi
 
-clamscan $SCAN_OPTS $SCAN_PATHS >/var/log/clamav-host-scan.log 2>&1 || true
+clamdscan $SCAN_OPTS $SCAN_PATHS >/var/log/clamav-host-scan.log 2>&1 || true

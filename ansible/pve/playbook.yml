@@ -618,6 +618,7 @@
           ansible.builtin.apt:
             name:
               - clamav
+              - clamav-daemon
               - clamav-freshclam
             state: present
             update_cache: true
@@ -637,6 +638,18 @@
             owner: root
             group: root
             mode: '0755'
+
+        - name: Ensure freshclam notifies clamd after updates
+          ansible.builtin.lineinfile:
+            path: /etc/clamav/freshclam.conf
+            regexp: '^#?NotifyClamd'
+            line: 'NotifyClamd /etc/clamav/clamd.conf'
+
+        - name: Enable and start clamav-daemon
+          ansible.builtin.systemd:
+            name: clamav-daemon
+            enabled: true
+            state: started
 
     - name: Install and configure rkhunter
       when: rkhunter_enabled
