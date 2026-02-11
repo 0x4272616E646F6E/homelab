@@ -5,4 +5,11 @@
 {% for module in gpu_blacklist_modules %}
 blacklist {{ module }}
 {% endfor %}
+
+{% if gpu_force_probe_options | default([]) | length > 0 %}
+# Force probe options for specific GPU devices
+{% for opt in gpu_force_probe_options %}
+options {{ opt.module }} force_probe={{ opt.device_id }}
+{% endfor %}
+{% endif %}
 {% endif %}

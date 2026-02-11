@@ -11,17 +11,31 @@ timezone: "America/Detroit"
 
 # ACME / TLS Configurations
 acme_enabled: true
-acme_account_name: "production"
+acme_account_name: "default"
 acme_account_email: "admin@hosted.fail"
 acme_directory_url: "https://acme-v02.api.letsencrypt.org/directory"
-acme_plugin_name: "cloudflare-dns"  # Matches plugin ID
+acme_plugin_name: "Cloudflare"      # Matches plugin ID on host
 acme_plugin_type: "dns"             # standalone (http-01) or dns
-acme_plugin_api: "cloudflare"       # Required when acme_plugin_type == "dns"
+acme_plugin_api: "cf"               # Required when acme_plugin_type == "dns"
 acme_plugin_nodes: []               # Optional list of nodes when using DNS plugins
-acme_plugin_validation_delay: 30
-acme_cloudflare_api_token: "replaceme"       # Use an API token with Zone.DNS edit + Zone.Zone read
-acme_cloudflare_account_id: "replaceme"      # Optional: only needed for some Cloudflare setups
-acme_cloudflare_zone_id: "replaceme"         # Optional: set when scoping token to a single zone
+acme_plugin_validation_delay: 60
+acme_cloudflare_api_token: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          62653366613431373632396666613564666366393637316634323236373333393237383833343335
+          3839353633643230323961346663323537343035396261340a373033313061663532303834613064
+          35646165373131376334663431633566353539356530653834343035353864613332316636386562
+          3634306136626161660a333335373331613039613066633565363730393335323764303733366539
+          64316332613032626463393330333639316231353939666261326230303765376136366432373765
+          6530643162306639666232393733326633613634383864643833
+acme_cloudflare_account_id: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34646631643637663465336336316231363665653931666133383831346466363033666264366133
+          6439656134336633336530373365656539386332303164610a636263616436313263333563386364
+          33303333656666636464376662383164636562383964346530393431666464316132303734356566
+          3632333539626365380a393264336134376465313631323238326438326335643563666162626331
+          32303737373334633435623136623130356663393831326663646534636565356638333335313139
+          6133383432376461666463303939653465356463613262646562
+acme_cloudflare_zone_id: ""         # Not used on this host
 acme_plugin_data_b64: "{{ [
     ('CF_Token=' ~ acme_cloudflare_api_token) if (acme_cloudflare_api_token | length) > 0 else '',
     ('CF_Account_ID=' ~ acme_cloudflare_account_id) if (acme_cloudflare_account_id | length) > 0 else '',
@@ -61,28 +75,28 @@ logrotate_configs:
 
 # NUT (Network UPS Tools) Configurations
 nut_enabled: true
-nut_mode: "standalone"  # Options: standalone, netserver, netclient
+nut_mode: "standalone"      # Options: standalone, netserver, netclient
 nut_ups_name: "cyberpower"
 nut_ups_driver: "usbhid-ups"
 nut_ups_port: "auto"
 nut_ups_vendor_id: "0764"
-nut_ups_product_id: "0501"
+nut_ups_product_id: "0601"  # PR1500LCDRT2U
 nut_ups_serial: ""
 nut_monitor_user: "upsmon"
 nut_monitor_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
-          63633738353761313066656331643038613534653664626631323632366466636565343737663231
-          3637656537366561323134623534316430366239646632330a626461393236613536613736346564
-          31366435653163616131326361383733666164366661666532623830343739333538613766343563
-          6463633830316336380a353237663061663964336165333335376130306632336534643865353562
-          66616638636536356238623937366462643338636237636662343332666134666235616166613761
-          6437363764313162643038616466336237336563656161353365
-nut_server: "127.0.0.1"  # Only used for netclient mode
+          37336265323136626661623963383338663337353535313166393734376663396162303634356261
+          6633326434303634376635383962643163396366363532610a643033623533626436353565633165
+          32343937356665623235303832636337636464303064393934393266366562376261326332366466
+          6233343932306436350a393439303565336334343432373033653462653135306263623538386432
+          36333761343766313364343262656638326366626631373031323034353362366437313736306632
+          3666353831633035323564646636653138346661653732616138
+nut_server: "127.0.0.1"     # Only used for netclient mode
 
 # Unattended Upgrades Configurations
 apt_include_non_free_firmware: true
 unattended_upgrades_enabled: true
-unattended_upgrades_email: ""  # e.g., "admin@example.com" - Leave empty to disable email
+unattended_upgrades_email: ""                 # e.g., "admin@example.com" - Leave empty to disable email
 unattended_upgrades_mail_report: "on-change"  # Options: always, only-on-error, on-change
 unattended_upgrades_proxmox_updates: false
 unattended_upgrades_auto_reboot: false 
@@ -106,6 +120,11 @@ gpu_blacklist_modules:
   - amdgpu
   - i915
   - xe
+gpu_force_probe_options:
+  - module: i915
+    device_id: "56a6"
+  - module: xe
+    device_id: "56a6"
 enable_iommu: true
 iommu_vendor: 'auto'
 iommu_extra_options: ""
@@ -140,13 +159,14 @@ sysctl_hardening_values:
 # Kernel Lockdown Configurations
 kernel_lockdown_enabled: true
 kernel_lockdown_mode: "integrity"
-kernel_lockdown_sig_enforce: true
-kernel_extra_cmdline_params: []
+kernel_lockdown_sig_enforce: false  # Enable after verifying lockdown=integrity boots cleanly
+kernel_extra_cmdline_params:
+  - "video=efifb:off"
 
 # Terraform Provisioner Configurations
-terraform_prov_role_name: "TerraformProv"
+terraform_prov_role_name: "Terraform"
 terraform_prov_role_privs: "Datastore.AllocateSpace Datastore.AllocateTemplate Datastore.Audit Pool.Allocate Sys.Audit Sys.Console Sys.Modify VM.Allocate VM.Audit VM.Clone VM.Config.CDROM VM.Config.Cloudinit VM.Config.CPU VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Migrate VM.PowerMgmt SDN.Use"
-terraform_prov_username: "terraform-prov@pve"
+terraform_prov_username: "terraform@pve"
 terraform_prov_user_password: ""
 
 # Fail2Ban Configurations
@@ -159,7 +179,7 @@ fail2ban_findtime: "2h"
 fail2ban_bantime: "1h"
 
 # SMTP Relay Configurations
-smtp_relay_enabled: true
+smtp_relay_enabled: false
 smtp_relay_host: ""
 smtp_relay_port: 25
 smtp_relay_use_tls: false
@@ -170,13 +190,16 @@ smtp_relay_password: ""
 # ZFS Tuning Configurations
 zfs_tuning_enabled: true
 zfs_tuning:
-  zfs_arc_max: "48G"
+  zfs_arc_max: 103079215104           # 96 GiB in bytes
+  zfs_arc_min: 34359738368            # 32 GiB in bytes
+  zfs_dirty_data_max: 34359738368     # 32 GiB in bytes
+  zfs_dirty_data_max_percent: 20
+  zfs_dirty_data_sync_percent: 10
   zfs_vdev_aggregation_limit: 1048576
 
 # Antivirus Configurations
 host_antivirus_enabled: true
 host_antivirus_scan_paths:
-  - /var/lib/vz
   - /srv
   - /etc
 clamav_freshclam_update: true

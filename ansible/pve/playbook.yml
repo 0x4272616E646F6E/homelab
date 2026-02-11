@@ -227,11 +227,20 @@
           ansible.builtin.set_fact:
             _acme_node_config: "{{ _acme_node_config_raw.stdout | default('{}', true) | from_json }}"
 
-        - name: Determine ACME domain keys to remove
+        - name: Build desired ACME domain key list
           ansible.builtin.set_fact:
-            _acme_domain_keys_to_remove: "{{ _acme_node_config | dict2items | selectattr('key', 'match', '^acmedomain') | map(attribute='key') | list }}"
+            _acme_desired_domain_keys: "{{ range(0, _acme_domains_normalized | length) | map('regex_replace', '^(.*)$', 'acmedomain\\1') | list }}"
 
-        - name: Remove previously defined ACME domain entries
+        - name: Determine excess ACME domain keys to remove
+          ansible.builtin.set_fact:
+            _acme_domain_keys_to_remove: >-
+              {{ _acme_node_config | dict2items
+                 | selectattr('key', 'match', '^acmedomain')
+                 | map(attribute='key')
+                 | reject('in', _acme_desired_domain_keys)
+                 | list }}
+
+        - name: Remove excess ACME domain entries
           ansible.builtin.command:
             argv:
               - pvesh
@@ -249,7 +258,8 @@
               - set
               - "/nodes/{{ _acme_node_name }}/config"
               - --acme
-              - "account={{ acme_account_name }}{{ (',domains=' ~ _acme_domain_string) if (_acme_domain_string | length) > 0 else '' }}"
+              - "account={{ acme_account_name }}"
+          when: (_acme_node_config.acme | default('')) != 'account=' ~ acme_account_name
           changed_when: true
 
         - name: Configure ACME domain-specific plugins
@@ -268,6 +278,7 @@
             loop_var: acme_domain
             index_var: acme_domain_index
             label: "{{ acme_domain.domain }}"
+          when: acme_domain.domain not in (_acme_node_config['acmedomain' ~ acme_domain_index] | default(''))
           changed_when: true
 
         - name: Order/renew ACME certificate for node
@@ -275,8 +286,10 @@
               'pvesh set /nodes/' ~ _acme_node_name ~ '/certificates/acme/certificate',
               '--force 1' if acme_force_renew else ''
             ] | reject('equalto', '') | join(' ') }}"
+          register: _acme_order_result
+          failed_when: _acme_order_result.rc != 0 and 'does not expire within the next 30 days' not in (_acme_order_result.stderr | default(''))
+          changed_when: _acme_order_result.rc == 0
           when: not ansible_check_mode
-          changed_when: true
 
     - name: Initialize kernel command line parameter list
       ansible.builtin.set_fact:
@@ -321,14 +334,14 @@
       when: nut_enabled
       notify: Restart nut-client
 
-    - name: Configure NUT upsmon for netclient mode
+    - name: Configure NUT upsmon
       ansible.builtin.template:
         src: templates/nut/upsmon.conf.j2
         dest: /etc/nut/upsmon.conf
         owner: root
         group: nut
         mode: '0640'
-      when: nut_enabled and nut_mode == 'netclient'
+      when: nut_enabled and nut_mode in ['standalone', 'netclient']
       notify: Restart nut-client
 
     - name: Configure NUT ups.conf for standalone/netserver mode
@@ -388,7 +401,7 @@
 
     - name: Add Proxmox no-subscription repository
       ansible.builtin.apt_repository:
-        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription"
+        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription{{ ' non-free-firmware' if apt_include_non_free_firmware else '' }}"
         state: present
         filename: pve-no-subscription
       when: ansible_facts['distribution'] == 'Debian'
@@ -428,29 +441,18 @@
       when: gpu_passthrough_enabled
       notify: Update initramfs
 
-    - name: Ensure apt sources include non-free-firmware for Proxmox
-      when: apt_include_non_free_firmware
-      block:
-        - name: Read pve sources file (if exists)
-          ansible.builtin.slurp:
-            src: /etc/apt/sources.list.d/pve-no-subscription.list
-          register: _pve_sources
-          failed_when: false
-
-        - name: Add non-free-firmware to pve-no-subscription repo line if missing
-          ansible.builtin.replace:
-            path: /etc/apt/sources.list.d/pve-no-subscription.list
-            regexp: "(deb .* pve-no-subscription)"
-            replace: '\\1 non-free-firmware'
-          when: _pve_sources is defined and _pve_sources.content is defined
-
-        - name: Apt-get update after changing repo
-          ansible.builtin.apt:
-            update_cache: true
+    - name: Update apt cache after repository changes
+      ansible.builtin.apt:
+        update_cache: true
 
     - name: Deploy audit rules for Proxmox config
       when: audit_pve_rules_enabled or auditd_hardening_enabled
       block:
+        - name: Install auditd
+          ansible.builtin.apt:
+            name: auditd
+            state: present
+
         - name: Create audit rules file for /etc/pve
           ansible.builtin.template:
             src: templates/audit/90-pve.rules.j2
@@ -469,15 +471,8 @@
             mode: '0644'
           when: auditd_hardening_enabled
 
-        - name: Load audit rules via augenrules if available
-          ansible.builtin.command: augenrules --load
-          register: _augen
-          failed_when: false
-          changed_when: false
-
-        - name: Fallback - rebuild /etc/audit/audit.rules from rules.d
+        - name: Load audit rules via augenrules
           ansible.builtin.command: /sbin/augenrules --load
-          register: _augen_fallback
           failed_when: false
           changed_when: false
 
@@ -490,7 +485,7 @@
           changed_when: _auditd_restart is defined and _auditd_restart.state is defined and _auditd_restart.state == 'restarted'
 
         - name: Verify audit rule present
-          ansible.builtin.command: auditctl -l | grep pve-config
+          ansible.builtin.shell: auditctl -l | grep pve-config
           register: _audit_verify
           failed_when: false
           changed_when: false
@@ -526,16 +521,15 @@
             owner: root
             group: root
             mode: '0644'
+          register: _pve_exporter_unit
+          notify: Reload systemd daemon
 
-        - name: Reload systemd and enable pve_exporter
+        - name: Enable and start pve_exporter
           ansible.builtin.systemd:
-            daemon_reload: true
             name: pve_exporter
             enabled: true
             state: started
-          register: _pve_exporter_systemd
           failed_when: false
-          changed_when: _pve_exporter_systemd is defined and (_pve_exporter_systemd.state | default('')) == 'started'
 
 
     - name: Install and configure Fail2Ban
@@ -586,6 +580,7 @@
             owner: root
             group: root
             mode: '0644'
+          notify: Restart postfix
 
         - name: Deploy sasl_passwd if auth enabled
           ansible.builtin.template:
@@ -595,16 +590,12 @@
             group: root
             mode: '0600'
           when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
+          notify: Restart postfix
 
         - name: Postmap sasl_passwd if auth enabled
           ansible.builtin.command: postmap /etc/postfix/sasl_passwd
           when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
           changed_when: false
-
-        - name: Restart postfix
-          ansible.builtin.systemd:
-            name: postfix
-            state: restarted
     - name: Apply ZFS tunables
       when: zfs_tuning_enabled
       block:
@@ -724,12 +715,7 @@
 
     - name: Determine CPU vendor for IOMMU (if auto)
       ansible.builtin.set_fact:
-        _detected_cpu_vendor: >-
-          {% if 'Intel' in ansible_facts['processor'] | join(' ') or ansible_facts['vendor_id'] == 'GenuineIntel' %}
-          intel
-          {% else %}
-          amd
-          {% endif %}
+        _detected_cpu_vendor: "{{ 'intel' if ('Intel' in ansible_facts['processor'] | join(' ') or ansible_facts['vendor_id'] == 'GenuineIntel') else 'amd' }}"
       when: enable_iommu and iommu_vendor == 'auto'
 
     - name: Set IOMMU kernel base param for Intel
@@ -788,35 +774,71 @@
       notify: Update-grub
 
     - name: Check if Terraform role exists
-      ansible.builtin.command: pveum role list
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - role
+          - list
       register: pveum_roles
       changed_when: false
 
     - name: Create Terraform role if missing
-      ansible.builtin.command: pveum role add {{ terraform_prov_role_name }} -privs "{{ terraform_prov_role_privs }}"
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - role
+          - add
+          - "{{ terraform_prov_role_name }}"
+          - -privs
+          - "{{ terraform_prov_role_privs }}"
       when: terraform_prov_role_name not in (pveum_roles.stdout | default(''))
-      changed_when: terraform_prov_role_name not in (pveum_roles.stdout | default(''))
+      changed_when: true
 
     - name: Check if Terraform user exists
-      ansible.builtin.command: pveum user list
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - user
+          - list
       register: pveum_users
       changed_when: false
 
     - name: Create Terraform user if missing
-      ansible.builtin.command: pveum user add {{ terraform_prov_username }} --password '{{ terraform_prov_user_password }}'
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - user
+          - add
+          - "{{ terraform_prov_username }}"
+          - --password
+          - "{{ terraform_prov_user_password }}"
       when: terraform_prov_username not in (pveum_users.stdout | default('')) and terraform_prov_user_password != ''
-      changed_when: terraform_prov_username not in (pveum_users.stdout | default(''))
+      changed_when: true
+      no_log: true
 
     - name: Check ACL for Terraform user at /
-      ansible.builtin.command: pveum acl list /
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - acl
+          - list
+          - /
       register: pveum_acls
       changed_when: false
       when: terraform_prov_username != '' and terraform_prov_user_password != ''
 
     - name: Add ACL for Terraform user at root if missing
-      ansible.builtin.command: pveum aclmod / -user {{ terraform_prov_username }} -role {{ terraform_prov_role_name }}
+      ansible.builtin.command:
+        argv:
+          - pveum
+          - aclmod
+          - /
+          - -user
+          - "{{ terraform_prov_username }}"
+          - -role
+          - "{{ terraform_prov_role_name }}"
       when:
         - terraform_prov_username != ''
         - terraform_prov_user_password != ''
         - terraform_prov_username not in (pveum_acls.stdout | default(''))
-      changed_when: terraform_prov_username not in (pveum_acls.stdout | default(''))
+      changed_when: true

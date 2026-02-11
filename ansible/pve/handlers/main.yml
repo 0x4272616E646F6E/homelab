@@ -45,3 +45,13 @@
 - name: Update-grub
   ansible.builtin.command: update-grub
   changed_when: false
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart postfix
+  ansible.builtin.systemd:
+    name: postfix
+    state: restarted
+  when: not ansible_check_mode
