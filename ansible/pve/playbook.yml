@@ -405,12 +405,15 @@
         path: /etc/apt/sources.list.d/debian.sources
         state: absent
 
-    - name: Disable enterprise repository warning
-      ansible.builtin.replace:
-        path: /etc/apt/sources.list.d/pve-enterprise.list
-        regexp: '^deb'
-        replace: '#deb'
-      failed_when: false
+    - name: Remove installer-managed apt sources to avoid duplicates
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/sources.list.d/proxmox.sources
+        - /etc/apt/sources.list.d/pve-enterprise.sources
+        - /etc/apt/sources.list.d/pve-enterprise.list
+        - /etc/apt/sources.list.d/pve-no-subscription.list
 
     - name: Remove installer-managed proxmox.sources to avoid duplicates
       ansible.builtin.file:
@@ -418,10 +421,12 @@
         state: absent
 
     - name: Add Proxmox no-subscription repository
-      ansible.builtin.apt_repository:
-        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription"
-        state: present
-        filename: pve-no-subscription
+      ansible.builtin.copy:
+        content: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription\n"
+        dest: /etc/apt/sources.list.d/pve-no-subscription.list
+        owner: root
+        group: root
+        mode: '0644'
       when: ansible_facts['distribution'] == 'Debian'
 
     - name: Install unattended-upgrades package
