@@ -392,6 +392,19 @@
         state: started
       when: nut_enabled and nut_mode == 'netserver'
 
+    - name: Configure Debian base repositories with non-free-firmware
+      ansible.builtin.template:
+        src: templates/apt/sources.list.j2
+        dest: /etc/apt/sources.list
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Remove DEB822 Debian sources to avoid duplicates
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/debian.sources
+        state: absent
+
     - name: Disable enterprise repository warning
       ansible.builtin.replace:
         path: /etc/apt/sources.list.d/pve-enterprise.list
@@ -399,9 +412,14 @@
         replace: '#deb'
       failed_when: false
 
+    - name: Remove installer-managed proxmox.sources to avoid duplicates
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/proxmox.sources
+        state: absent
+
     - name: Add Proxmox no-subscription repository
       ansible.builtin.apt_repository:
-        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription{{ ' non-free-firmware' if apt_include_non_free_firmware else '' }}"
+        repo: "deb http://download.proxmox.com/debian/pve {{ ansible_facts['distribution_release'] }} pve-no-subscription"
         state: present
         filename: pve-no-subscription
       when: ansible_facts['distribution'] == 'Debian'

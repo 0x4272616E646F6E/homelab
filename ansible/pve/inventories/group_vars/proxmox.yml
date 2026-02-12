@@ -94,7 +94,6 @@ nut_monitor_password: !vault |
 nut_server: "127.0.0.1"     # Only used for netclient mode
 
 # Unattended Upgrades Configurations
-apt_include_non_free_firmware: true
 unattended_upgrades_enabled: true
 unattended_upgrades_email: ""                 # e.g., "admin@example.com" - Leave empty to disable email
 unattended_upgrades_mail_report: "on-change"  # Options: always, only-on-error, on-change
