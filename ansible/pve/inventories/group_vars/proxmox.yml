@@ -91,7 +91,7 @@ nut_monitor_password: !vault |
           6233343932306436350a393439303565336334343432373033653462653135306263623538386432
           36333761343766313364343262656638326366626631373031323034353362366437313736306632
           3666353831633035323564646636653138346661653732616138
-nut_server: "127.0.0.1"     # Only used for netclient mode
+nut_server: "127.0.0.1"     # Localhost for standalone mode
 
 # Unattended Upgrades Configurations
 unattended_upgrades_enabled: true
@@ -129,6 +129,12 @@ iommu_vendor: 'auto'
 iommu_extra_options: ""
 iommu_update_grub: true
 iommu_require_reboot: true
+vfio_pci_ids:
+  - "8086:56a6"    # Intel Arc A-Series GPU
+vfio_modules:
+  - vfio
+  - vfio_iommu_type1
+  - vfio_pci
 
 # Sysctl Hardening Configurations
 sysctl_hardening_enabled: true
@@ -154,6 +160,7 @@ sysctl_hardening_values:
   net.ipv6.conf.default.accept_redirects: 0
   vm.mmap_rnd_bits: 32
   vm.mmap_rnd_compat_bits: 16
+  vm.swappiness: 1
 
 # Kernel Lockdown Configurations
 kernel_lockdown_enabled: true

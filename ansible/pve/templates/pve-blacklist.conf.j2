@@ -12,4 +12,9 @@ blacklist {{ module }}
 options {{ opt.module }} force_probe={{ opt.device_id }}
 {% endfor %}
 {% endif %}
+
+{% if vfio_pci_ids | default([]) | length > 0 %}
+# Bind devices to vfio-pci driver for passthrough
+options vfio-pci ids={{ vfio_pci_ids | join(',') }}
+{% endif %}
 {% endif %}

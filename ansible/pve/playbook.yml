@@ -460,6 +460,26 @@
       when: gpu_passthrough_enabled
       notify: Update initramfs
 
+    - name: Ensure VFIO modules load at boot
+      ansible.builtin.lineinfile:
+        path: /etc/modules
+        line: "{{ item }}"
+        create: true
+        owner: root
+        group: root
+        mode: '0644'
+      loop: "{{ vfio_modules | default([]) }}"
+      when: gpu_passthrough_enabled and (vfio_modules | default([]) | length > 0)
+      notify: Update initramfs
+
+    - name: Remove PVE subscription nag from web UI
+      ansible.builtin.replace:
+        path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+        regexp: "checked_command: function\\(orig_cmd\\)"
+        replace: "checked_command: function(orig_cmd) { orig_cmd(); return; }, _unused_checked_command: function(orig_cmd)"
+      failed_when: false
+      notify: Restart pveproxy
+
     - name: Update apt cache after repository changes
       ansible.builtin.apt:
         update_cache: true
@@ -663,12 +683,14 @@
             path: /etc/clamav/freshclam.conf
             regexp: '^#?NotifyClamd'
             line: 'NotifyClamd /etc/clamav/clamd.conf'
+            mode: '0644'
 
         - name: Ensure clamd socket is accessible
           ansible.builtin.lineinfile:
             path: /etc/clamav/clamd.conf
             regexp: '^#?LocalSocketMode'
             line: 'LocalSocketMode 666'
+            mode: '0644'
           notify: Restart clamav-daemon
 
         - name: Enable and start clamav-daemon
@@ -809,6 +831,7 @@
         regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
         line: "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet{{ ' ' + _kernel_cmdline_combined if (_kernel_cmdline_combined | default('') | length) > 0 else '' }}\""
         backup: true
+        mode: '0644'
       when: (_kernel_cmdline_params | default([])) | length > 0
       notify: Update-grub
 

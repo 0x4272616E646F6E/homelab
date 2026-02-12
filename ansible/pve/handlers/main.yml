@@ -61,3 +61,9 @@
     name: clamav-daemon
     state: restarted
   when: not ansible_check_mode
+
+- name: Restart pveproxy
+  ansible.builtin.systemd:
+    name: pveproxy
+    state: restarted
+  when: not ansible_check_mode
