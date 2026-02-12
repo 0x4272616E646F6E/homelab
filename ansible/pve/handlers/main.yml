@@ -55,3 +55,9 @@
     name: postfix
     state: restarted
   when: not ansible_check_mode
+
+- name: Restart clamav-daemon
+  ansible.builtin.systemd:
+    name: clamav-daemon
+    state: restarted
+  when: not ansible_check_mode

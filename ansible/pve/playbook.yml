@@ -645,6 +645,13 @@
             regexp: '^#?NotifyClamd'
             line: 'NotifyClamd /etc/clamav/clamd.conf'
 
+        - name: Ensure clamd socket is accessible
+          ansible.builtin.lineinfile:
+            path: /etc/clamav/clamd.conf
+            regexp: '^#?LocalSocketMode'
+            line: 'LocalSocketMode 666'
+          notify: Restart clamav-daemon
+
         - name: Enable and start clamav-daemon
           ansible.builtin.systemd:
             name: clamav-daemon

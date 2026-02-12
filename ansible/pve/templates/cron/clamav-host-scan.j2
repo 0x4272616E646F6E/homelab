@@ -7,7 +7,7 @@ SCAN_PATHS="{{ host_antivirus_scan_paths | join(' ') }}"
 
 if [ "$FRESHCLAM" = "true" ]; then
   # update signatures first (best effort)
-  freshclam || true
+  freshclam >>/var/log/clamav-host-scan.log 2>&1 || true
 fi
 
-clamdscan $SCAN_OPTS $SCAN_PATHS >/var/log/clamav-host-scan.log 2>&1 || true
+clamdscan $SCAN_OPTS $SCAN_PATHS >>/var/log/clamav-host-scan.log 2>&1 || true
