@@ -4,89 +4,112 @@ metadata:
   name: qbittorrent-port-forward-sync
   namespace: media
 data:
-  qb_port_sync.py: |
-    #!/usr/bin/env python3
-    import os, time, re, json, subprocess, requests, sys
+  qb_port_sync.nu: |
+    #!/usr/bin/env nu
 
-    GATEWAY   = os.getenv("GATEWAY", "10.2.0.1")  # Proton NAT-PMP gateway inside WG tunnel
-    LEASE     = int(os.getenv("LEASE", "60"))     # seconds; Proton mappings expire fast
-    REFRESH   = max(10, LEASE - 15)
-    QB_HOST   = os.getenv("QB_HOST", "127.0.0.1")
-    QB_PORT   = int(os.getenv("QB_PORT", "8080")) # qB WebUI/API port
-    QB_USER   = os.getenv("QB_USER", "")
-    QB_PASS   = os.getenv("QB_PASS", "")
-    STATE     = os.getenv("STATE_FILE", "/run/protonvpn-forwarded-port")
-    BASE      = f"http://{QB_HOST}:{QB_PORT}/api/v2"
+    # qBittorrent NAT-PMP Port Forward Sync
+    # Refreshes ProtonVPN NAT-PMP port mapping and updates qBittorrent listen port
 
-    def get_forwarded_port():
-        # Request random public UDP port; parse natpmpc output
-        # Note: Use -a 1 0 (not -a 0 0) - Proton requires public port=1 for auto-assignment
-        try:
-            out = subprocess.run(
-                ["natpmpc","-a","1","0","udp",str(LEASE),"-g",GATEWAY],
-                capture_output=True, text=True, timeout=15
-            ).stdout
-            m = re.search(r"Mapped public port (\d+)", out)
-            return int(m.group(1)) if m else None
-        except subprocess.TimeoutExpired:
-            print("[qb-sync] ERROR: natpmpc timed out after 15 seconds", file=sys.stderr, flush=True)
-            return None
-        except Exception as e:
-            print(f"[qb-sync] ERROR: natpmpc failed: {e}", file=sys.stderr)
-            return None
+    def get-forwarded-port [gateway: string, lease: int]: nothing -> int {
+        try {
+            let result = (^natpmpc -a 1 0 udp $"($lease)" -g $gateway | complete)
+            if $result.exit_code != 0 {
+                print -e $"[qb-sync] ERROR: natpmpc exited with ($result.exit_code)"
+                return 0
+            }
+            let matches = ($result.stdout | parse --regex 'Mapped public port (?P<port>\d+)')
+            if ($matches | is-empty) {
+                print -e "[qb-sync] ERROR: no port in natpmpc output"
+                return 0
+            }
+            $matches | first | get port | into int
+        } catch {|e|
+            print -e $"[qb-sync] ERROR: natpmpc failed: ($e.msg)"
+            0
+        }
+    }
 
-    def qb_login(sess: requests.Session):
-        r = sess.post(f"{BASE}/auth/login",
-                      data={"username": QB_USER, "password": QB_PASS}, timeout=5)
-        r.raise_for_status()
-        if r.text.strip() != "Ok.":
-            raise RuntimeError("qB auth failed")
+    def qb-login [base: string, user: string, pass: string]: nothing -> string {
+        let url = $"($base)/auth/login"
+        let resp = (http post --full --content-type "application/x-www-form-urlencoded" $url {username: $user, password: $pass})
+        if ($resp.body | str trim) != "Ok." {
+            error make {msg: "qB auth failed"}
+        }
+        let cookies = ($resp.headers | where name == "set-cookie")
+        if ($cookies | is-not-empty) {
+            $cookies | first | get value
+        } else {
+            ""
+        }
+    }
 
-    def qb_set_listen_port(sess: requests.Session, port: int):
-        prefs = {"listen_port": port}
-        r = sess.post(f"{BASE}/app/setPreferences",
-                      data={"json": json.dumps(prefs)}, timeout=5)
-        r.raise_for_status()
+    def qb-set-listen-port [base: string, port: int, cookie: string] {
+        let prefs = ({listen_port: $port} | to json)
+        let url = $"($base)/app/setPreferences"
+        if ($cookie | is-not-empty) {
+            http post --content-type "application/x-www-form-urlencoded" --headers [cookie $cookie] $url {json: $prefs} | ignore
+        } else {
+            http post --content-type "application/x-www-form-urlencoded" $url {json: $prefs} | ignore
+        }
+    }
 
-    def write_state(p: int):
-        try:
-            os.makedirs(os.path.dirname(STATE), exist_ok=True)
-            with open(STATE, "w") as f: f.write(str(p))
-        except Exception as e:
-            print(f"[qb-sync] warn: cannot write state file: {e}", file=sys.stderr)
+    def write-state [path: string, port: int] {
+        try {
+            mkdir ($path | path dirname)
+            $"($port)" | save -f $path
+        } catch {|e|
+            print -e $"[qb-sync] warn: cannot write state file: ($e.msg)"
+        }
+    }
 
-    def main():
-        last = None
-        s = requests.Session()
-        # Skip login if no credentials provided; if creds present, attempt login but continue without auth on failure
-        if QB_USER and QB_PASS:
-            try:
-                qb_login(s)
-            except Exception as e:
-                print(f"[qb-sync] ERROR qB login failed: {e}", file=sys.stderr, flush=True)
-                print("[qb-sync] continuing without auth", file=sys.stderr, flush=True)
-        else:
-            print("[qb-sync] no QB credentials provided; skipping login", file=sys.stderr, flush=True)
+    def main [] {
+        let gateway = ($env | get -o GATEWAY | default "10.2.0.1")
+        let lease = ($env | get -o LEASE | default "60" | into int)
+        let refresh = ([10 ($lease - 15)] | math max)
+        let qb_host = ($env | get -o QB_HOST | default "127.0.0.1")
+        let qb_port = ($env | get -o QB_PORT | default "8080")
+        let qb_user = ($env | get -o QB_USER | default "")
+        let qb_pass = ($env | get -o QB_PASS | default "")
+        let state_file = ($env | get -o STATE_FILE | default "/run/protonvpn-forwarded-port")
+        let base = $"http://($qb_host):($qb_port)/api/v2"
 
-        print("[qb-sync] started", flush=True)
-        print("[qb-sync] using Cilium egress gateway for routing", flush=True)
-        while True:
-            p = get_forwarded_port()
-            if p and p > 0:
-                if p != last:
-                    print(f"[qb-sync] new forwarded port: {p}", flush=True)
-                    try:
-                        qb_set_listen_port(s, p)
-                        write_state(p)
-                        last = p
-                        print("[qb-sync] qBittorrent updated OK", flush=True)
-                    except Exception as e:
-                        print(f"[qb-sync] ERROR updating qB: {e}", file=sys.stderr, flush=True)
-                else:
-                    print(f"[qb-sync] port unchanged: {p}", flush=True)
-            else:
-                print("[qb-sync] no NAT-PMP reply; will retry", flush=True)
-            time.sleep(REFRESH)
+        mut cookie = ""
+        if ($qb_user | is-not-empty) and ($qb_pass | is-not-empty) {
+            try {
+                $cookie = (qb-login $base $qb_user $qb_pass)
+            } catch {|e|
+                print -e $"[qb-sync] ERROR qB login failed: ($e.msg)"
+                print -e "[qb-sync] continuing without auth"
+            }
+        } else {
+            print -e "[qb-sync] no QB credentials provided; skipping login"
+        }
 
-    if __name__ == "__main__":
-        main()
+        print "[qb-sync] started"
+        print "[qb-sync] using Cilium egress gateway for routing"
+
+        mut last_port = 0
+        loop {
+            let port = (get-forwarded-port $gateway $lease)
+            if $port > 0 {
+                if $port != $last_port {
+                    print $"[qb-sync] new forwarded port: ($port)"
+                    try {
+                        qb-set-listen-port $base $port $cookie
+                        write-state $state_file $port
+                        $last_port = $port
+                        print "[qb-sync] qBittorrent updated OK"
+                    } catch {|e|
+                        print -e $"[qb-sync] ERROR updating qB: ($e.msg)"
+                    }
+                } else {
+                    print $"[qb-sync] port unchanged: ($port)"
+                }
+            } else {
+                print "[qb-sync] no NAT-PMP reply; will retry"
+            }
+            sleep ($refresh * 1sec)
+        }
+    }
+
+    main

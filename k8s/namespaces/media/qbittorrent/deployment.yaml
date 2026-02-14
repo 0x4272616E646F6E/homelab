@@ -81,16 +81,13 @@ spec:
               mountPath: /downloads
               subPath: downloads
         - name: port-forward-sync
-          # renovate: datasource=docker depName=python
-          image: python:3.14-slim@sha256:486b8092bfb12997e10d4920897213a06563449c951c5506c2a2cfaf591c599f
+          # renovate: datasource=docker depName=ghcr.io/nushell/nushell
+          image: ghcr.io/nushell/nushell:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
-              apt-get update && \
-              apt-get install -y --no-install-recommends natpmpc && \
-              rm -rf /var/lib/apt/lists/* && \
-              pip install --no-cache-dir requests && \
-              python3 /scripts/qb_port_sync.py
+              apk add --no-cache libnatpmp && \
+              nu /scripts/qb_port_sync.nu
           env:
             - name: GATEWAY
               value: "10.2.0.1"

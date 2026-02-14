@@ -28,14 +28,17 @@
             zsh-syntax-highlighting
 
             # Core packages
+            age
             curl
             git
+            jq
+            nushell
             vim
             wget
+            yq-go
 
             # Homelab packages
             ansible
-            checkov
             fluxcd
             kubeconform
             kubectl
