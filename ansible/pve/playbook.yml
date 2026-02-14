@@ -366,14 +366,14 @@
       when: nut_enabled and nut_mode == 'netserver'
       notify: Restart nut-server
 
-    - name: Configure NUT users for netserver mode
+    - name: Configure NUT users for standalone/netserver mode
       ansible.builtin.template:
         src: templates/nut/upsd.users.j2
         dest: /etc/nut/upsd.users
         owner: root
         group: nut
         mode: '0640'
-      when: nut_enabled and nut_mode == 'netserver'
+      when: nut_enabled and nut_mode in ['standalone', 'netserver']
       notify: Restart nut-server
 
     - name: Enable and start NUT client service
@@ -539,19 +539,25 @@
     - name: Install and configure pve_exporter for Prometheus
       when: pve_exporter_enabled
       block:
-        - name: Try to install pve-exporter package from apt
+        - name: Install python3-venv for pve_exporter
           ansible.builtin.apt:
-            name: pve-exporter
+            name: python3-venv
             state: present
-          register: _pve_exporter_pkg
-          failed_when: false
 
-        - name: Download pve_exporter binary if package not available
-          ansible.builtin.get_url:
-            url: "https://github.com/prometheus-community/pve_exporter/releases/{{ pve_exporter_version }}/download/pve_exporter-linux-amd64"
-            dest: /usr/local/bin/pve_exporter
+        - name: Create pve_exporter virtualenv directory
+          ansible.builtin.file:
+            path: /opt/pve_exporter
+            state: directory
+            owner: root
+            group: root
             mode: '0755'
-          when: _pve_exporter_pkg is defined and _pve_exporter_pkg.failed
+
+        - name: Install prometheus-pve-exporter in virtualenv
+          ansible.builtin.pip:
+            name: "prometheus-pve-exporter"
+            state: present
+            virtualenv: /opt/pve_exporter/venv
+            virtualenv_command: python3 -m venv
 
         - name: Deploy pve_exporter systemd unit
           ansible.builtin.template:
@@ -560,7 +566,6 @@
             owner: root
             group: root
             mode: '0644'
-          register: _pve_exporter_unit
           notify: Reload systemd daemon
 
         - name: Enable and start pve_exporter
@@ -568,7 +573,6 @@
             name: pve_exporter
             enabled: true
             state: started
-          failed_when: false
 
 
     - name: Install and configure Fail2Ban
