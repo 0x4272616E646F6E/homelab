@@ -1,0 +1,32 @@
+---
+- name: Get existing VPN servers
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/vpn/servers"
+    method: GET
+  register: _existing_vpn_raw
+
+- name: Set existing VPN servers fact
+  ansible.builtin.set_fact:
+    _existing_vpn: "{{ _existing_vpn_raw.response.data }}"
+
+- name: Check for existing WireGuard server
+  ansible.builtin.set_fact:
+    _wg_server: >-
+      {{ _existing_vpn | selectattr('type', 'equalto', 'WIREGUARD') | list | first | default(None) }}
+
+- name: Display VPN server status
+  ansible.builtin.debug:
+    msg: >-
+      WireGuard VPN: {{ 'exists (id=' + _wg_server.id + ')' if _wg_server else 'not found' }}
+
+- name: Create WireGuard VPN server
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/vpn/servers"
+    method: POST
+    body:
+      name: "{{ unifi_vpn_server.name }}"
+      type: "{{ unifi_vpn_server.type }}"
+      enabled: "{{ unifi_vpn_server.enabled }}"
+  when:
+    - unifi_vpn_server.enabled
+    - _wg_server is none

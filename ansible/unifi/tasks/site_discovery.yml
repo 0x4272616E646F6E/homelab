@@ -1,0 +1,14 @@
+---
+- name: Get sites
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites"
+    method: GET
+  register: _sites_response
+
+- name: Set site_id fact
+  ansible.builtin.set_fact:
+    site_id: "{{ _sites_response.response.data[0].id }}"
+
+- name: Display site ID
+  ansible.builtin.debug:
+    msg: "Using site: {{ _sites_response.response.data[0].name }} ({{ site_id }})"

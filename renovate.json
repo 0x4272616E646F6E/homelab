@@ -23,8 +23,7 @@
     "managerFilePatterns": [
       "/(^|/)namespaces/.+\\.ya?ml$/",
       "/(^|/)clusters/.+\\.ya?ml$/",
-      "/(^|/)talos/.+\\.ya?ml$/",
-      "/(^|/).+\\.ya?ml$/"
+      "/(^|/)talos/.+\\.ya?ml$/"
     ]
   },
   "helm-values": {
@@ -64,131 +63,45 @@
   ],
   "packageRules": [
     {
-      "matchManagers": [
-        "kubernetes"
-      ],
-      "labels": [
-        "deps",
-        "container"
-      ]
+      "description": "Label container image updates",
+      "matchManagers": ["kubernetes", "helm-values"],
+      "labels": ["deps", "container"]
     },
     {
-      "matchManagers": [
-        "helm-values"
-      ],
-      "labels": [
-        "deps",
-        "container"
-      ]
+      "description": "Label Helm chart updates",
+      "matchManagers": ["custom.regex"],
+      "labels": ["deps", "helm"]
     },
     {
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "labels": [
-        "deps",
-        "helm"
-      ]
-    },
-    {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "labels": [
-        "deps",
-        "github-actions"
-      ]
-    },
-    {
-      "description": "Pin GitHub Actions to commit SHAs for security",
-      "matchManagers": [
-        "github-actions"
-      ],
+      "description": "Pin and label GitHub Actions",
+      "matchManagers": ["github-actions"],
       "pinDigests": true,
-      "labels": [
-        "deps",
-        "github-actions",
-        "digest"
-      ]
+      "labels": ["deps", "github-actions"]
     },
     {
-      "description": "Keep lscr.io/linuxserver/jellyfin on semver tags; ignore non-semver/date-style tags",
-      "matchManagers": ["kubernetes", "custom.regex"],
+      "description": "Pin all container image digests",
       "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "lscr.io/linuxserver/jellyfin"
-      ],
+      "pinDigests": true
+    },
+    {
+      "description": "Auto-merge minor, patch, and digest updates",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Keep Jellyfin on semver tags only",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["lscr.io/linuxserver/jellyfin"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(?:[-.+].*)?$/"
     },
     {
-      "description": "Keep lscr.io/linuxserver/nzbget on versioned + YYYYMMDD tags; ignore legacy 2021.* date tags",
-      "matchManagers": ["kubernetes", "custom.regex"],
+      "description": "Keep nzbget on versioned+date tags only",
       "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "lscr.io/linuxserver/nzbget"
-      ],
+      "matchPackageNames": ["lscr.io/linuxserver/nzbget"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d{8}(?:[-.+].*)?$/"
     },
     {
-      "matchManagers": [
-        "kubernetes"
-      ],
-      "matchUpdateTypes": [
-        "patch"
-      ],
-      "automerge": true
-    },
-    {
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor"
-      ],
-      "automerge": true
-    },
-    {
-      "matchManagers": [
-        "github-actions"
-      ],
-      "matchUpdateTypes": [
-        "patch",
-        "minor"
-      ],
-      "automerge": true
-    },
-    {
-      "description": "Pin image digests in Kubernetes manifests",
-      "matchManagers": [
-        "kubernetes"
-      ],
-      "matchDatasources": [
-        "docker"
-      ],
-      "pinDigests": true,
-      "labels": [
-        "deps",
-        "container",
-        "digest"
-      ]
-    },
-    {
-      "description": "Auto-merge digest refreshes (safe, no tag change)",
-      "matchManagers": [
-        "kubernetes"
-      ],
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchUpdateTypes": [
-        "digest"
-      ],
-      "automerge": true
-    },
-    {
-      "description": "Lock Postgres to 17.x only in selected files",
-      "matchManagers": ["kubernetes"],
+      "description": "Lock Postgres to 17.x in SonarQube",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "postgres",
@@ -200,23 +113,6 @@
         "k8s/namespaces/development/sonarqube/postgres/statefulset.yaml"
       ],
       "allowedVersions": "/^17\\.6(\\.\\d+.*)?$/"
-    },
-    {
-      "description": "Auto-merge minor updates for trusted managers",
-      "matchManagers": [
-        "kubernetes",
-        "helm-values",
-        "custom.regex"
-      ],
-      "matchUpdateTypes": [
-        "minor"
-      ],
-      "automerge": true,
-      "labels": [
-        "automerge",
-        "minor",
-        "digest"
-      ]
     }
   ]
 }

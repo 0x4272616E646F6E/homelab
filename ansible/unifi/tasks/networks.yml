@@ -1,0 +1,52 @@
+---
+- name: Get existing networks
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/networks"
+    method: GET
+  register: _existing_networks_raw
+
+- name: Set existing networks fact
+  ansible.builtin.set_fact:
+    _existing_networks: "{{ _existing_networks_raw.response.data }}"
+
+- name: Build existing network name list
+  ansible.builtin.set_fact:
+    _existing_network_names: "{{ _existing_networks | map(attribute='name') | list }}"
+
+- name: Build existing network lookup by name
+  ansible.builtin.set_fact:
+    _existing_network_map: >-
+      {{ dict(_existing_networks | map(attribute='name') | zip(_existing_networks)) }}
+
+- name: "Create network — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/networks"
+    method: POST
+    body:
+      name: "{{ item.name }}"
+      vlanId: "{{ item.vlanId }}"
+      management: "{{ item.management }}"
+      enabled: "{{ item.enabled }}"
+  loop: "{{ unifi_networks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.name not in _existing_network_names
+
+- name: "Update network — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/networks/{{ _existing_network_map[item.name].id }}"
+    method: PUT
+    body:
+      name: "{{ item.name }}"
+      vlanId: "{{ item.vlanId }}"
+      management: "{{ item.management }}"
+      enabled: "{{ item.enabled }}"
+  loop: "{{ unifi_networks }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.name in _existing_network_names
+    - >-
+      _existing_network_map[item.name].vlanId | default(0) | int != item.vlanId | int
+      or _existing_network_map[item.name].management | default('') != item.management
+      or _existing_network_map[item.name].enabled | default(true) != item.enabled

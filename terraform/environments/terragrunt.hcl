@@ -5,5 +5,6 @@ include "root" {
 source = "../modules"
 
 inputs = {
-  environment = "terragrunt"
+  environment           = "terragrunt"
+  wireguard_private_key = local.wireguard_private_key
 }

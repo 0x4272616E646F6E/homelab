@@ -1,0 +1,18 @@
+---
+- name: Login to UniFi legacy API
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/api/auth/login"
+    method: POST
+    body_format: json
+    body:
+      username: "{{ unifi_username }}"
+      password: "{{ unifi_password }}"
+    validate_certs: false
+    status_code: 200
+  register: _login_response
+  no_log: true
+
+- name: Store legacy API auth cookies
+  ansible.builtin.set_fact:
+    _legacy_cookies: "{{ _login_response.cookies_string }}"
+    _legacy_csrf: "{{ _login_response.set_cookie | regex_search('csrf_token=([^;]+)', '\\1') | first | default('') }}"

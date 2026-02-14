@@ -1,0 +1,109 @@
+---
+- name: Get existing WLANs
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/wlanconf"
+    method: GET
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+    validate_certs: false
+  register: _existing_wlans_raw
+
+- name: Set existing WLANs fact
+  ansible.builtin.set_fact:
+    _existing_wlans: "{{ _existing_wlans_raw.json.data }}"
+
+- name: Build existing WLAN name list
+  ansible.builtin.set_fact:
+    _existing_wlan_names: "{{ _existing_wlans | map(attribute='name') | list }}"
+
+- name: Build existing WLAN lookup by name
+  ansible.builtin.set_fact:
+    _existing_wlan_map: >-
+      {{ dict(_existing_wlans | map(attribute='name') | zip(_existing_wlans)) }}
+
+- name: Get existing network configs for ID lookup
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/networkconf"
+    method: GET
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+    validate_certs: false
+  register: _existing_netconf_raw
+
+- name: Build network name-to-ID lookup (legacy)
+  ansible.builtin.set_fact:
+    _legacy_network_id_map: >-
+      {{ dict(
+        _existing_netconf_raw.json.data
+        | selectattr('purpose', 'in', ['corporate', 'guest'])
+        | map(attribute='name')
+        | zip(_existing_netconf_raw.json.data | selectattr('purpose', 'in', ['corporate', 'guest']) | map(attribute='_id'))
+      ) }}
+
+- name: "Create WLAN — {{ item.name }}"
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/wlanconf"
+    method: POST
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      x_passphrase: "{{ item.x_passphrase }}"
+      networkconf_id: "{{ _legacy_network_id_map[item.network_name] }}"
+      security: "{{ item.security }}"
+      wpa_mode: "{{ item.wpa_mode }}"
+      wpa3_support: "{{ item.wpa3_support }}"
+      wpa3_transition: "{{ item.wpa3_transition }}"
+      wlan_bands: "{{ item.wlan_bands }}"
+      hide_ssid: "{{ item.hide_ssid }}"
+      l2_isolation: "{{ item.l2_isolation }}"
+      optimize_iot_wifi_connectivity: "{{ item.optimize_iot_wifi_connectivity }}"
+      enabled: true
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+      X-CSRF-Token: "{{ _legacy_csrf }}"
+    validate_certs: false
+    status_code: [200, 201]
+  loop: "{{ unifi_wlans }}"
+  loop_control:
+    label: "{{ item.name }}"
+  no_log: true
+  when: item.name not in _existing_wlan_names
+
+- name: "Update WLAN — {{ item.name }}"
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/wlanconf/{{ _existing_wlan_map[item.name]._id }}"
+    method: PUT
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      x_passphrase: "{{ item.x_passphrase }}"
+      networkconf_id: "{{ _legacy_network_id_map[item.network_name] }}"
+      security: "{{ item.security }}"
+      wpa_mode: "{{ item.wpa_mode }}"
+      wpa3_support: "{{ item.wpa3_support }}"
+      wpa3_transition: "{{ item.wpa3_transition }}"
+      wlan_bands: "{{ item.wlan_bands }}"
+      hide_ssid: "{{ item.hide_ssid }}"
+      l2_isolation: "{{ item.l2_isolation }}"
+      optimize_iot_wifi_connectivity: "{{ item.optimize_iot_wifi_connectivity }}"
+      enabled: true
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+      X-CSRF-Token: "{{ _legacy_csrf }}"
+    validate_certs: false
+    status_code: 200
+  loop: "{{ unifi_wlans }}"
+  loop_control:
+    label: "{{ item.name }}"
+  no_log: true
+  when:
+    - item.name in _existing_wlan_names
+    - >-
+      _existing_wlan_map[item.name].security | default('') != item.security
+      or _existing_wlan_map[item.name].wpa_mode | default('') != item.wpa_mode
+      or _existing_wlan_map[item.name].wpa3_support | default(false) != item.wpa3_support
+      or _existing_wlan_map[item.name].wpa3_transition | default(false) != item.wpa3_transition
+      or _existing_wlan_map[item.name].networkconf_id | default('') != _legacy_network_id_map[item.network_name]
+      or _existing_wlan_map[item.name].hide_ssid | default(false) != item.hide_ssid
+      or _existing_wlan_map[item.name].l2_isolation | default(false) != item.l2_isolation
+      or _existing_wlan_map[item.name].optimize_iot_wifi_connectivity | default(false) != item.optimize_iot_wifi_connectivity

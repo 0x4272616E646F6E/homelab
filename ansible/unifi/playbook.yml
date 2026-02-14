@@ -1,0 +1,42 @@
+---
+- name: Configure UniFi Network
+  hosts: unifi
+  gather_facts: false
+
+  module_defaults:
+    group/ubiquiti.unifi_api.common:
+      base_url: "{{ unifi_base_url }}"
+      token: "{{ unifi_api_token }}"
+
+  tasks:
+    # --- Integration API tasks (API key auth) ---
+    - name: Discover site
+      ansible.builtin.include_tasks: tasks/site_discovery.yml
+
+    - name: Configure networks
+      ansible.builtin.include_tasks: tasks/networks.yml
+
+    - name: Configure firewall zones
+      ansible.builtin.include_tasks: tasks/firewall_zones.yml
+
+    - name: Configure firewall policies
+      ansible.builtin.include_tasks: tasks/firewall_policies.yml
+
+    - name: Configure VPN server
+      ansible.builtin.include_tasks: tasks/vpn_server.yml
+
+    # --- Legacy API tasks (session cookie auth) ---
+    - name: Authenticate to legacy API
+      ansible.builtin.include_tasks: tasks/legacy_auth.yml
+
+    - name: Configure firewall groups
+      ansible.builtin.include_tasks: tasks/firewall_groups.yml
+
+    - name: Configure DNS records
+      ansible.builtin.include_tasks: tasks/dns_records.yml
+
+    - name: Configure WLANs
+      ansible.builtin.include_tasks: tasks/wlans.yml
+
+    - name: Configure port forwarding
+      ansible.builtin.include_tasks: tasks/port_forwarding.yml

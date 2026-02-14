@@ -1,0 +1,8 @@
+---
+collections:
+  # ubiquiti.unifi_api — not available on Ansible Galaxy.
+  # Install manually:
+  #   pip install httpx urllib3
+  #   curl -L -o ubiquiti-unifi_api-latest.tar.gz https://apidoc-cdn.ui.com/ansible-module/ubiquiti-unifi_api-latest.tar.gz
+  #   ansible-galaxy collection install ubiquiti-unifi_api-latest.tar.gz
+  - name: ubiquiti.unifi_api

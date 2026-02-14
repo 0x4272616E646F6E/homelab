@@ -1,0 +1,62 @@
+---
+- name: Get existing firewall groups
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/firewallgroup"
+    method: GET
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+    validate_certs: false
+  register: _existing_groups_raw
+
+- name: Set existing firewall groups fact
+  ansible.builtin.set_fact:
+    _existing_groups: "{{ _existing_groups_raw.json.data }}"
+
+- name: Build existing group name list
+  ansible.builtin.set_fact:
+    _existing_group_names: "{{ _existing_groups | map(attribute='name') | list }}"
+
+- name: Build existing group lookup by name
+  ansible.builtin.set_fact:
+    _existing_group_map: >-
+      {{ dict(_existing_groups | map(attribute='name') | zip(_existing_groups)) }}
+
+- name: "Create firewall group — {{ item.name }}"
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/firewallgroup"
+    method: POST
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      group_type: "{{ item.group_type }}"
+      group_members: "{{ item.group_members }}"
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+      X-CSRF-Token: "{{ _legacy_csrf }}"
+    validate_certs: false
+    status_code: [200, 201]
+  loop: "{{ unifi_firewall_groups }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.name not in _existing_group_names
+
+- name: "Update firewall group — {{ item.name }}"
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/firewallgroup/{{ _existing_group_map[item.name]._id }}"
+    method: PUT
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      group_type: "{{ item.group_type }}"
+      group_members: "{{ item.group_members }}"
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+      X-CSRF-Token: "{{ _legacy_csrf }}"
+    validate_certs: false
+    status_code: 200
+  loop: "{{ unifi_firewall_groups }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.name in _existing_group_names
+    - _existing_group_map[item.name].group_members | default([]) | sort != item.group_members | sort

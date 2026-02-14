@@ -1,0 +1,62 @@
+---
+- name: Get firewall policies (page 1)
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?limit=100"
+    method: GET
+  register: _policies_page1
+
+- name: Get firewall policies (page 2)
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?offset=100&limit=100"
+    method: GET
+  register: _policies_page2
+  when: (_policies_page1.response.data | length) < (_policies_page1.response.totalCount | int)
+
+- name: Build full policy list
+  ansible.builtin.set_fact:
+    _existing_policies: >-
+      {{ _policies_page1.response.data + (_policies_page2.response.data | default([])) }}
+
+- name: Categorize policies by origin
+  ansible.builtin.set_fact:
+    _user_policies: "{{ _existing_policies | selectattr('metadata.origin', 'equalto', 'USER_DEFINED') | list }}"
+    _system_policies: "{{ _existing_policies | selectattr('metadata.origin', 'equalto', 'SYSTEM_DEFINED') | list }}"
+
+- name: Display policy summary
+  ansible.builtin.debug:
+    msg: >-
+      Firewall policies: {{ _existing_policies | length }} total
+      ({{ _user_policies | length }} user-defined,
+      {{ _system_policies | length }} system-defined)
+
+- name: Display user-defined policies
+  ansible.builtin.debug:
+    msg: >-
+      [{{ item.index }}] {{ item.name }}
+      — {{ item.action.type }}
+      ({{ item.source.zoneId[:8] }}→{{ item.destination.zoneId[:8] }})
+      {{ '(logging)' if item.loggingEnabled else '' }}
+  loop: "{{ _user_policies | sort(attribute='index') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+# --- Optional: create/update policies from unifi_firewall_policies ---
+- name: Build existing user policy lookup by composite key (name + zones)
+  ansible.builtin.set_fact:
+    _existing_policy_keys: >-
+      {{ _user_policies | map(attribute='name')
+         | zip(_user_policies | map(attribute='source.zoneId'))
+         | zip(_user_policies | map(attribute='destination.zoneId'))
+         | map('flatten')
+         | map('join', '||')
+         | list }}
+
+- name: "Create firewall policy — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies"
+    method: POST
+    body: "{{ item.body }}"
+  loop: "{{ unifi_firewall_policies }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: (item.name ~ '||' ~ item.body.source.zoneId ~ '||' ~ item.body.destination.zoneId) not in _existing_policy_keys

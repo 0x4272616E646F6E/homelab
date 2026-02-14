@@ -1,0 +1,44 @@
+---
+- name: Get existing port forwards
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/portforward"
+    method: GET
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+    validate_certs: false
+  register: _existing_forwards_raw
+
+- name: Set existing port forwards fact
+  ansible.builtin.set_fact:
+    _existing_forwards: "{{ _existing_forwards_raw.json.data }}"
+
+- name: Build existing forward name list
+  ansible.builtin.set_fact:
+    _existing_forward_names: "{{ _existing_forwards | map(attribute='name') | list }}"
+
+- name: Build existing forward lookup by name
+  ansible.builtin.set_fact:
+    _existing_forward_map: >-
+      {{ dict(_existing_forwards | map(attribute='name') | zip(_existing_forwards)) }}
+
+- name: "Create port forward — {{ item.name }}"
+  ansible.builtin.uri:
+    url: "{{ unifi_base_url }}/proxy/network/api/s/{{ unifi_legacy_site }}/rest/portforward"
+    method: POST
+    body_format: json
+    body:
+      name: "{{ item.name }}"
+      dst_port: "{{ item.dst_port }}"
+      fwd: "{{ item.fwd_host }}"
+      fwd_port: "{{ item.fwd_port }}"
+      proto: "{{ item.protocol }}"
+      enabled: true
+    headers:
+      Cookie: "{{ _legacy_cookies }}"
+      X-CSRF-Token: "{{ _legacy_csrf }}"
+    validate_certs: false
+    status_code: [200, 201]
+  loop: "{{ unifi_port_forwards }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: item.name not in _existing_forward_names

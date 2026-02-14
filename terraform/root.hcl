@@ -15,10 +15,9 @@ locals {
   pm_api_token_id     = local.secrets.proxmox.api_token_id
   pm_api_token_secret = local.secrets.proxmox.api_token_secret
 
-  # Unifi
-  unifi_api_url  = local.secrets.unifi.api_url
-  unifi_username = local.secrets.unifi.username
-  unifi_password = local.secrets.unifi.password
+  # Talos
+  wireguard_private_key = local.secrets.talos.wireguard_private_key
+
 }
 
 # AWS Lightsail S3 Backend
@@ -68,10 +67,6 @@ generate "provider" {
           source  = "siderolabs/talos"
           version = "~> 0.9"
         }
-        unifi = {
-          source  = "ubiquiti-community/unifi"
-          version = "~> 0.41"
-        }
       }
     }
 
@@ -91,12 +86,6 @@ generate "provider" {
       pm_api_token_id     = local.pm_api_token_id
       pm_api_token_secret = local.pm_api_token_secret
       pm_tls_insecure     = true
-    }
-    provider "unifi" {
-      api_url        = local.unifi_api_url
-      username       = local.unifi_username
-      password       = local.unifi_password
-      allow_insecure = true
     }
     EOF
 }

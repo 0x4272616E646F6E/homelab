@@ -1,0 +1,292 @@
+---
+# Integration API
+unifi_base_url: "https://unifi.hosted.fail"
+unifi_api_token: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  REPLACE_WITH_VAULT_ENCRYPTED_TOKEN
+
+# Legacy API
+unifi_username: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  TODO
+unifi_password: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  TODO
+
+unifi_legacy_site: default
+
+# Networks (Integration API)
+unifi_networks:
+  - name: Unifi
+    vlanId: 1
+    management: GATEWAY
+    enabled: true
+    default: true
+
+  - name: Homelab
+    vlanId: 2
+    management: GATEWAY
+    enabled: true
+    default: false
+
+  - name: Family
+    vlanId: 3
+    management: GATEWAY
+    enabled: true
+    default: false
+
+  - name: IOT
+    vlanId: 4
+    management: GATEWAY
+    enabled: true
+    default: false
+
+  - name: Guest
+    vlanId: 5
+    management: GATEWAY
+    enabled: true
+    default: false
+
+# DNS Records (Legacy API)
+unifi_dns_records:
+  # A records
+  - key: unifi.hosted.fail
+    record_type: A
+    value: "10.0.0.1"
+  - key: unifi.hosted.fail
+    record_type: A
+    value: "10.0.1.1"
+  - key: unifi.hosted.fail
+    record_type: A
+    value: "172.21.0.1"
+  - key: talos.hosted.fail
+    record_type: A
+    value: "10.0.0.250"
+  - key: pbs.hosted.fail
+    record_type: A
+    value: "10.0.0.251"
+  - key: pve.hosted.fail
+    record_type: A
+    value: "10.0.0.252"
+  - key: btc.hosted.fail
+    record_type: A
+    value: "10.0.0.64"
+  - key: unas.hosted.fail
+    record_type: A
+    value: "10.0.0.254"
+  - key: nginx.hosted.fail
+    record_type: A
+    value: "10.0.0.249"
+
+  # CNAME records
+  - key: suwayomi.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: forgejo.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: bazarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: jellyfin.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: jellyseerr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: radarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: prowlarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: requestrr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: qbittorrent.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: nzbget.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: sonarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: homeassistant.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: sonarqube.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: tdarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: wizarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: huntarr.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: grafana.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: prometheus.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: syslog.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: glance.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: vscode.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: librechat.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: auth.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: llm.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: shelfmark.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: calibre.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: hyperdx.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: hubble.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+
+# WLANs (Legacy API)
+unifi_wlans:
+  - name: "B&K IOT"
+    x_passphrase: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      TODO
+    network_name: IOT
+    security: wpapsk
+    wpa_mode: wpa2
+    wpa3_support: false
+    wpa3_transition: false
+    wlan_bands: ["2g", "5g"]
+    hide_ssid: false
+    l2_isolation: false
+    optimize_iot_wifi_connectivity: true
+
+  - name: "B&K"
+    x_passphrase: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      TODO
+    network_name: Family
+    security: wpapsk
+    wpa_mode: wpa2
+    wpa3_support: true
+    wpa3_transition: true
+    wlan_bands: ["2g", "5g"]
+    hide_ssid: false
+    l2_isolation: false
+    optimize_iot_wifi_connectivity: false
+
+  - name: "B&K Guest"
+    x_passphrase: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      TODO
+    network_name: Guest
+    security: wpapsk
+    wpa_mode: wpa2
+    wpa3_support: true
+    wpa3_transition: true
+    wlan_bands: ["2g", "5g"]
+    hide_ssid: false
+    l2_isolation: true
+    optimize_iot_wifi_connectivity: false
+
+# Firewall Groups / Traffic Matching Lists (Legacy API)
+unifi_firewall_groups:
+  # Address groups
+  - name: Default
+    group_type: address-group
+    group_members: ["192.168.1.0/24"]
+
+  - name: Personal
+    group_type: address-group
+    group_members: ["10.0.1.0/25"]
+
+  - name: Public
+    group_type: address-group
+    group_members: ["172.16.0.0/24"]
+
+  - name: IOT
+    group_type: address-group
+    group_members: ["10.0.1.128/25"]
+
+  - name: VPN
+    group_type: address-group
+    group_members: ["172.21.0.0/24"]
+
+  - name: Bastion Host
+    group_type: address-group
+    group_members: ["10.0.1.126", "10.0.1.125"]
+
+  - name: Private
+    group_type: address-group
+    group_members: ["10.0.0.0/24"]
+
+  - name: RFC1918
+    group_type: address-group
+    group_members: ["192.168.0.0/16", "172.16.0.0/12", "10.0.0.0/8"]
+
+  - name: UI
+    group_type: address-group
+    group_members: ["192.168.1.1", "10.0.0.1", "10.0.1.1", "10.0.1.129", "172.16.0.1", "10.0.3.1"]
+
+  - name: Server Host
+    group_type: address-group
+    group_members: ["10.0.0.249", "10.0.0.248"]
+
+  # Port groups
+  - name: NTP
+    group_type: port-group
+    group_members: ["123"]
+
+  - name: DNS
+    group_type: port-group
+    group_members: ["53", "853", "443", "784"]
+
+  - name: HTTP/HTTPS
+    group_type: port-group
+    group_members: ["80", "443"]
+
+  - name: HTTP/HTTPS/SSH
+    group_type: port-group
+    group_members: ["80", "443", "22"]
+
+# Firewall Zones (Integration API)
+unifi_firewall_zone_assignments:
+  Internal:
+    - Unifi
+    - Homelab
+    - Family
+    - IOT
+  Hotspot:
+    - Guest
+  Dmz: []
+
+# Firewall Policies (Integration API)
+unifi_firewall_policies: []
+
+# Port Forwarding (Legacy API)
+unifi_port_forwards: []
+
+# VPN Server (Integration API)
+unifi_vpn_server:
+  enabled: true
+  name: VPN
+  type: WIREGUARD

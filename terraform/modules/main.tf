@@ -7,19 +7,14 @@ module "cloudflare" {
 # Proxmox Config
 module "proxmox" {
   source = "./proxmox"
-
-  depends_on = [module.unifi]
 }
 
 # Talos Config
 module "talos" {
   source = "./talos"
 
+  wireguard_private_key = var.wireguard_private_key
+
   depends_on = [module.proxmox]
 }
 
-# UniFi Config
-module "unifi" {
-  source = "./unifi"
-
-}

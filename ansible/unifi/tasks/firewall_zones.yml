@@ -1,0 +1,37 @@
+---
+- name: Get existing firewall zones
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/zones"
+    method: GET
+  register: _existing_zones_raw
+
+- name: Set existing zones fact
+  ansible.builtin.set_fact:
+    _existing_zones: "{{ _existing_zones_raw.response.data }}"
+
+- name: Build existing zone lookup by name
+  ansible.builtin.set_fact:
+    _existing_zone_map: >-
+      {{ dict(_existing_zones | map(attribute='name') | zip(_existing_zones)) }}
+
+- name: Build network name-to-ID lookup
+  ansible.builtin.set_fact:
+    _network_id_map: >-
+      {{ dict(_existing_networks | map(attribute='name') | zip(_existing_networks | map(attribute='id'))) }}
+
+- name: "Update zone network assignments — {{ item.key }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/zones/{{ _existing_zone_map[item.key].id }}"
+    method: PUT
+    body:
+      name: "{{ item.key }}"
+      networkIds: "{{ item.value | map('extract', _network_id_map) | list }}"
+  loop: "{{ unifi_firewall_zone_assignments | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  when:
+    - item.key in _existing_zone_map
+    - _existing_zone_map[item.key].metadata.configurable | default(false)
+    - >-
+      _existing_zone_map[item.key].networkIds | default([]) | sort
+      != (item.value | map('extract', _network_id_map) | list | sort)
