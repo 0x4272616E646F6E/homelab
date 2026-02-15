@@ -227,8 +227,8 @@ locals {
           "default-not-ready-toleration-seconds"   = "300"
           "default-unreachable-toleration-seconds"  = "300"
           "feature-gates"                           = "UserNamespacesSupport=true"
-          "max-requests-inflight"                   = "400"
-          "max-mutating-requests-inflight"          = "200"
+          "max-requests-inflight"                   = "100"
+          "max-mutating-requests-inflight"          = "50"
           "watch-cache-sizes"                       = "events#100,pods#1000"
         }
       }
@@ -236,8 +236,8 @@ locals {
       controllerManager = {
         image = "registry.k8s.io/kube-controller-manager:${var.kubernetes_version}"
         extraArgs = {
-          "kube-api-qps"                 = "100"
-          "kube-api-burst"               = "150"
+          "kube-api-qps"                 = "50"
+          "kube-api-burst"               = "80"
           "concurrent-deployment-syncs"  = "3"
           "concurrent-replicaset-syncs"  = "3"
           "concurrent-statefulset-syncs" = "3"

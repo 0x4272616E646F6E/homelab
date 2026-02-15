@@ -7,4 +7,5 @@ labels:
     includeSelectors: false
 resources:
   - configmap.yaml
-  - poddisruptionbudget.yaml
+patches:
+  - path: deployment-patch.yaml

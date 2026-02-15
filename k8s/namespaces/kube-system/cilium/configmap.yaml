@@ -1001,7 +1001,10 @@ data:
           kubernetes.io/os: linux
         tolerations:
           - operator: Exists
-        extraArgs: []
+        extraArgs:
+          - --leader-election-lease-duration=60s
+          - --leader-election-renew-deadline=40s
+          - --leader-election-retry-period=15s
         extraEnv: []
         extraHostPathMounts: []
         extraVolumes: []
