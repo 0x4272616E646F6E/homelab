@@ -3,8 +3,10 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/nginx-filters
-commonLabels:
-  app.kubernetes.io/managed-by: flux
+labels:
+  - pairs:
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
 resources:
   - namespace.yaml
   - glance/
