@@ -26,3 +26,7 @@ spec:
   - kind: ConfigMap
     name: clickstack-config-map
     valuesKey: values.yaml
+  - kind: Secret
+    name: clickstack-secrets
+    valuesKey: hyperdx-api-key
+    targetPath: hyperdx.apiKey

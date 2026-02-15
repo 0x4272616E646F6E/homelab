@@ -5,6 +5,7 @@ labels:
       app.kubernetes.io/managed-by: flux
     includeSelectors: false
 resources:
+  - secrets.enc.yaml
   - configmap.yaml
   - helmrelease.yaml
   - httproute.yaml

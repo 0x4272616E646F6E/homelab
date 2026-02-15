@@ -53,8 +53,8 @@ data:
       - name: HYPERDX_API_KEY
         valueFrom:
           secretKeyRef:
-            name: clickstack-app-secrets
-            key: api-key
+            name: clickstack-secrets
+            key: hyperdx-api-key
 
     config:
       receivers:
@@ -91,7 +91,7 @@ data:
         otlphttp:
           endpoint: "http://clickstack-otel-collector.monitoring.svc.cluster.local:4318"
           headers:
-            authorization: "Bearer ${env:HYPERDX_API_KEY}"
+            authorization: "${env:HYPERDX_API_KEY}"
           compression: gzip
 
       service:
