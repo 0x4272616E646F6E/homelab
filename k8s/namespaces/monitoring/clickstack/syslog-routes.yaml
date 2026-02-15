@@ -1,19 +1,4 @@
 apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: TCPRoute
-metadata:
-  name: clickstack-syslog-tcp
-  namespace: monitoring
-spec:
-  parentRefs:
-    - name: nginx-gateway
-      namespace: ingress
-      sectionName: syslog-tcp
-  rules:
-    - backendRefs:
-        - name: clickstack-otel-syslog
-          port: 514
----
-apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: UDPRoute
 metadata:
   name: clickstack-syslog-udp

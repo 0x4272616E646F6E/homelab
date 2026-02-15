@@ -8,10 +8,6 @@ metadata:
     app.kubernetes.io/managed-by: flux
 spec:
   ports:
-    - name: syslog-tcp
-      port: 514
-      targetPort: 1514
-      protocol: TCP
     - name: syslog-udp
       port: 514
       targetPort: 1514
