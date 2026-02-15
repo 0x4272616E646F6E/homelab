@@ -55,9 +55,12 @@ data:
     otel:
       customConfig: |
         receivers:
-          syslog:
+          syslog/tcp:
             tcp:
               listen_address: "0.0.0.0:1514"
+            protocol: rfc3164
+            location: UTC
+          syslog/udp:
             udp:
               listen_address: "0.0.0.0:1514"
             protocol: rfc3164
@@ -65,7 +68,7 @@ data:
         service:
           pipelines:
             logs/syslog:
-              receivers: [syslog]
+              receivers: [syslog/tcp, syslog/udp]
               processors: [memory_limiter, batch]
               exporters: [clickhouse]
       resources:
