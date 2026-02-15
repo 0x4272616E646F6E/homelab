@@ -12,6 +12,23 @@ kubectl delete pod --field-selector=status.phase==Failed --all-namespaces
 kubectl delete pod --field-selector=status.phase==Succeeded --all-namespaces
 ```
 
+**Quick Permissions Fix**
+```bash
+  kubectl run fix-perms -n media --rm -it --restart=Never --image=busybox \
+    --overrides='{
+      "spec": {
+        "containers": [{
+          "name": "fix-perms",
+          "image": "busybox",
+          "command": ["sh", "-c", "chown -R 1000:1000 /config && echo done"],
+          "volumeMounts": [{"name": "config", "mountPath": "/config"}],
+          "securityContext": {"runAsUser": 0}
+        }],
+        "volumes": [{"name": "config", "persistentVolumeClaim": {"claimName": "jellyseerr-config"}}]
+      }
+    }'
+```
+
 **Postgres Backup and Restore**
 ```bash
 # Backup (all databases)
