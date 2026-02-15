@@ -57,9 +57,9 @@ data:
         receivers:
           syslog:
             tcp:
-              listen_address: "0.0.0.0:514"
+              listen_address: "0.0.0.0:1514"
             udp:
-              listen_address: "0.0.0.0:514"
+              listen_address: "0.0.0.0:1514"
             protocol: rfc3164
             location: UTC
         service:

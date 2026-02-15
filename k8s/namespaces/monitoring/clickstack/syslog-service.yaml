@@ -10,11 +10,11 @@ spec:
   ports:
     - name: syslog-tcp
       port: 514
-      targetPort: 514
+      targetPort: 1514
       protocol: TCP
     - name: syslog-udp
       port: 514
-      targetPort: 514
+      targetPort: 1514
       protocol: UDP
   selector:
     app.kubernetes.io/name: clickstack
