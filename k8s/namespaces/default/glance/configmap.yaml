@@ -20,12 +20,12 @@ data:
                         url: https://vscode.hosted.fail/
                       - title: Forgejo
                         url: https://forgejo.hosted.fail/
-                      - title: HyperDX
-                        url: https://hyperdx.hosted.fail/
                       - title: Home Assistant
                         url: https://homeassistant.hosted.fail/
                       - title: Huntarr
                         url: https://huntarr.hosted.fail/
+                      - title: HyperDX
+                        url: https://hyperdx.hosted.fail/
                       - title: Jellyfin
                         url: https://jellyfin.hosted.fail/
                       - title: LibreChat
