@@ -31,10 +31,10 @@ data:
       resources:
         requests:
           cpu: 500m
-          memory: 1Gi
+          memory: 2Gi
         limits:
           cpu: 2000m
-          memory: 4Gi
+          memory: 8Gi
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
