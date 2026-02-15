@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: media
   labels:
-    app.kubernetes.io/name: jellyseerr
+    app.kubernetes.io/name: seerr
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: jellyseerr
+      app.kubernetes.io/name: seerr
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress

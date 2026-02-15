@@ -91,7 +91,7 @@ unifi_dns_records:
   - key: jellyfin.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: jellyseerr.hosted.fail
+  - key: seerr.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
   - key: radarr.hosted.fail

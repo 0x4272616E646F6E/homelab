@@ -1,29 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: media
   labels:
-    app.kubernetes.io/name: jellyseerr
+    app.kubernetes.io/name: seerr
     app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: jellyseerr
+      app.kubernetes.io/name: seerr
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: jellyseerr
+        app.kubernetes.io/name: seerr
         app.kubernetes.io/managed-by: flux
     spec:
       runtimeClassName: youki
       automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
-        - name: jellyseerr
-          # renovate: datasource=docker depName=docker.io/fallenbagel/jellyseerr
-          image: docker.io/fallenbagel/jellyseerr:latest@sha256:4538137bc5af902dece165f2bf73776d9cf4eafb6dd714670724af8f3eb77764
+        - name: seerr
+          # renovate: datasource=docker depName=ghcr.io/seerr-team/seerr
+          image: ghcr.io/seerr-team/seerr:latest
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            privileged: false
+            runAsUser: 1000
+            runAsGroup: 1000
           ports:
             - containerPort: 5055
               protocol: TCP

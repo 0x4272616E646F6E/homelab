@@ -1,10 +1,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: jellyseerr
+  name: seerr
   namespace: media
   labels:
-    app.kubernetes.io/name: jellyseerr
+    app.kubernetes.io/name: seerr
     app.kubernetes.io/managed-by: flux
 spec:
   parentRefs:
@@ -12,7 +12,7 @@ spec:
       namespace: ingress
       sectionName: https
   hostnames:
-    - "jellyseerr.hosted.fail"
+    - "seerr.hosted.fail"
   rules:
     - filters:
         - type: ExtensionRef
@@ -21,5 +21,5 @@ spec:
             kind: SnippetsFilter
             name: internal-whitelist
       backendRefs:
-        - name: jellyseerr
+        - name: seerr
           port: 5055

@@ -28,8 +28,6 @@ data:
                         url: https://huntarr.hosted.fail/
                       - title: Jellyfin
                         url: https://jellyfin.hosted.fail/
-                      - title: JellySeerr
-                        url: https://jellyseerr.hosted.fail/
                       - title: LibreChat
                         url: https://librechat.hosted.fail/
                       - title: NzbGet
@@ -46,6 +44,8 @@ data:
                         url: https://radarr.hosted.fail/
                       - title: Requestrr
                         url: https://requestrr.hosted.fail/
+                      - title: Seerr
+                        url: https://seerr.hosted.fail/
                       - title: Shelfmark
                         url: https://shelfmark.hosted.fail/
                       - title: Sonarr

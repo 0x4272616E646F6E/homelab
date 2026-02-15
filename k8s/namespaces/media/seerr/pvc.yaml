@@ -4,7 +4,7 @@ metadata:
   name: jellyseerr-config
   namespace: media
   labels:
-    app.kubernetes.io/name: jellyseerr
+    app.kubernetes.io/name: seerr
     app.kubernetes.io/managed-by: flux
 spec:
   accessModes:
