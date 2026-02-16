@@ -34,7 +34,7 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
         # renovate: datasource=docker depName=intel/intel-gpu-plugin
-        image: docker.io/intel/intel-gpu-plugin:0.34.1@sha256:3fae94bca1022ca558a1f6768c34760f38f80a2e64f8a72216f10e98746c8124
+        image: docker.io/intel/intel-gpu-plugin:0.35.0@sha256:34697f9c286857da986381595ac2a693524a83c831955247dae47dfda4d2f526
         imagePullPolicy: IfNotPresent
         securityContext:
           readOnlyRootFilesystem: true
