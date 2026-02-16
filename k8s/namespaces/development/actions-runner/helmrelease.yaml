@@ -1,4 +1,4 @@
-# renovate: docker=ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+# renovate: datasource=docker depName=ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:

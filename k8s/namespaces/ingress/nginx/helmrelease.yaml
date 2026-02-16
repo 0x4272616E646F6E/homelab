@@ -1,4 +1,4 @@
-# renovate: registryUrl=oci://ghcr.io/nginx/charts depName=nginx-gateway-fabric datasource=helm
+# renovate: datasource=docker depName=ghcr.io/nginx/charts/nginx-gateway-fabric
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
