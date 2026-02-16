@@ -25,7 +25,7 @@ spec:
       containers:
         - name: seerr
           # renovate: datasource=docker depName=ghcr.io/seerr-team/seerr
-          image: ghcr.io/seerr-team/seerr:latest
+          image: ghcr.io/seerr-team/seerr:latest@sha256:1b5fc1ea825631d9d165364472663b817a4c58ef6aa1013f58d82c1570d7c866
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
