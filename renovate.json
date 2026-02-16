@@ -98,6 +98,12 @@
       "pinDigests": true
     },
     {
+      "description": "Disable digest pinning for custom regex-managed docker packages (formats don't support digests)",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["docker"],
+      "pinDigests": false
+    },
+    {
       "description": "Auto-merge minor, patch, and digest updates",
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true
