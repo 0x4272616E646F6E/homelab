@@ -9,6 +9,9 @@ data:
     githubConfigSecret: actions-runner-secrets
     maxRunners: 5
     minRunners: 1
+    controllerServiceAccount:
+      name: actions-runner-controller-gha-rs-controller
+      namespace: development
     containerMode:
       type: "dind"
     template:
