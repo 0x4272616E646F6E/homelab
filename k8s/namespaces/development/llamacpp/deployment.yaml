@@ -67,6 +67,8 @@ spec:
           - "0.95"
           - --repeat-penalty
           - "1.0"
+          - --reasoning-format
+          - deepseek
           - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
