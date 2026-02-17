@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Llama-3.3-8B-Instruct-128K-absolute-heresy-i1-GGUF
+          - mradermacher/Nanbeige4.1-3B-absolute-heresy-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-128K-absolute-heresy.i1-Q4_K_M.gguf
+          - Nanbeige4.1-3B-absolute-heresy.Q8_0.gguf
           - --alias
-          - llama-3.3-8b
+          - nanbeige-4.1-3b
           - --host
           - "0.0.0.0"
           - --port
@@ -62,13 +62,11 @@ spec:
           - --cache-type-v
           - q8_0
           - --temp
-          - "0.3"
+          - "0.6"
           - --top-p
-          - "0.9"
-          - --top-k
-          - "40"
-          - --min-p
-          - "0.05"
+          - "0.95"
+          - --repeat-penalty
+          - "1.0"
           - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
