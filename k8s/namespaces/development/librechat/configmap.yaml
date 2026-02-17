@@ -111,6 +111,8 @@ data:
       httpGet:
         path: /health
         port: http
+      initialDelaySeconds: 60
+      periodSeconds: 10
     volumes: []
     volumeMounts: []
     nodeSelector: {}
