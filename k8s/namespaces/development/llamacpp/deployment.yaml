@@ -30,9 +30,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Nanbeige4.1-3B-absolute-heresy-GGUF
+          - mradermacher/Nanbeige4.1-3B-heretic-GGUF
           - --hf-file
-          - Nanbeige4.1-3B-absolute-heresy.Q8_0.gguf
+          - Nanbeige4.1-3B-heretic.Q8_0.gguf
           - --alias
           - nanbeige-4.1-3b
           - --host
