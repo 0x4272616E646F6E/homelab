@@ -18,7 +18,7 @@ spec:
         app.kubernetes.io/name: code-server
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: youki
+      runtimeClassName: nvidia
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -37,10 +37,12 @@ spec:
               cpu: "100m"
               memory: "128Mi"
               ephemeral-storage: "1Gi"
+              nvidia.com/gpu: "1"
             limits:
-              cpu: "2"
-              memory: "4Gi"
+              cpu: "4"
+              memory: "8Gi"
               ephemeral-storage: "5Gi"
+              nvidia.com/gpu: "1"
           volumeMounts:
             - name: config
               mountPath: /home/coder
