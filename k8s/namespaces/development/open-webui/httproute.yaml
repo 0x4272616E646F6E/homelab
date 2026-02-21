@@ -20,6 +20,11 @@ spec:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: internal-whitelist
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: disable-buffering
       backendRefs:
         - name: open-webui
           port: 8080

@@ -54,3 +54,17 @@ spec:
     - context: http.server.location
       value: |
         client_max_body_size 100m;
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: disable-buffering
+spec:
+  snippets:
+    - context: http.server.location
+      value: |
+        proxy_buffering off;
+        proxy_cache off;
+        chunked_transfer_encoding on;
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
