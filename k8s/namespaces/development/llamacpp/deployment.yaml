@@ -30,29 +30,23 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Nanbeige4.1-3B-heretic-GGUF
+          - mradermacher/Llama-3.3-8B-Instruct-128K-i1-GGUF
           - --hf-file
-          - Nanbeige4.1-3B-heretic.Q8_0.gguf
+          - Llama-3.3-8B-Instruct-128K.i1-Q4_K_M.gguf
           - --alias
-          - nanbeige-4.1-3b
+          - llama-3.3-8B
           - --host
           - "0.0.0.0"
           - --port
           - "8000"
           - --ctx-size
-          - "131072"
+          - "32768"
           - --n-gpu-layers
           - "99"
-          - --tensor-split
-          - "0"
-          - --split-mode
-          - layer
-          - --main-gpu
-          - "0"
           - --parallel
-          - "1"
+          - "2"
           - --batch-size
-          - "256"
+          - "512"
           - --ubatch-size
           - "128"
           - --flash-attn
@@ -61,15 +55,7 @@ spec:
           - q8_0
           - --cache-type-v
           - q8_0
-          - --temp
-          - "0.6"
-          - --top-p
-          - "0.95"
-          - --repeat-penalty
-          - "1.0"
-          - --reasoning-format
-          - deepseek
-          - --jinja 
+          - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
@@ -79,8 +65,8 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "2", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-          limits:   { cpu: "8", memory: "24Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
+          requests: { cpu: "2", memory: "12Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "8", memory: "18Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
@@ -118,6 +104,10 @@ spec:
           - "8192"
           - --n-gpu-layers
           - "99"
+          - --batch-size
+          - "2048"
+          - --flash-attn
+          - auto
           - --embedding
           - --pooling
           - mean
@@ -130,8 +120,8 @@ spec:
         ports:
         - { containerPort: 8001, name: embeddings }
         resources:
-          requests: { cpu: "1", memory: "2Gi", ephemeral-storage: "5Gi" }
-          limits:   { cpu: "2", memory: "4Gi", ephemeral-storage: "10Gi" }
+          requests: { cpu: "1", memory: "2Gi", nvidia.com/gpu: "1", ephemeral-storage: "5Gi" }
+          limits:   { cpu: "2", memory: "4Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
@@ -169,6 +159,10 @@ spec:
           - "8192"
           - --n-gpu-layers
           - "99"
+          - --batch-size
+          - "512"
+          - --flash-attn
+          - auto
           - --reranking
         env:
         - name: HUGGING_FACE_HUB_TOKEN
@@ -179,8 +173,8 @@ spec:
         ports:
         - { containerPort: 8002, name: reranker }
         resources:
-          requests: { cpu: "1", memory: "2Gi", ephemeral-storage: "5Gi" }
-          limits:   { cpu: "2", memory: "4Gi", ephemeral-storage: "10Gi" }
+          requests: { cpu: "1", memory: "2Gi", nvidia.com/gpu: "1", ephemeral-storage: "5Gi" }
+          limits:   { cpu: "2", memory: "4Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
