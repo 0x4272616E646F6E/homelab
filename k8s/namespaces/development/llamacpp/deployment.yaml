@@ -55,6 +55,8 @@ spec:
           - q8_0
           - --cache-type-v
           - q8_0
+          - --repeat-penalty
+          - "1.1"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN

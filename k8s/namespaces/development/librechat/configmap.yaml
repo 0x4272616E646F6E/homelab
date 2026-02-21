@@ -48,12 +48,9 @@ data:
               addParams:
                 temperature: 0.7
                 top_p: 0.9
-                max_tokens: 8192
+                max_tokens: 4096
                 frequency_penalty: 0.1
                 presence_penalty: 0
-                stop:
-                  - "<|eot_id|>"
-                  - "<|end_of_text|>"
       imageVolume:
         enabled: true
         size: 10G
