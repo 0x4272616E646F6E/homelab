@@ -19,5 +19,5 @@ resources:
   - actions-runner-controller/
   - actions-runner/
   - llamacpp/
-  - librechat/
+  - open-webui/
   - localstack/

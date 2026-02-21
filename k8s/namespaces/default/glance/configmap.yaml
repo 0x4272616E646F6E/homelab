@@ -28,8 +28,8 @@ data:
                         url: https://hyperdx.hosted.fail/
                       - title: Jellyfin
                         url: https://jellyfin.hosted.fail/
-                      - title: LibreChat
-                        url: https://librechat.hosted.fail/
+                      - title: Open WebUI
+                        url: https://chat.hosted.fail/
                       - title: NzbGet
                         url: https://nzbget.hosted.fail/
                       - title: Prowlarr

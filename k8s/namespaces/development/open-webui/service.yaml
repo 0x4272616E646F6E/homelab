@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: open-webui
+  namespace: development
+  labels:
+    app.kubernetes.io/name: open-webui
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app.kubernetes.io/name: open-webui
+  type: ClusterIP

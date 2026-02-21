@@ -142,7 +142,7 @@ unifi_dns_records:
   - key: vscode.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: librechat.hosted.fail
+  - key: chat.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
   - key: auth.hosted.fail

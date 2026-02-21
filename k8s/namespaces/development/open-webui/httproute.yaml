@@ -1,10 +1,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: librechat
+  name: open-webui
   namespace: development
   labels:
-    app.kubernetes.io/name: librechat
+    app.kubernetes.io/name: open-webui
     app.kubernetes.io/managed-by: flux
 spec:
   parentRefs:
@@ -12,7 +12,7 @@ spec:
       namespace: ingress
       sectionName: https
   hostnames:
-    - "librechat.hosted.fail"
+    - "chat.hosted.fail"
   rules:
     - filters:
         - type: ExtensionRef
@@ -21,5 +21,5 @@ spec:
             kind: SnippetsFilter
             name: internal-whitelist
       backendRefs:
-        - name: librechat-librechat
-          port: 3080
+        - name: open-webui
+          port: 8080

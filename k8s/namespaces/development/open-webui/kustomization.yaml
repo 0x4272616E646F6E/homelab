@@ -6,6 +6,7 @@ labels:
     includeSelectors: false
 resources:
   - secrets.enc.yaml
-  - configmap.yaml
-  - helmrelease.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
   - httproute.yaml
