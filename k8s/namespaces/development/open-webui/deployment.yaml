@@ -33,6 +33,9 @@ spec:
         - { name: OPENAI_API_BASE_URLS, value: "http://llamacpp-model:8000/v1" }
         - { name: OPENAI_API_KEYS,      value: "llamacpp" }
         - { name: ENABLE_OLLAMA_API,    value: "false" }
+        - { name: ENABLE_AUTOCOMPLETE_GENERATION, value: "false" }
+        - { name: ENABLE_TAGS_GENERATION,          value: "false" }
+        - { name: ENABLE_SEARCH_QUERY_GENERATION,  value: "false" }
         ports:
         - { containerPort: 8080, name: http }
         resources:
