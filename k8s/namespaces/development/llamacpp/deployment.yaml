@@ -26,7 +26,7 @@ spec:
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:f47bdcde1139c001ad325745fa9d206c297063f7fcf4922549aa907349834d91
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:8625f554c71194b639e0a9a227f2e4322fff962d80876020576b0bd4049ddc0c
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
@@ -89,7 +89,7 @@ spec:
           failureThreshold: 60
       - name: llamacpp-embeddings
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:f47bdcde1139c001ad325745fa9d206c297063f7fcf4922549aa907349834d91
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:8625f554c71194b639e0a9a227f2e4322fff962d80876020576b0bd4049ddc0c
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
@@ -144,7 +144,7 @@ spec:
           failureThreshold: 60
       - name: llamacpp-reranker
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:f47bdcde1139c001ad325745fa9d206c297063f7fcf4922549aa907349834d91
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:8625f554c71194b639e0a9a227f2e4322fff962d80876020576b0bd4049ddc0c
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
