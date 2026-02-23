@@ -24,7 +24,7 @@ spec:
       containers:
       - name: open-webui
         # renovate: datasource=docker depName=ghcr.io/open-webui/open-webui
-        image: ghcr.io/open-webui/open-webui:main@sha256:2b9d2bec40ff30eb71216065f5244c2861d30b75b4e49c40e39973ee64218cde
+        image: ghcr.io/open-webui/open-webui:main@sha256:ea750f19fc2a7ca0cb221bc512b8c2c470a01616b89ed98cb77d9ab0d5f24109
         imagePullPolicy: IfNotPresent
         env:
         - name: WEBUI_SECRET_KEY
