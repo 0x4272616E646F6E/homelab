@@ -35,7 +35,7 @@ spec:
       containers:
         - name: shelfmark
           # renovate: datasource=docker depName=ghcr.io/calibrain/shelfmark-lite
-          image: ghcr.io/calibrain/shelfmark-lite:latest@sha256:227105bd2d849b0fb76eba8262fd6a851741b27b21b8cd1dfaa63a3ca9060593
+          image: ghcr.io/calibrain/shelfmark-lite:latest@sha256:8381306cf51990be55b9e57bf4f133d646e57273d91c0e00c47f80e9b27cac93
           imagePullPolicy: IfNotPresent
           env:
             - name: EXT_BYPASSER_URL
