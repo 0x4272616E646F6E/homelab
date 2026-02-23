@@ -175,7 +175,6 @@ The following applications are managed through flux in this repository:
 - [**Forgejo**](https://codeberg.org/forgejo/forgejo)
 - [**Glance**](https://github.com/glanceapp/glance)
 - [**Home Assistant**](https://github.com/home-assistant/core)
-- [**Huntarr**](https://github.com/plexguide/Huntarr.io)
 - [**Intel GPU Plugin**](https://github.com/intel/intel-device-plugins-for-kubernetes)
 - [**Jellyfin**](https://github.com/jellyfin/jellyfin)
 - [**Kubelet CSR Approver**](https://github.com/postfinance/kubelet-csr-approver)
