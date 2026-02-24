@@ -184,7 +184,6 @@ The following applications are managed through flux in this repository:
 - [**Loki**](https://github.com/grafana/loki)
 - [**NGINX Gateway Fabric**](https://github.com/nginx/nginx-gateway-fabric/tree/main)
 - [**Nvidia Device Plugin**](https://github.com/NVIDIA/k8s-device-plugin)
-- [**Open WebUI**](https://github.com/open-webui/open-webui)
 - [**NzbGet**](https://github.com/nzbgetcom/nzbget)
 - [**Prowlarr**](https://github.com/Prowlarr/Prowlarr)
 - [**Qodo-PR-Agent**](https://github.com/qodo-ai/pr-agent)

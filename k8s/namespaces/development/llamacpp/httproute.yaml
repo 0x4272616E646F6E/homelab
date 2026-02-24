@@ -23,5 +23,3 @@ spec:
       backendRefs:
         - name: llamacpp-model
           port: 8000
-        - name: llamacpp-embedding
-          port: 8001

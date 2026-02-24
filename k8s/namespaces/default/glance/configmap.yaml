@@ -26,8 +26,8 @@ data:
                         url: https://hyperdx.hosted.fail/
                       - title: Jellyfin
                         url: https://jellyfin.hosted.fail/
-                      - title: Open WebUI
-                        url: https://chat.hosted.fail/
+                      - title: LlamaCpp
+                        url: https://llm.hosted.fail/
                       - title: NzbGet
                         url: https://nzbget.hosted.fail/
                       - title: Prowlarr
