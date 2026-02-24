@@ -124,9 +124,6 @@ unifi_dns_records:
   - key: wizarr.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: huntarr.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
   - key: grafana.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
