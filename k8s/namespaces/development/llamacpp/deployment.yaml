@@ -43,8 +43,6 @@ spec:
           - "32768"
           - --n-gpu-layers
           - "99"
-          - --parallel
-          - "2"
           - --batch-size
           - "512"
           - --ubatch-size
