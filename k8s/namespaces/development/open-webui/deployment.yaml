@@ -36,6 +36,8 @@ spec:
         - { name: ENABLE_AUTOCOMPLETE_GENERATION, value: "false" }
         - { name: ENABLE_TAGS_GENERATION,          value: "false" }
         - { name: ENABLE_SEARCH_QUERY_GENERATION,  value: "false" }
+        - { name: ENABLE_TITLE_GENERATION,     value: "false" }
+        - { name: AIOHTTP_CLIENT_TIMEOUT,     value: "300" }
         ports:
         - { containerPort: 8080, name: http }
         resources:
