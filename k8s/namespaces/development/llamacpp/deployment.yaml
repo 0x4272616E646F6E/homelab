@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Llama-3.3-8B-Instruct-128K-absolute-heresy-i1-GGUF
+          - mradermacher/gpt-oss-20b-RichardErkhov-heresy-i1-GGUF
           - --hf-file
-          - Llama-3.3-8B-Instruct-128K-absolute-heresy.i1-Q4_K_M.gguf
+          - gpt-oss-20b-RichardErkhov-heresy.i1-Q4_K_S.gguf
           - --alias
-          - llama-3.3-8B
+          - gpt-oss-20b
           - --host
           - "0.0.0.0"
           - --port
@@ -56,13 +56,11 @@ spec:
           - --cache-type-v
           - q8_0
           - --temp
-          - "0.3"
+          - "1.0"
           - --top-p
-          - "0.9"
+          - "1.0"
           - --top-k
-          - "40"
-          - --min-p
-          - "0.05"
+          - "0"
           - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
@@ -91,114 +89,6 @@ spec:
           failureThreshold: 30
         startupProbe:
           httpGet: { path: /health, port: http }
-          periodSeconds: 15
-          failureThreshold: 60
-      - name: llamacpp-embeddings
-        # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:8625f554c71194b639e0a9a227f2e4322fff962d80876020576b0bd4049ddc0c
-        imagePullPolicy: IfNotPresent
-        args:
-          - --hf-repo
-          - jinaai/jina-embeddings-v4-text-retrieval-GGUF
-          - --hf-file
-          - jina-embeddings-v4-text-retrieval-Q4_K_M.gguf
-          - --alias
-          - jina-embeddings-v4
-          - --host
-          - "0.0.0.0"
-          - --port
-          - "8001"
-          - --ctx-size
-          - "8192"
-          - --n-gpu-layers
-          - "99"
-          - --batch-size
-          - "2048"
-          - --flash-attn
-          - auto
-          - --embedding
-          - --pooling
-          - mean
-        env:
-        - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
-        - { name: HF_HOME,               value: /models/.cache/hf }
-        - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
-        - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
-        ports:
-        - { containerPort: 8001, name: embeddings }
-        resources:
-          requests: { cpu: "1", memory: "2Gi", nvidia.com/gpu: "1", ephemeral-storage: "5Gi" }
-          limits:   { cpu: "2", memory: "4Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-        securityContext:
-          runAsUser: 0
-          runAsNonRoot: false
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities: { drop: ["ALL"] }
-        volumeMounts:
-        - { name: cache-volume, mountPath: /root/.cache/llama.cpp }
-        - { name: tmp,          mountPath: /tmp }
-        readinessProbe:
-          httpGet: { path: /health, port: embeddings }
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 30
-        startupProbe:
-          httpGet: { path: /health, port: embeddings }
-          periodSeconds: 15
-          failureThreshold: 60
-      - name: llamacpp-reranker
-        # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:8625f554c71194b639e0a9a227f2e4322fff962d80876020576b0bd4049ddc0c
-        imagePullPolicy: IfNotPresent
-        args:
-          - --hf-repo
-          - jinaai/jina-reranker-v3-GGUF
-          - --hf-file
-          - jina-reranker-v3-Q4_K_M.gguf
-          - --alias
-          - jina-reranker-v3
-          - --host
-          - "0.0.0.0"
-          - --port
-          - "8002"
-          - --ctx-size
-          - "8192"
-          - --n-gpu-layers
-          - "99"
-          - --batch-size
-          - "512"
-          - --flash-attn
-          - auto
-          - --reranking
-        env:
-        - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
-        - { name: HF_HOME,               value: /models/.cache/hf }
-        - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
-        - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
-        ports:
-        - { containerPort: 8002, name: reranker }
-        resources:
-          requests: { cpu: "1", memory: "2Gi", nvidia.com/gpu: "1", ephemeral-storage: "5Gi" }
-          limits:   { cpu: "2", memory: "4Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-        securityContext:
-          runAsUser: 0
-          runAsNonRoot: false
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: false
-          capabilities: { drop: ["ALL"] }
-        volumeMounts:
-        - { name: cache-volume, mountPath: /root/.cache/llama.cpp }
-        - { name: tmp,          mountPath: /tmp }
-        readinessProbe:
-          httpGet: { path: /health, port: reranker }
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 30
-        startupProbe:
-          httpGet: { path: /health, port: reranker }
           periodSeconds: 15
           failureThreshold: 60
       volumes:
