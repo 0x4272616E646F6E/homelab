@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-20b-RichardErkhov-heresy-i1-GGUF
+          - unsloth/Qwen3.5-27B-GGUF
           - --hf-file
-          - gpt-oss-20b-RichardErkhov-heresy.i1-Q4_K_S.gguf
+          - Qwen3.5-27B-UD-Q4_K_XL.gguf
           - --alias
-          - gpt-oss-20b
+          - qwen-3.5-27b
           - --host
           - "0.0.0.0"
           - --port
@@ -53,12 +53,14 @@ spec:
           - q8_0
           - --cache-type-v
           - q8_0
-          - --temp
-          - "1.0"
-          - --top-p
-          - "1.0"
-          - --top-k
-          - "0"
+          - --temp 
+          - "0.6"
+          - --top-p 
+          - "0.95"
+          - --top-k 
+          - "20"
+          - --min-p 
+          - "0.00"
           - --jinja 
         env:
         - name: HUGGING_FACE_HUB_TOKEN
