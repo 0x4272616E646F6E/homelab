@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - unsloth/Qwen3.5-27B-GGUF
+          - unsloth/Qwen3.5-35B-A3B-GGUF
           - --hf-file
-          - Qwen3.5-27B-UD-Q4_K_XL.gguf
+          - Qwen3.5-35B-A3B-IQ4_XS.gguf
           - --alias
-          - qwen-3.5-27b
+          - qwen-3.5-35b-a3b
           - --host
           - "0.0.0.0"
           - --port
@@ -42,26 +42,28 @@ spec:
           - --ctx-size
           - "32768"
           - --n-gpu-layers
-          - "99"
-          - --batch-size
-          - "512"
-          - --ubatch-size
-          - "128"
-          - --flash-attn
-          - auto
+          - all
           - --cache-type-k
           - q8_0
           - --cache-type-v
           - q8_0
-          - --temp 
+          - --split-mode
+          - none
+          - --main-gpu
+          - "0"
+          - --parallel
+          - "1"
+          - --flash-attn
+          - "on"
+          - --temp
           - "0.6"
-          - --top-p 
+          - --top-p
           - "0.95"
-          - --top-k 
+          - --top-k
           - "20"
-          - --min-p 
+          - --min-p
           - "0.00"
-          - --jinja 
+          - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
@@ -71,8 +73,8 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "2", memory: "12Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-          limits:   { cpu: "8", memory: "18Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
+          requests: { cpu: "2", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "8", memory: "32Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 0
           runAsNonRoot: false
