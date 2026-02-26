@@ -25,7 +25,7 @@ spec:
       initContainers:
       - name: install-tools
         # renovate: datasource=docker depName=mcr.microsoft.com/devcontainers/universal
-        image: mcr.microsoft.com/devcontainers/universal:latest
+        image: mcr.microsoft.com/devcontainers/universal:latest@sha256:feeaa66d9deb342b5a5a9fdcf8afef18689cd284359a67a62289a77772573337
         command: ["bash", "-c"]
         args:
           - |
@@ -89,7 +89,7 @@ spec:
       containers:
       - name: ttyd
         # renovate: datasource=docker depName=mcr.microsoft.com/devcontainers/universal
-        image: mcr.microsoft.com/devcontainers/universal:latest
+        image: mcr.microsoft.com/devcontainers/universal:latest@sha256:feeaa66d9deb342b5a5a9fdcf8afef18689cd284359a67a62289a77772573337
         command: ["bash", "-c"]
         args:
           - |
