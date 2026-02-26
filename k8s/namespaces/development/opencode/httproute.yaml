@@ -1,10 +1,10 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: code-server
+  name: opencode
   namespace: development
   labels:
-    app.kubernetes.io/name: code-server
+    app.kubernetes.io/name: opencode
     app.kubernetes.io/managed-by: flux
 spec:
   parentRefs:
@@ -12,7 +12,7 @@ spec:
       namespace: ingress
       sectionName: https
   hostnames:
-    - "vscode.hosted.fail"
+    - "code.hosted.fail"
   rules:
     - filters:
         - type: ExtensionRef
@@ -20,6 +20,16 @@ spec:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: internal-whitelist
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: tinyauth-forward
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: websocket-support
       backendRefs:
-        - name: code-server
-          port: 8080
+        - name: opencode
+          port: 7681

@@ -68,3 +68,16 @@ spec:
         chunked_transfer_encoding on;
         proxy_read_timeout 600s;
         proxy_send_timeout 600s;
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: websocket-support
+spec:
+  snippets:
+    - context: http.server.location
+      value: |
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;

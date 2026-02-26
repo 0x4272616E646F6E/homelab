@@ -10,8 +10,6 @@ labels:
 resources:
   - namespace.yaml
   - renovate/
-  - buildkit/
-  - code-server/
   - forgejo/
   - forgejo-runner/
   - pr-agent/
@@ -19,4 +17,4 @@ resources:
   - actions-runner-controller/
   - actions-runner/
   - llamacpp/
-  - localstack/
+  - opencode/

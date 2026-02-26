@@ -124,19 +124,13 @@ unifi_dns_records:
   - key: wizarr.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: grafana.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
-  - key: prometheus.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
   - key: syslog.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
   - key: glance.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: vscode.hosted.fail
+  - key: code.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
   - key: chat.hosted.fail
