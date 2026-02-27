@@ -39,6 +39,8 @@ spec:
           - "0.0.0.0"
           - --port
           - "8000"
+          - --n-gpu-layers
+          - "999"
           - --ctx-size
           - "131072"
           - --cache-type-k
