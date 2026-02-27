@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gpt-oss-20b-RichardErkhov-heresy-i1-GGUF
+          - MuXodious/GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-GGUF
           - --hf-file
-          - gpt-oss-20b-RichardErkhov-heresy.i1-Q4_K_M.gguf
+          - GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-Q4_K_M.gguf
           - --alias
-          - gpt-oss-20b
+          - GLM-4.7-Flash-REAP
           - --host
           - "0.0.0.0"
           - --port
@@ -56,11 +56,9 @@ spec:
           - --flash-attn
           - "on"
           - --temp
-          - "1.0"
+          - "0.7"
           - --top-p
           - "1.0"
-          - --top-k
-          - "0"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
