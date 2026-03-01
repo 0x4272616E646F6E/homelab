@@ -73,7 +73,7 @@ spec:
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
-              memory: "16384Mi"
+              memory: "24576Mi"
               gpu.intel.com/i915: "1"
               ephemeral-storage: "20Gi"
           volumeMounts:
