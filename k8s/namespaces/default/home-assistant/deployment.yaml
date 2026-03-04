@@ -22,7 +22,7 @@ spec:
       containers:
         - name: homeassistant
           # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
-          image: lscr.io/linuxserver/homeassistant:latest@sha256:f98b5810d4e78756248b40f916bbdb941a84506a3cfcde03bbb0cef6df752446
+          image: lscr.io/linuxserver/homeassistant:latest@sha256:69b5700b5ed8f6db94d1301fc599c691b5e82d61ce5c24872018abf33742a59a
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8123
