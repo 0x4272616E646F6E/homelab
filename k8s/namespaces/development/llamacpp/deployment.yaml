@@ -30,11 +30,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/Qwen3.5-27B-heretic-v2-GGUF
+          - MuXodious/GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-GGUF
           - --hf-file
-          - Qwen3.5-27B-heretic-v2.Q4_K_M.gguf
+          - GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-Q4_K_M.gguf
           - --alias
-          - Qwen3.5-27B
+          - GLM-4.7-Flash-REAP
           - --host
           - "0.0.0.0"
           - --port
@@ -52,16 +52,8 @@ spec:
           - --flash-attn
           - "auto"
           - --temp
-          - "0.6"
+          - "0.7"
           - --top-p
-          - "0.95"
-          - --top-k
-          - "20"
-          - --min-p
-          - "0.0"
-          - --repetition-penalty
-          - "0.0"
-          - --repetition-penalty
           - "1.0"
           - --jinja
         env:
