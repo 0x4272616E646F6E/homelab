@@ -59,19 +59,19 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
-            - name: APP_TITLE
+            - name: TINYAUTH_UI_TITLE
               value: "Domain: Hosted.Fail"
-            - name: APP_URL
+            - name: TINYAUTH_APPURL
               value: "https://auth.hosted.fail"
-            - name: USERS
+            - name: TINYAUTH_AUTH_USERS
               valueFrom:
                 secretKeyRef:
                   name: tinyauth-secrets
                   key: CREDENTIALS
-            - name: TRUSTED_PROXIES
+            - name: TINYAUTH_AUTH_TRUSTEDPROXIES
               value: "10.244.0.0/16,10.96.0.0/12"
-            - name: DISABLE_ANALYTICS
-              value: "true"
+            - name: TINYAUTH_ANALYTICS_ENABLED
+              value: "false"
           securityContext:
             runAsNonRoot: false
             allowPrivilegeEscalation: false
