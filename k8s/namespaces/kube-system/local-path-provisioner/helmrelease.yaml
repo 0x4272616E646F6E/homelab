@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: local-path-provisioner
         namespace: flux-system
-      version: 0.0.35
+      version: 0.0.36
   install:
     remediation:
       retries: 3
