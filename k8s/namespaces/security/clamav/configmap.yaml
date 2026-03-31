@@ -18,6 +18,9 @@ data:
     # Run as daemon
     Foreground yes
     
+    # Socket settings
+    LocalSocket /run/clamav/clamd.sock
+
     # Network settings
     TCPSocket 3310
     TCPAddr 0.0.0.0
@@ -102,17 +105,19 @@ data:
     echo "=== ClamAV Cluster Scan Started: $(date) ==="
     echo "Waiting for clamd to be ready..."
     
-    # Wait for clamd to be available
+    # Wait for clamd to be available via TCP
+    CLAMD_HOST="${CLAMD_HOST:-clamav.security.svc.cluster.local}"
+    CLAMD_PORT="${CLAMD_PORT:-3310}"
     for i in $(seq 1 30); do
-      if clamdscan --ping 2>&1 | grep -q "PONG"; then
+      if echo "PING" | nc -w 2 "$CLAMD_HOST" "$CLAMD_PORT" 2>/dev/null | grep -q "PONG"; then
         echo "clamd is ready"
         break
       fi
       echo "Waiting for clamd... ($i/30)"
       sleep 2
     done
-    
-    if ! clamdscan --ping 2>&1 | grep -q "PONG"; then
+
+    if ! echo "PING" | nc -w 2 "$CLAMD_HOST" "$CLAMD_PORT" 2>/dev/null | grep -q "PONG"; then
       echo "ERROR: clamd is not responding"
       exit 1
     fi
@@ -136,7 +141,14 @@ data:
     # --log: Log to stdout
     # Note: clamd.conf ExcludePath prevents scanning the quarantine PVC itself
     
+    # Create a temporary clamd.conf pointing to the TCP daemon
+    cat > /tmp/clamd-tcp.conf <<CONF
+    TCPSocket ${CLAMD_PORT}
+    TCPAddr ${CLAMD_HOST}
+    CONF
+
     clamdscan \
+      --config-file=/tmp/clamd-tcp.conf \
       --multiscan \
       --fdpass \
       --infected \
