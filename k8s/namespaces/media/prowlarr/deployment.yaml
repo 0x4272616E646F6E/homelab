@@ -11,6 +11,8 @@ metadata:
     checkov.io/skip1: CKV_K8S_22=Requires a writable filesystem (s6-overlay and app runtime)
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: prowlarr

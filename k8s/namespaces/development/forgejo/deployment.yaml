@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: forgejo
@@ -34,6 +36,18 @@ spec:
               protocol: TCP
             - containerPort: 22
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/healthz
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 30
           resources:
             requests:
               cpu: "100m"

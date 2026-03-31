@@ -40,6 +40,15 @@ spec:
               key: POSTGRES_PASSWORD
         - name: PGDATA
           value: "/var/lib/postgresql/data/pgdata"
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "sonarqube"]
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "sonarqube"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data

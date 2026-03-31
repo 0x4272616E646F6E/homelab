@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: jellyfin
@@ -32,6 +34,18 @@ spec:
               protocol: UDP
             - containerPort: 8096
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8096
+            initialDelaySeconds: 30
+            periodSeconds: 30
           env:
             - name: UMASK
               value: "022"

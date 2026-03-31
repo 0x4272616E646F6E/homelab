@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/managed-by: flux
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: homeassistant
@@ -27,6 +29,18 @@ spec:
           ports:
             - containerPort: 8123
               protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8123
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123
+            initialDelaySeconds: 30
+            periodSeconds: 30
           resources:
             requests:
               cpu: "100m"
