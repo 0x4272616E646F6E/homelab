@@ -40,7 +40,7 @@ spec:
       containers:
         - name: tinyauth
           # renovate: datasource=docker depName=ghcr.io/steveiliop56/tinyauth
-          image: ghcr.io/steveiliop56/tinyauth:v5@sha256:d5035210ee238ca23f438f3715bcfec9b8135475316d2507a9df3ffc191aa173
+          image: ghcr.io/steveiliop56/tinyauth:v5@sha256:f7a31c3570e6b0a748cc117a98a68829d94fd9b199079600eed16b1fe5e95265
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
