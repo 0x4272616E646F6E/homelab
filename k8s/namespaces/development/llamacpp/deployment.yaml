@@ -25,15 +25,15 @@ spec:
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda13
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:c12b8a7325a1b5cc1480cb44d026518860f4810c5cf77dc450bdd05d87231062
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - unsloth/gemma-4-26B-A4B-it-GGUF
+          - MuXodious/GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-GGUF
           - --hf-file
-          - gemma-4-26B-A4B-it-UD-Q4_K_M.gguf
+          - GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-Q4_K_M.gguf
           - --alias
-          - Gemma-4-26B-A4B
+          - GLM-4.7-Flash-REAP
           - --host
           - "0.0.0.0"
           - --port
@@ -51,11 +51,9 @@ spec:
           - --flash-attn
           - "auto"
           - --temp
-          - "1.0"
+          - "0.7"
           - --top-p
-          - "0.95"
-          - --top-k
-          - "64"
+          - "1.0"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
