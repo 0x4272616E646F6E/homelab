@@ -29,11 +29,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - MuXodious/GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-GGUF
+          - unsloth/gemma-4-26B-A4B-it-GGUF
           - --hf-file
-          - GLM-4.7-Flash-REAP-23B-A3B-absolute-heresy-Q4_K_M.gguf
+          - gemma-4-26B-A4B-it-UD-IQ4_NL.gguf
           - --alias
-          - GLM-4.7-Flash-REAP
+          - Gemma-4-26B-A4B
           - --host
           - "0.0.0.0"
           - --port
@@ -51,9 +51,11 @@ spec:
           - --flash-attn
           - "auto"
           - --temp
-          - "0.7"
-          - --top-p
           - "1.0"
+          - --top-p
+          - "0.95"
+          - --top-k
+          - "64"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
