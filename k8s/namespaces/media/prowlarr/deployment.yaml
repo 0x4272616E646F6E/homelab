@@ -33,7 +33,7 @@ spec:
       containers:
         - name: prowlarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
-          image: lscr.io/linuxserver/prowlarr:latest@sha256:e50f3b188a7d1771b61f395c4203e35476bd3047683508740305e830e15bacf7
+          image: lscr.io/linuxserver/prowlarr:latest@sha256:35f48abb3e976fcf077fae756866c582e4a90f8b24810ae4067b3558f7cdbbdf
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
