@@ -29,9 +29,9 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - unsloth/gemma-4-26B-A4B-it-GGUF
+          - mradermacher/gemma-4-26B-A4B-it-heretic-GGUF
           - --hf-file
-          - gemma-4-26B-A4B-it-UD-IQ4_NL.gguf
+          - gemma-4-26B-A4B-it-heretic.IQ4_XS.gguf
           - --alias
           - Gemma-4-26B-A4B
           - --host
