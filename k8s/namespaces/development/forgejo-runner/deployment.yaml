@@ -24,7 +24,7 @@ spec:
       initContainers:
         - name: runner-register
           # renovate: datasource=docker depName=forgejo/runner registryUrl=https://code.forgejo.org
-          image: code.forgejo.org/forgejo/runner:12.8.1@sha256:6bb40b2b8809bcfb8c1cf3866a39b79c6a275aab56092598860d519a5c4085b6
+          image: code.forgejo.org/forgejo/runner:12.8.2@sha256:afeaf4c2bd52d9cc2c42090ce559c1f4b7061ded7afd7023c089a5b3b7109025
           command:
             - /bin/bash
             - -c
@@ -76,7 +76,7 @@ spec:
       containers:
         - name: runner
           # renovate: datasource=docker depName=codeberg.org/forgejo/runner
-          image: code.forgejo.org/forgejo/runner:12.8.1@sha256:6bb40b2b8809bcfb8c1cf3866a39b79c6a275aab56092598860d519a5c4085b6
+          image: code.forgejo.org/forgejo/runner:12.8.2@sha256:afeaf4c2bd52d9cc2c42090ce559c1f4b7061ded7afd7023c089a5b3b7109025
           command:
             - /bin/bash
             - -c
