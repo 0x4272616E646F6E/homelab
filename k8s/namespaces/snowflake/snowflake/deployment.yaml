@@ -21,7 +21,7 @@ spec:
       containers:
         - name: snowflake
           # renovate: datasource=docker depName=containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake
-          image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest@sha256:53658adcf8183ed387a8abce383536f45d72b4688638e078d6c1686970199feb
+          image: containers.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake:latest@sha256:82f80dd23899d07ead4069c7b94b65636b6757586bf5d7d65f5ec45b05d554df
           imagePullPolicy: IfNotPresent
           args:
             - -verbose
