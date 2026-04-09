@@ -25,7 +25,7 @@ spec:
       containers:
         - name: tor-browser
           # renovate: datasource=docker depName=kasmweb/tor-browser
-          image: kasmweb/tor-browser:1.18.0
+          image: docker.io/kasmweb/tor-browser:1.18.0
           imagePullPolicy: IfNotPresent
           env:
             - name: DISABLE_VNC_AUTH
