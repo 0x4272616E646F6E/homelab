@@ -8,6 +8,7 @@ labels:
 resources:
   - deployment.yaml
   - service.yaml
+  - snippetsfilter.yaml
   - httproute.yaml
   - networkpolicy.yaml
   - cronjob.yaml

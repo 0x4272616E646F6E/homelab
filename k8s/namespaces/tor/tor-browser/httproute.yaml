@@ -25,6 +25,16 @@ spec:
             group: gateway.nginx.org
             kind: SnippetsFilter
             name: internal-whitelist
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: backend-ssl
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: websocket-support
       backendRefs:
         - name: tor-browser
           port: 6901
