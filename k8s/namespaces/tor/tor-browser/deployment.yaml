@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tor-browser
+  namespace: tor
+  labels:
+    app.kubernetes.io/name: tor-browser
+    app.kubernetes.io/managed-by: flux
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tor-browser
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tor-browser
+        app.kubernetes.io/managed-by: flux
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: tor-browser
+          # renovate: datasource=docker depName=kasmweb/tor-browser
+          image: kasmweb/tor-browser:1.18.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DISABLE_VNC_AUTH
+              value: "1"
+          ports:
+            - name: https
+              containerPort: 6901
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+              ephemeral-storage: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+              ephemeral-storage: "5Gi"
+          securityContext:
+            readOnlyRootFilesystem: false

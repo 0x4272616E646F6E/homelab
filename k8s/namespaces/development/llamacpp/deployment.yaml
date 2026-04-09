@@ -48,12 +48,15 @@ spec:
           - q8_0
           - --parallel
           - "1"
+          - --swa-full
           - --flash-attn
           - "auto"
           - --temp
           - "1.0"
           - --top-p
           - "0.95"
+          - --min-p
+          - "0"
           - --top-k
           - "64"
           - --jinja
