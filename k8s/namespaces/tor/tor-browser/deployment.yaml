@@ -24,15 +24,17 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: tor-browser
-          # renovate: datasource=docker depName=kasmweb/tor-browser
-          image: docker.io/kasmweb/tor-browser:1.18.0
+          # renovate: datasource=docker depName=domistyle/tor-browser
+          image: docker.io/domistyle/tor-browser:15.0.8
           imagePullPolicy: IfNotPresent
           env:
-            - name: DISABLE_VNC_AUTH
-              value: "1"
+            - name: DISPLAY_WIDTH
+              value: "1920"
+            - name: DISPLAY_HEIGHT
+              value: "1080"
           ports:
-            - name: https
-              containerPort: 6901
+            - name: http
+              containerPort: 5800
               protocol: TCP
           resources:
             requests:

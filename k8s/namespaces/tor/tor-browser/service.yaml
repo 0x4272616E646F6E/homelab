@@ -10,9 +10,8 @@ spec:
   selector:
     app.kubernetes.io/name: tor-browser
   ports:
-    - port: 6901
-      targetPort: 6901
+    - port: 5800
+      targetPort: 5800
       protocol: TCP
       name: https
-      appProtocol: https
   type: ClusterIP

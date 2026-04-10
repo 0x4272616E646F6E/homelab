@@ -19,7 +19,7 @@ spec:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 6901
+        - port: 5800
           protocol: TCP
   egress:
     - {}
