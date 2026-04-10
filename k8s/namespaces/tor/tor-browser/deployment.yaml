@@ -29,9 +29,9 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: DISPLAY_WIDTH
-              value: "1920"
+              value: "1366"
             - name: DISPLAY_HEIGHT
-              value: "1080"
+              value: "768"
           ports:
             - name: http
               containerPort: 5800
