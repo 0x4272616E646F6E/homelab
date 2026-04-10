@@ -35,8 +35,8 @@ metadata:
   name: tor-browser-restart
   namespace: tor
 spec:
-  # Run daily at 4 AM
-  schedule: "0 4 * * *"
+  # Run daily at 7:00 AM UTC (3:00 AM EDT & 4:00 AM EST)
+  schedule: "0 7 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
