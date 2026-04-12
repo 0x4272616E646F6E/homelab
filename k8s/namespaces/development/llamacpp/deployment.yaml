@@ -41,7 +41,7 @@ spec:
           - --n-gpu-layers
           - "999"
           - --ctx-size
-          - "131072"
+          - "65536"
           - --cache-type-k
           - q8_0
           - --cache-type-v
