@@ -29,11 +29,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gemma-4-31B-it-heretic-GGUF
+          - mradermacher/Qwen3.5-27B-heretic-GGUF
           - --hf-file
-          - gemma-4-31B-it-heretic.IQ4_XS.gguf
+          - Qwen3.5-27B-heretic.IQ4_XS.gguf
           - --alias
-          - Gemma-4-31B
+          - Qwen3.5-27B
           - --host
           - "0.0.0.0"
           - --port
@@ -41,7 +41,7 @@ spec:
           - --n-gpu-layers
           - "999"
           - --ctx-size
-          - "65536"
+          - "131072"
           - --cache-type-k
           - q8_0
           - --cache-type-v
@@ -51,13 +51,13 @@ spec:
           - --flash-attn
           - "auto"
           - --temp
-          - "1.0"
+          - "0.6"
           - --top-p
           - "0.95"
           - --min-p
           - "0"
           - --top-k
-          - "64"
+          - "20"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
