@@ -29,11 +29,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gemma-4-26B-A4B-it-heretic-GGUF
+          - mradermacher/gemma-4-31B-it-heretic-GGUF
           - --hf-file
-          - gemma-4-26B-A4B-it-heretic.IQ4_XS.gguf
+          - gemma-4-31B-it-heretic.IQ4_XS.gguf
           - --alias
-          - Gemma-4-26B-A4B
+          - Gemma-4-31B
           - --host
           - "0.0.0.0"
           - --port
