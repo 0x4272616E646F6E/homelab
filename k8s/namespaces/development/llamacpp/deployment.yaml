@@ -48,7 +48,6 @@ spec:
           - q8_0
           - --parallel
           - "1"
-          - --swa-full
           - --flash-attn
           - "auto"
           - --temp
