@@ -33,32 +33,56 @@ spec:
           - --hf-file
           - Qwen3.6-27B-UD-IQ2_M.gguf
           - --alias
-          - Qwen-3.6-27B
+          - Qwen-3.6-27b
           - --host
           - "0.0.0.0"
           - --port
           - "8000"
-          - --n-gpu-layers
-          - "999"
           - --ctx-size
           - "131072"
+          - --n-gpu-layers
+          - "-1"
+          - --parallel
+          - "1"
+          - --jinja
           - --cache-type-k
           - q8_0
           - --cache-type-v
           - q8_0
-          - --parallel
-          - "1"
-          - --flash-attn
-          - "auto"
+          - --reasoning
+          - "on"
+          - --chat-template-kwargs
+          - '{"enable_thinking": true, "preserve_thinking": true}'
           - --temp
           - "0.6"
           - --top-p
           - "0.95"
-          - --min-p
-          - "0"
           - --top-k
           - "20"
-          - --jinja
+          - --min-p
+          - "0.0"
+          - --presence-penalty
+          - "0.0"
+          - --repeat-penalty
+          - "1.0"
+          - --flash-attn
+          - "on"
+          - --batch-size
+          - "2048"
+          - --ubatch-size
+          - "512"
+          - --threads
+          - "8"
+          - --threads-batch
+          - "16"
+          - --spec-type
+          - ngram-mod
+          - --spec-ngram-size-n
+          - "24"
+          - --draft-min
+          - "48"
+          - --draft-max
+          - "64"
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
