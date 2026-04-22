@@ -59,6 +59,8 @@ spec:
           - --top-k
           - "64"
           - --jinja
+          - --chat-template-kwargs
+          - '{"enable_thinking":true}'
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
