@@ -29,11 +29,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - unsloth/Qwen3.6-27B-GGUF
+          - mradermacher/Qwen3.6-28B-REAP-i1-GGUF
           - --hf-file
-          - Qwen3.6-27B-UD-IQ2_M.gguf
+          - Qwen3.6-28B-REAP.i1-IQ4_XS.gguf
           - --alias
-          - Qwen-3.6-27b
+          - Qwen-3.6-35B-A3B-REAP
           - --host
           - "0.0.0.0"
           - --port
