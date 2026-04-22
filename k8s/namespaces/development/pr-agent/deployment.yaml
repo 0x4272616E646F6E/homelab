@@ -46,9 +46,9 @@ spec:
             - name: OPENAI__API_KEY
               value: "empty"
             - name: CONFIG__MODEL
-              value: "openai/Gemma-4-26B-A4B"
+              value: "openai/Qwen-3.6-35B-A3B-REAP"
             - name: CONFIG__FALLBACK_MODELS
-              value: "openai/Gemma-4-26B-A4B"
+              value: "openai/Qwen-3.6-35B-A3B-REAP"
             - name: CONFIG__CUSTOM_MODEL_MAX_TOKENS
               value: "131072"
           resources:
