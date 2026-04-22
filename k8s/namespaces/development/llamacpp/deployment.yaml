@@ -29,11 +29,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gemma-4-26B-A4B-it-heretic-GGUF
+          - unsloth/Qwen3.6-27B-GGUF
           - --hf-file
-          - gemma-4-26B-A4B-it-heretic.IQ4_XS.gguf
+          - Qwen3.6-27B-UD-IQ2_M.gguf
           - --alias
-          - Gemma-4-26B-A4B
+          - Qwen-3.6-27B
           - --host
           - "0.0.0.0"
           - --port
@@ -51,16 +51,14 @@ spec:
           - --flash-attn
           - "auto"
           - --temp
-          - "1.0"
+          - "0.6"
           - --top-p
           - "0.95"
           - --min-p
           - "0"
           - --top-k
-          - "64"
+          - "20"
           - --jinja
-          - --chat-template-kwargs
-          - '{"enable_thinking":true}'
         env:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
