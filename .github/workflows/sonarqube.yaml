@@ -18,6 +18,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install dirmngr
+        run: sudo apt-get update && sudo apt-get install -y dirmngr gnupg
+
       - uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432 # v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
