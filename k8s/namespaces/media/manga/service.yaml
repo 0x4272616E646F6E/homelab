@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: manga
+  namespace: media
+  labels:
+    app.kubernetes.io/name: manga
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    app.kubernetes.io/name: manga
+    app.kubernetes.io/managed-by: flux
+  ports:
+    - port: 4567
+      targetPort: 4567
+      protocol: TCP
+      name: manga
+  type: ClusterIP
