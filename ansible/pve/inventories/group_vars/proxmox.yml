@@ -196,12 +196,13 @@ smtp_relay_password: ""
 # ZFS Tuning Configurations
 zfs_tuning_enabled: true
 zfs_tuning:
-  zfs_arc_max: 103079215104           # 96 GiB in bytes
-  zfs_arc_min: 34359738368            # 32 GiB in bytes
-  zfs_dirty_data_max: 34359738368     # 32 GiB in bytes
+  zfs_arc_max: 34359738368            # 32 GiB
+  zfs_arc_min: 17179869184            # 16 GiB
+  zfs_dirty_data_max: 8589934592      # 8 GiB
   zfs_dirty_data_max_percent: 20
   zfs_dirty_data_sync_percent: 10
   zfs_vdev_aggregation_limit: 1048576
+  zfs_arc_sys_free: 4294967296        # 4 GiB safety floor
 
 # Antivirus Configurations
 host_antivirus_enabled: true
