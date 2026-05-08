@@ -25,7 +25,7 @@ spec:
       containers:
         - name: tor-browser
           # renovate: datasource=docker depName=domistyle/tor-browser
-          image: docker.io/domistyle/tor-browser:15.0.11@sha256:472d35231fc844a96581baf3e8593aa20f63b0e327b22b6e436ad10d7d874ba7
+          image: docker.io/domistyle/tor-browser:15.0.13@sha256:486e2070d414af45595ae625ba179960a735297eb1b0a86fffb500b851a2c436
           imagePullPolicy: IfNotPresent
           env:
             - name: DISPLAY_WIDTH
