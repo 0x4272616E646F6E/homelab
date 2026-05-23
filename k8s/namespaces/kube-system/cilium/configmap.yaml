@@ -489,7 +489,7 @@ data:
           enabled: true
           auto:
             enabled: true
-            method: helm
+            method: cronJob
             certValidityDuration: 365
             schedule: "0 0 1 */4 *"
             certManagerIssuerRef: {}
