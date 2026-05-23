@@ -32,6 +32,8 @@ spec:
           image: docker.io/codiumai/pr-agent:0.34-gitea_app@sha256:6bea31a03eb41db19b137d291d360955289a3a7fef7640663a8b3c5483d3d859
           imagePullPolicy: IfNotPresent
           env:
+            - name: HOME
+              value: /config
             - name: CONFIG__GIT_PROVIDER
               value: "gitea"
             - name: GITEA__URL
