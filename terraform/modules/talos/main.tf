@@ -32,6 +32,11 @@ resource "talos_machine_configuration_apply" "this" {
     local.machine_patch,
     local.cluster_patch,
   ]
+
+  timeouts {
+    create = "10m"
+    update = "10m"
+  }
 }
 
 # Bootstrap

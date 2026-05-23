@@ -92,6 +92,8 @@ nut_monitor_password: !vault |
           36333761343766313364343262656638326366626631373031323034353362366437313736306632
           3666353831633035323564646636653138346661653732616138
 nut_server: "127.0.0.1"     # Localhost for standalone mode
+nut_pollfreq: 5             # Seconds between UPS polls (default in upsmon.conf.j2)
+nut_pollfreqalert: 5        # Seconds between polls while on battery / alert
 
 # Unattended Upgrades Configurations
 unattended_upgrades_enabled: true

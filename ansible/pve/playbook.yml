@@ -50,6 +50,7 @@
         owner: root
         group: root
         mode: '0644'
+        validate: "rsyslogd -N1 -f %s"
       when: syslog_enabled and syslog_server != ''
       notify: Restart rsyslog
 
@@ -472,13 +473,26 @@
       when: gpu_passthrough_enabled and (vfio_modules | default([]) | length > 0)
       notify: Update initramfs
 
-    - name: Remove PVE subscription nag from web UI
-      ansible.builtin.replace:
-        path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
-        regexp: "checked_command: function\\(orig_cmd\\)"
-        replace: "checked_command: function(orig_cmd) { orig_cmd(); return; }, _unused_checked_command: function(orig_cmd)"
-      failed_when: false
-      notify: Restart pveproxy
+    - name: PVE subscription nag removal
+      block:
+        - name: Check for proxmox-widget-toolkit
+          ansible.builtin.stat:
+            path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+          register: _pve_widget_file
+
+        - name: Remove PVE subscription nag from web UI
+          when: _pve_widget_file.stat.exists
+          ansible.builtin.replace:
+            path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+            regexp: "checked_command: function\\(orig_cmd\\)"
+            replace: "checked_command: function(orig_cmd) { orig_cmd(); return; }, _unused_checked_command: function(orig_cmd)"
+          notify: Restart pveproxy
+
+        - name: Verify nag patch is present (catches upstream regex drift)
+          when: _pve_widget_file.stat.exists
+          ansible.builtin.command:
+            cmd: grep -q _unused_checked_command /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+          changed_when: false
 
     - name: Update apt cache after repository changes
       ansible.builtin.apt:
@@ -566,6 +580,7 @@
             owner: root
             group: root
             mode: '0644'
+            validate: "systemd-analyze verify %s"
           notify: Reload systemd daemon
 
         - name: Enable and start pve_exporter
@@ -766,6 +781,7 @@
             owner: root
             group: root
             mode: '0644'
+            validate: "/sbin/sysctl -p %s -N"
 
         - name: Reload sysctl settings for hardening profile
           ansible.builtin.command: sysctl -p /etc/sysctl.d/99-homelab-hardening.conf

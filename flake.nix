@@ -39,6 +39,7 @@
 
             # Homelab packages
             ansible
+            cilium-cli
             fluxcd
             kubeconform
             kubectl

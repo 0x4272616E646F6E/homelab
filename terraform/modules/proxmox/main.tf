@@ -1,6 +1,6 @@
 resource "proxmox_vm_qemu" "talos" {
   name        = "talos"
-  vmid        = 2250
+  vmid        = var.talos_vmid
   target_node = "pve"
   protection  = true
   onboot      = true
@@ -64,7 +64,7 @@ resource "proxmox_vm_qemu" "talos" {
     bridge   = "vmbr0"
     firewall = true
     queues   = 16
-    macaddr  = "BC:24:11:61:5B:80"
+    macaddr  = var.talos_macaddr
   }
 
   # Cloud-init
@@ -102,7 +102,7 @@ resource "proxmox_vm_qemu" "talos" {
 
 resource "proxmox_vm_qemu" "pbs" {
   name        = "pbs"
-  vmid        = 2251
+  vmid        = var.pbs_vmid
   target_node = "pve"
   protection  = true
   onboot      = true
@@ -145,7 +145,7 @@ resource "proxmox_vm_qemu" "pbs" {
     model    = "virtio"
     bridge   = "vmbr0"
     firewall = true
-    macaddr  = "BC:24:11:47:DD:28"
+    macaddr  = var.pbs_macaddr
   }
 
   # PCI passthrough

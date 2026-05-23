@@ -33,7 +33,6 @@ spec:
     spec:
       runtimeClassName: youki
       securityContext:
-        runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
       automountServiceAccountToken: false

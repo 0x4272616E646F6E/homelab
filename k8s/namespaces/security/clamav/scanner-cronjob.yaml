@@ -54,14 +54,18 @@ spec:
                   cpu: "2000m"
                   memory: "1Gi"
               securityContext:
-                allowPrivilegeEscalation: true
+                allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: false
-                privileged: true
+                privileged: false
                 runAsNonRoot: false
                 runAsUser: 0
                 capabilities:
+                  drop:
+                    - ALL
                   add:
-                    - DAC_READ_SEARCH
+                    - DAC_READ_SEARCH  # read files owned by any UID across PVCs
+                    - DAC_OVERRIDE     # unlink source files during --move (cross-mount fallback)
+                    - FOWNER           # set perms/ownership on quarantined copies
           volumes:
             - name: local-path-data
               hostPath:

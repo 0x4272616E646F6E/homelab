@@ -19,6 +19,13 @@ flux-system/*.gitops.yaml
 .local/*
 .ansible/*
 
+# Ignore IaC state and credentials
+*.tfstate
+*.tfstate.*
+.terragrunt-cache/
+talosconfig
+kubeconfig
+
 # Ignore backup and swap files
 *~
 *.bak
