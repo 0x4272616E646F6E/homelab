@@ -33,6 +33,8 @@ spec:
           env:
             - name: DISABLE_BUILTIN_AUTH
               value: "true"
+            - name: UV_CACHE_DIR
+              value: /tmp/.uv_cache
           ports:
             - containerPort: 5690
               protocol: TCP
