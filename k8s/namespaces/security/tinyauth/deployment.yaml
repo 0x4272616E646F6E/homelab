@@ -33,6 +33,8 @@ spec:
     spec:
       runtimeClassName: youki
       securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       automountServiceAccountToken: false

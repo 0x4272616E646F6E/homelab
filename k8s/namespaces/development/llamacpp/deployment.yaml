@@ -22,6 +22,9 @@ spec:
       runtimeClassName: nvidia
       terminationGracePeriodSeconds: 300
       automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
@@ -71,8 +74,9 @@ spec:
           requests: { cpu: "2", memory: "8Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
           limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
-          runAsUser: 0
-          runAsNonRoot: false
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
           capabilities: { drop: ["ALL"] }

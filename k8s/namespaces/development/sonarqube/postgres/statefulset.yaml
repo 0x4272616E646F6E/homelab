@@ -19,7 +19,10 @@ spec:
         app.kubernetes.io/name: sonarqube-postgres-17
     spec:
       securityContext:
+        runAsUser: 999
+        runAsGroup: 999
         fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
       automountServiceAccountToken: false
       containers:
       - name: postgres
