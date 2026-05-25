@@ -40,7 +40,7 @@ spec:
             runAsNonRoot: false
         - name: init-db
           # renovate: datasource=docker depName=clamav/clamav
-          image: docker.io/clamav/clamav:1.5@sha256:de10aee284800529bbdad5c45648afa81ab7cd45a14bc6d5ef7432496fef7b5c
+          image: docker.io/clamav/clamav:1.5@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
           imagePullPolicy: IfNotPresent
           command:
             - /bin/sh
@@ -73,7 +73,7 @@ spec:
       containers:
         - name: clamd
           # renovate: datasource=docker depName=clamav/clamav
-          image: docker.io/clamav/clamav:1.5@sha256:de10aee284800529bbdad5c45648afa81ab7cd45a14bc6d5ef7432496fef7b5c
+          image: docker.io/clamav/clamav:1.5@sha256:f7954ca7ca13f0ebc301bb8a8b492a88db793192c48763a0b9a2ffb64dcf4bee
           imagePullPolicy: IfNotPresent
           ports:
             - name: clamd
