@@ -35,6 +35,8 @@ spec:
               mkdir -p /init/media/movies /init/media/tvshows
               chown -R 1000:1000 /init
               chmod -R 777 /init
+              # Remove stale lockfile/IPC socket
+              rm -f /config/qBittorrent/lockfile /config/qBittorrent/ipc-socket
           securityContext:
             runAsUser: 0
           resources:
@@ -49,6 +51,8 @@ spec:
           volumeMounts:
             - name: media
               mountPath: /init
+            - name: config
+              mountPath: /config
       containers:
         - name: qbittorrent
           # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
