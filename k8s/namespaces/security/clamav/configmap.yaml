@@ -138,9 +138,10 @@ data:
     # --fdpass: Pass file descriptors (faster for clamd)
     # --infected: Only show infected files
     # --move: Move infected files to quarantine
-    # --log: Log to stdout
+    # Note: clamdscan already writes scan output to stdout; --log=/dev/stdout
+    # trips O_NOFOLLOW (ELOOP) on the /dev/stdout symlink chain in containers.
     # Note: clamd.conf ExcludePath prevents scanning the quarantine PVC itself
-    
+
     # Create a temporary clamd.conf pointing to the TCP daemon
     cat > /tmp/clamd-tcp.conf <<CONF
     TCPSocket ${CLAMD_PORT}
@@ -153,7 +154,6 @@ data:
       --fdpass \
       --infected \
       --move="$QUARANTINE_DIR" \
-      --log=/dev/stdout \
       $SCAN_PATHS || EXIT_CODE=$?
     
     echo ""
