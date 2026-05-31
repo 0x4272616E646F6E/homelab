@@ -198,6 +198,7 @@ The following applications are managed through flux in this repository:
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)
 - [**Tor-Browser**](https://github.com/kasmtech/workspaces-images/blob/develop/dockerfile-kasm-tor-browser)
+- [**VaultWarden**](https://github.com/dani-garcia/vaultwarden)
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
 </details>
