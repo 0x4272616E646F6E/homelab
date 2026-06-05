@@ -88,7 +88,7 @@ spec:
               subPath: downloads
         - name: port-forward-sync
           # renovate: datasource=docker depName=ghcr.io/nushell/nushell
-          image: ghcr.io/nushell/nushell:latest@sha256:7ca7d9a30530329bd413f7f46adca50af10dc975dff072978349df307403d9a3
+          image: ghcr.io/nushell/nushell:latest@sha256:c0ad5d32cd85255af69a220f1f11591662186a08737fec50772c4e0d70ab8285
           command: ["/bin/sh", "-c"]
           args:
             - |
