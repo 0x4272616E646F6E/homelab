@@ -37,22 +37,26 @@ spec:
           - gemma-4-26B-A4B-it-qat-q4_0-unquantized-heretic.i1-Q4_0.gguf
           - --alias
           - Gemma-4-26B-A4B
-          - --host
-          - "0.0.0.0"
           - --port
           - "8000"
           - --n-gpu-layers
           - "999"
           - --ctx-size
-          - "262144"
+          - "131072"
           - --cache-type-k
           - q8_0
           - --cache-type-v
           - q8_0
           - --parallel
           - "1"
+          - --batch-size
+          - "2048"
+          - --ubatch-size
+          - "512"
+          - --threads-http
+          - "4"
           - --flash-attn
-          - "auto"
+          - "on"
           - --temp
           - "1.0"
           - --top-p
@@ -68,6 +72,8 @@ spec:
         - { name: HF_HOME,               value: /models/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
+        - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
+        - { name: GGML_CUDA_DISABLE_GRAPHS, value: "1" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
@@ -92,6 +98,12 @@ spec:
           httpGet: { path: /health, port: http }
           periodSeconds: 15
           failureThreshold: 60
+        livenessProbe:
+          httpGet: { path: /health, port: http }
+          initialDelaySeconds: 600
+          periodSeconds: 60
+          failureThreshold: 5
+          timeoutSeconds: 10
       volumes:
       - name: cache-volume
         persistentVolumeClaim: { claimName: llamacpp-model-pvc }
