@@ -22,7 +22,7 @@ spec:
       containers:
         - name: wireguard
           # renovate: datasource=docker depName=docker.io/debian
-          image: docker.io/debian:trixie-20260610@sha256:5763081d2297e7bd29b27a7e26743a74f9ff0d32e20f8f794f2009150ee59157
+          image: docker.io/debian:trixie-20260610@sha256:50d8c6e4413c3f5f5890208197bd439e60e4b0c6567326bfef8f3ede11d1645b
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
