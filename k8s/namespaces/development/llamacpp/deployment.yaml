@@ -27,7 +27,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       initContainers:
       - name: fetch-webui
-        image: curlimages/curl:8.11.1
+        image: curlimages/curl:8.20.0@sha256:b3f1fb2a51d923260350d21b8654bbc607164a987e2f7c84a0ac199a67df812a
         env:
         - name: HF_TOKEN
           valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
