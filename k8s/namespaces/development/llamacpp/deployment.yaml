@@ -25,24 +25,59 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+      - name: fetch-webui
+        image: curlimages/curl:8.11.1
+        env:
+        - name: HF_TOKEN
+          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -eu
+            if [ -f /ui/index.html ]; then
+              echo "WebUI already present, skipping fetch"
+              exit 0
+            fi
+            echo "Fetching llama-ui dist.tar.gz from HF bucket..."
+            curl -fsSL -H "Authorization: Bearer ${HF_TOKEN}" \
+              "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/dist.tar.gz?download=true" \
+              -o /tmp/dist.tar.gz
+            tar -xzf /tmp/dist.tar.gz -C /ui
+            rm /tmp/dist.tar.gz
+            echo "WebUI extracted:"
+            ls /ui
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: ui,  mountPath: /ui }
+        - { name: tmp, mountPath: /tmp }
+        resources:
+          requests: { cpu: "10m",  memory: "32Mi" }
+          limits:   { cpu: "200m", memory: "128Mi" }
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:b74981198242837ddcefb236e0ef20c014b4d0f3b4c079d435380c45098a99fa
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:841b199aed2649a748875b043b32fed2e8c2d4d87e1d563556817fb7fa44b72b
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/gemma-4-26B-A4B-it-qat-q4_0-unquantized-heretic-i1-GGUF
+          - mradermacher/Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved-i1-GGUF
           - --hf-file
-          - gemma-4-26B-A4B-it-qat-q4_0-unquantized-heretic.i1-Q4_0.gguf
+          - Qwen3.6-27B-uncensored-heretic-v2-Native-MTP-Preserved.i1-IQ4_XS.gguf
           - --alias
-          - Gemma-4-26B-A4B
+          - Qwen3.6-27B
           - --port
           - "8000"
           - --n-gpu-layers
           - "999"
           - --ctx-size
-          - "131072"
+          - "32768"
           - --cache-type-k
           - q8_0
           - --cache-type-v
@@ -58,13 +93,17 @@ spec:
           - --flash-attn
           - "on"
           - --temp
-          - "1.0"
+          - "0.6"
           - --top-p
           - "0.95"
-          - --min-p
-          - "0"
           - --top-k
-          - "64"
+          - "20"
+          - --min-p
+          - "0.00"
+          - --spec-type
+          - draft-mtp
+          - --spec-draft-n-max
+          - "2"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
@@ -74,6 +113,7 @@ spec:
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
         - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
         - { name: GGML_CUDA_DISABLE_GRAPHS, value: "1" }
+        - { name: LLAMA_ARG_STATIC_PATH,   value: "/ui" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
@@ -89,6 +129,7 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /models }
         - { name: tmp,          mountPath: /tmp }
+        - { name: ui,           mountPath: /ui, readOnly: true }
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 10
@@ -108,4 +149,6 @@ spec:
       - name: cache-volume
         persistentVolumeClaim: { claimName: llamacpp-model-pvc }
       - name: tmp
+        emptyDir: {}
+      - name: ui
         emptyDir: {}
