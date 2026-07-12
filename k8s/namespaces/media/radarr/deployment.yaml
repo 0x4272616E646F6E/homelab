@@ -28,7 +28,7 @@ spec:
       containers:
         - name: radarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
-          image: lscr.io/linuxserver/radarr:latest@sha256:549c4a075496cf7584593bdc041407ddb38ee8958df8cf99938f8821467ea6f8
+          image: lscr.io/linuxserver/radarr:latest@sha256:2b2c1c05eb3f648d2c80dfab9486147dd7bb0ad4d77fa972fc1c5de8f1da3738
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 7878
