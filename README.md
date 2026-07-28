@@ -202,17 +202,3 @@ The following applications are managed through flux in this repository:
 - [**Vertical Pod Autoscaler**](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
 </details>
-
-## Star History
-
-<div align="center">
-
-<a href="https://www.star-history.com/embed?secret=#0x4272616E646F6E/homelab&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=0x4272616E646F6E/homelab&type=Date" />
-  </picture>
-</a>
-
-</div>
