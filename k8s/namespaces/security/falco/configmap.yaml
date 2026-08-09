@@ -27,10 +27,9 @@ data:
             refs: [k8saudit-rules:0.11]
     services:
       - name: k8saudit-webhook
-        type: NodePort
+        type: ClusterIP
         ports:
           - port: 9765
-            nodePort: 30007
             protocol: TCP
     falco:
       rules_files:
