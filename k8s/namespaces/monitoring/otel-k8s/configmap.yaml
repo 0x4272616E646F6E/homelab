@@ -49,6 +49,13 @@ data:
         cpu: 500m
         memory: 512Mi
 
+    ports:
+      syslog-udp:
+        enabled: true
+        containerPort: 1514
+        servicePort: 1514
+        protocol: UDP
+
     extraEnvs:
       - name: HYPERDX_API_KEY
         valueFrom:
@@ -87,6 +94,12 @@ data:
             container.uptime:
               enabled: true
 
+        syslog:
+          udp:
+            listen_address: 0.0.0.0:1514
+          protocol: rfc3164
+          location: UTC
+
       exporters:
         otlphttp:
           endpoint: "http://clickstack-otel-collector.monitoring.svc.cluster.local:4318"
@@ -99,4 +112,12 @@ data:
           logs:
             exporters: [otlphttp]
           metrics:
+            exporters: [otlphttp]
+          # Separate pipeline so the syslog receiver is not merged into the
+          # preset-managed `logs` receiver list. k8s_attributes is deliberately
+          # omitted: UniFi is an external device, so there is no pod to enrich
+          # from and the processor would only add lookup churn.
+          logs/syslog:
+            receivers: [syslog]
+            processors: [memory_limiter, batch]
             exporters: [otlphttp]

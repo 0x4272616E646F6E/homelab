@@ -5,15 +5,6 @@ metadata:
   namespace: monitoring
 data:
   values.yaml: |-
-    # ClickStack 3.x: ClickHouse/Keeper/MongoDB are now operator-managed CRs
-    # (see clickstack-operators HelmRelease). Storage uses the cluster default
-    # StorageClass (local-path-rwo); resources/sizes are layered onto the
-    # chart's default CRD specs via Helm's deep value merge.
-    #
-    # NOTE: the syslog receiver (global.otelCollector.customConfig) is
-    # intentionally omitted until the base 3.x collector is healthy — in OpAMP
-    # supervisor mode a malformed custom-config crashes the agent. Re-add it
-    # once the running collector's base component names are confirmed.
     hyperdx:
       config:
         FRONTEND_URL: "https://hyperdx.hosted.fail"
