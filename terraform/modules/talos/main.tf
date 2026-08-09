@@ -19,6 +19,11 @@ resource "talos_image_factory_schematic" "this" {
 # Machine secrets
 resource "talos_machine_secrets" "this" {
   talos_version = var.talos_version
+
+  lifecycle {
+    # Losing these makes the cluster unmanageable
+    prevent_destroy = true
+  }
 }
 
 # Apply machine configuration

@@ -168,9 +168,6 @@ data:
       - name: SONAR_SEARCH_JAVAOPTS
         value: "-Des.enforce.bootstrap.checks=true"
     annotations: {}
-    env:
-      - name: SONAR_SEARCH_JAVAOPTS
-        value: "-Des.enforce.bootstrap.checks=true"
     resources:
       limits:
         cpu: 800m

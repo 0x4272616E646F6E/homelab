@@ -6,10 +6,14 @@ After=network.target
 
 [Service]
 Type=simple
-User=root
-Group=root
-ExecStart=/opt/pve_exporter/venv/bin/pve_exporter --pve-url={{ pve_exporter_url | default('http://127.0.0.1:8006') }} --listen-address={{ pve_exporter_listen_address | default('0.0.0.0:9221') }}
+User=pve-exporter
+Group=pve-exporter
+ExecStart=/opt/pve_exporter/venv/bin/pve_exporter --config.file={{ pve_exporter_config_path | default('/etc/pve_exporter/pve_exporter.yml') }} --web.listen-address={{ pve_exporter_listen_address | default('127.0.0.1:9221') }}
 Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target

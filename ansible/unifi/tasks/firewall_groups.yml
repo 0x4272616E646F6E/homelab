@@ -5,7 +5,7 @@
     method: GET
     headers:
       Cookie: "{{ _legacy_cookies }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
   register: _existing_groups_raw
 
 - name: Set existing firewall groups fact
@@ -33,7 +33,7 @@
     headers:
       Cookie: "{{ _legacy_cookies }}"
       X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: [200, 201]
   loop: "{{ unifi_firewall_groups }}"
   loop_control:
@@ -52,7 +52,7 @@
     headers:
       Cookie: "{{ _legacy_cookies }}"
       X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: 200
   loop: "{{ unifi_firewall_groups }}"
   loop_control:

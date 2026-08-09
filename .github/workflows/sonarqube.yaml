@@ -2,11 +2,15 @@ name: SonarQube
 
 permissions:
   contents: read
-  
+
 on:
   push:
     branches:
       - main
+
+concurrency:
+  group: sonarqube-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:

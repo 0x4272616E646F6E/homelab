@@ -1,9 +1,4 @@
 ---
-- name: Restart systemd-timesyncd
-  ansible.builtin.systemd:
-    name: systemd-timesyncd
-    state: restarted
-
 - name: Restart chrony
   ansible.builtin.systemd:
     name: chrony
@@ -65,5 +60,11 @@
 - name: Restart pveproxy
   ansible.builtin.systemd:
     name: pveproxy
+    state: restarted
+  when: not ansible_check_mode
+
+- name: Restart pve_exporter
+  ansible.builtin.systemd:
+    name: pve_exporter
     state: restarted
   when: not ansible_check_mode

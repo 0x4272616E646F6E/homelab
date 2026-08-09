@@ -30,11 +30,18 @@ spec:
             - /bin/sh
             - -c
             - |
-              apt-get update && apt-get install -y iproute2 && \
-              apt-get clean && rm -rf /var/lib/apt/lists/* || true
-              ip rule add from 10.2.0.2/32 table 100 priority 100 2>/dev/null || true
-              ip route add 10.2.0.1 dev wg0 table 100             2>/dev/null || true
-              ip route add default dev wg0 table 100              2>/dev/null || true
+              set -eu
+              # Fail hard (crashloop = visible signal) instead of silently
+              # running without iproute2 or with missing routes.
+              if ! command -v ip >/dev/null 2>&1; then
+                apt-get update
+                apt-get install -y --no-install-recommends iproute2
+                apt-get clean && rm -rf /var/lib/apt/lists/*
+              fi
+              ip rule show | grep -q "from 10.2.0.2 lookup 100" || \
+                ip rule add from 10.2.0.2/32 table 100 priority 100
+              ip route replace 10.2.0.1 dev wg0 table 100
+              ip route replace default dev wg0 table 100
               sleep infinity
           resources:
             requests:

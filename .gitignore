@@ -18,6 +18,7 @@ flux-system/*.gitops.yaml
 # Ignore local only files
 .local/*
 .ansible/*
+.claude/
 
 # Ignore IaC state and credentials
 *.tfstate

@@ -5,28 +5,26 @@
     method: GET
     headers:
       Cookie: "{{ _legacy_cookies }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
   register: _existing_dns_raw
 
 - name: Set existing DNS records fact
   ansible.builtin.set_fact:
     _existing_dns: "{{ _existing_dns_raw.json }}"
 
-- name: Build existing DNS lookup (key+value as composite key)
+- name: Build existing DNS lookup (key+value+type as composite key)
   ansible.builtin.set_fact:
     _existing_dns_keys: >-
-      {{ _existing_dns | map(attribute='key') | zip(_existing_dns | map(attribute='value'))
+      {{ _existing_dns | map(attribute='key')
+         | zip(_existing_dns | map(attribute='value'), _existing_dns | map(attribute='record_type'))
          | map('join', '||') | list }}
 
-- name: Build existing DNS map by composite key
-  ansible.builtin.set_fact:
-    _existing_dns_map: >-
-      {{ dict(
-        _existing_dns | map(attribute='key') | zip(_existing_dns | map(attribute='value'))
-        | map('join', '||')
-        | zip(_existing_dns)
-      ) }}
-
+# Reconciliation is driven purely by the composite key||value||record_type below:
+# a record is created when that triple is absent, and deleted when it is no
+# longer desired. A changed value OR record_type shifts the composite key, so
+# drift (including a re-typed record that keeps the same key and value) is
+# applied as a create-new + delete-stale pair (creates run before deletes),
+# which also preserves support for multiple values under the same key.
 - name: "Create DNS record — {{ item.key }} → {{ item.value }}"
   ansible.builtin.uri:
     url: "{{ unifi_base_url }}/proxy/network/v2/api/site/{{ unifi_legacy_site }}/static-dns"
@@ -44,43 +42,18 @@
     headers:
       Cookie: "{{ _legacy_cookies }}"
       X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: [200, 201]
   loop: "{{ unifi_dns_records }}"
   loop_control:
     label: "{{ item.key }} ({{ item.record_type }})"
-  when: (item.key ~ '||' ~ item.value) not in _existing_dns_keys
-
-- name: "Update DNS record — {{ item.key }} → {{ item.value }}"
-  ansible.builtin.uri:
-    url: "{{ unifi_base_url }}/proxy/network/v2/api/site/{{ unifi_legacy_site }}/static-dns/{{ _existing_dns_map[item.key ~ '||' ~ item.value]._id }}"
-    method: PUT
-    body_format: json
-    body:
-      enabled: true
-      key: "{{ item.key }}"
-      record_type: "{{ item.record_type }}"
-      value: "{{ item.value }}"
-      port: 0
-      priority: 0
-      ttl: 0
-      weight: 0
-    headers:
-      Cookie: "{{ _legacy_cookies }}"
-      X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
-    status_code: 200
-  loop: "{{ unifi_dns_records }}"
-  loop_control:
-    label: "{{ item.key }} ({{ item.record_type }})"
-  when:
-    - (item.key ~ '||' ~ item.value) in _existing_dns_keys
-    - _existing_dns_map[item.key ~ '||' ~ item.value].record_type | default('') != item.record_type
+  when: (item.key ~ '||' ~ item.value ~ '||' ~ item.record_type) not in _existing_dns_keys
 
 - name: Build desired DNS composite keys
   ansible.builtin.set_fact:
     _desired_dns_keys: >-
-      {{ unifi_dns_records | map(attribute='key') | zip(unifi_dns_records | map(attribute='value'))
+      {{ unifi_dns_records | map(attribute='key')
+         | zip(unifi_dns_records | map(attribute='value'), unifi_dns_records | map(attribute='record_type'))
          | map('join', '||') | list }}
 
 - name: "Delete stale DNS record — {{ item.key }} → {{ item.value }}"
@@ -90,9 +63,9 @@
     headers:
       Cookie: "{{ _legacy_cookies }}"
       X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: 200
   loop: "{{ _existing_dns }}"
   loop_control:
     label: "{{ item.key }} ({{ item.record_type }})"
-  when: (item.key ~ '||' ~ item.value) not in _desired_dns_keys
+  when: (item.key ~ '||' ~ item.value ~ '||' ~ item.record_type) not in _desired_dns_keys

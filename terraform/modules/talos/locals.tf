@@ -38,8 +38,9 @@ locals {
     defaultRuntimeSeccompProfileEnabled = true
     disableManifestsDirectory           = true
     extraArgs = {
-      "node-ip"                 = var.node_ip
-      address                   = "0.0.0.0"
+      "node-ip" = var.node_ip
+      # Bind kubelet API to the node IP only (not wg0/VPN interfaces)
+      address                   = var.node_ip
       "max-pods"                = "250"
       "event-qps"               = "0"
       "registry-qps"            = "0"
@@ -208,7 +209,7 @@ locals {
 
   cluster_api_server = {
     image                    = "registry.k8s.io/kube-apiserver:${var.kubernetes_version}"
-    certSANs                 = [var.node_ip, "127.0.0.1"]
+    certSANs                 = [var.node_ip, "127.0.0.1", regex("^(?:https?://)?([^:/]+)", var.cluster_endpoint)[0]]
     disablePodSecurityPolicy = true
     admissionControl = [
       {

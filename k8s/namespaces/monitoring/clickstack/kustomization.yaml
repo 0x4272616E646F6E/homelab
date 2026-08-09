@@ -7,6 +7,7 @@ labels:
 resources:
   - secrets.enc.yaml
   - configmap.yaml
+  - operators-helmrelease.yaml
   - helmrelease.yaml
   - httproute.yaml
   - syslog-service.yaml

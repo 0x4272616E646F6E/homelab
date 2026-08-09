@@ -1,6 +1,8 @@
 ---
 # Integration API
 unifi_base_url: "https://unifi.hosted.fail"
+# Set false only for controllers with self-signed certs (weakens transport security)
+unifi_validate_certs: true
 unifi_api_token: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   REPLACE_WITH_VAULT_ENCRYPTED_TOKEN

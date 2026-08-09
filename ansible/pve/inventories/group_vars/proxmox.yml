@@ -58,7 +58,7 @@ logrotate_custom_enabled: true
 logrotate_configs:
   - name: "clamav-host-scan"
     paths:
-      - /var/log/clamav-host-scan.log
+      - /var/log/clamav/host-scan.log
     rotate: 7
     interval: daily
     compress: true
@@ -91,6 +91,10 @@ nut_monitor_password: !vault |
           6233343932306436350a393439303565336334343432373033653462653135306263623538386432
           36333761343766313364343262656638326366626631373031323034353362366437313736306632
           3666353831633035323564646636653138346661653732616138
+# Password for the NUT 'admin' upsd account. Defaults to nut_monitor_password for
+# backwards compatibility; override with a distinct vault value so the admin and
+# upsmon accounts do not share credentials.
+nut_admin_password: "{{ nut_monitor_password }}"
 nut_server: "127.0.0.1"     # Localhost for standalone mode
 nut_pollfreq: 5             # Seconds between UPS polls (default in upsmon.conf.j2)
 nut_pollfreqalert: 5        # Seconds between polls while on battery / alert
@@ -129,8 +133,6 @@ gpu_force_probe_options:
 enable_iommu: true
 iommu_vendor: 'auto'
 iommu_extra_options: ""
-iommu_update_grub: true
-iommu_require_reboot: true
 vfio_pci_ids:
   - "8086:56a6"    # Intel Arc A-Series GPU
 vfio_modules:
@@ -221,8 +223,18 @@ rkhunter_scan_opts: "--checkall"
 
 # Proxmox Exporter Configurations
 pve_exporter_enabled: true
-pve_exporter_version: "latest"
+# pip version spec appended to prometheus-pve-exporter (3.x CLI: --config.file/--web.listen-address)
+pve_exporter_version_spec: ">=3.0,<4.0"
 pve_exporter_listen_address: "127.0.0.1:9221"
+pve_exporter_config_path: /etc/pve_exporter/pve_exporter.yml
+pve_exporter_user: prometheus@pve
+pve_exporter_token_name: exporter
+# Create the API token in PVE and store the value with ansible-vault:
+#   pveum user add prometheus@pve
+#   pveum acl modify / --users prometheus@pve --roles PVEAuditor
+#   pveum user token add prometheus@pve exporter --privsep 0
+pve_exporter_token_value: ""
+pve_exporter_verify_ssl: true
 
 # Auditd Configurations
 audit_pve_rules_enabled: true

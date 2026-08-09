@@ -68,19 +68,19 @@ resource "proxmox_vm_qemu" "talos" {
   }
 
   # Cloud-init
-  cicustom   = "user=local-pve:snippets/controlplane.yaml"
-  ipconfig0  = "ip=10.0.0.250/24,gw=10.0.0.1"
-  nameserver = "10.0.0.1"
+  cicustom     = "user=local-pve:snippets/controlplane.yaml"
+  ipconfig0    = "ip=10.0.0.250/24,gw=10.0.0.1"
+  nameserver   = "10.0.0.1"
   searchdomain = "hosted.fail"
 
   # PCI passthrough
   hostpci {
-    host   = "0000:01:00"
-    pcie   = true
+    host = "0000:01:00"
+    pcie = true
   }
   hostpci {
-    host   = "0000:0e:00"
-    pcie   = true
+    host = "0000:0e:00"
+    pcie = true
   }
   hostpci {
     host   = "0000:03:00"

@@ -7,7 +7,7 @@
     body:
       username: "{{ unifi_username }}"
       password: "{{ unifi_password }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: 200
   register: _login_response
   no_log: true

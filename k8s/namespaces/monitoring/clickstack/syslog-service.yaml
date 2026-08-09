@@ -12,7 +12,9 @@ spec:
       port: 514
       targetPort: 1514
       protocol: UDP
+  # Matches the 3.x opentelemetry-collector subchart pod labels (the syslog
+  # UDP receiver on :1514 is added via global.otelCollector.customConfig).
   selector:
-    app.kubernetes.io/name: clickstack
+    app.kubernetes.io/name: otel-collector
     app.kubernetes.io/instance: clickstack
-    app: otel-collector
+    component: standalone-collector

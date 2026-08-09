@@ -5,6 +5,14 @@
     method: GET
   register: _sites_response
 
+- name: Assert at least one site was returned
+  ansible.builtin.assert:
+    that:
+      - (_sites_response.response.data | default([])) | length > 0
+    fail_msg: >-
+      No sites returned from /integration/v1/sites. Cannot determine site_id.
+      Verify the UniFi API key/credentials and that the controller has at least one site.
+
 - name: Set site_id fact
   ansible.builtin.set_fact:
     site_id: "{{ _sites_response.response.data[0].id }}"

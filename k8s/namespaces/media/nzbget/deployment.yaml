@@ -40,7 +40,7 @@ spec:
               mkdir -p /init/downloads/complete /init/downloads/incomplete
               mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
               chown -R 1000:1000 /init
-              chmod -R 777 /init
+              chmod -R 775 /init
           securityContext:
             runAsUser: 0
           volumeMounts:
@@ -67,6 +67,20 @@ spec:
               cpu: "2000m"
               memory: "4096Mi"
               ephemeral-storage: "20Gi"
+          livenessProbe:
+            tcpSocket:
+              port: 6789
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 6789
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /config

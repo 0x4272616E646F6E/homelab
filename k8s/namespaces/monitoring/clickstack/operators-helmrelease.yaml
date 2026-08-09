@@ -1,0 +1,26 @@
+# renovate: registryUrl=https://clickhouse.github.io/ClickStack-helm-charts
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: clickstack-operators
+  namespace: monitoring
+spec:
+  chart:
+    spec:
+      chart: clickstack-operators
+      version: 1.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: clickstack
+        namespace: flux-system
+  interval: 15m
+  timeout: 10m
+  releaseName: clickstack-operators
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3

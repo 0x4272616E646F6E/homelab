@@ -16,6 +16,9 @@ spec:
   interval: 15m
   timeout: 10m
   releaseName: otel-k8s
+  dependsOn:
+    - name: clickstack
+      namespace: monitoring
   install:
     remediation:
       retries: 3

@@ -112,6 +112,11 @@
       "automerge": true
     },
     {
+      "description": "Require review for GitHub Actions updates (supply chain)",
+      "matchManagers": ["github-actions"],
+      "automerge": false
+    },
+    {
       "description": "Keep Jellyfin on semver tags only",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["lscr.io/linuxserver/jellyfin"],

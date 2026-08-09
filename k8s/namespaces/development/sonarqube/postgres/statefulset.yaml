@@ -17,6 +17,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: sonarqube-postgres-17
+        app.kubernetes.io/managed-by: flux
     spec:
       securityContext:
         runAsUser: 999

@@ -5,7 +5,7 @@
     method: GET
     headers:
       Cookie: "{{ _legacy_cookies }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
   register: _existing_forwards_raw
 
 - name: Set existing port forwards fact
@@ -36,7 +36,7 @@
     headers:
       Cookie: "{{ _legacy_cookies }}"
       X-CSRF-Token: "{{ _legacy_csrf }}"
-    validate_certs: false
+    validate_certs: "{{ unifi_validate_certs }}"
     status_code: [200, 201]
   loop: "{{ unifi_port_forwards }}"
   loop_control:

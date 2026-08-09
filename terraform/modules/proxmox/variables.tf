@@ -1,9 +1,3 @@
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = ""
-}
-
 variable "talos_vmid" {
   description = "Proxmox VM ID for the Talos control-plane VM"
   type        = number

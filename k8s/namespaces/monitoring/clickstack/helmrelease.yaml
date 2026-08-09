@@ -14,14 +14,25 @@ spec:
         name: clickstack
         namespace: flux-system
   interval: 15m
-  timeout: 10m
+  # The 3.x stack (operators reconciling CH/Keeper/Mongo StatefulSets) takes
+  # well over 10m to reach readiness on first roll; a short timeout tripped the
+  # rollback loop below.
+  timeout: 25m
   releaseName: clickstack
+  # The 3.x chart renders ClickHouseCluster/KeeperCluster/MongoDBCommunity CRs,
+  # so the operators (and their CRDs) must be installed first.
+  dependsOn:
+    - name: clickstack-operators
   install:
     remediation:
       retries: 3
   upgrade:
+    # Rollback is disabled for the 1.1.2 -> 3.x cutover: a rollback targets the
+    # 1.1.2 release, whose resource set is incompatible with 3.x, so it always
+    # fails and wedges the release in a loop (retries: 0 = no remediation).
+    # Re-enable retries once a clean 3.x revision is deployed.
     remediation:
-      retries: 3
+      retries: 0
   valuesFrom:
   - kind: ConfigMap
     name: clickstack-config-map
@@ -29,4 +40,4 @@ spec:
   - kind: Secret
     name: clickstack-secrets
     valuesKey: hyperdx-api-key
-    targetPath: hyperdx.apiKey
+    targetPath: hyperdx.secrets.HYPERDX_API_KEY

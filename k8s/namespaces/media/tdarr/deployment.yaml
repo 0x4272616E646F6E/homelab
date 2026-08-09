@@ -58,9 +58,7 @@ spec:
             - name: openBrowser
               value: "false"
             - name: NVIDIA_DRIVER_CAPABILITIES
-              value: "all"
-            - name: NVIDIA_VISIBLE_DEVICES
-              value: "all"
+              value: "video,utility"
             - name: TZ
               value: "UTC"
             - name: PUID
@@ -71,13 +69,27 @@ spec:
             requests:
               cpu: "100m"
               memory: "128Mi"
-              gpu.intel.com/i915: "1"
+              nvidia.com/gpu: "1"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
               memory: "24576Mi"
-              gpu.intel.com/i915: "1"
+              nvidia.com/gpu: "1"
               ephemeral-storage: "20Gi"
+          livenessProbe:
+            tcpSocket:
+              port: 8265
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 8265
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           volumeMounts:
             - name: config
               mountPath: /app/configs

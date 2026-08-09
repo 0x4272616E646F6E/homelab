@@ -11,4 +11,3 @@ resources:
   - helmrelease.yaml
   - gateway.yaml
   - redirect.yaml
-  - poddisruptionbudget.yaml

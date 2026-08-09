@@ -1,21 +1,29 @@
 ---
-- name: Get firewall policies (page 1)
+- name: Set firewall policy page size
+  ansible.builtin.set_fact:
+    _fw_page_size: 100
+
+- name: Get firewall policies (first page)
   ubiquiti.unifi_api.network:
-    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?limit=100"
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?offset=0&limit={{ _fw_page_size }}"
     method: GET
   register: _policies_page1
 
-- name: Get firewall policies (page 2)
+- name: Get remaining firewall policy pages
   ubiquiti.unifi_api.network:
-    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?offset=100&limit=100"
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?offset={{ item }}&limit={{ _fw_page_size }}"
     method: GET
-  register: _policies_page2
-  when: (_policies_page1.response.data | length) < (_policies_page1.response.totalCount | int)
+  register: _policies_rest
+  loop: "{{ range(_fw_page_size, _policies_page1.response.totalCount | int, _fw_page_size) | list }}"
+  loop_control:
+    label: "offset={{ item }}"
 
 - name: Build full policy list
   ansible.builtin.set_fact:
     _existing_policies: >-
-      {{ _policies_page1.response.data + (_policies_page2.response.data | default([])) }}
+      {{ _policies_page1.response.data
+         + (_policies_rest.results | default([])
+            | map(attribute='response.data') | flatten(levels=1) | list) }}
 
 - name: Categorize policies by origin
   ansible.builtin.set_fact:

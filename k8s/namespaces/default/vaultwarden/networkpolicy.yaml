@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: vaultwarden
+  namespace: default
+  labels:
+    app.kubernetes.io/name: vaultwarden
+    app.kubernetes.io/managed-by: flux
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vaultwarden
+      app.kubernetes.io/managed-by: flux
+  policyTypes:
+    - Ingress
+    - Egress
+  # Reached only via the ingress-namespace gateway (httproute). Unlike the
+  # uniform default-namespace pattern, this secrets store deliberately omits a
+  # same-namespace ingress rule so sibling pods cannot bypass the gateway to
+  # reach vaultwarden's backend directly.
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress
+      ports:
+        - port: 8080
+          protocol: TCP
+  egress:
+    - {}

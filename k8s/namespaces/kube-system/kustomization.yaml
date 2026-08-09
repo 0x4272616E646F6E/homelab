@@ -16,5 +16,6 @@ resources:
   - intel-gpu-plugin/
   - nvidia-device-plugin/
   - metrics-server/
-  - talos-debug/
+  # talos-debug is a privileged host-root debug pod; enable only while debugging
+  # - talos-debug/
   # - maintenance/

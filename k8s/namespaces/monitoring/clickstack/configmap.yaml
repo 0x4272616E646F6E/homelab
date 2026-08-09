@@ -5,78 +5,51 @@ metadata:
   namespace: monitoring
 data:
   values.yaml: |-
-    global:
-      storageClassName: local-path-rwo
+    # ClickStack 3.x: ClickHouse/Keeper/MongoDB are now operator-managed CRs
+    # (see clickstack-operators HelmRelease). Storage uses the cluster default
+    # StorageClass (local-path-rwo); resources/sizes are layered onto the
+    # chart's default CRD specs via Helm's deep value merge.
+    #
+    # NOTE: the syslog receiver (global.otelCollector.customConfig) is
+    # intentionally omitted until the base 3.x collector is healthy — in OpAMP
+    # supervisor mode a malformed custom-config crashes the agent. Re-add it
+    # once the running collector's base component names are confirmed.
     hyperdx:
-      appUrl: "https://hyperdx.hosted.fail"
-      frontendUrl: "https://hyperdx.hosted.fail"
-      resources:
-        requests:
-          cpu: 150m
-          memory: 256Mi
-        limits:
-          cpu: 500m
-          memory: 512Mi
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      config:
+        FRONTEND_URL: "https://hyperdx.hosted.fail"
+      deployment:
+        resources:
+          requests:
+            cpu: 150m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
     clickhouse:
-      persistence:
-        dataSize: 50Gi
-        logSize: 5Gi
-      resources:
-        requests:
-          cpu: 500m
-          memory: 2Gi
-        limits:
-          cpu: 2000m
-          memory: 8Gi
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      keeper:
+        spec:
+          replicas: 1
+          dataVolumeClaimSpec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 5Gi
+      cluster:
+        spec:
+          containerTemplate:
+            resources:
+              requests:
+                cpu: 500m
+                memory: 2Gi
+              limits:
+                memory: 8Gi
+          dataVolumeClaimSpec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 50Gi
     mongodb:
-      persistence:
-        dataSize: 10Gi
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
-    otel:
-      customConfig: |
-        receivers:
-          syslog:
-            udp:
-              listen_address: "0.0.0.0:1514"
-            protocol: rfc3164
-            location: UTC
-        service:
-          pipelines:
-            logs/syslog:
-              receivers: [syslog]
-              processors: [memory_limiter, batch]
-              exporters: [clickhouse]
-      resources:
-        requests:
-          cpu: 100m
-          memory: 128Mi
-        limits:
-          cpu: 500m
-          memory: 512Mi
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
+      spec:
+        members: 1

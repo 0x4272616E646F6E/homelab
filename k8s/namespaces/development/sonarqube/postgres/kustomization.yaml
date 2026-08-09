@@ -7,3 +7,4 @@ labels:
 resources:
   - statefulset.yaml
   - service.yaml
+  - networkpolicy.yaml

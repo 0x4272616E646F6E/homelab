@@ -11,7 +11,6 @@ concurrency:
 
 permissions:
   contents: read
-  security-events: write   # allow uploading SARIF to Code Scanning
 
 jobs:
   kube-validate:
@@ -26,8 +25,11 @@ jobs:
           set -euo pipefail
           # renovate: datasource=github-releases depName=yannh/kubeconform
           KUBECONFORM_VERSION=0.6.7
-          curl -sL "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
-            | sudo tar -xz -C /usr/local/bin kubeconform
+          KUBECONFORM_SHA256=95f14e87aa28c09d5941f11bd024c1d02fdc0303ccaa23f61cef67bc92619d73
+          curl -sL -o /tmp/kubeconform.tar.gz \
+            "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          echo "${KUBECONFORM_SHA256}  /tmp/kubeconform.tar.gz" | sha256sum -c -
+          sudo tar -xz -C /usr/local/bin -f /tmp/kubeconform.tar.gz kubeconform
           kubeconform -v
 
       - name: Validate manifests with kubeconform
@@ -41,15 +43,21 @@ jobs:
           if [ ${#FILES[@]} -eq 0 ]; then
             echo "No manifests to validate."
           else
+            # CRDs-catalog covers Flux/cert-manager/etc; -ignore-missing-schemas
+            # kept as fallback for CRDs absent from the catalog
             kubeconform -summary -strict -ignore-missing-schemas -kubernetes-version 1.30.0 \
               -schema-location default \
               -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}-standalone/{{.ResourceKind}}.json' \
+              -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
               "${FILES[@]}"
           fi
 
   gitleaks:
     name: Secret scan (diff)
     runs-on: actions-runner
+    permissions:
+      contents: read
+      security-events: write   # allow uploading SARIF to Code Scanning
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

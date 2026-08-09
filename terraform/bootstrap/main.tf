@@ -19,7 +19,7 @@ provider "aws" {
   secret_key                  = var.aws_secret_key
   skip_credentials_validation = true
   skip_requesting_account_id  = true
-  s3_force_path_style         = true
+  s3_use_path_style           = true
 }
 
 resource "aws_s3_bucket" "tf_state" {
@@ -31,5 +31,24 @@ resource "aws_s3_bucket_versioning" "tf_state" {
 
   versioning_configuration {
     status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "tf_state" {
+  bucket = aws_s3_bucket.tf_state.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "tf_state" {
+  bucket = aws_s3_bucket.tf_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
   }
 }

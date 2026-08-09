@@ -11,7 +11,6 @@
     - name: Set timezone
       community.general.timezone:
         name: "{{ timezone }}"
-      notify: Restart systemd-timesyncd
 
     - name: Configure DNS servers in resolv.conf
       ansible.builtin.template:
@@ -173,6 +172,7 @@
             - acme_plugin_type == 'dns'
             - acme_plugin_name not in _acme_plugin_names
           changed_when: true
+          no_log: true
 
         - name: Read ACME plugin details
           ansible.builtin.command:
@@ -212,6 +212,7 @@
                 or ((_acme_plugin_current.nodes | default('')) != (_acme_plugin_nodes_str | default('')))
               )
           changed_when: true
+          no_log: true
 
         - name: Fetch existing node ACME configuration
           ansible.builtin.command:
@@ -480,8 +481,20 @@
             path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
           register: _pve_widget_file
 
-        - name: Remove PVE subscription nag from web UI
+        - name: Check whether nag patch is already applied
           when: _pve_widget_file.stat.exists
+          ansible.builtin.command:
+            cmd: grep -q _unused_checked_command /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+          register: _pve_nag_patched
+          failed_when: _pve_nag_patched.rc not in [0, 1]
+          changed_when: false
+
+        # Guarded: the replacement text itself matches the regexp, so an
+        # unguarded replace re-patches (and corrupts) the file every run.
+        - name: Remove PVE subscription nag from web UI
+          when:
+            - _pve_widget_file.stat.exists
+            - _pve_nag_patched.rc == 1
           ansible.builtin.replace:
             path: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
             regexp: "checked_command: function\\(orig_cmd\\)"
@@ -544,6 +557,18 @@
           changed_when: false
           when: audit_pve_rules_enabled
 
+        - name: Assert audit rule was loaded
+          ansible.builtin.assert:
+            that:
+              - _audit_verify.rc == 0
+            fail_msg: >-
+              Expected audit rule matching 'pve-config' was not loaded (auditctl -l
+              returned rc={{ _audit_verify.rc | default('unknown') }}). Check
+              {{ audit_pve_rules_path }} and that auditd loaded the rules.
+          when:
+            - audit_pve_rules_enabled
+            - not ansible_check_mode
+
     - name: Remove audit hardening rules when disabled
       ansible.builtin.file:
         path: /etc/audit/rules.d/99-hardening.rules
@@ -553,10 +578,27 @@
     - name: Install and configure pve_exporter for Prometheus
       when: pve_exporter_enabled
       block:
+        - name: Ensure pve_exporter API token is configured
+          ansible.builtin.assert:
+            that:
+              - pve_exporter_token_value | default('') | length > 0
+            fail_msg: >-
+              pve_exporter_enabled is true but pve_exporter_token_value is empty.
+              Create a PVE API token (e.g. for {{ pve_exporter_user | default('prometheus@pve') }})
+              and set pve_exporter_token_value via ansible-vault.
+
         - name: Install python3-venv for pve_exporter
           ansible.builtin.apt:
             name: python3-venv
             state: present
+
+        - name: Create pve-exporter system user
+          ansible.builtin.user:
+            name: pve-exporter
+            system: true
+            shell: /usr/sbin/nologin
+            home: /opt/pve_exporter
+            create_home: false
 
         - name: Create pve_exporter virtualenv directory
           ansible.builtin.file:
@@ -568,10 +610,28 @@
 
         - name: Install prometheus-pve-exporter in virtualenv
           ansible.builtin.pip:
-            name: "prometheus-pve-exporter"
+            name: "prometheus-pve-exporter{{ pve_exporter_version_spec }}"
             state: present
             virtualenv: /opt/pve_exporter/venv
             virtualenv_command: python3 -m venv
+
+        - name: Create pve_exporter config directory
+          ansible.builtin.file:
+            path: /etc/pve_exporter
+            state: directory
+            owner: root
+            group: pve-exporter
+            mode: '0750'
+
+        - name: Deploy pve_exporter configuration
+          ansible.builtin.template:
+            src: templates/pve_exporter/pve_exporter.yml.j2
+            dest: /etc/pve_exporter/pve_exporter.yml
+            owner: root
+            group: pve-exporter
+            mode: '0640'
+          no_log: true
+          notify: Restart pve_exporter
 
         - name: Deploy pve_exporter systemd unit
           ansible.builtin.template:
@@ -650,10 +710,27 @@
           when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
           notify: Restart postfix
 
-        - name: Postmap sasl_passwd if auth enabled
-          ansible.builtin.command: postmap /etc/postfix/sasl_passwd
+        - name: Stat sasl_passwd source and lookup table
+          ansible.builtin.stat:
+            path: "{{ item }}"
+          loop:
+            - /etc/postfix/sasl_passwd
+            - /etc/postfix/sasl_passwd.db
+          register: _sasl_passwd_stat
           when: smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
-          changed_when: false
+
+        # Rebuild the hashed lookup table whenever it is missing or older than
+        # its source, so a hand-deleted or stale .db self-heals even when the
+        # plaintext sasl_passwd is unchanged (a change-only handler would not).
+        - name: Rebuild sasl_passwd lookup table when missing or stale
+          ansible.builtin.command: postmap /etc/postfix/sasl_passwd
+          when: >-
+            smtp_relay_auth and smtp_relay_user != '' and smtp_relay_password != ''
+            and _sasl_passwd_stat.results[0].stat.exists
+            and ((not _sasl_passwd_stat.results[1].stat.exists)
+                 or (_sasl_passwd_stat.results[1].stat.mtime < _sasl_passwd_stat.results[0].stat.mtime))
+          changed_when: true
+          notify: Restart postfix
     - name: Apply ZFS tunables
       when: zfs_tuning_enabled
       block:
@@ -708,7 +785,7 @@
           ansible.builtin.lineinfile:
             path: /etc/clamav/clamd.conf
             regexp: '^#?LocalSocketMode'
-            line: 'LocalSocketMode 666'
+            line: 'LocalSocketMode 660'
             mode: '0644'
           notify: Restart clamav-daemon
 
@@ -843,8 +920,9 @@
     - name: Build kernel command line string
       ansible.builtin.set_fact:
         _kernel_cmdline_combined: "{{ (_kernel_cmdline_params | default([])) | map('trim') | reject('equalto', '') | list | unique | join(' ') }}"
-      when: (_kernel_cmdline_params | default([])) | length > 0
 
+    # Always managed (no `when`) so removing all custom params resets the
+    # line to the base value instead of leaving stale kernel args behind.
     - name: Ensure GRUB_CMDLINE_LINUX_DEFAULT contains custom parameters
       ansible.builtin.lineinfile:
         path: /etc/default/grub
@@ -852,7 +930,6 @@
         line: "GRUB_CMDLINE_LINUX_DEFAULT=\"quiet{{ ' ' + _kernel_cmdline_combined if (_kernel_cmdline_combined | default('') | length) > 0 else '' }}\""
         backup: true
         mode: '0644'
-      when: (_kernel_cmdline_params | default([])) | length > 0
       notify: Update-grub
 
     - name: Check if Terraform role exists

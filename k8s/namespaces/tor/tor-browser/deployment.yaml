@@ -45,5 +45,19 @@ spec:
               cpu: "2"
               memory: "4Gi"
               ephemeral-storage: "5Gi"
+          livenessProbe:
+            tcpSocket:
+              port: 5800
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 5800
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
           securityContext:
             readOnlyRootFilesystem: false

@@ -1,9 +1,3 @@
-# Cloudflare Config
-module "cloudflare" {
-  source = "./cloudflare"
-
-}
-
 # Proxmox Config
 module "proxmox" {
   source = "./proxmox"

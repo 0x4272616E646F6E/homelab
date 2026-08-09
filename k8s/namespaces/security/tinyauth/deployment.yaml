@@ -76,7 +76,7 @@ spec:
             - name: TINYAUTH_ANALYTICS_ENABLED
               value: "false"
           securityContext:
-            runAsNonRoot: false
+            runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
             capabilities:
