@@ -5,6 +5,9 @@ metadata:
   namespace: kube-service
 data:
   values.yaml: |-
+    image:
+      repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
+      tag: v4.15.2
     vpa:
       enabled: true
       recommender:
@@ -18,7 +21,15 @@ data:
             cpu: 50m
             memory: 300Mi
       updater:
-        enabled: false
+        enabled: true
+        extraArgs:
+          min-replicas: 1
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
       admissionController:
         enabled: true
         resources:

@@ -4,7 +4,7 @@ metadata:
   name: media
   labels:
     goldilocks.fairwinds.com/enabled: "true"
-    goldilocks.fairwinds.com/vpa-update-mode: "initial"
+    goldilocks.fairwinds.com/vpa-update-mode: "InPlaceOrRecreate"
     pod-security.kubernetes.io/enforce: privileged
     pod-security.kubernetes.io/audit: privileged
     pod-security.kubernetes.io/warn: privileged
