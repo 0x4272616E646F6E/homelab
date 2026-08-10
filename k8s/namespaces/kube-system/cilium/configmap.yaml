@@ -397,7 +397,7 @@ data:
       hostPort:
         enabled: false
       socketLB:
-        enabled: false
+        enabled: true
       certgen:
         generateCA: true
         image:
