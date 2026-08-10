@@ -10,5 +10,4 @@ resources:
   - wireguard/
   - reflector/
   - reloader/
-  - autoscaler/
   - goldilocks/

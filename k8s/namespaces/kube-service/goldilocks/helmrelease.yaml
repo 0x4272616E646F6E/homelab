@@ -15,12 +15,12 @@ spec:
         kind: HelmRepository
         name: fairwinds
         namespace: flux-system
-  dependsOn:
-    - name: autoscaler
   install:
+    crds: CreateReplace
     remediation:
       retries: 3
   upgrade:
+    crds: CreateReplace
     remediation:
       retries: 3
   releaseName: goldilocks
