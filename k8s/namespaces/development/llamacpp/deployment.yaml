@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: llamacpp-model
   namespace: development
+  annotations:
+    goldilocks.fairwinds.com/vpa-update-mode: "off"
   labels:
     app.kubernetes.io/name: llamacpp-model
     app.kubernetes.io/managed-by: flux
