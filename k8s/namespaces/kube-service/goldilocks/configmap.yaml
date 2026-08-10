@@ -43,16 +43,13 @@ data:
     uninstallVPA: false
     controller:
       enabled: true
+      logVerbosity: "1"
+      flags:
+        ignore-controller-kind: EphemeralRunner,EphemeralRunnerSet,AutoscalingListener,AutoscalingRunnerSet
       rbac:
         extraRules:
-          - apiGroups: ["mongodbcommunity.mongodb.com"]
-            resources: ["mongodbcommunity"]
-            verbs: ["get", "list", "watch"]
           - apiGroups: ["actions.github.com"]
             resources: ["ephemeralrunners", "ephemeralrunnersets", "autoscalinglisteners", "autoscalingrunnersets"]
-            verbs: ["get", "list", "watch"]
-          - apiGroups: ["clickhouse.com"]
-            resources: ["clickhouseclusters", "keeperclusters"]
             verbs: ["get", "list", "watch"]
       resources:
         requests:
@@ -65,14 +62,8 @@ data:
       replicaCount: 1
       rbac:
         extraRules:
-          - apiGroups: ["mongodbcommunity.mongodb.com"]
-            resources: ["mongodbcommunity"]
-            verbs: ["get", "list", "watch"]
           - apiGroups: ["actions.github.com"]
             resources: ["ephemeralrunners", "ephemeralrunnersets", "autoscalinglisteners", "autoscalingrunnersets"]
-            verbs: ["get", "list", "watch"]
-          - apiGroups: ["clickhouse.com"]
-            resources: ["clickhouseclusters", "keeperclusters"]
             verbs: ["get", "list", "watch"]
       resources:
         requests:

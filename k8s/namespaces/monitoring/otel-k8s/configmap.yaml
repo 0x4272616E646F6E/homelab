@@ -100,6 +100,19 @@ data:
           protocol: rfc3164
           location: UTC
 
+      processors:
+        transform/nginx:
+          error_mode: ignore
+          log_statements:
+            - context: log
+              conditions:
+                - resource.attributes["k8s.container.name"] == "nginx"
+                - IsMatch(body, "^\\S+ \\S+ \\S+ \\[")
+              statements:
+                - 'merge_maps(attributes, ExtractPatterns(body, "^(?P<client_ip>\\S+) \\S+ (?P<remote_user>\\S+) \\[(?P<time_local>[^\\]]+)\\] \"(?P<method>[A-Z]+) (?P<path>[^ ]+) (?P<protocol>[^\"]+)\" (?P<status>\\d{3}) (?P<bytes_sent>\\d+) \"(?P<referer>[^\"]*)\" \"(?P<user_agent>[^\"]*)\""), "upsert")'
+                - 'set(attributes["status_code"], Int(attributes["status"])) where attributes["status"] != nil'
+                - 'set(attributes["response_bytes"], Int(attributes["bytes_sent"])) where attributes["bytes_sent"] != nil'
+
       exporters:
         otlphttp:
           endpoint: "http://clickstack-otel-collector.monitoring.svc.cluster.local:4318"
@@ -110,6 +123,7 @@ data:
       service:
         pipelines:
           logs:
+            processors: [k8s_attributes, memory_limiter, transform/nginx, batch]
             exporters: [otlphttp]
           metrics:
             exporters: [otlphttp]

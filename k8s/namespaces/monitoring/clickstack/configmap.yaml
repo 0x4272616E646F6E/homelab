@@ -20,6 +20,9 @@ data:
       keeper:
         spec:
           replicas: 1
+          settings:
+            logger:
+              level: information
           dataVolumeClaimSpec:
             accessModes:
               - ReadWriteOnce
@@ -28,6 +31,9 @@ data:
                 storage: 5Gi
       cluster:
         spec:
+          settings:
+            logger:
+              level: information
           containerTemplate:
             resources:
               requests:

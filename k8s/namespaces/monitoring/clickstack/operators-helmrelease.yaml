@@ -16,6 +16,12 @@ spec:
   interval: 15m
   timeout: 10m
   releaseName: clickstack-operators
+  values:
+    clickhouse-operator:
+      manager:
+        args:
+          - --leader-elect
+          - --zap-devel=false
   install:
     crds: CreateReplace
     remediation:
