@@ -48,6 +48,7 @@ data:
     services:
       - name: k8saudit-webhook
         type: ClusterIP
+        clusterIP: 10.98.112.12
         ports:
           - port: 9765
             protocol: TCP
