@@ -6,13 +6,33 @@ metadata:
 data:
   values.yaml: |-
     driver:
-      enabled: false
+      enabled: true
+      kind: modern_ebpf
     collectors:
-      enabled: false
+      enabled: true
+      kubernetes:
+        enabled: false
+      containerEngine:
+        enabled: true
+        engines:
+          docker:
+            enabled: false
+          podman:
+            enabled: false
+          containerd:
+            enabled: false
+          lxc:
+            enabled: false
+          libvirt_lxc:
+            enabled: false
+          bpm:
+            enabled: false
+          cri:
+            enabled: true
+            sockets:
+              - /run/containerd/containerd.sock
     controller:
-      kind: deployment
-      deployment:
-        replicas: 1
+      kind: daemonset
     falcoctl:
       artifact:
         install:
@@ -22,9 +42,9 @@ data:
       config:
         artifact:
           install:
-            refs: [k8saudit-rules:0.11, k8saudit:0.11]
+            refs: [falco-rules:5, k8saudit-rules:0.11, k8saudit:0.11]
           follow:
-            refs: [k8saudit-rules:0.11]
+            refs: [falco-rules:5, k8saudit-rules:0.11]
     services:
       - name: k8saudit-webhook
         type: ClusterIP
@@ -32,7 +52,10 @@ data:
           - port: 9765
             protocol: TCP
     falco:
+      json_output: true
       rules_files:
+        - /etc/falco/falco_rules.yaml
+        - /etc/falco/falco_rules.local.yaml
         - /etc/falco/k8s_audit_rules.yaml
         - /etc/falco/rules.d
       metrics:
