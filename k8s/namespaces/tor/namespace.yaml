@@ -3,6 +3,7 @@ kind: Namespace
 metadata:
   name: tor
   labels:
+    goldilocks.fairwinds.com/enabled: "true"
     app.kubernetes.io/managed-by: flux
     pod-security.kubernetes.io/enforce: baseline
     pod-security.kubernetes.io/audit: restricted

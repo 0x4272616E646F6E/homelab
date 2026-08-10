@@ -5,10 +5,5 @@ labels:
       app.kubernetes.io/managed-by: flux
     includeSelectors: false
 resources:
-  - namespace.yaml
-  - cert-manager/
-  - wireguard/
-  - reflector/
-  - reloader/
-  - autoscaler/
-  - goldilocks/
+  - configmap.yaml
+  - helmrelease.yaml

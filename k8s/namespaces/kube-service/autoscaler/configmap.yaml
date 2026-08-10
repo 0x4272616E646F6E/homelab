@@ -19,7 +19,7 @@ data:
         enabled: true
     admissionController:
       enabled: true
-      registerWebhook: true
+      registerWebhook: false
       mutatingWebhookConfiguration:
         failurePolicy: Ignore
         namespaceSelector:
