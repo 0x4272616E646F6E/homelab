@@ -183,8 +183,8 @@ data:
       alibabacloud:
         enabled: false
       bandwidthManager:
-        enabled: false
-        bbr: false
+        enabled: true
+        bbr: true
       nat46x64Gateway:
         enabled: false
       highScaleIPcache:
@@ -679,7 +679,7 @@ data:
                   excludeFilters: []
                   filePath: "/var/run/cilium/hubble/events.log"
         dropEventEmitter:
-          enabled: false
+          enabled: true
           interval: 2m
           reasons:
             - auth_required
