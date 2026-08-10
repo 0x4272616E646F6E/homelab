@@ -20,7 +20,13 @@ data:
       updater:
         enabled: false
       admissionController:
-        enabled: false
+        enabled: true
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
       metrics-server:
         enabled: false
     uninstallVPA: false
