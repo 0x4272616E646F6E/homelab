@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-      tag: v4.15.3
+      tag: v4.16.0
     vpa:
       enabled: true
       recommender:
