@@ -41,6 +41,12 @@ spec:
             capabilities:
               drop:
                 - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           ports:
             - containerPort: 9696
               protocol: TCP
