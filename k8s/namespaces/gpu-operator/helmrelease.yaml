@@ -1,0 +1,38 @@
+# renovate: registryUrl=https://helm.ngc.nvidia.com/nvidia
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gpu-operator
+  namespace: gpu-operator
+spec:
+  interval: 10m
+  timeout: 10m
+  targetNamespace: gpu-operator
+  releaseName: gpu-operator
+  chart:
+    spec:
+      chart: gpu-operator
+      sourceRef:
+        kind: HelmRepository
+        name: nvidia
+        namespace: flux-system
+      version: 26.3.3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    # Drivers and container toolkit are provided by Talos system extensions
+    # (nonfree-kmod-nvidia-production, nvidia-container-toolkit-production).
+    driver:
+      enabled: false
+    toolkit:
+      enabled: false
+    hostPaths:
+      driverInstallDir: /usr/local
+    devicePlugin:
+      config:
+        name: time-slicing-config-all
+        default: any
