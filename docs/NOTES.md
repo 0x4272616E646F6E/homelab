@@ -94,11 +94,11 @@ kubectl scale deployment pod -n ns --replicas=0
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
-  factory.talos.dev/nocloud-installer/df161ca9e93cc8c47bf4af62e0eb06c4c40323c51c8883ded75006d59c55b81b:v1.11.5
+  factory.talos.dev/nocloud-installer/df161ca9e93cc8c47bf4af62e0eb06c4c40323c51c8883ded75006d59c55b81b:v1.13.9
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
-- **Version**: The version `v1.11.1` corresponds to a specific release of Talos. Ensure that all nodes in your cluster are using the same version to avoid compatibility issues.
+- **Version**: `v1.13.9`. Ensure all nodes run the same version to avoid compatibility issues.
 
 You can use this image to PXE boot or manually install Talos on your nodes.
 
