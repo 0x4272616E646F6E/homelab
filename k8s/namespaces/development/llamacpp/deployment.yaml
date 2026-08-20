@@ -21,7 +21,6 @@ spec:
         app.kubernetes.io/name: llamacpp-model
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: nvidia
       terminationGracePeriodSeconds: 300
       automountServiceAccountToken: false
       securityContext:

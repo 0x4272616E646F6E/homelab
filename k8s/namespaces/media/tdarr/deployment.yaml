@@ -19,7 +19,6 @@ spec:
         app.kubernetes.io/name: tdarr
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: nvidia
       securityContext:
         supplementalGroups:
           - 44
