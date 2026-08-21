@@ -16,7 +16,7 @@ spec:
         kind: HelmRepository
         name: nvidia
         namespace: flux-system
-      version: 26.3.3
+      version: 26.7.0
   install:
     remediation:
       retries: 3
