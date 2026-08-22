@@ -18,3 +18,4 @@ spec:
   dependsOn:
     - name: kube-system
     - name: kube-service
+    - name: ingress

@@ -1,33 +1,29 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: homeassistant
-  namespace: default
+  name: vaultwarden
+  namespace: security
   labels:
-    app.kubernetes.io/name: homeassistant
+    app.kubernetes.io/name: vaultwarden
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: homeassistant
+      app.kubernetes.io/name: vaultwarden
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
     - Egress
+  # Reached only via the ingress-namespace gateway (httproute). No
+  # same-namespace ingress rule: sibling pods must not be able to bypass the
+  # gateway and reach this secrets store's backend directly.
   ingress:
     - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 8123
-          protocol: TCP
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: default
-      ports:
-        - port: 8123
+        - port: 8080
           protocol: TCP
   egress:
     - {}

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vaultwarden-data
-  namespace: default
+  name: homeassistant-config
+  namespace: home
   labels:
-    app.kubernetes.io/name: vaultwarden
+    app.kubernetes.io/name: homeassistant
 spec:
   accessModes:
     - ReadWriteOnce

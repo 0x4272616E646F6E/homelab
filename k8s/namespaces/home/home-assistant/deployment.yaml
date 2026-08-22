@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homeassistant
-  namespace: default
+  namespace: home
   labels:
     app.kubernetes.io/name: homeassistant
     app.kubernetes.io/managed-by: flux
@@ -29,6 +29,17 @@ spec:
           ports:
             - containerPort: 8123
               protocol: TCP
+          # The LSIO image runs a recursive chown over /config on any new image
+          # digest ("fixing python package permissions"). On local-path storage
+          # that outlasts the liveness probe, which SIGKILLs it mid-chown, so the
+          # fix never completes and the container crashloops forever. Give the
+          # first start 5 minutes; liveness only arms once this succeeds.
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8123
+            periodSeconds: 10
+            failureThreshold: 30
           readinessProbe:
             httpGet:
               path: /

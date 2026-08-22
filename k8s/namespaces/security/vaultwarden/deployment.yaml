@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vaultwarden
-  namespace: default
+  namespace: security
   labels:
     app.kubernetes.io/name: vaultwarden
     app.kubernetes.io/managed-by: flux
