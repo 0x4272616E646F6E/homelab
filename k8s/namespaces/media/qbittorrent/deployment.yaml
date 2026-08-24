@@ -56,7 +56,7 @@ spec:
       containers:
         - name: qbittorrent
           # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest@sha256:6816d2b144b1eb97665f886e41e18a14d026ba78c9d0953fc68a1211ea819433
+          image: lscr.io/linuxserver/qbittorrent:latest@sha256:304b19cf94bf4fda534e0b086cab9c5f1a9e139a8180c05c0ad7d2ba1526fa99
           env:
             - name: PUID
               value: "1000"
