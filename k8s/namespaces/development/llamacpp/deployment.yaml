@@ -64,7 +64,7 @@ spec:
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:41ebf873c2e085dcc3186dc4717ce8112bf8011aabd98038b6bb2b1fe66c86b9
+        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:750f56822bd4ca3190e2515c7f668ba9be06fb93365cdb6adedb50971b30340e
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
