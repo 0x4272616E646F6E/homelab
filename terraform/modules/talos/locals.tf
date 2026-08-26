@@ -236,14 +236,60 @@ locals {
     auditPolicy = {
       apiVersion = "audit.k8s.io/v1"
       kind       = "Policy"
-      rules      = [{ level = "Metadata" }]
+      omitStages = ["RequestReceived"]
+      rules = [
+        {
+          level = "None"
+          users = ["system:apiserver", "system:kube-scheduler", "system:kube-controller-manager"]
+        },
+        {
+          level      = "None"
+          userGroups = ["system:nodes"]
+        },
+        {
+          level     = "None"
+          resources = [{ group = "coordination.k8s.io", resources = ["leases"] }]
+        },
+        {
+          level     = "None"
+          resources = [{ group = "autoscaling.k8s.io", resources = ["verticalpodautoscalers", "verticalpodautoscalercheckpoints"] }]
+        },
+        {
+          level     = "Metadata"
+          resources = [{ group = "", resources = ["secrets"] }]
+        },
+        {
+          level = "None"
+          verbs = ["get", "list", "watch"]
+        },
+        {
+          level = "RequestResponse"
+          resources = [
+            { group = "", resources = ["pods", "pods/exec", "pods/attach", "pods/portforward", "pods/ephemeralcontainers", "services", "serviceaccounts", "configmaps", "namespaces", "nodes"] },
+            { group = "apps", resources = ["deployments"] },
+            { group = "rbac.authorization.k8s.io", resources = ["roles", "rolebindings", "clusterroles", "clusterrolebindings"] },
+            { group = "networking.k8s.io", resources = ["ingresses"] },
+          ]
+        },
+        { level = "Metadata" },
+      ]
     }
+    extraVolumes = [
+      {
+        hostPath  = "/var/lib/kube-apiserver-audit"
+        mountPath = "/etc/kubernetes/audit-webhook"
+        readonly  = true
+      }
+    ]
     extraArgs = {
+      "audit-webhook-config-file"              = "/etc/kubernetes/audit-webhook/webhook.yaml"
+      "audit-webhook-mode"                     = "batch"
       "default-not-ready-toleration-seconds"   = "300"
       "default-unreachable-toleration-seconds" = "300"
       "feature-gates"                          = "UserNamespacesSupport=true"
-      "max-requests-inflight"                  = "100"
-      "max-mutating-requests-inflight"         = "50"
+      "max-requests-inflight"                  = "50"
+      "max-mutating-requests-inflight"         = "25"
+      "shutdown-delay-duration"                = "0s"
       "watch-cache-sizes"                      = "events#100,pods#1000"
     }
   }

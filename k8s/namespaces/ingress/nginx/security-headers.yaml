@@ -1,13 +1,22 @@
 ---
-apiVersion: v1
-kind: ConfigMap
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsPolicy
 metadata:
-  name: nginx-security-headers
+  name: security-headers
   namespace: ingress
-data:
-  X-Frame-Options: "SAMEORIGIN"
-  X-Content-Type-Options: "nosniff"
-  X-XSS-Protection: "1; mode=block"
-  Referrer-Policy: "strict-origin-when-cross-origin"
-  Permissions-Policy: "geolocation=(), microphone=(), camera=()"
-  Strict-Transport-Security: "max-age=63072000; includeSubDomains; preload"
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: nginx-gateway
+  snippets:
+    - context: http.server
+      value: |
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+
+        proxy_hide_header X-Powered-By;
