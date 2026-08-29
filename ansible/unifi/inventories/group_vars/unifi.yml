@@ -117,9 +117,6 @@ unifi_dns_records:
   - key: homeassistant.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: sonarqube.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
   - key: tdarr.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail

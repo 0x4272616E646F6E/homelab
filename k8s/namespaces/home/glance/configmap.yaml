@@ -46,8 +46,6 @@ data:
                         url: https://shelfmark.hosted.fail/
                       - title: Sonarr
                         url: https://sonarr.hosted.fail/
-                      - title: SonarQube
-                        url: https://sonarqube.hosted.fail/
                       - title: Suwayomi
                         url: https://suwayomi.hosted.fail/
                       - title: UNAS

@@ -127,20 +127,6 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["lscr.io/linuxserver/nzbget"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d{8}(?:[-.+].*)?$/"
-    },
-    {
-      "description": "Lock Postgres to 17.x in SonarQube",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "postgres",
-        "docker.io/postgres",
-        "library/postgres",
-        "index.docker.io/postgres"
-      ],
-      "matchFileNames": [
-        "k8s/namespaces/development/sonarqube/postgres/statefulset.yaml"
-      ],
-      "allowedVersions": "/^17\\.6(\\.\\d+.*)?$/"
     }
   ]
 }

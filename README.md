@@ -192,7 +192,6 @@ The following applications are managed through flux in this repository:
 - [**Seerr**](https://github.com/seerr-team/seerr)
 - [**Shelfmark**](https://github.com/calibrain/shelfmark)
 - [**Sonarr**](https://github.com/Sonarr/Sonarr)
-- [**SonarQube**](https://github.com/SonarSource/sonarqube)
 - [**Suwayomi**](https://github.com/Suwayomi/Suwayomi-Server)
 - [**Tdarr**](https://github.com/HaveAGitGat/Tdarr)
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)
