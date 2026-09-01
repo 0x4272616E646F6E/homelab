@@ -9,7 +9,7 @@ data:
       repository: cloudflare/cloudflared
       tag: "2026.3.0"
       pullPolicy: IfNotPresent
-    replicaCount: 1
+    replicaCount: 2
     imagePullSecrets: []
     nameOverride: ""
     fullnameOverride: ""
