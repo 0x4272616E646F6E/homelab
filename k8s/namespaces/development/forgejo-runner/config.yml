@@ -1,0 +1,39 @@
+log:
+  level: info
+  job_level: info
+
+runner:
+  # Connection details come from `server.connections` below, so no registration
+  # state is persisted; keep this on the ephemeral volume.
+  file: /tmp/.runner
+  capacity: 1
+  timeout: 3h
+  shutdown_timeout: 3h
+  fetch_timeout: 30s
+  fetch_interval: 2s
+  report_interval: 1s
+  labels:
+    - docker
+  # Passed through to job containers so they can reach the dind sidecar.
+  envs:
+    DOCKER_HOST: tcp://localhost:2376
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: /certs/client
+
+cache:
+  enabled: true
+
+container:
+  network: host
+  options: -v /certs/client:/certs/client
+  valid_volumes:
+    - /certs/client
+  docker_host: "-"
+
+server:
+  connections:
+    homelab:
+      url: http://forgejo:3000
+      # Instance-level runner pre-registered in Forgejo (admin -> Actions -> Runners).
+      uuid: 45acf693-a31b-4ffb-9434-20cd02746714
+      token_url: file:/runner-token/RUNNER_SECRET

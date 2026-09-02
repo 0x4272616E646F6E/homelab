@@ -9,3 +9,8 @@ resources:
   - pvc.yaml
   - deployment.yaml
   - networkpolicy.yaml
+configMapGenerator:
+  - name: forgejo-runner-config
+    namespace: development
+    files:
+      - config.yml

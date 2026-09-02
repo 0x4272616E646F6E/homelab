@@ -21,58 +21,6 @@ spec:
     spec:
       automountServiceAccountToken: false
       restartPolicy: Always
-      initContainers:
-        - name: runner-register
-          # renovate: datasource=docker depName=forgejo/runner registryUrl=https://code.forgejo.org
-          image: code.forgejo.org/forgejo/runner:13.1.0@sha256:c4af85fd9f0dd03788676a534781a87c71aa2c6a37737143e017eb94d4312952
-          command:
-            - /bin/bash
-            - -c
-          args:
-            - |
-              while : ; do
-                forgejo-runner register --no-interactive --token "$RUNNER_SECRET" --name "$RUNNER_NAME" --instance "$FORGEJO_INSTANCE_URL" && break ;
-                sleep 1 ;
-              done ;
-              forgejo-runner generate-config > /data/config.yml ;
-              sed -i -e "s|network: .*|network: host|" /data/config.yml ;
-              sed -i -e "s|^  envs:$$|  envs:\n    DOCKER_HOST: tcp://localhost:2376\n    DOCKER_TLS_VERIFY: 1\n    DOCKER_CERT_PATH: /certs/client|" /data/config.yml ;
-              sed -i -e "s|^  options:|  options: -v /certs/client:/certs/client|" /data/config.yml ;
-              sed -i -e "s|  valid_volumes: \[\]$$|  valid_volumes:\n    - /certs/client|" /data/config.yml
-          env:
-            - name: RUNNER_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: RUNNER_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: forgejo-runner-secrets
-                  key: RUNNER_SECRET
-            - name: FORGEJO_INSTANCE_URL
-              value: http://forgejo:3000
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-              ephemeral-storage: "1Gi"
-            limits:
-              cpu: 500m
-              memory: 512Mi
-              ephemeral-storage: 2Gi
-          volumeMounts:
-            - name: runner-data
-              mountPath: /data
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            privileged: false
-            readOnlyRootFilesystem: true
-            runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
       containers:
         - name: runner
           # renovate: datasource=docker depName=codeberg.org/forgejo/runner
@@ -86,7 +34,7 @@ spec:
                 echo 'waiting for docker daemon...' ;
                 sleep 5 ;
                 done ;
-              forgejo-runner --config /data/config.yml daemon
+              forgejo-runner --config /config/config.yml daemon
           env:
             - name: DOCKER_HOST
               value: tcp://localhost:2376
@@ -106,6 +54,12 @@ spec:
           volumeMounts:
             - name: docker-certs
               mountPath: /certs
+            - name: runner-config
+              mountPath: /config
+              readOnly: true
+            - name: runner-token
+              mountPath: /runner-token
+              readOnly: true
             - name: runner-data
               mountPath: /data
             - name: tmp
@@ -143,6 +97,12 @@ spec:
       volumes:
         - name: docker-certs
           emptyDir: {}
+        - name: runner-config
+          configMap:
+            name: forgejo-runner-config
+        - name: runner-token
+          secret:
+            secretName: forgejo-runner-secrets
         - name: runner-data
           persistentVolumeClaim:
             claimName: forgejo-runner-data
