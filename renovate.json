@@ -127,6 +127,15 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["lscr.io/linuxserver/nzbget"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d{8}(?:[-.+].*)?$/"
+    },
+    {
+      "description": "Bump the nginx-gateway-fabric chart and its control-plane and data-plane images together. NGF requires them at the same version: a skewed control plane writes a main.conf include that duplicates worker_processes against an older nginx image, so the config test fails and nginx never starts.",
+      "matchPackageNames": [
+        "ghcr.io/nginx/charts/nginx-gateway-fabric",
+        "ghcr.io/nginx/nginx-gateway-fabric",
+        "ghcr.io/nginx/nginx-gateway-fabric/nginx"
+      ],
+      "groupName": "nginx-gateway-fabric"
     }
   ]
 }
