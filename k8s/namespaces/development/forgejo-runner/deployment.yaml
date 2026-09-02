@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: forgejo-runner
   namespace: development
+  annotations:
+    goldilocks.fairwinds.com/vpa-update-mode: "off"
   labels:
     app.kubernetes.io/name: forgejo-runner
     app.kubernetes.io/managed-by: flux
