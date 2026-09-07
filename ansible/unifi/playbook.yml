@@ -16,11 +16,17 @@
     - name: Configure networks
       ansible.builtin.include_tasks: tasks/networks.yml
 
-    - name: Configure firewall zones
+    - name: Ensure firewall zones exist
       ansible.builtin.include_tasks: tasks/firewall_zones.yml
+
+    - name: Configure traffic matching lists
+      ansible.builtin.include_tasks: tasks/traffic_matching_lists.yml
 
     - name: Configure firewall policies
       ansible.builtin.include_tasks: tasks/firewall_policies.yml
+
+    - name: Attach networks to firewall zones
+      ansible.builtin.include_tasks: tasks/firewall_zone_networks.yml
 
     - name: Configure VPN server
       ansible.builtin.include_tasks: tasks/vpn_server.yml
@@ -28,9 +34,6 @@
     # --- Legacy API tasks (session cookie auth) ---
     - name: Authenticate to legacy API
       ansible.builtin.include_tasks: tasks/legacy_auth.yml
-
-    - name: Configure firewall groups
-      ansible.builtin.include_tasks: tasks/firewall_groups.yml
 
     - name: Configure DNS records
       ansible.builtin.include_tasks: tasks/dns_records.yml

@@ -1,7 +1,7 @@
 ---
 - name: Get existing firewall zones
   ubiquiti.unifi_api.network:
-    path: "/integration/v1/sites/{{ site_id }}/firewall/zones"
+    path: "/integration/v1/sites/{{ site_id }}/firewall/zones?offset=0&limit=100"
     method: GET
   register: _existing_zones_raw
 
@@ -19,19 +19,53 @@
     _network_id_map: >-
       {{ dict(_existing_networks | map(attribute='name') | zip(_existing_networks | map(attribute='id'))) }}
 
-- name: "Update zone network assignments — {{ item.key }}"
-  ubiquiti.unifi_api.network:
-    path: "/integration/v1/sites/{{ site_id }}/firewall/zones/{{ _existing_zone_map[item.key].id }}"
-    method: PUT
-    body:
-      name: "{{ item.key }}"
-      networkIds: "{{ item.value | map('extract', _network_id_map) | list }}"
-  loop: "{{ unifi_firewall_zone_assignments | dict2items }}"
+- name: Show custom zones that would be created
+  ansible.builtin.debug:
+    msg: "{{ 'DRY RUN: would create' if unifi_dry_run else 'Creating' }} zone {{ item.key }}"
+  loop: "{{ unifi_firewall_zones | dict2items }}"
   loop_control:
     label: "{{ item.key }}"
+  when: item.key not in _existing_zone_map
+
+- name: "Create custom firewall zone (empty) — {{ item.key }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/zones"
+    method: POST
+    body:
+      name: "{{ item.key }}"
+      networkIds: []
+  loop: "{{ unifi_firewall_zones | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  register: _zone_create
   when:
-    - item.key in _existing_zone_map
-    - _existing_zone_map[item.key].metadata.configurable | default(false)
-    - >-
-      _existing_zone_map[item.key].networkIds | default([]) | sort
-      != (item.value | map('extract', _network_id_map) | list | sort)
+    - item.key not in _existing_zone_map
+    - not unifi_dry_run
+
+- name: Re-read firewall zones after creation
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/zones?offset=0&limit=100"
+    method: GET
+  register: _existing_zones_raw
+  when: _zone_create is changed
+
+- name: Refresh zone facts
+  ansible.builtin.set_fact:
+    _existing_zones: "{{ _existing_zones_raw.response.data }}"
+    _existing_zone_map: >-
+      {{ dict(_existing_zones_raw.response.data | map(attribute='name')
+              | zip(_existing_zones_raw.response.data)) }}
+
+- name: Build zone name-to-ID lookup
+  ansible.builtin.set_fact:
+    _zone_id_map: >-
+      {{ dict(_existing_zones | map(attribute='name') | zip(_existing_zones | map(attribute='id'))) }}
+
+- name: Assert every referenced zone exists (skipped in dry run for not-yet-created zones)
+  ansible.builtin.assert:
+    that:
+      - item in _zone_id_map
+    fail_msg: "Zone '{{ item }}' does not exist on the gateway. Run with unifi_dry_run=false to create it."
+  loop: "{{ (unifi_firewall_zones | list) + (unifi_firewall_policies | map(attribute='source.zone') | list)
+            + (unifi_firewall_policies | map(attribute='destination.zone') | list) | unique }}"
+  when: not unifi_dry_run

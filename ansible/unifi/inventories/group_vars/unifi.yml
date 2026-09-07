@@ -17,6 +17,10 @@ unifi_password: !vault |
 
 unifi_legacy_site: default
 
+unifi_dry_run: true
+
+unifi_firewall_policies_prune: false
+
 # Networks (Integration API)
 unifi_networks:
   - name: Unifi
@@ -79,6 +83,9 @@ unifi_dns_records:
   - key: nginx.hosted.fail
     record_type: A
     value: "10.0.0.249"
+  - key: bmc.hosted.fail
+    record_type: A
+    value: "10.0.0.253"
 
   # CNAME records
   - key: suwayomi.hosted.fail
@@ -129,12 +136,6 @@ unifi_dns_records:
   - key: glance.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: code.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
-  - key: chat.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
   - key: auth.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
@@ -144,13 +145,19 @@ unifi_dns_records:
   - key: shelfmark.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
-  - key: calibre.hosted.fail
-    record_type: CNAME
-    value: nginx.hosted.fail
   - key: hyperdx.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
   - key: hubble.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: tor.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: manga.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
+  - key: vaultwarden.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
 
@@ -198,79 +205,262 @@ unifi_wlans:
     l2_isolation: true
     optimize_iot_wifi_connectivity: false
 
-# Firewall Groups / Traffic Matching Lists (Legacy API)
-unifi_firewall_groups:
-  # Address groups
-  - name: Default
-    group_type: address-group
-    group_members: ["192.168.1.0/24"]
-
-  - name: Personal
-    group_type: address-group
-    group_members: ["10.0.1.0/25"]
-
-  - name: Public
-    group_type: address-group
-    group_members: ["172.16.0.0/24"]
-
-  - name: IOT
-    group_type: address-group
-    group_members: ["10.0.1.128/25"]
-
-  - name: VPN
-    group_type: address-group
-    group_members: ["172.21.0.0/24"]
-
-  - name: Bastion Host
-    group_type: address-group
-    group_members: ["10.0.1.126", "10.0.1.125"]
-
-  - name: Private
-    group_type: address-group
-    group_members: ["10.0.0.0/24"]
-
-  - name: RFC1918
-    group_type: address-group
-    group_members: ["192.168.0.0/16", "172.16.0.0/12", "10.0.0.0/8"]
-
-  - name: UI
-    group_type: address-group
-    group_members: ["192.168.1.1", "10.0.0.1", "10.0.1.1", "10.0.1.129", "172.16.0.1", "10.0.3.1"]
-
-  - name: Server Host
-    group_type: address-group
-    group_members: ["10.0.0.249", "10.0.0.248"]
-
-  # Port groups
-  - name: NTP
-    group_type: port-group
-    group_members: ["123"]
-
-  - name: DNS
-    group_type: port-group
-    group_members: ["53", "853", "443", "784"]
-
-  - name: HTTP/HTTPS
-    group_type: port-group
-    group_members: ["80", "443"]
-
-  - name: HTTP/HTTPS/SSH
-    group_type: port-group
-    group_members: ["80", "443", "22"]
-
 # Firewall Zones (Integration API)
-unifi_firewall_zone_assignments:
-  Internal:
-    - Unifi
-    - Homelab
-    - Family
-    - IOT
-  Hotspot:
-    - Guest
-  Dmz: []
+# Zone name -> networks. Custom zones are created if missing. Zones not listed
+# here (External, Gateway, VPN, DMZ) are system-managed.
+unifi_firewall_zones:
+  Management: [Unifi]
+  Homelab: [Homelab]
+  Family: [Family]
+  IOT: [IOT]
+  Hotspot: [Guest]
+  Internal: []
+
+# Traffic Matching Lists (Integration API) — the IP / port objects referenced
+# by policies. type: IPV4_ADDRESSES (IP, CIDR, or a-b range) or PORTS (n or a-b).
+unifi_traffic_matching_lists:
+  - name: Bastion Host
+    type: IPV4_ADDRESSES
+    items: ["10.0.1.124", "10.0.1.125", "10.0.1.126"]
+  - name: Server Host
+    type: IPV4_ADDRESSES
+    items: ["10.0.0.249"]
+  - name: UNAS
+    type: IPV4_ADDRESSES
+    items: ["10.0.0.254"]
+  - name: HTTP/HTTPS
+    type: PORTS
+    items: [80, 443]
+  - name: Gateway Services
+    type: PORTS
+    items: [53, 67, 123, 5353]
+  - name: UniFi Inform
+    type: PORTS
+    items: [8080, 3478]
+  - name: UniFi Protect
+    type: PORTS
+    items: [7441, 7447]
+  - name: Discovery Replies
+    type: PORTS
+    items: [1900, 5353]
 
 # Firewall Policies (Integration API)
-unifi_firewall_policies: []
+# Order matters: this list is pushed as the gateway's evaluation order, so the
+# trailing "Block" in each zone pair must come after that pair's allows.
+#
+# Fields: name, source{zone, ip_list|ips|networks|macs, port_list|ports},
+#         destination{zone, ip_list|ips|networks, port_list|ports},
+#         action ALLOW|BLOCK|REJECT, protocol (tcp, udp, tcp_udp, icmp, icmpv6, all),
+#         ip_version IPV4|IPV6|IPV4_AND_IPV6 (default IPV4), connection_state [NEW, ...],
+#         logging (default false), allow_return_traffic (ALLOW only, default true),
+#         enabled (default true), description, schedule.
+#
+# Zone matrix defaults (set in the UI, not managed here): Management -> all Allow;
+# every other custom-zone pair Block; X -> Gateway and X -> External are locked
+# Allow, which is why each zone gets an explicit trailing "Block: X -> Gateway".
+unifi_firewall_policies:
+  # ---- IOT -------------------------------------------------------------
+  - name: "Allow: IoT -> Nginx"
+    source: {zone: IOT}
+    destination: {zone: Homelab, ip_list: Server Host, port_list: HTTP/HTTPS}
+    protocol: tcp_udp
+    action: ALLOW
+  - name: "Allow: IoT -> Gateway Services"
+    source: {zone: IOT}
+    destination: {zone: Gateway, port_list: Gateway Services}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: IoT -> Gateway ICMP"
+    source: {zone: IOT}
+    destination: {zone: Gateway}
+    protocol: icmp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: IoT -> Gateway ICMPv6"
+    source: {zone: IOT}
+    destination: {zone: Gateway}
+    protocol: icmpv6
+    ip_version: IPV6
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: IoT -> Discovery Replies"
+    source: {zone: IOT, port_list: Discovery Replies}
+    destination: {zone: Gateway}
+    protocol: udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Block: IoT -> Gateway"
+    source: {zone: IOT}
+    destination: {zone: Gateway}
+    action: BLOCK
+    connection_state: [NEW]
+  - name: "Block: IoT -> DoT"
+    source: {zone: IOT}
+    destination: {zone: External, ports: [853]}
+    protocol: tcp_udp
+    action: BLOCK
+
+  # ---- Homelab ---------------------------------------------------------
+  - name: "Allow: Homelab -> IOT"
+    source: {zone: Homelab}
+    destination: {zone: IOT}
+    action: ALLOW
+  - name: "Allow: Homelab -> Gateway Services"
+    source: {zone: Homelab}
+    destination: {zone: Gateway, port_list: Gateway Services}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Homelab -> Gateway ICMP"
+    source: {zone: Homelab}
+    destination: {zone: Gateway}
+    protocol: icmp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Homelab -> Gateway ICMPv6"
+    source: {zone: Homelab}
+    destination: {zone: Gateway}
+    protocol: icmpv6
+    ip_version: IPV6
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Homelab -> Gateway UI"
+    source: {zone: Homelab}
+    destination: {zone: Gateway, port_list: HTTP/HTTPS}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Homelab -> Unifi Protect"
+    source: {zone: Homelab}
+    destination: {zone: Gateway, port_list: UniFi Protect}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: UNAS -> Gateway Inform"
+    source: {zone: Homelab, ip_list: UNAS}
+    destination: {zone: Gateway, port_list: UniFi Inform}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Homelab -> Discovery Replies"
+    source: {zone: Homelab, port_list: Discovery Replies}
+    destination: {zone: Gateway}
+    protocol: udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Block: Homelab -> Gateway"
+    source: {zone: Homelab}
+    destination: {zone: Gateway}
+    action: BLOCK
+    connection_state: [NEW]
+  - name: "Block: Homelab -> DoT"
+    source: {zone: Homelab}
+    destination: {zone: External, ports: [853]}
+    protocol: tcp_udp
+    action: BLOCK
+
+  # ---- Family ----------------------------------------------------------
+  - name: "Allow: Bastion -> IoT"
+    source: {zone: Family, ip_list: Bastion Host}
+    destination: {zone: IOT}
+    action: ALLOW
+  - name: "Allow: Family -> IOT"
+    source: {zone: Family}
+    destination: {zone: IOT}
+    action: ALLOW
+  - name: "Allow: Bastion -> Homelab"
+    source: {zone: Family, ip_list: Bastion Host}
+    destination: {zone: Homelab}
+    action: ALLOW
+  - name: "Allow: Family -> Server 80/443"
+    source: {zone: Family}
+    destination: {zone: Homelab, ip_list: Server Host, port_list: HTTP/HTTPS}
+    protocol: tcp_udp
+    action: ALLOW
+  - name: "Allow: Bastion -> Management"
+    source: {zone: Family, ip_list: Bastion Host}
+    destination: {zone: Management}
+    action: ALLOW
+  - name: "Allow: Bastion -> Gateway"
+    source: {zone: Family, ip_list: Bastion Host}
+    destination: {zone: Gateway}
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Family -> Gateway Services"
+    source: {zone: Family}
+    destination: {zone: Gateway, port_list: Gateway Services}
+    protocol: tcp_udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Family -> Gateway ICMP"
+    source: {zone: Family}
+    destination: {zone: Gateway}
+    protocol: icmp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Family -> Gateway ICMPv6"
+    source: {zone: Family}
+    destination: {zone: Gateway}
+    protocol: icmpv6
+    ip_version: IPV6
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Allow: Family -> Discovery Replies"
+    source: {zone: Family, port_list: Discovery Replies}
+    destination: {zone: Gateway}
+    protocol: udp
+    action: ALLOW
+    allow_return_traffic: false
+  - name: "Block: Family -> Gateway"
+    source: {zone: Family}
+    destination: {zone: Gateway}
+    action: BLOCK
+    connection_state: [NEW]
+  - name: "Block: Family -> DoT"
+    source: {zone: Family}
+    destination: {zone: External, ports: [853]}
+    protocol: tcp_udp
+    action: BLOCK
+
+  # ---- Management ------------------------------------------------------
+  - name: "Allow: Management -> IOT"
+    source: {zone: Management}
+    destination: {zone: IOT}
+    action: ALLOW
+  - name: "Allow: Management -> Homelab"
+    source: {zone: Management}
+    destination: {zone: Homelab}
+    action: ALLOW
+  - name: "Allow: Management -> Family"
+    source: {zone: Management}
+    destination: {zone: Family}
+    action: ALLOW
+
+  # ---- Guest -----------------------------------------------------------
+  - name: "Block: Guest -> DoT"
+    source: {zone: Hotspot}
+    destination: {zone: External, ports: [853]}
+    protocol: tcp_udp
+    action: BLOCK
+
+  # ---- VPN -------------------------------------------------------------
+  - name: "Allow: VPN -> IOT"
+    source: {zone: VPN}
+    destination: {zone: IOT}
+    action: ALLOW
+  - name: "Allow: VPN -> Homelab"
+    source: {zone: VPN}
+    destination: {zone: Homelab}
+    action: ALLOW
+  - name: "Allow: VPN -> Family"
+    source: {zone: VPN}
+    destination: {zone: Family}
+    action: ALLOW
+  - name: "Allow: VPN -> Management"
+    source: {zone: VPN}
+    destination: {zone: Management}
+    action: ALLOW
 
 # Port Forwarding (Legacy API)
 unifi_port_forwards: []

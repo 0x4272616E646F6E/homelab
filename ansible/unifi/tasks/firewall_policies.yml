@@ -23,6 +23,7 @@
     _existing_policies: >-
       {{ _policies_page1.response.data
          + (_policies_rest.results | default([])
+            | selectattr('response', 'defined')
             | map(attribute='response.data') | flatten(levels=1) | list) }}
 
 - name: Categorize policies by origin
@@ -35,36 +36,122 @@
     msg: >-
       Firewall policies: {{ _existing_policies | length }} total
       ({{ _user_policies | length }} user-defined,
-      {{ _system_policies | length }} system-defined)
+      {{ _system_policies | length }} system-defined,
+      {{ unifi_firewall_policies | length }} managed in group_vars)
 
-- name: Display user-defined policies
+- name: Build desired policy bodies
+  ansible.builtin.set_fact:
+    _desired_policies: >-
+      {{ unifi_firewall_policies | map('unifi_policy_body', _zone_id_map, _tml_id_map, _network_id_map) | list }}
+
+- name: Build lookups by composite key
+  ansible.builtin.set_fact:
+    _existing_by_key: >-
+      {{ dict(_user_policies | map('unifi_policy_key') | zip(_user_policies)) }}
+    _desired_keys: "{{ _desired_policies | map('unifi_policy_key') | list }}"
+
+- name: Show policies to create
   ansible.builtin.debug:
-    msg: >-
-      [{{ item.index }}] {{ item.name }}
-      — {{ item.action.type }}
-      ({{ item.source.zoneId[:8] }}→{{ item.destination.zoneId[:8] }})
-      {{ '(logging)' if item.loggingEnabled else '' }}
-  loop: "{{ _user_policies | sort(attribute='index') }}"
+    msg: "{{ 'DRY RUN: would create' if unifi_dry_run else 'Creating' }} {{ item.name }}"
+  loop: "{{ _desired_policies }}"
   loop_control:
     label: "{{ item.name }}"
+  when: (item | unifi_policy_key) not in _existing_by_key
 
-# --- Optional: create/update policies from unifi_firewall_policies ---
-- name: Build existing user policy lookup by composite key (name + zones)
-  ansible.builtin.set_fact:
-    _existing_policy_keys: >-
-      {{ _user_policies | map(attribute='name')
-         | zip(_user_policies | map(attribute='source.zoneId'))
-         | zip(_user_policies | map(attribute='destination.zoneId'))
-         | map('flatten')
-         | map('join', '||')
-         | list }}
+- name: Show policies to update
+  ansible.builtin.debug:
+    msg: "{{ 'DRY RUN: would update' if unifi_dry_run else 'Updating' }} {{ item.name }}"
+  loop: "{{ _desired_policies }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - (item | unifi_policy_key) in _existing_by_key
+    - _existing_by_key[item | unifi_policy_key] | unifi_policy_changed(item)
+
+- name: Show unmanaged user-defined policies
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'DRY RUN: would delete' if unifi_dry_run else 'Deleting' }} {{ item.name }}
+      {{ '' if unifi_firewall_policies_prune else '(kept: unifi_firewall_policies_prune is false)' }}
+  loop: "{{ _user_policies }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: (item | unifi_policy_key) not in _desired_keys
 
 - name: "Create firewall policy — {{ item.name }}"
   ubiquiti.unifi_api.network:
     path: "/integration/v1/sites/{{ site_id }}/firewall/policies"
     method: POST
-    body: "{{ item.body }}"
-  loop: "{{ unifi_firewall_policies }}"
+    body: "{{ item }}"
+  loop: "{{ _desired_policies }}"
   loop_control:
     label: "{{ item.name }}"
-  when: (item.name ~ '||' ~ item.body.source.zoneId ~ '||' ~ item.body.destination.zoneId) not in _existing_policy_keys
+  register: _policy_create
+  when:
+    - not unifi_dry_run
+    - (item | unifi_policy_key) not in _existing_by_key
+
+- name: "Update firewall policy — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies/{{ _existing_by_key[item | unifi_policy_key].id }}"
+    method: PUT
+    body: "{{ item }}"
+  loop: "{{ _desired_policies }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - not unifi_dry_run
+    - (item | unifi_policy_key) in _existing_by_key
+    - _existing_by_key[item | unifi_policy_key] | unifi_policy_changed(item)
+
+- name: "Delete unmanaged firewall policy — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies/{{ item.id }}"
+    method: DELETE
+  loop: "{{ _user_policies }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - not unifi_dry_run
+    - unifi_firewall_policies_prune
+    - (item | unifi_policy_key) not in _desired_keys
+
+# --- ordering -------------------------------------------------------------
+
+- name: Re-read firewall policies for ordering
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies?offset=0&limit=500"
+    method: GET
+  register: _policies_after
+  when: not unifi_dry_run
+
+- name: Build managed policy ID list in group_vars order
+  ansible.builtin.set_fact:
+    _managed_policy_ids: >-
+      {{ _desired_keys | map('extract',
+           dict(_policies_after.response.data | selectattr('metadata.origin', 'equalto', 'USER_DEFINED')
+                | map('unifi_policy_key')
+                | zip(_policies_after.response.data | selectattr('metadata.origin', 'equalto', 'USER_DEFINED')
+                      | map(attribute='id')))) | list }}
+  when: not unifi_dry_run
+
+- name: Get current policy ordering
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies/ordering"
+    method: GET
+  register: _ordering_raw
+  when: not unifi_dry_run
+
+- name: Compute desired ordering
+  ansible.builtin.set_fact:
+    _desired_ordering: "{{ _ordering_raw.response | unifi_policy_ordering(_managed_policy_ids) }}"
+  when: not unifi_dry_run
+
+- name: Apply policy ordering
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/firewall/policies/ordering"
+    method: PUT
+    body: "{{ _desired_ordering }}"
+  when:
+    - not unifi_dry_run
+    - _desired_ordering.orderedFirewallPolicyIds != (_ordering_raw.response.orderedFirewallPolicyIds | default(_ordering_raw.response))

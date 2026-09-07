@@ -1,0 +1,76 @@
+---
+- name: Get existing traffic matching lists
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/traffic-matching-lists?offset=0&limit=200"
+    method: GET
+  register: _tml_raw
+
+- name: Build traffic matching list lookup by name
+  ansible.builtin.set_fact:
+    _existing_tml_map: >-
+      {{ dict(_tml_raw.response.data | map(attribute='name') | zip(_tml_raw.response.data)) }}
+
+- name: Build desired traffic matching list bodies
+  ansible.builtin.set_fact:
+    _desired_tml: "{{ unifi_traffic_matching_lists | map('unifi_tml_body') | list }}"
+
+- name: Show traffic matching list changes
+  ansible.builtin.debug:
+    msg: >-
+      {{ 'DRY RUN: would ' if unifi_dry_run else '' }}{{ 'create' if item.name not in _existing_tml_map else 'update' }}
+      {{ item.name }} ({{ item.type }}: {{ item['items'] | map(attribute='value') | list }})
+  loop: "{{ _desired_tml }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: >-
+    item.name not in _existing_tml_map
+    or _existing_tml_map[item.name] | unifi_tml_changed(item)
+
+- name: "Create traffic matching list — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/traffic-matching-lists"
+    method: POST
+    body: "{{ item }}"
+  loop: "{{ _desired_tml }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: _tml_create
+  when:
+    - not unifi_dry_run
+    - item.name not in _existing_tml_map
+
+- name: "Update traffic matching list — {{ item.name }}"
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/traffic-matching-lists/{{ _existing_tml_map[item.name].id }}"
+    method: PUT
+    body: "{{ item }}"
+  loop: "{{ _desired_tml }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - not unifi_dry_run
+    - item.name in _existing_tml_map
+    - _existing_tml_map[item.name] | unifi_tml_changed(item)
+
+- name: Re-read traffic matching lists after creation
+  ubiquiti.unifi_api.network:
+    path: "/integration/v1/sites/{{ site_id }}/traffic-matching-lists?offset=0&limit=200"
+    method: GET
+  register: _tml_raw
+  when: _tml_create is changed
+
+- name: Build traffic matching list name-to-ID lookup
+  ansible.builtin.set_fact:
+    _tml_id_map: >-
+      {{ dict(_tml_raw.response.data | map(attribute='name')
+              | zip(_tml_raw.response.data | map(attribute='id'))) }}
+
+- name: Fill placeholder IDs for lists that do not exist yet (dry run only)
+  ansible.builtin.set_fact:
+    _tml_id_map: "{{ _tml_id_map | combine({item.name: 'DRY-RUN-' ~ item.name}) }}"
+  loop: "{{ _desired_tml }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - unifi_dry_run
+    - item.name not in _tml_id_map
