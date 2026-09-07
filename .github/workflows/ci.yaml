@@ -35,11 +35,14 @@ jobs:
       - name: Validate manifests with kubeconform
         run: |
           set -euo pipefail
+          # Manifests are '.yaml'; '.yml' is reserved for app config consumed
+          # by kustomize generators, which are not Kubernetes resources.
           mapfile -t FILES < <(git ls-files \
             'k8s/namespaces/**/*.y*ml' \
             'k8s/clusters/**/*.y*ml' \
             ':!:k8s/clusters/**/flux-system/**' \
-            ':!:**/*.enc.yaml')
+            ':!:**/*.enc.yaml' \
+            ':!:**/*.yml')
           if [ ${#FILES[@]} -eq 0 ]; then
             echo "No manifests to validate."
           else
