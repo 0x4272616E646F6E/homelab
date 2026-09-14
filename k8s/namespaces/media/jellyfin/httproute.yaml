@@ -14,12 +14,6 @@ spec:
   hostnames:
     - "jellyfin.hosted.fail"
   rules:
-    - filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: gateway.nginx.org
-            kind: SnippetsFilter
-            name: internal-whitelist
-      backendRefs:
+    - backendRefs:
         - name: jellyfin
           port: 8096

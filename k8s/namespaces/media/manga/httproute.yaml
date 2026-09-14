@@ -19,7 +19,7 @@ spec:
           extensionRef:
             group: gateway.nginx.org
             kind: SnippetsFilter
-            name: internal-whitelist
+            name: tinyauth-forward
       backendRefs:
         - name: manga
           port: 4567

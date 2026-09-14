@@ -66,12 +66,12 @@
     },
     {
       "customType": "regex",
-      "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks",
+      "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks. Quotes around the repository or tag are optional and are stripped: capturing them into currentValue yields an unparseable version and Renovate skips the dep silently. Only whitespace may sit between repository and tag, so an intervening key such as pullPolicy breaks the match -- keep tag directly below repository.",
       "managerFilePatterns": [
         "/(^|/)namespaces/.+/configmap\\.ya?ml$/"
       ],
       "matchStrings": [
-        "repository:\\s*(?<depName>[-\\w./:]+)\\s*\\n\\s*tag:\\s*(?<currentValue>[^\\s]+)"
+        "repository:\\s*[\"']?(?<depName>[-\\w./:]+)[\"']?[ \\t]*\\r?\\n\\s*tag:\\s*[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
       ],
       "datasourceTemplate": "docker",
       "depNameTemplate": "{{depName}}",
@@ -109,6 +109,13 @@
     {
       "description": "Auto-merge minor, patch, and digest updates",
       "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Auto-merge cloudflared majors too. cloudflared is CalVer (2026.9.1), so the January year rollover parses as a semver major and would otherwise sit unmerged; it carries no breaking-change meaning. The tunnel connects outbound only and the remote-managed config is unaffected by the image version.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["cloudflare/cloudflared"],
+      "matchUpdateTypes": ["major"],
       "automerge": true
     },
     {

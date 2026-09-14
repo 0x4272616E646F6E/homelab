@@ -14,12 +14,6 @@ spec:
   hostnames:
     - "auth.hosted.fail"
   rules:
-    - filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: gateway.nginx.org
-            kind: SnippetsFilter
-            name: internal-whitelist
-      backendRefs:
+    - backendRefs:
         - name: tinyauth
           port: 3000
