@@ -7,6 +7,9 @@ metadata:
     app.kubernetes.io/name: clamav
     app.kubernetes.io/component: daemon
     app.kubernetes.io/managed-by: flux
+  annotations:
+    # Bursty Workload
+    goldilocks.fairwinds.com/vpa-update-mode: "off"
 spec:
   replicas: 1
   strategy:

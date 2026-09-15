@@ -7,6 +7,9 @@ metadata:
     app.kubernetes.io/name: tor-browser
     app.kubernetes.io/managed-by: flux
     app.kubernetes.io/egress: wireguard
+  annotations:
+    # Bursty Workload
+    goldilocks.fairwinds.com/vpa-update-mode: "off"
 spec:
   replicas: 1
   selector:
