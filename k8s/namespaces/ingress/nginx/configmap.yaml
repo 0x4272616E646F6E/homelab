@@ -18,7 +18,7 @@ data:
       replicas: 1
       image:
         repository: ghcr.io/nginx/nginx-gateway-fabric
-        tag: 2.7.1
+        tag: 2.7.2
         pullPolicy: IfNotPresent
       productTelemetry:
         enable: false
@@ -47,7 +47,7 @@ data:
         enable: false
       image:
         repository: ghcr.io/nginx/nginx-gateway-fabric/nginx
-        tag: 2.7.1
+        tag: 2.7.2
         pullPolicy: IfNotPresent
       config:
         workerConnections: 10240
