@@ -7,6 +7,17 @@ metadata:
     app.kubernetes.io/name: qbittorrent
     app.kubernetes.io/managed-by: flux
     app.kubernetes.io/egress: wireguard
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "qbittorrent",
+      "minAllowed": { "cpu": "50m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "2000m", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" },
+      { "containerName": "port-forward-sync",
+      "minAllowed": { "cpu": "25m", "memory": "64Mi" },
+      "maxAllowed": { "cpu": "500m", "memory": "256Mi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   strategy:
@@ -74,11 +85,11 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "1Gi"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "2000m"
-              memory: "2048Mi"
+              memory: "4Gi"
               ephemeral-storage: "5Gi"
           livenessProbe:
             tcpSocket:

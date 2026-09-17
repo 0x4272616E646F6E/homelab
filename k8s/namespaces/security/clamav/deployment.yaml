@@ -8,8 +8,12 @@ metadata:
     app.kubernetes.io/component: daemon
     app.kubernetes.io/managed-by: flux
   annotations:
-    # Bursty Workload
-    goldilocks.fairwinds.com/vpa-update-mode: "off"
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "clamd",
+      "minAllowed": { "cpu": "250m", "memory": "1Gi" },
+      "maxAllowed": { "cpu": "4000m", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   strategy:

@@ -8,8 +8,12 @@ metadata:
     app.kubernetes.io/managed-by: flux
     app.kubernetes.io/egress: wireguard
   annotations:
-    # Bursty Workload
-    goldilocks.fairwinds.com/vpa-update-mode: "off"
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "tor-browser",
+      "minAllowed": { "cpu": "100m", "memory": "512Mi" },
+      "maxAllowed": { "cpu": "2000m", "memory": "2Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   selector:

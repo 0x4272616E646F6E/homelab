@@ -8,8 +8,13 @@ metadata:
     app.kubernetes.io/component: scanner
     app.kubernetes.io/managed-by: flux
   annotations:
-    # Bursty Workload
     goldilocks.fairwinds.com/vpa-update-mode: "off"
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "scanner",
+      "minAllowed": { "cpu": "250m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "2000m", "memory": "1Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   schedule: "0 1 * * 0"  # Every Sunday at 1 AM
   successfulJobsHistoryLimit: 3

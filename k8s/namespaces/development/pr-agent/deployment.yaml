@@ -6,6 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/name: pr-agent
     app.kubernetes.io/managed-by: flux
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "pr-agent",
+      "minAllowed": { "cpu": "100m", "memory": "4Gi" },
+      "maxAllowed": { "cpu": "2000m", "memory": "12Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   strategy:
@@ -64,11 +71,11 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "8Gi"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "2000m"
-              memory: "8192Mi"
+              memory: "12Gi"
               ephemeral-storage: "5Gi"
           livenessProbe:
             tcpSocket:

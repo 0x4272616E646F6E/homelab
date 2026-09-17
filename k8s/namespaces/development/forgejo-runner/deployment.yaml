@@ -5,6 +5,16 @@ metadata:
   namespace: development
   annotations:
     goldilocks.fairwinds.com/vpa-update-mode: "off"
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "runner",
+      "minAllowed": { "cpu": "100m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "1", "memory": "2Gi" },
+      "controlledValues": "RequestsOnly" },
+      { "containerName": "daemon",
+      "minAllowed": { "cpu": "100m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "1", "memory": "2Gi" },
+      "controlledValues": "RequestsOnly" } ] }
   labels:
     app.kubernetes.io/name: forgejo-runner
     app.kubernetes.io/managed-by: flux

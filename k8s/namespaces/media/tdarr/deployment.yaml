@@ -6,6 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/name: tdarr
     app.kubernetes.io/managed-by: flux
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "tdarr",
+      "minAllowed": { "cpu": "50m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "4000m", "memory": "2Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   strategy:
@@ -67,12 +74,12 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "1Gi"
               nvidia.com/gpu: "1"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
-              memory: "24576Mi"
+              memory: "8Gi"
               nvidia.com/gpu: "1"
               ephemeral-storage: "20Gi"
           livenessProbe:

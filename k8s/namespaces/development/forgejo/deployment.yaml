@@ -6,6 +6,13 @@ metadata:
   labels:
     app.kubernetes.io/name: forgejo
     app.kubernetes.io/managed-by: flux
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "forgejo",
+      "minAllowed": { "cpu": "50m", "memory": "512Mi" },
+      "maxAllowed": { "cpu": "2", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" } ] }
 spec:
   replicas: 1
   strategy:
@@ -51,7 +58,7 @@ spec:
           resources:
             requests:
               cpu: "100m"
-              memory: "128Mi"
+              memory: "1Gi"
               ephemeral-storage: "10Gi"
             limits:
               cpu: "2"

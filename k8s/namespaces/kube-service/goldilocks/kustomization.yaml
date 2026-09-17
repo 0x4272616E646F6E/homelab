@@ -7,3 +7,4 @@ labels:
 resources:
   - configmap.yaml
   - helmrelease.yaml
+  - rbac.yaml
