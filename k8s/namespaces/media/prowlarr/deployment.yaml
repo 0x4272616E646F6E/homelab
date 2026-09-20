@@ -35,6 +35,9 @@ spec:
           # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
           image: lscr.io/linuxserver/prowlarr:latest@sha256:c96b56d94d116a9f4de94bc23d3381689492e6c3cfb7435320e8d982e406f99a
           imagePullPolicy: IfNotPresent
+          env:
+            - name: PROWLARR__AUTH__METHOD
+              value: "External"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false

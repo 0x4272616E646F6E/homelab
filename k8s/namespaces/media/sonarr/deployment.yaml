@@ -30,6 +30,9 @@ spec:
           # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
           image: lscr.io/linuxserver/sonarr:latest@sha256:a5c1a5fecbef946927ab90ad68df319ac5fe644057e5fc18cd993f01ac07b2b2
           imagePullPolicy: IfNotPresent
+          env:
+            - name: SONARR__AUTH__METHOD
+              value: "External"
           ports:
             - containerPort: 8989
               protocol: TCP
