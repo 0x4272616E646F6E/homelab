@@ -28,7 +28,7 @@ spec:
       containers:
         - name: manga
           # renovate: datasource=docker depName=ghcr.io/suwayomi/tachidesk
-          image: ghcr.io/suwayomi/tachidesk:latest@sha256:e59f212ccf91b26de8676a063a2db90256c148c6261535c7c477d47a43d9751b
+          image: ghcr.io/suwayomi/tachidesk:latest@sha256:1fac27c387dc2ea9949e1a01ad7f6d6de9d72d3988338a95476748e5c45c4582
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 4567
