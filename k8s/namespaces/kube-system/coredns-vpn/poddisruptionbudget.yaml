@@ -1,0 +1,13 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: coredns-vpn
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: coredns-vpn
+    app.kubernetes.io/managed-by: flux
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: coredns-vpn

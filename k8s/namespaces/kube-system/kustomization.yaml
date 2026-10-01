@@ -12,6 +12,7 @@ resources:
   - local-path-provisioner/
   - cilium/
   - coredns/
+  - coredns-vpn/
   - kubelet-csr-approver/
   - intel-gpu-plugin/
   - metrics-server/

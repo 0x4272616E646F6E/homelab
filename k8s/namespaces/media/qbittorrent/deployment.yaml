@@ -32,6 +32,17 @@ spec:
         app.kubernetes.io/managed-by: flux
         app.kubernetes.io/egress: wireguard
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 10.96.0.11
+        searches:
+          - media.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
       automountServiceAccountToken: false
       initContainers:
         - name: init-qb
