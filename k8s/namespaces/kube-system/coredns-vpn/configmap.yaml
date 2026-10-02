@@ -42,33 +42,43 @@ data:
     set -u
 
     RESOLVER="${RESOLVER:-10.2.0.1}"
-    PROBE_NAME="${PROBE_NAME:-whoami.akamai.net}"
+    PROBE_NAMES="${PROBE_NAMES:-resolver.dnscrypt.info whoami.akamai.net o-o.myaddr.l.google.com}"
     INTERVAL="${INTERVAL:-300}"
     TIMEOUT="${TIMEOUT:-5}"
 
-    check() {
-        egress="$(timeout "$TIMEOUT" nslookup "$PROBE_NAME" "$RESOLVER" 2>/dev/null \
-            | awk '/^Address/ { ip = $NF; if (ip !~ /:/) last = ip } END { print last }')"
+    resolver_egress() {
+        timeout "$TIMEOUT" nslookup "$1" "$RESOLVER" 2>/dev/null \
+            | awk '/^Address/ { ip = $NF; if (ip !~ /:/) last = ip } END { print last }'
+    }
 
+    check() {
         ok=0
-        if [ -n "$egress" ]; then
+        egress=""
+        probe=""
+
+        for name in $PROBE_NAMES; do
+            answer="$(resolver_egress "$name")"
+            [ -n "$answer" ] || continue
+            egress="$answer"
+            probe="$name"
             for prefix in $EXPECTED_RESOLVER_PREFIXES; do
                 case "$egress" in
                     "$prefix"*) ok=1; break ;;
                 esac
             done
-        fi
+            [ "$ok" -eq 1 ] && break
+        done
 
         if [ "$ok" -eq 1 ]; then
             msg="ok"
         elif [ -z "$egress" ]; then
-            msg="no answer from $RESOLVER: tunnel down or upstream unreachable"
+            msg="no answer from $RESOLVER for any probe: tunnel down or upstream unreachable"
         else
             msg="resolver egress outside expected prefixes: DNS is not using the tunnel"
         fi
 
-        printf '{"check":"positive_control","dns_vpn_leak":%s,"resolver":"%s","resolver_egress":"%s","expected_prefixes":"%s","msg":"%s"}\n' \
-            "$((1 - ok))" "$RESOLVER" "$egress" "$EXPECTED_RESOLVER_PREFIXES" "$msg"
+        printf '{"check":"positive_control","dns_vpn_leak":%s,"resolver":"%s","probe":"%s","resolver_egress":"%s","expected_prefixes":"%s","msg":"%s"}\n' \
+            "$((1 - ok))" "$RESOLVER" "$probe" "$egress" "$EXPECTED_RESOLVER_PREFIXES" "$msg"
 
         [ "$ok" -eq 1 ]
     }
