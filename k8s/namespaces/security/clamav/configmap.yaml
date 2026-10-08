@@ -63,10 +63,7 @@ data:
     HeuristicScanPrecedence yes
     
     # PUA detection
-    DetectPUA yes
-    ExcludePUA NetTool
-    ExcludePUA PWTool
-    ExcludePUA Win.Exploit
+    DetectPUA no
     
     # Limits
     StreamMaxLength 100M
