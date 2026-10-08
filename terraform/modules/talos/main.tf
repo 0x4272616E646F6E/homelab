@@ -52,3 +52,21 @@ resource "talos_machine_bootstrap" "this" {
   node                 = var.node_ip
   endpoint             = var.node_ip
 }
+
+# Drift tripwire -- see docs/NOTES.md for the full drift table.
+# terraform_data is built in, so this adds no provider dependency.
+resource "terraform_data" "drift_guard" {
+  input = "see docs/NOTES.md"
+
+  lifecycle {
+    precondition {
+      condition     = var.allow_apply_despite_drift
+      error_message = <<-EOT
+        terraform/modules/talos is out of sync with the live node and cannot produce a
+        bootable control plane as written. Reconcile it against
+        /zfs/pve/snippets/controlplane.yaml first, then set
+        allow_apply_despite_drift = true. See docs/NOTES.md for the drift table.
+      EOT
+    }
+  }
+}

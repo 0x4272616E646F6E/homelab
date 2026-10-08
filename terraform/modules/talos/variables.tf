@@ -33,3 +33,14 @@ variable "wireguard_private_key" {
   type        = string
   sensitive   = true
 }
+
+variable "allow_apply_despite_drift" {
+  description = <<-EOT
+    Tripwire. This module has not managed the live node since the 2026-08-20 manual
+    rebuild and currently CANNOT produce a bootable control plane — see the drift table
+    in docs/NOTES.md. Leave false until the module has been reconciled; setting it true
+    asserts that reconciliation is done.
+  EOT
+  type        = bool
+  default     = false
+}
