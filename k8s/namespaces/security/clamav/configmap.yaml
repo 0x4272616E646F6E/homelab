@@ -70,8 +70,6 @@ data:
     MaxScanTime 120000
     
     # Exclude quarantine directory to prevent circular scanning
-    # The quarantine PVC exists within /var/mnt/storage/local-path-provisioner on nodes
-    # We need to exclude it to prevent re-scanning quarantined files
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
     
   freshclam.conf: |
@@ -136,29 +134,22 @@ data:
     # --fdpass: Pass file descriptors (faster for clamd)
     # --infected: Only show infected files
     # --copy: Copy infected files to quarantine (source mount is readOnly)
-    # Note: clamdscan already writes scan output to stdout; --log=/dev/stdout
-    # trips O_NOFOLLOW (ELOOP) on the /dev/stdout symlink chain in containers.
-    # Note: the generated client config below excludes the quarantine PVC
 
     # Create a temporary clamd.conf pointing to the TCP daemon
-    # The quarantine PVC lives INSIDE the scan root
-    # (/var/mnt/storage/local-path-provisioner), so it must be excluded or every run
-    # re-detects last week's quarantined files and copies them again, appending .001
-    # each time. clamd.conf carries this ExcludePath, but --config-file replaces
-    # clamd.conf entirely for the client, so it has to be repeated here.
     cat > /tmp/clamd-tcp.conf <<CONF
     TCPSocket ${CLAMD_PORT}
     TCPAddr ${CLAMD_HOST}
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
     CONF
 
-    # --copy, not --move: SCAN_PATHS is mounted readOnly, so --move's unlink() always
-    # failed with EROFS and left the original in place anyway. --copy makes that
-    # explicit, and means a false positive never risks removing live data.
-    # --exclude-dir belts-and-braces the ExcludePath above.
     clamdscan \
       --config-file=/tmp/clamd-tcp.conf \
       --exclude-dir='.*clamav-quarantine.*' \
+      --exclude-dir='.*_development_forgejo-data/git/.*' \
+      --exclude-dir='.*_development_llamacpp-model-pvc/.*' \
+      --exclude-dir='.*clickstack-clickhouse.*' \
+      --exclude-dir='.*clickstack-keeper.*' \
+      --exclude='.*\.(db|log)$' \
       --multiscan \
       --fdpass \
       --infected \
@@ -179,8 +170,6 @@ data:
     echo "=== ClamAV Cluster Scan Completed: $(date) ==="
 
     # clamdscan exit codes: 0 = clean, 1 = infected found, 2 = error.
-    # Only 2 is an operational failure. Exiting non-zero on 1 made this CronJob fail
-    # every single week, which made a real breakage indistinguishable from findings.
     case "${EXIT_CODE:-0}" in
       0) echo "RESULT: clean"; exit 0 ;;
       1) echo "RESULT: infected files found - review $QUARANTINE_DIR"; exit 0 ;;

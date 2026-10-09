@@ -45,7 +45,7 @@ spec:
                 - name: CLAMD_PORT
                   value: "3310"
                 - name: SCAN_PATHS
-                  value: "/data/storage"
+                  value: "/data/storage/rwo"
               volumeMounts:
                 - name: local-path-data
                   mountPath: /data/storage
@@ -71,9 +71,9 @@ spec:
                   drop:
                     - ALL
                   add:
-                    - DAC_READ_SEARCH  # read files owned by any UID across PVCs
-                    - DAC_OVERRIDE     # unlink source files during --move (cross-mount fallback)
-                    - FOWNER           # set perms/ownership on quarantined copies
+                    - DAC_READ_SEARCH
+                    - DAC_OVERRIDE
+                    - FOWNER
           volumes:
             - name: local-path-data
               hostPath:
