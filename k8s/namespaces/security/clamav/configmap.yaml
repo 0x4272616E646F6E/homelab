@@ -142,19 +142,21 @@ data:
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
     CONF
 
+    SCAN_LIST=/tmp/scan-list.txt
+    find "$SCAN_PATHS" -type f -size -104857600c \
+      ! -path '*clamav-quarantine*' \
+      > "$SCAN_LIST" 2>/dev/null || true
+    SKIPPED=$(find "$SCAN_PATHS" -type f -size +104857599c ! -path '*clamav-quarantine*' 2>/dev/null | wc -l)
+    echo "Files to scan: $(wc -l < "$SCAN_LIST")"
+    echo "Skipped, >=100M so beyond clamd's MaxFileSize: $SKIPPED"
+
     clamdscan \
       --config-file=/tmp/clamd-tcp.conf \
-      --exclude-dir='.*clamav-quarantine.*' \
-      --exclude-dir='.*_development_forgejo-data/git/.*' \
-      --exclude-dir='.*_development_llamacpp-model-pvc/.*' \
-      --exclude-dir='.*clickstack-clickhouse.*' \
-      --exclude-dir='.*clickstack-keeper.*' \
-      --exclude='.*\.(db|log)$' \
       --multiscan \
       --fdpass \
       --infected \
       --copy="$QUARANTINE_DIR" \
-      $SCAN_PATHS || EXIT_CODE=$?
+      --file-list="$SCAN_LIST" || EXIT_CODE=$?
     
     echo ""
     echo "=== Scan Summary ==="
