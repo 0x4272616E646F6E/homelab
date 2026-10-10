@@ -35,8 +35,8 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
       containers:
         - name: pr-agent
-          # renovate: datasource=docker depName=docker.io/codiumai/pr-agent
-          image: docker.io/codiumai/pr-agent:0.34-gitea_app@sha256:6bea31a03eb41db19b137d291d360955289a3a7fef7640663a8b3c5483d3d859
+          # renovate: datasource=docker depName=docker.io/pragent/pr-agent
+          image: docker.io/pragent/pr-agent:gitea_app
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
