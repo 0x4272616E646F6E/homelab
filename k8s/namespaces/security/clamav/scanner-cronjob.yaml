@@ -31,6 +31,47 @@ spec:
         spec:
           automountServiceAccountToken: false
           restartPolicy: Never
+          initContainers:
+            - name: clamd
+              restartPolicy: Always
+              # renovate: datasource=docker depName=clamav/clamav
+              image: docker.io/clamav/clamav:1.5@sha256:ebec5bc138401b36ae987caa1a3fa3c3b2a21ed3d51f0bfa5852825e663e67b0
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - "exec clamd --config-file=/etc/clamav/clamd.conf"
+              volumeMounts:
+                - name: clamav-data
+                  mountPath: /var/lib/clamav
+                  readOnly: true
+                - name: config
+                  mountPath: /etc/clamav/clamd.conf
+                  subPath: clamd.conf
+                - name: clamd-socket
+                  mountPath: /run/clamav
+                - name: clamd-logs
+                  mountPath: /var/log/clamav
+                - name: clamd-lock
+                  mountPath: /var/lock
+              resources:
+                requests:
+                  cpu: "1000m"
+                  memory: "2Gi"
+                  ephemeral-storage: "1Gi"
+                limits:
+                  cpu: "4000m"
+                  memory: "4Gi"
+                  ephemeral-storage: "5Gi"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: false
+                runAsNonRoot: true
+                runAsUser: 100
+                runAsGroup: 101
+                capabilities:
+                  drop:
+                    - ALL
           containers:
             - name: scanner
               # renovate: datasource=docker depName=clamav/clamav
@@ -40,10 +81,6 @@ spec:
                 - /bin/sh
                 - /scripts/scan-script.sh
               env:
-                - name: CLAMD_HOST
-                  value: "clamav.security.svc.cluster.local"
-                - name: CLAMD_PORT
-                  value: "3310"
                 - name: SCAN_PATHS
                   value: "/data/storage/rwo"
               volumeMounts:
@@ -54,6 +91,8 @@ spec:
                   mountPath: /quarantine
                 - name: scripts
                   mountPath: /scripts
+                - name: clamd-socket
+                  mountPath: /run/clamav
               resources:
                 requests:
                   cpu: "500m"
@@ -82,6 +121,19 @@ spec:
             - name: quarantine
               persistentVolumeClaim:
                 claimName: clamav-quarantine
+            - name: clamav-data
+              persistentVolumeClaim:
+                claimName: clamav-data
+                readOnly: true
+            - name: config
+              configMap:
+                name: clamav-config
+            - name: clamd-socket
+              emptyDir: {}
+            - name: clamd-logs
+              emptyDir: {}
+            - name: clamd-lock
+              emptyDir: {}
             - name: scripts
               configMap:
                 name: clamav-config

@@ -101,22 +101,19 @@ data:
     echo "=== ClamAV Cluster Scan Started: $(date) ==="
     echo "Waiting for clamd to be ready..."
     
-    # Wait for clamd to be available via TCP
-    CLAMD_HOST="${CLAMD_HOST:-clamav.security.svc.cluster.local}"
-    CLAMD_PORT="${CLAMD_PORT:-3310}"
-    for i in $(seq 1 30); do
-      if echo "PING" | nc -w 2 "$CLAMD_HOST" "$CLAMD_PORT" 2>/dev/null | grep -q "PONG"; then
-        echo "clamd is ready"
-        break
-      fi
-      echo "Waiting for clamd... ($i/30)"
-      sleep 2
-    done
+    # clamd runs as a sidecar in this pod on a UNIX socket in a shared emptyDir.
+    CLAMD_SOCKET="${CLAMD_SOCKET:-/run/clamav/clamd.sock}"
+    cat > /tmp/clamd-local.conf <<CONF
+    LocalSocket ${CLAMD_SOCKET}
+    ExcludePath ^.*/pvc-.*clamav-quarantine.*
+    CONF
 
-    if ! echo "PING" | nc -w 2 "$CLAMD_HOST" "$CLAMD_PORT" 2>/dev/null | grep -q "PONG"; then
-      echo "ERROR: clamd is not responding"
+    # clamd needs 1-2 min to load signatures; --ping waits rather than guessing.
+    if ! clamdscan --config-file=/tmp/clamd-local.conf --ping 60:5 >/dev/null 2>&1; then
+      echo "ERROR: clamd did not become ready on ${CLAMD_SOCKET}"
       exit 1
     fi
+    echo "clamd is ready on ${CLAMD_SOCKET}"
     
     # Scan paths
     SCAN_PATHS="${SCAN_PATHS:-/media}"
@@ -135,23 +132,18 @@ data:
     # --infected: Only show infected files
     # --copy: Copy infected files to quarantine (source mount is readOnly)
 
-    # Create a temporary clamd.conf pointing to the TCP daemon
-    cat > /tmp/clamd-tcp.conf <<CONF
-    TCPSocket ${CLAMD_PORT}
-    TCPAddr ${CLAMD_HOST}
-    ExcludePath ^.*/pvc-.*clamav-quarantine.*
-    CONF
-
     SCAN_LIST=/tmp/scan-list.txt
     find "$SCAN_PATHS" -type f -size -104857600c \
       ! -path '*clamav-quarantine*' \
+      ! -path '*clickstack-clickhouse*' \
+      ! -path '*clickstack-keeper*' \
       > "$SCAN_LIST" 2>/dev/null || true
     SKIPPED=$(find "$SCAN_PATHS" -type f -size +104857599c ! -path '*clamav-quarantine*' 2>/dev/null | wc -l)
     echo "Files to scan: $(wc -l < "$SCAN_LIST")"
     echo "Skipped, >=100M so beyond clamd's MaxFileSize: $SKIPPED"
 
     clamdscan \
-      --config-file=/tmp/clamd-tcp.conf \
+      --config-file=/tmp/clamd-local.conf \
       --multiscan \
       --fdpass \
       --infected \
@@ -166,7 +158,7 @@ data:
       echo "Files in quarantine: $QUARANTINE_COUNT"
       if [ "$QUARANTINE_COUNT" -gt 0 ]; then
         echo "Quarantined files:"
-        find "$QUARANTINE_DIR" -type f -ls
+        find "$QUARANTINE_DIR" -type f -exec ls -l {} +
       fi
     fi
     echo "=== ClamAV Cluster Scan Completed: $(date) ==="
