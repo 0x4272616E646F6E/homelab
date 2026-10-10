@@ -101,6 +101,12 @@
       "pinDigests": true
     },
     {
+      "description": "Do not pin nushell digests.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/nushell/nushell"],
+      "pinDigests": false
+    },
+    {
       "description": "Disable digest pinning for custom regex-managed docker packages (formats don't support digests)",
       "matchManagers": ["custom.regex"],
       "matchDatasources": ["docker"],

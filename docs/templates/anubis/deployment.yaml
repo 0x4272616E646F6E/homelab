@@ -27,7 +27,7 @@ spec:
         - name: anubis
           # renovate: datasource=docker depName=ghcr.io/techarohq/anubis
           image: ghcr.io/techarohq/anubis:latest@sha256:4bdf6ddd1a8dc8bfe7a33d823a1cb72157885ca4fd3ee749654b21cba732e439
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           env:
             - name: "BIND"
               value: ":8080"

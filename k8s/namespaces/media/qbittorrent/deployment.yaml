@@ -79,6 +79,7 @@ spec:
         - name: qbittorrent
           # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest@sha256:b522f9f4b769f8f36d49d22d5eb6a92e9aa18904c6a1830b1439df511ec21983
+          imagePullPolicy: IfNotPresent
           env:
             - name: PUID
               value: "1000"
@@ -124,7 +125,8 @@ spec:
               subPath: downloads
         - name: port-forward-sync
           # renovate: datasource=docker depName=ghcr.io/nushell/nushell
-          image: ghcr.io/nushell/nushell:0.116.1@sha256:f4392fb76b794846d8a1e03513f8b2d5eb85a7c03344f34aa14f9cba1557de38
+          image: ghcr.io/nushell/nushell:latest
+          imagePullPolicy: IfNotPresent
           command: ["/bin/sh", "-c"]
           args:
             - |
