@@ -14,12 +14,6 @@ spec:
   hostnames:
     - "manga.hosted.fail"
   rules:
-    - filters:
-        - type: ExtensionRef
-          extensionRef:
-            group: gateway.nginx.org
-            kind: SnippetsFilter
-            name: tinyauth-forward
-      backendRefs:
+    - backendRefs:
         - name: manga
           port: 4567

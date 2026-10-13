@@ -42,13 +42,16 @@ data:
     set -u
 
     RESOLVER="${RESOLVER:-10.2.0.1}"
-    PROBE_NAMES="${PROBE_NAMES:-resolver.dnscrypt.info whoami.akamai.net o-o.myaddr.l.google.com}"
+    PROBE_NAMES="${PROBE_NAMES:-o-o.myaddr.l.google.com resolver.dnscrypt.info whoami.cloudflare.com}"
     INTERVAL="${INTERVAL:-300}"
     TIMEOUT="${TIMEOUT:-5}"
 
     resolver_egress() {
-        timeout "$TIMEOUT" nslookup "$1" "$RESOLVER" 2>/dev/null \
-            | awk '/^Address/ { ip = $NF; if (ip !~ /:/) last = ip } END { print last }'
+        timeout "$TIMEOUT" nslookup -type=txt "$1" "$RESOLVER" 2>/dev/null \
+            | sed -n 's/.*text = "\(.*\)".*/\1/p' \
+            | sed 's/^[A-Za-z_ ]*: *//' \
+            | grep -E '^(([0-9]{1,3}\.){3}[0-9]{1,3}|[0-9a-fA-F:]*:[0-9a-fA-F:]*:[0-9a-fA-F:]*)$' \
+            | head -n 1
     }
 
     check() {
@@ -97,4 +100,4 @@ data:
             ;;
     esac
 
-  expected-resolver-prefixes: "146.70."
+  expected-resolver-prefixes: "146.70. 2001:ac8:"
