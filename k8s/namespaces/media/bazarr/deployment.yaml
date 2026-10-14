@@ -42,7 +42,7 @@ spec:
       containers:
         - name: bazarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
-          image: lscr.io/linuxserver/bazarr:latest@sha256:c1673816321156b904af9b7e6415ea547ae9622e4acc375358f1e1eb9ed1e904
+          image: lscr.io/linuxserver/bazarr:latest@sha256:fb0437897eaa7f96cf6ac42f795f8dcc208d34ec969eac5d366454e767304eb9
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6767
