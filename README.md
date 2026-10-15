@@ -160,6 +160,7 @@ The following applications are managed through flux in this repository:
   <summary><b>Click here to view Applications</b></summary>
 
 - [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
+- [**Ailuros**](https://github.com/0x4272616E646F6E/ailuros)
 - [**Anubis**](https://github.com/TecharoHQ/anubis)
 - [**Bazarr**](https://github.com/morpheus65535/bazarr)
 - [**Cert Manager**](https://github.com/cert-manager/cert-manager)

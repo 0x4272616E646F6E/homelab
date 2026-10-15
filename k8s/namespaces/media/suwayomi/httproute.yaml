@@ -24,7 +24,7 @@ spec:
           extensionRef:
             group: gateway.nginx.org
             kind: SnippetsFilter
-            name: tinyauth-forward
+            name: security-forward
       backendRefs:
         - name: suwayomi
           port: 4567
