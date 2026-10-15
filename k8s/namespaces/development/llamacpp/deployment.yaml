@@ -93,7 +93,7 @@ spec:
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom: { secretKeyRef: { name: vllm-secrets, key: token } }
+          valueFrom: { secretKeyRef: { name: llamacpp-secrets, key: token } }
         - { name: HF_HOME,               value: /models/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }

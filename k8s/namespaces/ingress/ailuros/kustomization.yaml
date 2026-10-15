@@ -1,0 +1,58 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ingress
+resources:
+  - https://github.com/0x4272616E646F6E/ailuros//deploy/kubernetes/base?ref=v0.1.0
+components:
+  - https://github.com/0x4272616E646F6E/ailuros//deploy/kubernetes/components/api-key?ref=v0.1.0
+images:
+  - name: ailuros
+    newName: ghcr.io/0x4272616e646f6e/ailuros
+    newTag: 0.1.0
+patches:
+  - target:
+      kind: Deployment
+      name: ailuros
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: ailuros
+      spec:
+        template:
+          spec:
+            containers:
+              - name: ailuros
+                env:
+                  - name: AILUROS_INSPECTION_MODE
+                    value: lite
+                  - name: AILUROS_CLASSIFIER_BACKEND
+                    value: openai
+                  - name: AILUROS_CLASSIFIER_MODEL
+                    value: d1-3B
+                  - name: AILUROS_CLASSIFIER_BASE_URL
+                    value: http://ailuros-model.ingress.svc.cluster.local:8000/v1
+                  - name: AILUROS_FAILURE_MODE
+                    value: open
+                  - name: AILUROS_EXTPROC_ADDR
+                    value: ""
+                  - name: AILUROS_EXTAUTHZ_ADDR
+                    value: ""
+                  - name: AILUROS_FORWARDAUTH_ADDR
+                    value: ":9002"
+                ports:
+                  - name: forwardauth
+                    containerPort: 9002
+  - target:
+      kind: Service
+      name: ailuros
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: ailuros
+      spec:
+        ports:
+          - name: forwardauth
+            port: 9002
+            targetPort: forwardauth

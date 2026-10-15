@@ -81,3 +81,37 @@ spec:
         proxy_set_header Connection "upgrade";
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
+---
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsFilter
+metadata:
+  name: ailuros-forward
+spec:
+  snippets:
+    - context: http.server.location
+      value: |
+        auth_request /_ailuros;
+        auth_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
+        add_header X-Ailuros-Request-Id $ailuros_request_id always;
+        proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;
+
+    - context: http.server
+      value: |
+        location = /_ailuros {
+          internal;
+
+          proxy_pass http://ailuros.ingress.svc.cluster.local:9002/;
+          proxy_pass_request_body off;
+          proxy_set_header Content-Length "";
+          proxy_set_header Content-Type "";
+
+          proxy_set_header X-Original-Method $request_method;
+          proxy_set_header X-Original-URI $request_uri;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+
+          # Prevent clients from forging alternate proxy header sets.
+          proxy_set_header X-Forwarded-Method "";
+          proxy_set_header X-Forwarded-Uri "";
+        }
