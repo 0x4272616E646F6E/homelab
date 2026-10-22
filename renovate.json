@@ -66,6 +66,18 @@
     },
     {
       "customType": "regex",
+      "description": "Bump GitHub release download URLs in kustomizations (requires a renovate: datasource=github-releases comment directly above the URL)",
+      "managerFilePatterns": [
+        "/(^|/)namespaces/.+/kustomization\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=github-releases\\s+depName=(?<depName>\\S+)\\s*\\n\\s*-\\s*https://github\\.com/\\S+?/releases/download/(?<currentValue>v[^/\\s]+)/"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
       "description": "Bump image tags inside ConfigMap-embedded values.yaml blocks. Quotes around the repository or tag are optional and are stripped: capturing them into currentValue yields an unparseable version and Renovate skips the dep silently. Only whitespace may sit between repository and tag, so an intervening key such as pullPolicy breaks the match -- keep tag directly below repository.",
       "managerFilePatterns": [
         "/(^|/)namespaces/.+/configmap\\.ya?ml$/"
@@ -149,6 +161,16 @@
         "ghcr.io/nginx/nginx-gateway-fabric/nginx"
       ],
       "groupName": "nginx-gateway-fabric"
+    },
+    {
+      "description": "Never auto-merge NGF or the Ailuros NGINX module. The module is built per NGINX version: an NGF bump needs a module release with a build for it, the release URL in namespaces/ingress/nginx/ailuros-module/kustomization.yaml and the ConfigMap name (ailuros-nginx-module-ngf<NGF>) in namespaces/ingress/nginx/configmap.yaml changed in the same PR, or nginx fails to load the module and the Gateway stops serving.",
+      "matchPackageNames": [
+        "ghcr.io/nginx/charts/nginx-gateway-fabric",
+        "ghcr.io/nginx/nginx-gateway-fabric",
+        "ghcr.io/nginx/nginx-gateway-fabric/nginx",
+        "0x4272616E646F6E/ailuros-nginx-module"
+      ],
+      "automerge": false
     }
   ]
 }

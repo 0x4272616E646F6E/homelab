@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ingress
+resources:
+  # renovate: datasource=github-releases depName=0x4272616E646F6E/ailuros-nginx-module
+  - https://github.com/0x4272616E646F6E/ailuros-nginx-module/releases/download/v0.1.0/ailuros-nginx-module-ngf2.8.0-amd64.yaml

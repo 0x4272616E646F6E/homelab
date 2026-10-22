@@ -11,13 +11,10 @@ spec:
         auth_request_set $auth_name $upstream_http_remote_name;
         auth_request_set $auth_email $upstream_http_remote_email;
         auth_request_set $auth_groups $upstream_http_remote_groups;
-        auth_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
         proxy_set_header Remote-User $auth_user;
         proxy_set_header Remote-Name $auth_name;
         proxy_set_header Remote-Email $auth_email;
         proxy_set_header Remote-Groups $auth_groups;
-        add_header X-Ailuros-Request-Id $ailuros_request_id always;
-        proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;
         error_page 401 = @error401;
     - context: http.server
       value: |
@@ -88,90 +85,24 @@ spec:
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
-  name: ailuros-forward
+  name: ailuros-check
 spec:
   snippets:
     - context: http.server.location
       value: |
-        auth_request /_ailuros;
-        auth_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
-        add_header X-Ailuros-Request-Id $ailuros_request_id always;
+        ailuros_request /_ailuros;
+        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
         proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;
-
-    - context: http.server
-      value: |
-        location = /_ailuros {
-          internal;
-
-          proxy_pass http://ailuros.ingress.svc.cluster.local:9002/;
-          proxy_pass_request_body off;
-          proxy_set_header Content-Length "";
-          proxy_set_header Content-Type "";
-
-          proxy_set_header X-Original-Method $request_method;
-          proxy_set_header X-Original-URI $request_uri;
-          proxy_set_header X-Forwarded-Host $host;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Real-IP $remote_addr;
-
-          # Prevent clients from forging alternate proxy header sets.
-          proxy_set_header X-Forwarded-Method "";
-          proxy_set_header X-Forwarded-Uri "";
-        }
 ---
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
-  name: security-forward
+  name: ailuros-check-open
 spec:
   snippets:
     - context: http.server.location
       value: |
-        auth_request /_auth_chain;
-        auth_request_set $auth_user $upstream_http_remote_user;
-        auth_request_set $auth_name $upstream_http_remote_name;
-        auth_request_set $auth_email $upstream_http_remote_email;
-        auth_request_set $auth_groups $upstream_http_remote_groups;
-        proxy_set_header Remote-User $auth_user;
-        proxy_set_header Remote-Name $auth_name;
-        proxy_set_header Remote-Email $auth_email;
-        proxy_set_header Remote-Groups $auth_groups;
-        error_page 401 = @error401;
-
-    - context: http.server
-      value: |
-        location = /_auth_chain {
-          internal;
-          auth_request /_ailuros;
-          auth_request_set $chain_ailuros_request_id $upstream_http_x_ailuros_request_id;
-          add_header X-Ailuros-Request-Id $chain_ailuros_request_id always;
-
-          proxy_pass http://tinyauth.security.svc.cluster.local:3000/api/auth/nginx;
-          proxy_pass_request_body off;
-          proxy_set_header Content-Length "";
-          proxy_set_header x-forwarded-proto $scheme;
-          proxy_set_header x-forwarded-host $http_host;
-          proxy_set_header x-forwarded-uri $request_uri;
-        }
-
-        location = /_ailuros {
-          internal;
-
-          proxy_pass http://ailuros.ingress.svc.cluster.local:9002/;
-          proxy_pass_request_body off;
-          proxy_set_header Content-Length "";
-          proxy_set_header Content-Type "";
-
-          proxy_set_header X-Original-Method $request_method;
-          proxy_set_header X-Original-URI $request_uri;
-          proxy_set_header X-Forwarded-Host $host;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_set_header X-Real-IP $remote_addr;
-
-          proxy_set_header X-Forwarded-Method "";
-          proxy_set_header X-Forwarded-Uri "";
-        }
-
-        location @error401 {
-          return 302 https://auth.hosted.fail/login?redirect_uri=$scheme://$http_host$request_uri;
-        }
+        ailuros_request /_ailuros;
+        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
+        ailuros_request_unavailable open;
+        proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;

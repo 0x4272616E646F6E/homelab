@@ -8,6 +8,8 @@ resources:
   - gateway-api-crds.yaml
   - security-headers.yaml
   - configmap.yaml
+  - ailuros-module/
   - helmrelease.yaml
   - gateway.yaml
+  - ailuros-policy.yaml
   - redirect.yaml

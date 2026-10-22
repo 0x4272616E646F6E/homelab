@@ -1,0 +1,41 @@
+apiVersion: gateway.nginx.org/v1alpha1
+kind: SnippetsPolicy
+metadata:
+  name: ailuros
+  namespace: ingress
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: nginx-gateway
+  snippets:
+    - context: main
+      value: |
+        load_module /usr/lib/nginx/modules/ailuros/ngx_http_ailuros_module.so;
+    - context: http.server
+      value: |
+        location = /_ailuros {
+            internal;
+            resolver 10.96.0.10 valid=10s ipv6=off;
+            resolver_timeout 1s;
+            set $ailuros_upstream ailuros.ingress.svc.cluster.local:9002;
+            proxy_pass http://$ailuros_upstream/;
+            proxy_pass_request_body off;
+            proxy_cache off;
+            proxy_set_header Content-Length "";
+            proxy_set_header X-Original-Method $request_method;
+            proxy_set_header X-Original-URI $request_uri;
+            proxy_set_header X-Forwarded-Method "";
+            proxy_set_header X-Forwarded-Uri "";
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_ignore_headers X-Accel-Redirect X-Accel-Expires X-Accel-Limit-Rate X-Accel-Buffering X-Accel-Charset;
+            proxy_connect_timeout 1s;
+            proxy_read_timeout 1500ms;
+        }
+
+        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
+        proxy_hide_header X-Ailuros-Request-Id;
+        add_header X-Ailuros-Request-Id $ailuros_request_id always;

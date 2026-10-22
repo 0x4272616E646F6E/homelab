@@ -42,7 +42,21 @@ data:
     nginx:
       kind: deployment
       replicas: 2
-      patches: []
+      patches:
+        - type: JSONPatch
+          value:
+            - op: add
+              path: /spec/template/spec/volumes/-
+              value:
+                name: ailuros-module
+                configMap:
+                  name: ailuros-nginx-module-ngf2.8.0
+            - op: add
+              path: /spec/template/spec/containers/0/volumeMounts/-
+              value:
+                name: ailuros-module
+                mountPath: /usr/lib/nginx/modules/ailuros
+                readOnly: true
       autoscaling:
         enable: false
       image:
