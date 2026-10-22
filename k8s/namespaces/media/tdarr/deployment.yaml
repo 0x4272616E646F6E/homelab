@@ -64,7 +64,7 @@ spec:
             - name: openBrowser
               value: "false"
             - name: TZ
-              value: "UTC"
+              value: "America/New_York"
             - name: PUID
               value: "1000"
             - name: PGID
