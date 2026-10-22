@@ -28,7 +28,7 @@ patches:
                   - name: AILUROS_CLASSIFIER_BACKEND
                     value: jev
                   - name: AILUROS_CLASSIFIER_MODEL
-                    value: d1-3B
+                    value: h2o-lightning-4b
                   - name: AILUROS_CLASSIFIER_BASE_URL
                     value: http://ailuros-model.ingress.svc.cluster.local:8000
                   - name: AILUROS_FAILURE_MODE

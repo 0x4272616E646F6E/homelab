@@ -38,11 +38,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - LiquidAI/d1-3B-GGUF
+          - h2oai/h2o-lightning-4b-gguf
           - --hf-file
-          - d1-3B-Q8_0.gguf
+          - h2o-lightning-4b-Q8_0.gguf
           - --alias
-          - d1-3B
+          - h2o-lightning-4b
           - --port
           - "8000"
           - --n-gpu-layers
@@ -56,6 +56,8 @@ spec:
           - --parallel
           - "8"
           - --jinja
+          - --cache-ram
+          - "2048"
         env:
         - name: TZ
           value: America/New_York
