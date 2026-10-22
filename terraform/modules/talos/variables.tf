@@ -19,7 +19,7 @@ variable "node_ip" {
 variable "talos_version" {
   description = "Talos OS version"
   type        = string
-  default     = "v1.12.2"
+  default     = "v1.14.4"
 }
 
 variable "kubernetes_version" {

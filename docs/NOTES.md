@@ -94,11 +94,17 @@ kubectl scale deployment pod -n ns --replicas=0
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
-  factory.talos.dev/nocloud-installer/df161ca9e93cc8c47bf4af62e0eb06c4c40323c51c8883ded75006d59c55b81b:v1.14.2
+  factory.talos.dev/nocloud-installer/952fe926cae4dc14a5aa434d3da855b1e4bdbfba406cdbd6694f91a346c1e258:v1.14.4
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
-- **Version**: `v1.14.2` (Kubernetes v1.36.3, kernel 6.18.54-talos).
+- **Version**: `v1.14.4` (Kubernetes v1.36.3, kernel 6.18.57-talos).
+- **Extensions**: gasket-driver, i915, mei, nonfree-kmod-nvidia-production,
+  nvidia-container-toolkit-production, qemu-guest-agent, util-linux-tools, youki
+  (`terraform/modules/talos/main.tf`). `mei` provides the Intel MEI GSC drivers the
+  Arc A310 needs to authenticate its HuC firmware; without them i915 logs
+  `HuC: timed out waiting for MEI GSC` and the low-power H.264/HEVC encoder only does
+  constant QP (no VBR/CBR/ICQ for Jellyfin or tdarr).
 - **Platform**: `nocloud` — the node reads its machine config from the Proxmox cloud-init
   snippet `local-pve:snippets/controlplane.yaml` (`/zfs/pve/snippets/controlplane.yaml`),
   which is the source of truth. Use the `nocloud-installer` image, **not** the plain
@@ -189,7 +195,6 @@ survives reboots but not a wipe.
 | Item | terraform | live | If applied |
 |---|---|---|---|
 | `machine.files` webhook.yaml | **absent** | present | kube-apiserver fails to start |
-| `talos_version` | `v1.12.2` | v1.14.2 | 2-minor downgrade |
 | `kubernetes_version` | `v1.35.0` | v1.36.3 | **k8s downgrade — unsupported** |
 | installer image | `installer/` (metal) | `nocloud-installer/` | wrong platform variant |
 | `machine.disks` `/dev/sdb` | present | removed | reintroduces reformat-hazard config |

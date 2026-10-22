@@ -5,6 +5,7 @@ resource "talos_image_factory_schematic" "this" {
         officialExtensions = [
           "siderolabs/gasket-driver",
           "siderolabs/i915",
+          "siderolabs/mei",
           "siderolabs/nonfree-kmod-nvidia-production",
           "siderolabs/nvidia-container-toolkit-production",
           "siderolabs/qemu-guest-agent",
