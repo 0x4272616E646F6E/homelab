@@ -163,12 +163,12 @@
       "groupName": "nginx-gateway-fabric"
     },
     {
-      "description": "Never auto-merge NGF or the Ailuros NGINX module. The module is built per NGINX version: an NGF bump needs a module release with a build for it, the release URL in namespaces/ingress/nginx/ailuros-module/kustomization.yaml and the ConfigMap name (ailuros-nginx-module-ngf<NGF>) in namespaces/ingress/nginx/configmap.yaml changed in the same PR, or nginx fails to load the module and the Gateway stops serving.",
+      "description": "Never auto-merge NGF or the decision-waf NGINX module. The module is built per NGINX version: an NGF bump needs a module release with a build for it, the release URL in namespaces/ingress/nginx/decision-waf-module/kustomization.yaml and the ConfigMap name (decision-waf-nginx-module-ngf<NGF>) in namespaces/ingress/nginx/configmap.yaml changed in the same PR, or nginx fails to load the module and the Gateway stops serving.",
       "matchPackageNames": [
         "ghcr.io/nginx/charts/nginx-gateway-fabric",
         "ghcr.io/nginx/nginx-gateway-fabric",
         "ghcr.io/nginx/nginx-gateway-fabric/nginx",
-        "0x4272616E646F6E/ailuros-nginx-module"
+        "0x4272616E646F6E/decision-waf-nginx-module"
       ],
       "automerge": false
     }

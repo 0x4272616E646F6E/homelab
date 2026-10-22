@@ -48,14 +48,14 @@ data:
             - op: add
               path: /spec/template/spec/volumes/-
               value:
-                name: ailuros-module
+                name: decision-waf-module
                 configMap:
-                  name: ailuros-nginx-module-ngf2.8.0
+                  name: decision-waf-nginx-module-ngf2.8.0
             - op: add
               path: /spec/template/spec/containers/0/volumeMounts/-
               value:
-                name: ailuros-module
-                mountPath: /usr/lib/nginx/modules/ailuros
+                name: decision-waf-module
+                mountPath: /usr/lib/nginx/modules/decision-waf
                 readOnly: true
       autoscaling:
         enable: false

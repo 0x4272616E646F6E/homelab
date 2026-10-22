@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ailuros-model
+  name: decision-waf-model
   namespace: ingress
   labels:
-    app.kubernetes.io/name: ailuros-model
+    app.kubernetes.io/name: decision-waf-model
 spec:
   ports:
-  - name: ailuros-model
+  - name: decision-waf-model
     port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: ailuros-model
+    app.kubernetes.io/name: decision-waf-model
   sessionAffinity: None
   type: ClusterIP

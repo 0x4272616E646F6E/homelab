@@ -85,24 +85,24 @@ spec:
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
-  name: ailuros-check
+  name: decision-waf-check
 spec:
   snippets:
     - context: http.server.location
       value: |
-        ailuros_request /_ailuros;
-        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
-        proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;
+        decision_waf_request /_decision_waf;
+        decision_waf_request_set $decision_waf_request_id $upstream_http_x_decision_waf_request_id;
+        proxy_set_header X-Decision-Waf-Request-Id $decision_waf_request_id;
 ---
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsFilter
 metadata:
-  name: ailuros-check-open
+  name: decision-waf-check-open
 spec:
   snippets:
     - context: http.server.location
       value: |
-        ailuros_request /_ailuros;
-        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
-        ailuros_request_unavailable open;
-        proxy_set_header X-Ailuros-Request-Id $ailuros_request_id;
+        decision_waf_request /_decision_waf;
+        decision_waf_request_set $decision_waf_request_id $upstream_http_x_decision_waf_request_id;
+        decision_waf_request_unavailable open;
+        proxy_set_header X-Decision-Waf-Request-Id $decision_waf_request_id;

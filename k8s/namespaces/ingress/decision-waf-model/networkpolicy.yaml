@@ -1,15 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: ailuros-model
+  name: decision-waf-model
   namespace: ingress
   labels:
-    app.kubernetes.io/name: ailuros-model
+    app.kubernetes.io/name: decision-waf-model
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: ailuros-model
+      app.kubernetes.io/name: decision-waf-model
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress

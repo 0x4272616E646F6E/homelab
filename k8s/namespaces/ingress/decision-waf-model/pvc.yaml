@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ailuros-model-pvc
+  name: decision-waf-model-pvc
   namespace: ingress
   labels:
-    app.kubernetes.io/name: ailuros-model
+    app.kubernetes.io/name: decision-waf-model
 spec:
   accessModes:
     - ReadWriteOnce

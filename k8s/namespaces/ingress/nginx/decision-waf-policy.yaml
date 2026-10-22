@@ -1,7 +1,7 @@
 apiVersion: gateway.nginx.org/v1alpha1
 kind: SnippetsPolicy
 metadata:
-  name: ailuros
+  name: decision-waf
   namespace: ingress
 spec:
   targetRefs:
@@ -11,15 +11,15 @@ spec:
   snippets:
     - context: main
       value: |
-        load_module /usr/lib/nginx/modules/ailuros/ngx_http_ailuros_module.so;
+        load_module /usr/lib/nginx/modules/decision-waf/ngx_http_decision_waf_module.so;
     - context: http.server
       value: |
-        location = /_ailuros {
+        location = /_decision_waf {
             internal;
             resolver 10.96.0.10 valid=10s ipv6=off;
             resolver_timeout 1s;
-            set $ailuros_upstream ailuros.ingress.svc.cluster.local:9002;
-            proxy_pass http://$ailuros_upstream/;
+            set $decision_waf_upstream decision-waf.ingress.svc.cluster.local:9002;
+            proxy_pass http://$decision_waf_upstream/;
             proxy_pass_request_body off;
             proxy_cache off;
             proxy_set_header Content-Length "";
@@ -36,6 +36,6 @@ spec:
             proxy_read_timeout 3500ms;
         }
 
-        ailuros_request_set $ailuros_request_id $upstream_http_x_ailuros_request_id;
-        proxy_hide_header X-Ailuros-Request-Id;
-        add_header X-Ailuros-Request-Id $ailuros_request_id always;
+        decision_waf_request_set $decision_waf_request_id $upstream_http_x_decision_waf_request_id;
+        proxy_hide_header X-Decision-Waf-Request-Id;
+        add_header X-Decision-Waf-Request-Id $decision_waf_request_id always;

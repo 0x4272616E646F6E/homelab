@@ -1,0 +1,61 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ingress
+resources:
+  - https://github.com/0x4272616E646F6E/decision-waf//deploy/kubernetes/base?ref=v0.2.0
+images:
+  - name: decision-waf
+    newName: ghcr.io/0x4272616e646f6e/decision-waf
+    newTag: 0.2.0
+patches:
+  - target:
+      kind: Deployment
+      name: decision-waf
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: decision-waf
+      spec:
+        replicas: 1
+        template:
+          spec:
+            containers:
+              - name: decision-waf
+                env:
+                  - name: DECISION_WAF_INSPECTION_MODE
+                    value: lite
+                  - name: DECISION_WAF_CLASSIFIER_BACKEND
+                    value: jev
+                  - name: DECISION_WAF_CLASSIFIER_MODEL
+                    value: h2o-lightning-4b
+                  - name: DECISION_WAF_CLASSIFIER_BASE_URL
+                    value: http://decision-waf-model.ingress.svc.cluster.local:8000
+                  - name: DECISION_WAF_FAILURE_MODE
+                    value: open
+                  - name: DECISION_WAF_CLASSIFIER_TIMEOUT
+                    value: 3s
+                  - name: DECISION_WAF_BLOCK_THRESHOLD
+                    value: "0.9"
+                  - name: DECISION_WAF_EXTPROC_ADDR
+                    value: ""
+                  - name: DECISION_WAF_EXTAUTHZ_ADDR
+                    value: ""
+                  - name: DECISION_WAF_FORWARDAUTH_ADDR
+                    value: ":9002"
+                ports:
+                  - name: forwardauth
+                    containerPort: 9002
+  - target:
+      kind: Service
+      name: decision-waf
+    patch: |-
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: decision-waf
+      spec:
+        ports:
+          - name: forwardauth
+            port: 9002
+            targetPort: forwardauth

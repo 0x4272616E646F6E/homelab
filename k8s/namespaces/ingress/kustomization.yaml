@@ -8,5 +8,5 @@ resources:
   - namespace.yaml
   - nginx/
   - cloudflared/
-  - ailuros-model/
-  - ailuros/
+  - decision-waf-model/
+  - decision-waf/

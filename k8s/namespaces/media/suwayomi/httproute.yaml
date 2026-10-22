@@ -53,7 +53,7 @@ spec:
           extensionRef:
             group: gateway.nginx.org
             kind: SnippetsFilter
-            name: ailuros-check-open
+            name: decision-waf-check-open
       backendRefs:
         - name: suwayomi
           port: 4567

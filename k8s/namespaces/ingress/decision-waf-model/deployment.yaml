@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ailuros-model
+  name: decision-waf-model
   namespace: ingress
   annotations:
     goldilocks.fairwinds.com/vpa-resource-policy: >
       { "containerPolicies": [
-      { "containerName": "ailuros-model",
+      { "containerName": "decision-waf-model",
       "minAllowed": { "cpu": "500m", "memory": "4Gi" },
       "maxAllowed": { "cpu": "4", "memory": "16Gi" },
       "controlledValues": "RequestsOnly" } ] }
   labels:
-    app.kubernetes.io/name: ailuros-model
+    app.kubernetes.io/name: decision-waf-model
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: ailuros-model
+      app.kubernetes.io/name: decision-waf-model
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: ailuros-model
+        app.kubernetes.io/name: decision-waf-model
         app.kubernetes.io/managed-by: flux
     spec:
       terminationGracePeriodSeconds: 300
@@ -32,7 +32,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
       containers:
-      - name: ailuros-model
+      - name: decision-waf-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
         image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:490d8cd8000203a3ab8fdfce14ef931e2aa85affd4dd4447bcc75f299f00fd9a
         imagePullPolicy: IfNotPresent
@@ -99,6 +99,6 @@ spec:
           timeoutSeconds: 10
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: ailuros-model-pvc }
+        persistentVolumeClaim: { claimName: decision-waf-model-pvc }
       - name: tmp
         emptyDir: {}
