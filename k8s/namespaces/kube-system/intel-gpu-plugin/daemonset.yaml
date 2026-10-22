@@ -25,6 +25,8 @@ spec:
         args: 
         - "--shared-dev-num=8"
         env:
+          - name: TZ
+            value: America/New_York
           - name: NODE_NAME
             valueFrom:
               fieldRef:

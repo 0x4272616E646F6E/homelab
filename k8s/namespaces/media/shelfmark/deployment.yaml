@@ -36,6 +36,9 @@ spec:
       initContainers:
         - name: init-log-perms
           image: busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
+          env:
+            - name: TZ
+              value: America/New_York
           command:
             - sh
             - -c
@@ -56,6 +59,8 @@ spec:
           image: ghcr.io/calibrain/shelfmark-lite:latest@sha256:3631dd9aa5e404e0849bfbef8f30cd86864ab7579118d4defc301b8070472d25
           imagePullPolicy: IfNotPresent
           env:
+            - name: TZ
+              value: America/New_York
             - name: EXT_BYPASSER_URL
               value: "http://flaresolverr:8191"
           ports:

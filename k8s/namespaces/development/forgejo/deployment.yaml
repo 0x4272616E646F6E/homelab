@@ -34,6 +34,8 @@ spec:
           image: codeberg.org/forgejo/forgejo:17@sha256:06d38310de496a10186d952bdad5ca764c153c8023ede8dfa0944c79a1dc5412
           imagePullPolicy: IfNotPresent
           env:
+            - name: TZ
+              value: America/New_York
             - name: USER_UID
               value: "1000"
             - name: USER_GID

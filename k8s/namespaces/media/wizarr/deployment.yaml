@@ -31,6 +31,8 @@ spec:
           image: ghcr.io/wizarrrr/wizarr:latest@sha256:08f2c6de534ec7d36d39a4f55b7c5c379021ca881dc519c702aad0ddafbdc67a
           imagePullPolicy: IfNotPresent
           env:
+            - name: TZ
+              value: America/New_York
             - name: DISABLE_BUILTIN_AUTH
               value: "true"
             - name: UV_CACHE_DIR

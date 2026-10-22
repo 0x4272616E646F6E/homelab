@@ -40,6 +40,9 @@ spec:
           # renovate: datasource=docker depName=registry.k8s.io/coredns/coredns
           image: registry.k8s.io/coredns/coredns:v1.14.7@sha256:7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: America/New_York
           args: ["-conf", "/etc/coredns/Corefile"]
           securityContext:
             allowPrivilegeEscalation: false
@@ -94,6 +97,8 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh", "/scripts/leak-check.sh", "loop"]
           env:
+            - name: TZ
+              value: America/New_York
             - name: EXPECTED_RESOLVER_PREFIXES
               valueFrom:
                 configMapKeyRef:

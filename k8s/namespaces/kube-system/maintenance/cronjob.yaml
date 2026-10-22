@@ -5,8 +5,9 @@ metadata:
   name: etcd-backup
   namespace: kube-system
 spec:
-  # Run daily at 1 AM
-  schedule: "0 1 * * *"
+  # Run daily at 9 PM Eastern
+  schedule: "0 21 * * *"
+  timeZone: America/New_York
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 7
   failedJobsHistoryLimit: 3
@@ -20,6 +21,9 @@ spec:
           containers:
           - name: backup
             image: ghcr.io/siderolabs/talosctl:v1.12
+            env:
+              - name: TZ
+                value: America/New_York
             command:
             - /bin/sh
             - -c
@@ -49,8 +53,9 @@ metadata:
   name: job-cleanup
   namespace: kube-system
 spec:
-  # Run daily at 2 AM
-  schedule: "0 2 * * *"
+  # Run daily at 10 PM Eastern
+  schedule: "0 22 * * *"
+  timeZone: America/New_York
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
@@ -64,6 +69,9 @@ spec:
           containers:
           - name: cleanup
             image: alpine/k8s:1.37.1@sha256:712dc5385d1c1a3f83b747fa9e40f64d433a97f72ff42f9755ff7dd1f62846e4
+            env:
+              - name: TZ
+                value: America/New_York
             command:
             - /bin/sh
             - -c
@@ -85,8 +93,9 @@ metadata:
   name: etcd-defrag
   namespace: kube-system
 spec:
-  # Run every Sunday at 3 AM
-  schedule: "0 3 * * 0"
+  # Run every Saturday at 11 PM Eastern
+  schedule: "0 23 * * 6"
+  timeZone: America/New_York
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
@@ -100,6 +109,9 @@ spec:
           containers:
           - name: defrag
             image: ghcr.io/siderolabs/talosctl:v1.12
+            env:
+              - name: TZ
+                value: America/New_York
             command:
             - /bin/sh
             - -c
@@ -123,8 +135,9 @@ metadata:
   name: resource-cleanup
   namespace: kube-system
 spec:
-  # Run monthly on the 1st at 4 AM
-  schedule: "0 4 1 * *"
+  # Run monthly on the 1st at midnight Eastern
+  schedule: "0 0 1 * *"
+  timeZone: America/New_York
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
@@ -138,6 +151,9 @@ spec:
           containers:
           - name: audit
             image: alpine/k8s:1.37.1@sha256:712dc5385d1c1a3f83b747fa9e40f64d433a97f72ff42f9755ff7dd1f62846e4
+            env:
+              - name: TZ
+                value: America/New_York
             command:
             - /bin/sh
             - -c

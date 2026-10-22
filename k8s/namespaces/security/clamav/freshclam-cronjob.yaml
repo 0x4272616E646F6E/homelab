@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/managed-by: flux
 spec:
   schedule: "0 */6 * * *"  # Every 6 hours
+  timeZone: America/New_York
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   concurrencyPolicy: Forbid
@@ -28,6 +29,9 @@ spec:
               # renovate: datasource=docker depName=clamav/clamav
               image: docker.io/clamav/clamav:1.5@sha256:e19130cdebaeacc71fa46eab3ed6f69941f2f22aa5e08d55e9197f8edf43ce5e
               imagePullPolicy: IfNotPresent
+              env:
+                - name: TZ
+                  value: America/New_York
               command:
                 - /bin/sh
                 - -c

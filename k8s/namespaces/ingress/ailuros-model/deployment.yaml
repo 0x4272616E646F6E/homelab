@@ -61,6 +61,8 @@ spec:
           - "8"
           - --jinja
         env:
+        - name: TZ
+          value: America/New_York
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom: { secretKeyRef: { name: ailuros-model-secrets, key: token } }
         - { name: HF_HOME,               value: /models/.cache/hf }

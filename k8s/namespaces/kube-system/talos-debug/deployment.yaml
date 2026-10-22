@@ -31,6 +31,9 @@ spec:
       - name: talos-debug
         # renovate: datasource=docker depName=docker.io/debian
         image: docker.io/debian:13@sha256:4c25275446ca371766b8b093c696782eabce06263fccacb8d5d813b3dc44b308
+        env:
+          - name: TZ
+            value: America/New_York
         command: ["sh", "-c", "echo 'host debug pod ready'; sleep 36000"]
         securityContext:
           privileged: true

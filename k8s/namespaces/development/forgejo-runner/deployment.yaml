@@ -48,6 +48,8 @@ spec:
                 done ;
               forgejo-runner --config /config/config.yml daemon
           env:
+            - name: TZ
+              value: America/New_York
             - name: DOCKER_HOST
               value: tcp://localhost:2376
             - name: DOCKER_CERT_PATH
@@ -90,6 +92,8 @@ spec:
           # renovate: datasource=docker depName=docker/docker-ce
           image: docker.io/docker:29.9.2-dind@sha256:9e79b879b177fbd72c34376a3dd3d91747da5db49e1f560f76aea59561471977
           env:
+            - name: TZ
+              value: America/New_York
             - name: DOCKER_TLS_CERTDIR
               value: /certs
           resources:

@@ -41,6 +41,9 @@ spec:
           # renovate: datasource=docker depName=docker.io/flaresolverr/flaresolverr
           image: docker.io/flaresolverr/flaresolverr:latest@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: America/New_York
           ports:
             - containerPort: 8191
               protocol: TCP

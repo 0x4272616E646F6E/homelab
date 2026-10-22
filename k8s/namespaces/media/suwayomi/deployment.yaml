@@ -43,6 +43,8 @@ spec:
               memory: "4096Mi"
               ephemeral-storage: "5Gi"
           env:
+            - name: TZ
+              value: America/New_York
             - name: FLARESOLVERR_ENABLED
               value: "true"
             - name: FLARESOLVERR_URL

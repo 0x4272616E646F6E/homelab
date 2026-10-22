@@ -42,6 +42,8 @@ spec:
             - containerPort: 3000
               protocol: TCP
           env:
+            - name: TZ
+              value: America/New_York
             - name: HOME
               value: /config
             - name: CONFIG__GIT_PROVIDER

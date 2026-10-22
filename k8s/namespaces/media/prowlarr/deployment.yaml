@@ -36,6 +36,8 @@ spec:
           image: lscr.io/linuxserver/prowlarr:latest@sha256:b3b00047ed20f6ce2b16780145cb6a0acb51c9e28ea6aa6f5dcd33c7034f1797
           imagePullPolicy: IfNotPresent
           env:
+            - name: TZ
+              value: America/New_York
             - name: PROWLARR__AUTH__METHOD
               value: "External"
           securityContext:

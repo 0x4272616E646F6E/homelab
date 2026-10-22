@@ -46,6 +46,8 @@ spec:
           image: docker.io/domistyle/tor-browser:15.0.13@sha256:0dd03f518271f17e19e3c186a6a52f55e316ea189d8d001bb7820ad33fa300e9
           imagePullPolicy: IfNotPresent
           env:
+            - name: TZ
+              value: America/New_York
             - name: DISPLAY_WIDTH
               value: "1366"
             - name: DISPLAY_HEIGHT

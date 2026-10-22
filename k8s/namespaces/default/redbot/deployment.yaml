@@ -36,6 +36,8 @@ spec:
               memory: "1Gi"
               ephemeral-storage: "5Gi"
           env:
+            - name: TZ
+              value: America/New_York
             - name: TOKEN
               valueFrom:
                 secretKeyRef:

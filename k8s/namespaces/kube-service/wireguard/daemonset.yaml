@@ -24,6 +24,9 @@ spec:
           # renovate: datasource=docker depName=docker.io/debian
           image: docker.io/debian:13@sha256:4c25275446ca371766b8b093c696782eabce06263fccacb8d5d813b3dc44b308
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: America/New_York
           securityContext:
             privileged: true
           command:

@@ -49,6 +49,9 @@ spec:
           # renovate: datasource=docker depName=docker.io/busybox
           image: docker.io/busybox:1.38.0@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e
           imagePullPolicy: IfNotPresent
+          env:
+            - name: TZ
+              value: America/New_York
           command: ["/bin/sh","-lc"]
           args:
             - |
@@ -86,7 +89,7 @@ spec:
             - name: PGID
               value: "1000"
             - name: TZ
-              value: "UTC"
+              value: "America/New_York"
             - name: WEBUI_PORT
               value: "8080"
           ports:
@@ -133,6 +136,8 @@ spec:
               apk add --no-cache libnatpmp && \
               nu /scripts/qb_port_sync.nu
           env:
+            - name: TZ
+              value: America/New_York
             - name: GATEWAY
               value: "10.2.0.1"
             - name: LEASE
