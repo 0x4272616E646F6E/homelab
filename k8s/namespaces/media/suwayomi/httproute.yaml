@@ -14,6 +14,35 @@ spec:
   hostnames:
     - "suwayomi.hosted.fail"
   rules:
+    # Reader page images, cover thumbnails and the web UI's static files skip
+    # Ailuros: they carry no request content worth classifying, and a chapter
+    # loads many pages at once, which queued past the classifier timeout.
+    # Allow-listing and tinyauth still apply.
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /assets/
+        - path:
+            type: RegularExpression
+            value: ^/api/v1/manga/[0-9]+/(chapter/[0-9]+/page/[0-9]+|thumbnail)$
+        - path:
+            type: RegularExpression
+            value: ^/(favicon[^/]*|apple-touch-icon[^/]*\.png|sw\.js|registerSW\.js|site\.webmanifest|manifest\.webmanifest)$
+      filters:
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: internal-whitelist
+        - type: ExtensionRef
+          extensionRef:
+            group: gateway.nginx.org
+            kind: SnippetsFilter
+            name: tinyauth-forward
+      backendRefs:
+        - name: suwayomi
+          port: 4567
+    # Everything else (the app, /api/graphql, other API calls) is checked.
     - filters:
         - type: ExtensionRef
           extensionRef:
