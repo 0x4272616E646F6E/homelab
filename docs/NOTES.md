@@ -118,6 +118,15 @@ The Talos installer image is used to bootstrap and install the Talos operating s
 - **Upgrades**: pass `--drain=false`. On a single node the default drain deadlocks on
   PodDisruptionBudgets (`coredns-vpn` has `minAvailable: 1` with 0 allowed disruptions),
   leaving the node cordoned with DNS down.
+- **After an upgrade**: `talosctl upgrade --image` installs that image but leaves
+  `machine.install.image` in the machine config unchanged, so a later upgrade without
+  `--image` (or a reinstall) would go back to the old image. Patch it to match, then copy
+  the updated config to the Proxmox snippet:
+  ```bash
+  talosctl -n ${NODE_IP} patch machineconfig --mode=no-reboot \
+    --patch '{"machine":{"install":{"image":"factory.talos.dev/nocloud-installer/${IMAGE_HASH}:${IMAGE_VERSION}"}}}'
+  ```
+  Take an etcd snapshot first: `talosctl -n ${NODE_IP} etcd snapshot .local/talos/etcd-pre-<version>.snapshot`.
 
 You can use this image to PXE boot or manually install Talos on your nodes.
 
