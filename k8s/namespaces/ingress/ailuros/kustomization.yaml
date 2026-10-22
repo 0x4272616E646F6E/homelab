@@ -26,11 +26,11 @@ patches:
                   - name: AILUROS_INSPECTION_MODE
                     value: lite
                   - name: AILUROS_CLASSIFIER_BACKEND
-                    value: openai
+                    value: jev
                   - name: AILUROS_CLASSIFIER_MODEL
                     value: d1-3B
                   - name: AILUROS_CLASSIFIER_BASE_URL
-                    value: http://ailuros-model.ingress.svc.cluster.local:8000/v1
+                    value: http://ailuros-model.ingress.svc.cluster.local:8000
                   - name: AILUROS_FAILURE_MODE
                     value: open
                   - name: AILUROS_CLASSIFIER_TIMEOUT
