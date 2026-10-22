@@ -63,8 +63,6 @@ spec:
               value: "false"
             - name: openBrowser
               value: "false"
-            - name: NVIDIA_DRIVER_CAPABILITIES
-              value: "video,utility"
             - name: TZ
               value: "UTC"
             - name: PUID
@@ -75,12 +73,12 @@ spec:
             requests:
               cpu: "100m"
               memory: "1Gi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/i915: "1"
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
               memory: "8Gi"
-              nvidia.com/gpu: "1"
+              gpu.intel.com/i915: "1"
               ephemeral-storage: "20Gi"
           livenessProbe:
             tcpSocket:
