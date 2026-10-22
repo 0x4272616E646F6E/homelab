@@ -17,17 +17,18 @@ spec:
     # Reader page images, cover thumbnails and the web UI's static files skip
     # Ailuros: they carry no request content worth classifying, and a chapter
     # loads many pages at once, which queued past the classifier timeout.
-    # Allow-listing and tinyauth still apply.
+    # Allow-listing and tinyauth still apply. NGF requires path values to start
+    # with "/", so the regexes anchor with a lookbehind, (?<=^/), instead of ^.
     - matches:
         - path:
             type: PathPrefix
             value: /assets/
         - path:
             type: RegularExpression
-            value: ^/api/v1/manga/[0-9]+/(chapter/[0-9]+/page/[0-9]+|thumbnail)$
+            value: /(?<=^/)api/v1/manga/[0-9]+/(chapter/[0-9]+/page/[0-9]+|thumbnail)$
         - path:
             type: RegularExpression
-            value: ^/(favicon[^/]*|apple-touch-icon[^/]*\.png|sw\.js|registerSW\.js|site\.webmanifest|manifest\.webmanifest)$
+            value: /(?<=^/)(favicon[^/]*|apple-touch-icon[^/]*\.png|sw\.js|registerSW\.js|site\.webmanifest|manifest\.webmanifest)$
       filters:
         - type: ExtensionRef
           extensionRef:
