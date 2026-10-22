@@ -71,9 +71,20 @@ spec:
               mountPath: /data
             - name: tmp
               mountPath: /tmp
+            - name: tzdata
+              mountPath: /usr/share/zoneinfo/America/New_York
+              subPath: America_New_York
+              readOnly: true
+            - name: tzdata
+              mountPath: /etc/localtime
+              subPath: America_New_York
+              readOnly: true
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: forgejo-data
         - name: tmp
           emptyDir: {}
+        - name: tzdata
+          configMap:
+            name: forgejo-tzdata

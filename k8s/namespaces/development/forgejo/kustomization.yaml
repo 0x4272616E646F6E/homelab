@@ -11,3 +11,7 @@ resources:
   - httproute.yaml
   - tcproute.yaml
   - networkpolicy.yaml
+configMapGenerator:
+  - name: forgejo-tzdata
+    files:
+      - America_New_York=zoneinfo/America_New_York
