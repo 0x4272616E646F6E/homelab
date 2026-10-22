@@ -35,6 +35,8 @@ patches:
                     value: open
                   - name: AILUROS_CLASSIFIER_TIMEOUT
                     value: 3s
+                  - name: AILUROS_BLOCK_THRESHOLD
+                    value: "0.9"
                   - name: AILUROS_EXTPROC_ADDR
                     value: ""
                   - name: AILUROS_EXTAUTHZ_ADDR
