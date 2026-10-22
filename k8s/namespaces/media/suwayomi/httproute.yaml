@@ -14,11 +14,6 @@ spec:
   hostnames:
     - "suwayomi.hosted.fail"
   rules:
-    # Reader page images, cover thumbnails and the web UI's static files skip
-    # Ailuros: they carry no request content worth classifying, and a chapter
-    # loads many pages at once, which queued past the classifier timeout.
-    # Allow-listing and tinyauth still apply. NGF requires regex path values to
-    # start with "/" and anchors them itself (location ~ ^/...), so no ^ here.
     - matches:
         - path:
             type: PathPrefix
@@ -43,7 +38,6 @@ spec:
       backendRefs:
         - name: suwayomi
           port: 4567
-    # Everything else (the app, /api/graphql, other API calls) is checked.
     - filters:
         - type: ExtensionRef
           extensionRef:
