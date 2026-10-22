@@ -62,7 +62,7 @@ spec:
         - name: TZ
           value: America/New_York
         - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom: { secretKeyRef: { name: ailuros-model-secrets, key: token } }
+          valueFrom: { secretKeyRef: { name: decision-waf-model-secrets, key: token } }
         - { name: HF_HOME,               value: /models/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
