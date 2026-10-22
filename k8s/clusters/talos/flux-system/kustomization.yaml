@@ -3,3 +3,27 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+patches:
+- target:
+    kind: GitRepository
+    name: flux-system
+  patch: |
+    - op: add
+      path: /spec/ignore
+      value: |
+        /*
+        !/k8s/
+- target:
+    kind: Deployment
+    name: kustomize-controller
+  patch: |
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: temp
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Gi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 2Gi
