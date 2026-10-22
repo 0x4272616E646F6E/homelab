@@ -53,8 +53,11 @@ spec:
           - f16
           - --cache-type-v
           - f16
+          # A page load sends Ailuros 4-8 checks at once; one slot queued them
+          # past the classifier timeout. The 32768 context is split across
+          # slots (8192 each; an Ailuros check needs ~650 tokens).
           - --parallel
-          - "1"
+          - "4"
           - --jinja
         env:
         - name: HUGGING_FACE_HUB_TOKEN
