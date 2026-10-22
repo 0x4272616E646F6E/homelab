@@ -103,7 +103,7 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "2", memory: "8Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
+          requests: { cpu: "500m", memory: "8Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
           limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 1000
