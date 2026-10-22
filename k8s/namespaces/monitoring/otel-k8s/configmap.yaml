@@ -49,6 +49,17 @@ data:
         cpu: 500m
         memory: 512Mi
 
+    # Keep Goldilocks' VPA (InPlaceOrRecreate in this namespace) inside the
+    # envelope above. Uncapped, it raised the agent's CPU request to ~9 cores
+    # (actual use ~120m) and left most of the node's pods unschedulable.
+    annotations:
+      goldilocks.fairwinds.com/vpa-resource-policy: >
+        { "containerPolicies": [
+        { "containerName": "opentelemetry-collector",
+        "minAllowed": { "cpu": "100m", "memory": "256Mi" },
+        "maxAllowed": { "cpu": "500m", "memory": "512Mi" },
+        "controlledValues": "RequestsOnly" } ] }
+
     ports:
       syslog-udp:
         enabled: true
