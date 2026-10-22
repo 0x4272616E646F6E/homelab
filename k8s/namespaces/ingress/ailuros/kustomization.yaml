@@ -33,10 +33,6 @@ patches:
                     value: http://ailuros-model.ingress.svc.cluster.local:8000/v1
                   - name: AILUROS_FAILURE_MODE
                     value: open
-                  # d1-3B always reasons (~128 tokens, ~1.8 s on the shared
-                  # GPU) before answering, so the default 1s always timed out.
-                  # Keep below the /_ailuros proxy_read_timeout in
-                  # nginx/ailuros-policy.yaml.
                   - name: AILUROS_CLASSIFIER_TIMEOUT
                     value: 3s
                   - name: AILUROS_EXTPROC_ADDR

@@ -163,10 +163,10 @@ locals {
     "net.ipv4.tcp_tw_reuse"              = "1"
     "net.ipv4.tcp_wmem"                  = "4096 65536 16777216"
     "user.max_user_namespaces"           = "11255"
-    "vm.dirty_background_bytes" = "134217728"  # 128 MiB
-    "vm.dirty_bytes"            = "1073741824" # 1 GiB
-    "vm.max_map_count"          = "262144"
-    "vm.nr_hugepages"           = "1024"
+    "vm.dirty_background_bytes"          = "134217728"
+    "vm.dirty_bytes"                     = "1073741824"
+    "vm.max_map_count"                   = "262144"
+    "vm.nr_hugepages"                    = "1024"
   }
 
   machine_sysfs = {

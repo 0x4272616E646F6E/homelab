@@ -33,7 +33,6 @@ spec:
             proxy_set_header X-Real-IP $remote_addr;
             proxy_ignore_headers X-Accel-Redirect X-Accel-Expires X-Accel-Limit-Rate X-Accel-Buffering X-Accel-Charset;
             proxy_connect_timeout 1s;
-            # Above AILUROS_CLASSIFIER_TIMEOUT (3s, ailuros/kustomization.yaml).
             proxy_read_timeout 3500ms;
         }
 
