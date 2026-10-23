@@ -2,11 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: ingress
 resources:
-  - https://github.com/0x4272616E646F6E/decision-waf//deploy/kubernetes/base?ref=v0.2.0
+  - https://github.com/0x4272616E646F6E/decision-waf//deploy/kubernetes/base?ref=v0.3.0
 images:
   - name: decision-waf
     newName: ghcr.io/0x4272616e646f6e/decision-waf
-    newTag: 0.2.0
+    newTag: 0.3.0
 patches:
   - target:
       kind: Deployment
