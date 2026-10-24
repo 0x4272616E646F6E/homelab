@@ -38,11 +38,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - h2oai/h2o-lightning-4b-gguf
+          - 0xBrandon/Decision-WAF-V1-0.8B-GGUF
           - --hf-file
-          - h2o-lightning-4b-Q8_0.gguf
+          - Decision-WAF-V1-0.8B-Q8_0.gguf
           - --alias
-          - h2o-lightning-4b
+          - Decision-WAF-V1-0.8B
           - --port
           - "8000"
           - --n-gpu-layers

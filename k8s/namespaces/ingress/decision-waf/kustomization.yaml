@@ -28,7 +28,7 @@ patches:
                   - name: DECISION_WAF_CLASSIFIER_BACKEND
                     value: jev
                   - name: DECISION_WAF_CLASSIFIER_MODEL
-                    value: h2o-lightning-4b
+                    value: Decision-WAF-V1-0.8B
                   - name: DECISION_WAF_CLASSIFIER_BASE_URL
                     value: http://decision-waf-model.ingress.svc.cluster.local:8000
                   - name: DECISION_WAF_FAILURE_MODE
