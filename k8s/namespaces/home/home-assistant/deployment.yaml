@@ -24,7 +24,7 @@ spec:
       containers:
         - name: homeassistant
           # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
-          image: lscr.io/linuxserver/homeassistant:latest@sha256:6e6257d3a396177d17834bb1fea6226c62380ffab77047a0bb3e325b5421a74b
+          image: lscr.io/linuxserver/homeassistant:latest@sha256:7161e63d409d9f8be7c2e369a55246e42d5f442c7c4779ece411ead9cf94259d
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
