@@ -36,7 +36,7 @@ patches:
                   - name: DECISION_WAF_CLASSIFIER_TIMEOUT
                     value: 3s
                   - name: DECISION_WAF_BLOCK_THRESHOLD
-                    value: "0.9"
+                    value: "0.05"
                   - name: DECISION_WAF_EXTPROC_ADDR
                     value: ""
                   - name: DECISION_WAF_EXTAUTHZ_ADDR
