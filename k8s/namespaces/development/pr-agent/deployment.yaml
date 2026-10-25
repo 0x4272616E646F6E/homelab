@@ -36,7 +36,7 @@ spec:
       containers:
         - name: pr-agent
           # renovate: datasource=docker depName=docker.io/pragent/pr-agent
-          image: docker.io/pragent/pr-agent:gitea_app@sha256:6154216ec2cb8076cdcec5132fd07fae70e08f368ab3e5f8fd73c9f4b968bdc7
+          image: docker.io/pragent/pr-agent:gitea_app@sha256:93ddfbc2be36b83206707e4ea87d6134ea2aa9866dd89281005a80328a387a7f
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
