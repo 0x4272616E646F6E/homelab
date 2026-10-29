@@ -7,7 +7,7 @@ data:
   values.yaml: |-
     image:
       repository: cloudflare/cloudflared
-      tag: 2026.10.5
+      tag: 2026.10.6
       pullPolicy: IfNotPresent
     replicaCount: 2
     imagePullSecrets: []
