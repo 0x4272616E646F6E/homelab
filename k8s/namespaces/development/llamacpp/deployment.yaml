@@ -75,17 +75,19 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - mradermacher/LFM-2.5-2.6B-heretic-GGUF
+          - ukisai/Swift-1.5-Qwen3.8-27B-GSQ-RCO-GGUF
           - --hf-file
-          - LFM-2.5-2.6B-heretic.Q8_0.gguf
+          - Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf
           - --alias
-          - LFM-2.5-2.6B
+          - Swift-1.5-Qwen3.8-27B
           - --port
           - "8000"
           - --n-gpu-layers
-          - "999"
+          - "99"
           - --ctx-size
           - "131072"
+          - --flash-attn
+          - "on"
           - --cache-type-k
           - q8_0
           - --cache-type-v
@@ -93,6 +95,26 @@ spec:
           - --parallel
           - "1"
           - --jinja
+          - --temp
+          - "1.0"
+          - --top-p
+          - "0.95"
+          - --top-k
+          - "20"
+          - --min-p
+          - "0.0"
+          - --presence-penalty
+          - "0.0"
+          - --repeat-penalty
+          - "1.0"
+          - --spec-type
+          - draft-mtp
+          - --spec-draft-n-max
+          - "3"
+          - --spec-draft-type-k
+          - q8_0
+          - --spec-draft-type-v
+          - q8_0
         env:
         - name: TZ
           value: America/New_York

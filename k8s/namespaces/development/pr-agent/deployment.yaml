@@ -65,9 +65,9 @@ spec:
             - name: OPENAI__API_KEY
               value: "empty"
             - name: CONFIG__MODEL
-              value: "openai/LFM-2.5-2.6B"
+              value: "openai/Swift-1.5-Qwen3.8-27B"
             - name: CONFIG__FALLBACK_MODELS
-              value: "openai/LFM-2.5-2.6B"
+              value: "openai/Swift-1.5-Qwen3.8-27B"
             - name: CONFIG__CUSTOM_MODEL_MAX_TOKENS
               value: "131072"
           resources:
