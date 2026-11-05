@@ -15,4 +15,3 @@ resources:
   - pr-agent/
   - actions-runner-controller/
   - actions-runner/
-  - llamacpp/

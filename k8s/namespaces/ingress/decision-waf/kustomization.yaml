@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: ingress
 resources:
   - https://github.com/0x4272616E646F6E/decision-waf//deploy/kubernetes/base?ref=v0.3.0
+  - secrets.enc.yaml
 images:
   - name: decision-waf
     newName: ghcr.io/0x4272616e646f6e/decision-waf
@@ -30,7 +31,12 @@ patches:
                   - name: DECISION_WAF_CLASSIFIER_MODEL
                     value: Decision-WAF-V1-0.8B
                   - name: DECISION_WAF_CLASSIFIER_BASE_URL
-                    value: http://decision-waf-model.ingress.svc.cluster.local:8000
+                    value: http://litellm.inference.svc.cluster.local:4000
+                  - name: DECISION_WAF_CLASSIFIER_API_KEY
+                    valueFrom:
+                      secretKeyRef:
+                        name: decision-waf-secrets
+                        key: CLASSIFIER_API_KEY
                   - name: DECISION_WAF_FAILURE_MODE
                     value: open
                   - name: DECISION_WAF_CLASSIFIER_TIMEOUT

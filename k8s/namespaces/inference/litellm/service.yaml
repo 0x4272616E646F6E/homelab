@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: litellm
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: litellm
+spec:
+  ports:
+  - name: http
+    port: 4000
+    protocol: TCP
+    targetPort: 4000
+  selector:
+    app.kubernetes.io/name: litellm
+  sessionAffinity: None
+  type: ClusterIP

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: litellm
+    app.kubernetes.io/managed-by: flux
+data:
+  config.yaml: |
+    model_list:
+      - model_name: Swift-1.5-Qwen3.8-27B
+        litellm_params:
+          model: openai/Swift-1.5-Qwen3.8-27B
+          api_base: http://llamacpp-model.inference.svc.cluster.local:8000/v1
+          api_key: none
+          timeout: 900
+      - model_name: Decision-WAF-V1-0.8B
+        litellm_params:
+          model: openai/Decision-WAF-V1-0.8B
+          api_base: http://decision-waf-model.inference.svc.cluster.local:8000/v1
+          api_key: none
+          timeout: 10
+    litellm_settings:
+      drop_params: true
+      telemetry: false
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY
+      # decision-waf's jev backend calls llama-server's native /v1/systemone,
+      # which isn't an OpenAI route, so forward it as-is behind the master key.
+      pass_through_endpoints:
+        - path: /v1/systemone
+          target: http://decision-waf-model.inference.svc.cluster.local:8000/v1/systemone
+          auth: true
+          timeout: 10

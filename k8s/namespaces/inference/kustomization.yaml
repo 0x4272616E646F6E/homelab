@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: inference
+components:
+  - ../../components/nginx-filters
+labels:
+  - pairs:
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+resources:
+  - namespace.yaml
+  - llamacpp/
+  - decision-waf-model/
+  - litellm/

@@ -8,5 +8,4 @@ resources:
   - namespace.yaml
   - nginx/
   - cloudflared/
-  - decision-waf-model/
   - decision-waf/

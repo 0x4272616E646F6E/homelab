@@ -61,9 +61,12 @@ spec:
                   name: pr-agent-secrets
                   key: GITEA_WEBHOOK_SECRET
             - name: OPENAI__API_BASE
-              value: "http://llamacpp-model:8000/v1"
+              value: "http://litellm.inference.svc.cluster.local:4000/v1"
             - name: OPENAI__API_KEY
-              value: "empty"
+              valueFrom:
+                secretKeyRef:
+                  name: pr-agent-secrets
+                  key: LITELLM_API_KEY
             - name: CONFIG__MODEL
               value: "openai/Swift-1.5-Qwen3.8-27B"
             - name: CONFIG__FALLBACK_MODELS

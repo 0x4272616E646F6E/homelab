@@ -178,6 +178,7 @@ The following applications are managed through flux in this repository:
 - [**Intel GPU Plugin**](https://github.com/intel/intel-device-plugins-for-kubernetes)
 - [**Jellyfin**](https://github.com/jellyfin/jellyfin)
 - [**Kubelet CSR Approver**](https://github.com/postfinance/kubelet-csr-approver)
+- [**LiteLLM**](https://github.com/BerriAI/litellm)
 - [**LlamaCPP**](https://github.com/ggml-org/llama.cpp)
 - [**Local Path Provisioner**](https://github.com/rancher/local-path-provisioner)
 - [**NGINX Gateway Fabric**](https://github.com/nginx/nginx-gateway-fabric/tree/main)

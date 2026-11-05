@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: decision-waf-model-pvc
-  namespace: ingress
+  name: llamacpp-model-pvc
+  namespace: inference
   labels:
-    app.kubernetes.io/name: decision-waf-model
+    app.kubernetes.io/name: llamacpp-model
 spec:
   accessModes:
     - ReadWriteOnce

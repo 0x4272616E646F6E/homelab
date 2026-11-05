@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: decision-waf-model
-  namespace: ingress
+  name: llamacpp-model
+  namespace: inference
   annotations:
     goldilocks.fairwinds.com/vpa-resource-policy: >
       { "containerPolicies": [
-      { "containerName": "decision-waf-model",
+      { "containerName": "llamacpp-model",
       "minAllowed": { "cpu": "500m", "memory": "4Gi" },
       "maxAllowed": { "cpu": "4", "memory": "16Gi" },
       "controlledValues": "RequestsOnly" } ] }
   labels:
-    app.kubernetes.io/name: decision-waf-model
+    app.kubernetes.io/name: llamacpp-model
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: decision-waf-model
+      app.kubernetes.io/name: llamacpp-model
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: decision-waf-model
+        app.kubernetes.io/name: llamacpp-model
         app.kubernetes.io/managed-by: flux
     spec:
       terminationGracePeriodSeconds: 300
@@ -31,42 +31,101 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+      - name: fetch-webui
+        image: curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
+        env:
+        - name: TZ
+          value: America/New_York
+        - name: HF_TOKEN
+          valueFrom: { secretKeyRef: { name: llamacpp-secrets, key: token } }
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -eu
+            if [ -f /ui/index.html ]; then
+              echo "WebUI already present, skipping fetch"
+              exit 0
+            fi
+            echo "Fetching llama-ui dist.tar.gz from HF bucket..."
+            curl -fsSL -H "Authorization: Bearer ${HF_TOKEN}" \
+              "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/dist.tar.gz?download=true" \
+              -o /tmp/dist.tar.gz
+            tar -xzf /tmp/dist.tar.gz -C /ui
+            rm /tmp/dist.tar.gz
+            echo "WebUI extracted:"
+            ls /ui
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: ui,  mountPath: /ui }
+        - { name: tmp, mountPath: /tmp }
+        resources:
+          requests: { cpu: "10m",  memory: "32Mi" }
+          limits:   { cpu: "200m", memory: "128Mi" }
       containers:
-      - name: decision-waf-model
+      - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
         image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:821d0ae4e5d4e82a2ad8d08973b5f9cd5d0b84524b1d2439ed1f3e41ebc6b4c7
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - 0xBrandon/Decision-WAF-V1-0.8B-GGUF
+          - ukisai/Swift-1.5-Qwen3.8-27B-GSQ-RCO-GGUF
           - --hf-file
-          - Decision-WAF-V1-0.8B-Q8_0.gguf
+          - Swift-1.5-Qwen3.8-27B-GSQ-RCO-IQ3_S-mtp.gguf
           - --alias
-          - Decision-WAF-V1-0.8B
+          - Swift-1.5-Qwen3.8-27B
           - --port
           - "8000"
           - --n-gpu-layers
-          - "999"
+          - "99"
           - --ctx-size
-          - "32768"
+          - "131072"
+          - --flash-attn
+          - "on"
           - --cache-type-k
-          - f16
+          - q8_0
           - --cache-type-v
-          - f16
+          - q8_0
           - --parallel
-          - "8"
+          - "1"
           - --jinja
-          - --cache-ram
-          - "2048"
+          - --temp
+          - "1.0"
+          - --top-p
+          - "0.95"
+          - --top-k
+          - "20"
+          - --min-p
+          - "0.0"
+          - --presence-penalty
+          - "0.0"
+          - --repeat-penalty
+          - "1.0"
+          - --spec-type
+          - draft-mtp
+          - --spec-draft-n-max
+          - "3"
+          - --spec-draft-type-k
+          - q8_0
+          - --spec-draft-type-v
+          - q8_0
         env:
         - name: TZ
           value: America/New_York
         - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom: { secretKeyRef: { name: decision-waf-model-secrets, key: token } }
+          valueFrom: { secretKeyRef: { name: llamacpp-secrets, key: token } }
         - { name: HF_HOME,               value: /models/.cache/hf }
         - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
+        - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
         - { name: GGML_CUDA_DISABLE_GRAPHS, value: "1" }
+        - { name: LLAMA_ARG_STATIC_PATH,   value: "/ui" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
@@ -82,6 +141,7 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /models }
         - { name: tmp,          mountPath: /tmp }
+        - { name: ui,           mountPath: /ui, readOnly: true }
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 10
@@ -99,6 +159,8 @@ spec:
           timeoutSeconds: 10
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: decision-waf-model-pvc }
+        persistentVolumeClaim: { claimName: llamacpp-model-pvc }
       - name: tmp
+        emptyDir: {}
+      - name: ui
         emptyDir: {}

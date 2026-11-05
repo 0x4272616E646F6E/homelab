@@ -1,26 +1,35 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: decision-waf-model
-  namespace: ingress
+  name: litellm
+  namespace: inference
   labels:
-    app.kubernetes.io/name: decision-waf-model
+    app.kubernetes.io/name: litellm
     app.kubernetes.io/managed-by: flux
 spec:
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: decision-waf-model
+      app.kubernetes.io/name: litellm
       app.kubernetes.io/managed-by: flux
   policyTypes:
     - Ingress
     - Egress
   ingress:
+    # nginx-gateway and decision-waf
     - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: ingress
       ports:
-        - port: 8000
+        - port: 4000
+          protocol: TCP
+    # pr-agent
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: development
+      ports:
+        - port: 4000
           protocol: TCP
   egress:
     - {}
