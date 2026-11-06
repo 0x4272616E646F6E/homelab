@@ -36,7 +36,7 @@ spec:
       containers:
       - name: litellm
         # renovate: datasource=docker depName=ghcr.io/berriai/litellm-non_root
-        image: ghcr.io/berriai/litellm-non_root:v1.108.1@sha256:bf26c5e4e18375d407fa29c78071293bba6122b886434e454ded05e1d86a8bd6
+        image: ghcr.io/berriai/litellm-non_root:v1.108.2@sha256:c1e177d3c081bcc752b1be423c59d586ed97236d5f8b6b15e649b6d871e11c65
         imagePullPolicy: IfNotPresent
         args: ["--config", "/etc/litellm/config.yaml", "--port", "4000", "--num_workers", "2"]
         env:
