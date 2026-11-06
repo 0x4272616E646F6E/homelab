@@ -34,7 +34,7 @@ spec:
       containers:
       - name: decision-waf-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-cuda@sha256:821d0ae4e5d4e82a2ad8d08973b5f9cd5d0b84524b1d2439ed1f3e41ebc6b4c7
+        image: ghcr.io/ggml-org/llama.cpp:server-intel
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
@@ -46,32 +46,35 @@ spec:
           - --port
           - "8000"
           - --n-gpu-layers
-          - "999"
+          - "99"
           - --ctx-size
-          - "32768"
+          - "4096"
           - --cache-type-k
-          - f16
+          - q8_0
           - --cache-type-v
-          - f16
+          - q8_0
           - --parallel
-          - "8"
+          - "4"
           - --jinja
           - --cache-ram
           - "2048"
+          - --threads
+          - "4"
         env:
         - name: TZ
           value: America/New_York
-        - name: HUGGING_FACE_HUB_TOKEN
+        - name: HF_TOKEN
           valueFrom: { secretKeyRef: { name: decision-waf-model-secrets, key: token } }
-        - { name: HF_HOME,               value: /models/.cache/hf }
-        - { name: HUGGINGFACE_HUB_CACHE, value: /models/.cache/huggingface }
-        - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
-        - { name: GGML_CUDA_DISABLE_GRAPHS, value: "1" }
+        - { name: HOME,                  value: /tmp }
+        - { name: LLAMA_CACHE,           value: /models/.cache/llama.cpp }
+        - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
+        - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
+        - { name: ZES_ENABLE_SYSMAN,      value: "1" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "500m", memory: "8Gi", nvidia.com/gpu: "1", ephemeral-storage: "10Gi" }
-          limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: "1", ephemeral-storage: "30Gi" }
+          requests: { cpu: "500m", memory: "8Gi", gpu.intel.com/i915: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "4",    memory: "16Gi", gpu.intel.com/i915: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
@@ -82,18 +85,16 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /models }
         - { name: tmp,          mountPath: /tmp }
-        readinessProbe:
-          httpGet: { path: /health, port: http }
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          failureThreshold: 30
         startupProbe:
           httpGet: { path: /health, port: http }
           periodSeconds: 15
           failureThreshold: 60
+        readinessProbe:
+          httpGet: { path: /health, port: http }
+          periodSeconds: 10
+          failureThreshold: 3
         livenessProbe:
           httpGet: { path: /health, port: http }
-          initialDelaySeconds: 600
           periodSeconds: 60
           failureThreshold: 5
           timeoutSeconds: 10
