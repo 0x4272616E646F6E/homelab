@@ -90,7 +90,7 @@ spec:
               type: RuntimeDefault
         - name: daemon
           # renovate: datasource=docker depName=docker/docker-ce
-          image: docker.io/docker:29.9.3-dind@sha256:d035bd30886e451b2727ef3cdb9af9a5c537a10d4bc5d18c08d0ffa597e46aeb
+          image: docker.io/docker:29.9.3-dind@sha256:4495bd03abbe729dae065ecc187801a19820fd19159948f01d68a57a8d281bd0
           env:
             - name: TZ
               value: America/New_York
