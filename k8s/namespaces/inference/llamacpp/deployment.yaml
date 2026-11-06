@@ -115,6 +115,9 @@ spec:
           - q8_0
           - --spec-draft-type-v
           - q8_0
+          - --threads
+          - "4"
+          - --no-mmproj
         env:
         - name: TZ
           value: America/New_York
