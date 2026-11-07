@@ -28,7 +28,7 @@ spec:
       containers:
         - name: sonarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
-          image: lscr.io/linuxserver/sonarr:latest@sha256:386c962ee6e260e3a5656b25df2ed056bcc9b6410e197d075f9547fd14c23bca
+          image: lscr.io/linuxserver/sonarr:latest@sha256:3b8c947d7fa173f70e40047d2c8d02835fb8416aeb5ae36def57d9ad15e2f906
           imagePullPolicy: IfNotPresent
           env:
             - name: TZ
