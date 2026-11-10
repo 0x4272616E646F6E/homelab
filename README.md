@@ -147,7 +147,7 @@ Information regarding the hardware this homelab runs on:
   - Data Disks (24x): [Samsung SAS PM1633_3840](https://download.semiconductor.samsung.com/resources/brochure/pm1633-prodoverview-2015.pdf)
   - NIC: [Intel X710-DA2](https://www.intel.com/content/www/us/en/products/sku/83964/intel-ethernet-converged-network-adapter-x710da2/specifications.html)
   - GPU 1: [NVIDIA RTX 4000 SFF Ada](https://www.nvidia.com/en-us/products/workstations/rtx-4000-sff/)
-  - GPU 2:  [Intel Arc A310](https://www.sparkle.com.tw/en/products/view/f22F9bC73c50)
+  - GPU 2:  [Intel Arc B50](https://www.intel.com/content/www/us/en/products/sku/242615/intel-arc-pro-b50-graphics/specifications.html)
   - TPU: [Google Coral TPU M.2 B+M](https://coral.ai/products/m2-accelerator-bm)
 - [CyberPower UPS](https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfcrm2u/)
 </details>

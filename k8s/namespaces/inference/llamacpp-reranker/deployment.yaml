@@ -73,8 +73,8 @@ spec:
         ports:
         - { containerPort: 8000, name: http }
         resources:
-          requests: { cpu: "500m", memory: "8Gi", gpu.intel.com/i915: "1", ephemeral-storage: "10Gi" }
-          limits:   { cpu: "4",    memory: "16Gi", gpu.intel.com/i915: "1", ephemeral-storage: "30Gi" }
+          requests: { cpu: "500m", memory: "8Gi", gpu.intel.com/xe: "1", ephemeral-storage: "10Gi" }
+          limits:   { cpu: "4",    memory: "16Gi", gpu.intel.com/xe: "1", ephemeral-storage: "30Gi" }
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
