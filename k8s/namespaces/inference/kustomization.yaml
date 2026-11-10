@@ -11,8 +11,8 @@ resources:
   - namespace.yaml
   - llamacpp/
   - llamacpp-decision-waf/
-  # - llamacpp-embedding/
-  # - llamacpp-reranker/
+  - llamacpp-embedding/
+  - llamacpp-reranker/
   # - qdrant/
   # - mem0/
   # - searxng/
