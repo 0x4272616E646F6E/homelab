@@ -7,11 +7,11 @@ metadata:
     app.kubernetes.io/name: llamacpp-embedding
 spec:
   ports:
-  - name: llamacpp-decision-waf
+  - name: llamacpp-embedding
     port: 8000
     protocol: TCP
     targetPort: 8000
   selector:
-    app.kubernetes.io/name: llamacpp-decision-waf
+    app.kubernetes.io/name: llamacpp-embedding
   sessionAffinity: None
   type: ClusterIP

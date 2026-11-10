@@ -38,23 +38,29 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - 0xBrandon/Decision-WAF-V1-0.8B-GGUF
+          - seamon67/Zerank-2-GGUF
           - --hf-file
-          - Decision-WAF-V1-0.8B-Q8_0.gguf
+          - Zerank-2-4B-Q8_0.gguf
           - --alias
-          - Decision-WAF-V1-0.8B
+          - zerank-2
+          - --reranking
           - --port
           - "8000"
           - --n-gpu-layers
           - "99"
           - --ctx-size
-          - "4096"
+          - "8192"
           - --cache-type-k
           - q8_0
           - --cache-type-v
           - q8_0
           - --parallel
           - "4"
+          # query + document must fit in one ubatch (8192 ctx / 4 slots)
+          - --batch-size
+          - "2048"
+          - --ubatch-size
+          - "2048"
           - --jinja
           - --cache-ram
           - "2048"

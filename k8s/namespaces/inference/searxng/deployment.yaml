@@ -13,6 +13,7 @@ metadata:
   labels:
     app.kubernetes.io/name: searxng
     app.kubernetes.io/managed-by: flux
+    app.kubernetes.io/egress: wireguard
 spec:
   selector:
     matchLabels:
@@ -23,15 +24,31 @@ spec:
       labels:
         app.kubernetes.io/name: searxng
         app.kubernetes.io/managed-by: flux
+        app.kubernetes.io/egress: wireguard
     spec:
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 10.96.0.11
+        searches:
+          - inference.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
       automountServiceAccountToken: false
       securityContext:
+        runAsUser: 977
+        runAsGroup: 977
+        runAsNonRoot: true
+        fsGroup: 977
         seccompProfile:
           type: RuntimeDefault
       containers:
       - name: searxng
         # renovate: datasource=docker depName=ghcr.io/searxng/searxng
-        image: ghcr.io/searxng/searxng:2026.7.22
+        image: ghcr.io/searxng/searxng:2026.7.22-ef8f6470e@sha256:854f239d5c181db9c4282cd0ffc1737a61232dd6ad0ea964028b96df17d7758a
         imagePullPolicy: IfNotPresent
         env:
         - { name: TZ, value: America/New_York }
@@ -43,7 +60,9 @@ spec:
           requests: { cpu: "100m", memory: "256Mi", ephemeral-storage: "256Mi" }
           limits:   { cpu: "2",    memory: "2Gi",   ephemeral-storage: "1Gi" }
         securityContext:
-          capabilities: { drop: ["ALL"], add: ["CHOWN", "SETGID", "SETUID"] }
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
         volumeMounts:
         - { name: settings, mountPath: /etc/searxng/settings.yml, subPath: settings.yml, readOnly: true }
         - { name: cache,    mountPath: /var/cache/searxng }

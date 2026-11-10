@@ -3,12 +3,14 @@ kind: ConfigMap
 metadata:
   name: searxng-settings
   namespace: inference
+  labels:
+    app.kubernetes.io/name: searxng
 data:
   settings.yml: |
     use_default_settings: true
     server:
       limiter: false
-      image_proxy: true
+      image_proxy: false
     search:
       formats:
         - html

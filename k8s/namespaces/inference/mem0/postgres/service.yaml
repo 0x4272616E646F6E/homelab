@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: mem0-postgres
   namespace: inference
+  labels:
+    app.kubernetes.io/name: mem0-postgres
 spec:
   selector:
     app.kubernetes.io/name: mem0-postgres

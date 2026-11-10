@@ -15,7 +15,6 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # nginx-gateway and decision-waf
     - from:
         - namespaceSelector:
             matchLabels:
@@ -23,7 +22,13 @@ spec:
       ports:
         - port: 4000
           protocol: TCP
-    # pr-agent
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: mem0
+      ports:
+        - port: 4000
+          protocol: TCP
     - from:
         - namespaceSelector:
             matchLabels:

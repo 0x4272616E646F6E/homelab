@@ -31,6 +31,7 @@ spec:
       securityContext:
         runAsUser: 999
         runAsGroup: 999
+        runAsNonRoot: true
         fsGroup: 999
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
@@ -38,7 +39,7 @@ spec:
       containers:
       - name: postgres
         # renovate: datasource=docker depName=pgvector/pgvector
-        image: pgvector/pgvector:pg17
+        image: docker.io/pgvector/pgvector:0.8.7-pg17@sha256:7d0a41464797aeb9862dfdc0bbf1526b82cfd324cdd8036df19e3545f4a9ccb8
         imagePullPolicy: IfNotPresent
         env:
         - { name: TZ,            value: America/New_York }
@@ -54,10 +55,18 @@ spec:
           limits:   { cpu: "2",    memory: "4Gi" }
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           capabilities: { drop: ["ALL"] }
         volumeMounts:
         - { name: data, mountPath: /var/lib/postgresql/data }
         - { name: init, mountPath: /docker-entrypoint-initdb.d }
+        - { name: run,  mountPath: /var/run/postgresql }
+        - { name: tmp,  mountPath: /tmp }
+        - { name: shm,  mountPath: /dev/shm }
+        startupProbe:
+          exec: { command: ["pg_isready", "-U", "postgres"] }
+          periodSeconds: 5
+          failureThreshold: 60
         readinessProbe:
           exec: { command: ["pg_isready", "-U", "postgres"] }
           periodSeconds: 10
@@ -70,3 +79,9 @@ spec:
         persistentVolumeClaim: { claimName: mem0-postgres-pvc }
       - name: init
         configMap: { name: mem0-postgres-init }
+      - name: run
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
+      - name: shm
+        emptyDir: { medium: Memory, sizeLimit: 128Mi }

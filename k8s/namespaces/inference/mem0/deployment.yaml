@@ -29,12 +29,17 @@ spec:
       terminationGracePeriodSeconds: 60
       automountServiceAccountToken: false
       securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
       containers:
       - name: mem0
         # renovate: datasource=docker depName=dockette/memzero
-        image: dockette/memzero:server-2.2.1
+        image: docker.io/dockette/memzero:server-2.2.1@sha256:60e6e9e46a624dbd737cc81a20070c0632e614839ea885de9ad20ce2ef7c2f85
         imagePullPolicy: IfNotPresent
         env:
         - { name: TZ,                          value: America/New_York }
@@ -46,9 +51,11 @@ spec:
         - { name: POSTGRES_USER,               value: postgres }
         - { name: POSTGRES_COLLECTION_NAME,    value: memories }
         - { name: APP_DB_NAME,                 value: mem0_app }
-        - { name: OPENAI_BASE_URL,             value: "http://llamacpp-model:8000/v1" }
-        - { name: MEM0_DEFAULT_LLM_MODEL,      value: llamacpp-model }
-        - { name: MEM0_DEFAULT_EMBEDDER_MODEL, value: jina-embeddings-v5-omni-small }
+        - { name: HOME,                        value: /tmp }
+        - { name: MEM0_DIR,                    value: /tmp/.mem0 }
+        - { name: OPENAI_BASE_URL,             value: "http://litellm.inference.svc.cluster.local:4000/v1" }
+        - { name: MEM0_DEFAULT_LLM_MODEL,      value: Swift-1.5-Qwen3.8-27B }
+        - { name: MEM0_DEFAULT_EMBEDDER_MODEL, value: embeddinggemma-2 }
         - name: POSTGRES_PASSWORD
           valueFrom: { secretKeyRef: { name: mem0-secrets, key: postgres-password } }
         - name: JWT_SECRET
@@ -56,7 +63,7 @@ spec:
         - name: ADMIN_API_KEY
           valueFrom: { secretKeyRef: { name: mem0-secrets, key: admin-api-key } }
         - name: OPENAI_API_KEY
-          valueFrom: { secretKeyRef: { name: mem0-secrets, key: openai-api-key } }
+          valueFrom: { secretKeyRef: { name: litellm-master-key, key: master-key } }
         ports:
         - { containerPort: 8000, name: http }
         resources:
@@ -64,20 +71,41 @@ spec:
           limits:   { cpu: "2",    memory: "4Gi",   ephemeral-storage: "1Gi" }
         securityContext:
           allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
           capabilities: { drop: ["ALL"] }
         volumeMounts:
         - { name: history, mountPath: /app/history }
+        - { name: tmp,     mountPath: /tmp }
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                for i in $(seq 1 120); do
+                  if curl -fsS -o /dev/null http://127.0.0.1:8000/auth/setup-status; then
+                    exec curl -fsS -o /dev/null -X POST http://127.0.0.1:8000/configure \
+                      -H "X-API-Key: $ADMIN_API_KEY" -H "Content-Type: application/json" \
+                      -d '{"vector_store": {"config": {"embedding_model_dims": 512}}}'
+                  fi
+                  sleep 2
+                done
+                exit 1
         startupProbe:
-          httpGet: { path: /docs, port: http }
+          httpGet: { path: /auth/setup-status, port: http }
           periodSeconds: 5
           failureThreshold: 60
         readinessProbe:
-          httpGet: { path: /docs, port: http }
+          httpGet: { path: /auth/setup-status, port: http }
           periodSeconds: 10
         livenessProbe:
-          httpGet: { path: /docs, port: http }
+          httpGet: { path: /auth/setup-status, port: http }
           periodSeconds: 30
           timeoutSeconds: 10
       volumes:
       - name: history
         persistentVolumeClaim: { claimName: mem0-history-pvc }
+      - name: tmp
+        emptyDir: {}
+

@@ -43,6 +43,7 @@ spec:
         - { name: TZ,                              value: America/New_York }
         - { name: QDRANT__LOG_LEVEL,               value: INFO }
         - { name: QDRANT__TELEMETRY_DISABLED,      value: "true" }
+        - { name: QDRANT_INIT_FILE_PATH,           value: /tmp/.qdrant-initialized }
         - name: QDRANT__SERVICE__API_KEY
           valueFrom: { secretKeyRef: { name: qdrant-secrets, key: api-key } }
         ports:

@@ -18,9 +18,8 @@ spec:
     - from:
         - podSelector:
             matchLabels:
-              app.kubernetes.io/name: mem0-postgres
+              app.kubernetes.io/name: mem0
       ports:
         - port: 5432
           protocol: TCP
-  egress:
-    - {}
+  egress: []

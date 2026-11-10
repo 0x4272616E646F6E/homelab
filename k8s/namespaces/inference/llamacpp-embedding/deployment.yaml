@@ -43,6 +43,7 @@ spec:
           - embeddinggemma-2-Q8_0.gguf
           - --alias
           - embeddinggemma-2
+          - --embeddings
           - --port
           - "8000"
           - --n-gpu-layers
@@ -55,6 +56,10 @@ spec:
           - q8_0
           - --parallel
           - "4"
+          - --batch-size
+          - "2048"
+          - --ubatch-size
+          - "2048"
           - --jinja
           - --cache-ram
           - "2048"

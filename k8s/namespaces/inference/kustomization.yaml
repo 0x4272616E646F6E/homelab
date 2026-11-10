@@ -13,7 +13,7 @@ resources:
   - llamacpp-decision-waf/
   - llamacpp-embedding/
   - llamacpp-reranker/
-  # - qdrant/
-  # - mem0/
-  # - searxng/
+  - qdrant/
+  - mem0/
+  - searxng/
   - litellm/

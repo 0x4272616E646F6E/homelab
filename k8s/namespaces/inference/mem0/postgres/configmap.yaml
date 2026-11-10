@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: mem0-postgres-init
   namespace: inference
+  labels:
+    app.kubernetes.io/name: mem0-postgres
 data:
   init.sql: |
     CREATE EXTENSION IF NOT EXISTS vector;

@@ -148,6 +148,18 @@
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+(?:[-.+].*)?$/"
     },
     {
+      "description": "memzero tags are server-<mem0 version>; docker versioning can't parse the prefix.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["dockette/memzero", "docker.io/dockette/memzero"],
+      "versioning": "regex:^server-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    },
+    {
+      "description": "SearXNG tags are <date>-<commit>; docker versioning treats the commit as an incompatible suffix and never offers an update. Same-day builds compare equal, so the newest date wins.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/searxng/searxng"],
+      "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-[0-9a-f]+$"
+    },
+    {
       "description": "Keep nzbget on versioned+date tags only",
       "matchDatasources": ["docker"],
       "matchPackageNames": ["lscr.io/linuxserver/nzbget"],

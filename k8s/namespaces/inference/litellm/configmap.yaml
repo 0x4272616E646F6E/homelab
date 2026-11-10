@@ -21,6 +21,28 @@ data:
           api_base: http://llamacpp-decision-waf.inference.svc.cluster.local:8000/v1
           api_key: none
           timeout: 10
+      - model_name: embeddinggemma-2
+        litellm_params:
+          model: openai/embeddinggemma-2
+          api_base: http://llamacpp-embedding.inference.svc.cluster.local:8000/v1
+          api_key: none
+          timeout: 60
+        model_info:
+          mode: embedding
+      - model_name: zerank-2
+        litellm_params:
+          # llama-server's /rerank is Cohere/Jina-shaped; LiteLLM appends /rerank
+          model: hosted_vllm/zerank-2
+          api_base: http://llamacpp-reranker.inference.svc.cluster.local:8000
+          api_key: none
+          timeout: 60
+        model_info:
+          mode: rerank
+    search_tools:
+      - search_tool_name: searxng
+        litellm_params:
+          search_provider: searxng
+          api_base: http://searxng.inference.svc.cluster.local:8080
     litellm_settings:
       drop_params: true
       telemetry: false
