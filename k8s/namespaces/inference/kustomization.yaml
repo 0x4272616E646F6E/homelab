@@ -10,5 +10,10 @@ labels:
 resources:
   - namespace.yaml
   - llamacpp/
-  - decision-waf-model/
+  - llamacpp-decision-waf/
+  # - llamacpp-embedding/
+  # - llamacpp-reranker/
+  # - qdrant/
+  # - mem0/
+  # - searxng/
   - litellm/

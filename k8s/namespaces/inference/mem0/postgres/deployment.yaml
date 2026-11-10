@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mem0-postgres
+  namespace: inference
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "postgres",
+      "minAllowed": { "cpu": "100m", "memory": "256Mi" },
+      "maxAllowed": { "cpu": "2", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" } ] }
+  labels:
+    app.kubernetes.io/name: mem0-postgres
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mem0-postgres
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mem0-postgres
+        app.kubernetes.io/managed-by: flux
+    spec:
+      terminationGracePeriodSeconds: 120
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: postgres
+        # renovate: datasource=docker depName=pgvector/pgvector
+        image: pgvector/pgvector:pg17
+        imagePullPolicy: IfNotPresent
+        env:
+        - { name: TZ,            value: America/New_York }
+        - { name: PGDATA,        value: /var/lib/postgresql/data/pgdata }
+        - { name: POSTGRES_DB,   value: postgres }
+        - { name: POSTGRES_USER, value: postgres }
+        - name: POSTGRES_PASSWORD
+          valueFrom: { secretKeyRef: { name: mem0-secrets, key: postgres-password } }
+        ports:
+        - { containerPort: 5432, name: pg }
+        resources:
+          requests: { cpu: "100m", memory: "512Mi" }
+          limits:   { cpu: "2",    memory: "4Gi" }
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: data, mountPath: /var/lib/postgresql/data }
+        - { name: init, mountPath: /docker-entrypoint-initdb.d }
+        readinessProbe:
+          exec: { command: ["pg_isready", "-U", "postgres"] }
+          periodSeconds: 10
+        livenessProbe:
+          exec: { command: ["pg_isready", "-U", "postgres"] }
+          periodSeconds: 30
+          timeoutSeconds: 5
+      volumes:
+      - name: data
+        persistentVolumeClaim: { claimName: mem0-postgres-pvc }
+      - name: init
+        configMap: { name: mem0-postgres-init }

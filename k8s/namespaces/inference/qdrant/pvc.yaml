@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: decision-waf-model-pvc
+  name: qdrant-pvc
   namespace: inference
   labels:
-    app.kubernetes.io/name: decision-waf-model
+    app.kubernetes.io/name: qdrant
 spec:
   accessModes:
     - ReadWriteOnce

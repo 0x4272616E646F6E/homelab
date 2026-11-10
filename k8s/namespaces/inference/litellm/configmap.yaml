@@ -18,7 +18,7 @@ data:
       - model_name: Decision-WAF-V1-0.8B
         litellm_params:
           model: openai/Decision-WAF-V1-0.8B
-          api_base: http://decision-waf-model.inference.svc.cluster.local:8000/v1
+          api_base: http://llamacpp-decision-waf.inference.svc.cluster.local:8000/v1
           api_key: none
           timeout: 10
     litellm_settings:
@@ -30,6 +30,6 @@ data:
       # which isn't an OpenAI route, so forward it as-is behind the master key.
       pass_through_endpoints:
         - path: /v1/systemone
-          target: http://decision-waf-model.inference.svc.cluster.local:8000/v1/systemone
+          target: http://llamacpp-decision-waf.inference.svc.cluster.local:8000/v1/systemone
           auth: true
           timeout: 10

@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mem0
+  namespace: inference
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "mem0",
+      "minAllowed": { "cpu": "100m", "memory": "512Mi" },
+      "maxAllowed": { "cpu": "2", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" } ] }
+  labels:
+    app.kubernetes.io/name: mem0
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mem0
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mem0
+        app.kubernetes.io/managed-by: flux
+    spec:
+      terminationGracePeriodSeconds: 60
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: mem0
+        # renovate: datasource=docker depName=dockette/memzero
+        image: dockette/memzero:server-2.2.1
+        imagePullPolicy: IfNotPresent
+        env:
+        - { name: TZ,                          value: America/New_York }
+        - { name: MEM0_TELEMETRY,              value: "false" }
+        - { name: AUTH_DISABLED,               value: "false" }
+        - { name: POSTGRES_HOST,               value: mem0-postgres }
+        - { name: POSTGRES_PORT,               value: "5432" }
+        - { name: POSTGRES_DB,                 value: postgres }
+        - { name: POSTGRES_USER,               value: postgres }
+        - { name: POSTGRES_COLLECTION_NAME,    value: memories }
+        - { name: APP_DB_NAME,                 value: mem0_app }
+        - { name: OPENAI_BASE_URL,             value: "http://llamacpp-model:8000/v1" }
+        - { name: MEM0_DEFAULT_LLM_MODEL,      value: llamacpp-model }
+        - { name: MEM0_DEFAULT_EMBEDDER_MODEL, value: jina-embeddings-v5-omni-small }
+        - name: POSTGRES_PASSWORD
+          valueFrom: { secretKeyRef: { name: mem0-secrets, key: postgres-password } }
+        - name: JWT_SECRET
+          valueFrom: { secretKeyRef: { name: mem0-secrets, key: jwt-secret } }
+        - name: ADMIN_API_KEY
+          valueFrom: { secretKeyRef: { name: mem0-secrets, key: admin-api-key } }
+        - name: OPENAI_API_KEY
+          valueFrom: { secretKeyRef: { name: mem0-secrets, key: openai-api-key } }
+        ports:
+        - { containerPort: 8000, name: http }
+        resources:
+          requests: { cpu: "100m", memory: "512Mi", ephemeral-storage: "256Mi" }
+          limits:   { cpu: "2",    memory: "4Gi",   ephemeral-storage: "1Gi" }
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: history, mountPath: /app/history }
+        startupProbe:
+          httpGet: { path: /docs, port: http }
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          httpGet: { path: /docs, port: http }
+          periodSeconds: 10
+        livenessProbe:
+          httpGet: { path: /docs, port: http }
+          periodSeconds: 30
+          timeoutSeconds: 10
+      volumes:
+      - name: history
+        persistentVolumeClaim: { claimName: mem0-history-pvc }

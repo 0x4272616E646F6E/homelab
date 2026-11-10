@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: llamacpp-reranker-pvc
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: llamacpp-reranker
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 20Gi

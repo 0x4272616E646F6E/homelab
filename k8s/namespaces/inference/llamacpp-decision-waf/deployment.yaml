@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: decision-waf-model
+  name: llamacpp-decision-waf
   namespace: inference
   annotations:
     goldilocks.fairwinds.com/vpa-resource-policy: >
       { "containerPolicies": [
-      { "containerName": "decision-waf-model",
+      { "containerName": "llamacpp-decision-waf",
       "minAllowed": { "cpu": "500m", "memory": "4Gi" },
       "maxAllowed": { "cpu": "4", "memory": "16Gi" },
       "controlledValues": "RequestsOnly" } ] }
   labels:
-    app.kubernetes.io/name: decision-waf-model
+    app.kubernetes.io/name: llamacpp-decision-waf
     app.kubernetes.io/managed-by: flux
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: decision-waf-model
+      app.kubernetes.io/name: llamacpp-decision-waf
   replicas: 1
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: decision-waf-model
+        app.kubernetes.io/name: llamacpp-decision-waf
         app.kubernetes.io/managed-by: flux
     spec:
       terminationGracePeriodSeconds: 300
@@ -32,7 +32,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
       containers:
-      - name: decision-waf-model
+      - name: llamacpp-decision-waf
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
         image: ghcr.io/ggml-org/llama.cpp:server-intel
         imagePullPolicy: IfNotPresent
@@ -64,7 +64,7 @@ spec:
         - name: TZ
           value: America/New_York
         - name: HF_TOKEN
-          valueFrom: { secretKeyRef: { name: decision-waf-model-secrets, key: token } }
+          valueFrom: { secretKeyRef: { name: llamacpp-decision-waf-secrets, key: token } }
         - { name: HOME,                  value: /tmp }
         - { name: LLAMA_CACHE,           value: /models/.cache/llama.cpp }
         - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
@@ -100,6 +100,6 @@ spec:
           timeoutSeconds: 10
       volumes:
       - name: cache-volume
-        persistentVolumeClaim: { claimName: decision-waf-model-pvc }
+        persistentVolumeClaim: { claimName: llamacpp-decision-waf-pvc }
       - name: tmp
         emptyDir: {}

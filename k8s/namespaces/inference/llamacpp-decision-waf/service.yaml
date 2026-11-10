@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llamacpp-decision-waf
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: llamacpp-decision-waf
+spec:
+  ports:
+  - name: llamacpp-decision-waf
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app.kubernetes.io/name: llamacpp-decision-waf
+  sessionAffinity: None
+  type: ClusterIP

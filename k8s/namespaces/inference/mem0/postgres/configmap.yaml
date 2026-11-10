@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mem0-postgres-init
+  namespace: inference
+data:
+  init.sql: |
+    CREATE EXTENSION IF NOT EXISTS vector;
+    CREATE DATABASE mem0_app;
