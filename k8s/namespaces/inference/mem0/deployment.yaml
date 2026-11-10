@@ -87,7 +87,7 @@ spec:
                   if curl -fsS -o /dev/null http://127.0.0.1:8000/auth/setup-status; then
                     exec curl -fsS -o /dev/null -X POST http://127.0.0.1:8000/configure \
                       -H "X-API-Key: $ADMIN_API_KEY" -H "Content-Type: application/json" \
-                      -d '{"vector_store": {"config": {"embedding_model_dims": 512}}}'
+                      -d '{"vector_store": {"config": {"embedding_model_dims": 768}}}'
                   fi
                   sleep 2
                 done

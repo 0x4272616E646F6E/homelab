@@ -15,14 +15,6 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # nginx-gateway, for the llm.hosted.fail WebUI
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: ingress
-      ports:
-        - port: 8000
-          protocol: TCP
     - from:
         - podSelector:
             matchLabels:

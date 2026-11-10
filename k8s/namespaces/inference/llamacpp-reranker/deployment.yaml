@@ -56,7 +56,6 @@ spec:
           - q8_0
           - --parallel
           - "4"
-          # query + document must fit in one ubatch (8192 ctx / 4 slots)
           - --batch-size
           - "2048"
           - --ubatch-size
@@ -94,7 +93,7 @@ spec:
         startupProbe:
           httpGet: { path: /health, port: http }
           periodSeconds: 15
-          failureThreshold: 60
+          failureThreshold: 120
         readinessProbe:
           httpGet: { path: /health, port: http }
           periodSeconds: 10

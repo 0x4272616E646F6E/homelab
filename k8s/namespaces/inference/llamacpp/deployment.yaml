@@ -31,43 +31,6 @@ spec:
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-      initContainers:
-      - name: fetch-webui
-        image: curlimages/curl:8.23.0@sha256:3fb7e13e5d179a845c97d78204f3f1064d1907037f26a3ebf91710571151fd93
-        env:
-        - name: TZ
-          value: America/New_York
-        - name: HF_TOKEN
-          valueFrom: { secretKeyRef: { name: llamacpp-secrets, key: token } }
-        command: ["/bin/sh", "-c"]
-        args:
-          - |
-            set -eu
-            if [ -f /ui/index.html ]; then
-              echo "WebUI already present, skipping fetch"
-              exit 0
-            fi
-            echo "Fetching llama-ui dist.tar.gz from HF bucket..."
-            curl -fsSL -H "Authorization: Bearer ${HF_TOKEN}" \
-              "https://huggingface.co/buckets/ggml-org/llama-ui/resolve/latest/dist.tar.gz?download=true" \
-              -o /tmp/dist.tar.gz
-            tar -xzf /tmp/dist.tar.gz -C /ui
-            rm /tmp/dist.tar.gz
-            echo "WebUI extracted:"
-            ls /ui
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          capabilities: { drop: ["ALL"] }
-        volumeMounts:
-        - { name: ui,  mountPath: /ui }
-        - { name: tmp, mountPath: /tmp }
-        resources:
-          requests: { cpu: "10m",  memory: "32Mi" }
-          limits:   { cpu: "200m", memory: "128Mi" }
       containers:
       - name: llamacpp-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
@@ -118,6 +81,7 @@ spec:
           - --threads
           - "4"
           - --no-mmproj
+          - --no-webui
         env:
         - name: TZ
           value: America/New_York
@@ -128,7 +92,6 @@ spec:
         - { name: CUDA_VISIBLE_DEVICES,  value: "0" }
         - { name: LLAMA_ARG_HOST,        value: "0.0.0.0" }
         - { name: GGML_CUDA_DISABLE_GRAPHS, value: "1" }
-        - { name: LLAMA_ARG_STATIC_PATH,   value: "/ui" }
         ports:
         - { containerPort: 8000, name: http }
         resources:
@@ -144,7 +107,6 @@ spec:
         volumeMounts:
         - { name: cache-volume, mountPath: /models }
         - { name: tmp,          mountPath: /tmp }
-        - { name: ui,           mountPath: /ui, readOnly: true }
         readinessProbe:
           httpGet: { path: /health, port: http }
           initialDelaySeconds: 10
@@ -164,6 +126,4 @@ spec:
       - name: cache-volume
         persistentVolumeClaim: { claimName: llamacpp-model-pvc }
       - name: tmp
-        emptyDir: {}
-      - name: ui
         emptyDir: {}

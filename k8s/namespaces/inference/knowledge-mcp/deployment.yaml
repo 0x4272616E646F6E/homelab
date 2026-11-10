@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: knowledge-mcp
+  namespace: inference
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "knowledge-mcp",
+      "minAllowed": { "cpu": "10m", "memory": "32Mi" },
+      "maxAllowed": { "cpu": "500m", "memory": "256Mi" },
+      "controlledValues": "RequestsOnly" } ] }
+  labels:
+    app.kubernetes.io/name: knowledge-mcp
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: knowledge-mcp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: knowledge-mcp
+        app.kubernetes.io/managed-by: flux
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: knowledge-mcp
+        # renovate: datasource=docker depName=python
+        image: docker.io/library/python:3.13.18-alpine@sha256:1e1f6334529d1fb26a2ef619d7cffb30a7c7d7cc1cc7338ebee283a58d1aeaca
+        imagePullPolicy: IfNotPresent
+        command: ["python3", "/app/server.py"]
+        env:
+        - { name: TZ,                      value: America/New_York }
+        - { name: PYTHONDONTWRITEBYTECODE, value: "1" }
+        - { name: PYTHONUNBUFFERED,        value: "1" }
+        - { name: OPENWEBUI_URL,           value: "http://open-webui.inference.svc.cluster.local:8080" }
+        - name: OPENWEBUI_API_KEY
+          valueFrom: { secretKeyRef: { name: knowledge-mcp-secrets, key: openwebui-api-key, optional: true } }
+        - name: MCP_TOKEN
+          valueFrom: { secretKeyRef: { name: knowledge-mcp-secrets, key: mcp-token } }
+        ports:
+        - { containerPort: 8000, name: http }
+        resources:
+          requests: { cpu: "10m",  memory: "32Mi" }
+          limits:   { cpu: "500m", memory: "256Mi" }
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: app, mountPath: /app, readOnly: true }
+        readinessProbe:
+          httpGet: { path: /healthz, port: http }
+          periodSeconds: 10
+        livenessProbe:
+          httpGet: { path: /healthz, port: http }
+          periodSeconds: 30
+          timeoutSeconds: 5
+      volumes:
+      - name: app
+        configMap: { name: knowledge-mcp }

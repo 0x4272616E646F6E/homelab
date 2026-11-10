@@ -30,6 +30,13 @@ spec:
         - port: 4000
           protocol: TCP
     - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: open-webui
+      ports:
+        - port: 4000
+          protocol: TCP
+    - from:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: development

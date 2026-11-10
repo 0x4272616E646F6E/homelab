@@ -142,6 +142,9 @@ unifi_dns_records:
   - key: llm.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail
+  - key: mcp.hosted.fail
+    record_type: CNAME
+    value: nginx.hosted.fail
   - key: shelfmark.hosted.fail
     record_type: CNAME
     value: nginx.hosted.fail

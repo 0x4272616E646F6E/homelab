@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-webui
+  namespace: inference
+  annotations:
+    goldilocks.fairwinds.com/vpa-resource-policy: >
+      { "containerPolicies": [
+      { "containerName": "open-webui",
+      "minAllowed": { "cpu": "100m", "memory": "1Gi" },
+      "maxAllowed": { "cpu": "2", "memory": "4Gi" },
+      "controlledValues": "RequestsOnly" } ] }
+  labels:
+    app.kubernetes.io/name: open-webui
+    app.kubernetes.io/managed-by: flux
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: open-webui
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: open-webui
+        app.kubernetes.io/managed-by: flux
+    spec:
+      terminationGracePeriodSeconds: 60
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: open-webui
+        # renovate: datasource=docker depName=ghcr.io/open-webui/open-webui
+        image: ghcr.io/open-webui/open-webui:v0.13.3@sha256:46b59158e6558eeb980bc828e0f1b30238ad24d82ed84d5e5eda1dab2a082f14
+        imagePullPolicy: IfNotPresent
+        env:
+        - { name: TZ,                          value: America/New_York }
+        - { name: WEBUI_URL,                   value: "https://llm.hosted.fail" }
+        - name: WEBUI_SECRET_KEY
+          valueFrom: { secretKeyRef: { name: open-webui-secrets, key: secret-key } }
+        - { name: ENABLE_PERSISTENT_CONFIG,    value: "false" }
+        - { name: HOME,                        value: /tmp }
+        - { name: STATIC_DIR,                  value: /tmp/static }
+        - { name: OFFLINE_MODE,                value: "true" }
+        - { name: ENABLE_VERSION_UPDATE_CHECK, value: "false" }
+        - { name: ANONYMIZED_TELEMETRY,        value: "false" }
+        - { name: DO_NOT_TRACK,                value: "true" }
+        - { name: SCARF_NO_ANALYTICS,          value: "true" }
+        - { name: WEBUI_SESSION_COOKIE_SECURE, value: "true" }
+        - { name: ENABLE_SIGNUP,               value: "false" }
+        - { name: DEFAULT_USER_ROLE,           value: pending }
+        - { name: ENABLE_API_KEYS,                       value: "true" }
+        - { name: ENABLE_API_KEYS_ENDPOINT_RESTRICTIONS, value: "true" }
+        - { name: API_KEYS_ALLOWED_ENDPOINTS,            value: "/api/v1/knowledge/,/api/v1/retrieval/query/collection" }
+        - { name: ENABLE_OLLAMA_API,           value: "false" }
+        - { name: OPENAI_API_BASE_URL,         value: "http://litellm.inference.svc.cluster.local:4000/v1" }
+        - name: OPENAI_API_KEY
+          valueFrom: { secretKeyRef: { name: litellm-master-key, key: master-key } }
+        - { name: VECTOR_DB,                   value: qdrant }
+        - { name: QDRANT_URI,                  value: "http://qdrant.inference.svc.cluster.local:6333" }
+        - name: QDRANT_API_KEY
+          valueFrom: { secretKeyRef: { name: qdrant-secrets, key: api-key } }
+        - { name: RAG_EMBEDDING_ENGINE,        value: openai }
+        - { name: RAG_EMBEDDING_MODEL,         value: embeddinggemma-2 }
+        - { name: RAG_OPENAI_API_BASE_URL,     value: "http://litellm.inference.svc.cluster.local:4000/v1" }
+        - name: RAG_OPENAI_API_KEY
+          valueFrom: { secretKeyRef: { name: litellm-master-key, key: master-key } }
+        - { name: RAG_EMBEDDING_QUERY_PREFIX,   value: "task: search result | query: " }
+        - { name: RAG_EMBEDDING_CONTENT_PREFIX, value: "title: none | text: " }
+        - { name: RAG_EMBEDDING_BATCH_SIZE,    value: "16" }
+        - { name: ENABLE_RAG_HYBRID_SEARCH,    value: "true" }
+        - { name: RAG_RERANKING_ENGINE,        value: external }
+        - { name: RAG_RERANKING_MODEL,         value: zerank-2 }
+        - { name: RAG_EXTERNAL_RERANKER_URL,   value: "http://litellm.inference.svc.cluster.local:4000/v1/rerank" }
+        - name: RAG_EXTERNAL_RERANKER_API_KEY
+          valueFrom: { secretKeyRef: { name: litellm-master-key, key: master-key } }
+        - { name: RAG_TOP_K,                   value: "20" }
+        - { name: RAG_TOP_K_RERANKER,          value: "8" }
+        - { name: ENABLE_WEB_SEARCH,           value: "true" }
+        - { name: WEB_SEARCH_ENGINE,           value: searxng }
+        - { name: SEARXNG_QUERY_URL,           value: "http://searxng.inference.svc.cluster.local:8080/search?q=<query>" }
+        ports:
+        - { containerPort: 8080, name: http }
+        resources:
+          requests: { cpu: "100m", memory: "1Gi",  ephemeral-storage: "512Mi" }
+          limits:   { cpu: "2",    memory: "4Gi",  ephemeral-storage: "4Gi" }
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities: { drop: ["ALL"] }
+        volumeMounts:
+        - { name: data, mountPath: /app/backend/data }
+        - { name: tmp,  mountPath: /tmp }
+        startupProbe:
+          httpGet: { path: /health, port: http }
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          httpGet: { path: /health, port: http }
+          periodSeconds: 10
+        livenessProbe:
+          httpGet: { path: /health, port: http }
+          periodSeconds: 30
+          timeoutSeconds: 10
+      volumes:
+      - name: data
+        persistentVolumeClaim: { claimName: open-webui-pvc }
+      - name: tmp
+        emptyDir: {}

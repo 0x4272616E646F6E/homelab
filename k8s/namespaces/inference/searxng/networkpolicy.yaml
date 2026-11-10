@@ -22,5 +22,12 @@ spec:
       ports:
         - port: 8080
           protocol: TCP
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: open-webui
+      ports:
+        - port: 8080
+          protocol: TCP
   egress:
     - {}

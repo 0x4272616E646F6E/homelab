@@ -24,5 +24,12 @@ spec:
           protocol: TCP
         - port: 6334
           protocol: TCP
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: open-webui
+      ports:
+        - port: 6333
+          protocol: TCP
   egress:
     - {}

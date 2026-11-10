@@ -17,3 +17,5 @@ resources:
   - mem0/
   - searxng/
   - litellm/
+  - open-webui/
+  - knowledge-mcp/
