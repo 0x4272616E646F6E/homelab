@@ -8,6 +8,7 @@ data:
     hyperdx:
       config:
         FRONTEND_URL: "https://hyperdx.hosted.fail"
+        USAGE_STATS_ENABLED: "false"
       deployment:
         resources:
           requests:

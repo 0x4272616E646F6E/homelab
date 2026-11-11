@@ -35,6 +35,8 @@ spec:
               value: America/New_York
             - name: SONARR__AUTH__METHOD
               value: "External"
+            - name: SONARR__LOG__ANALYTICSENABLED
+              value: "False"
           ports:
             - containerPort: 8989
               protocol: TCP

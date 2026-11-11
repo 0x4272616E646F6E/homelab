@@ -17,6 +17,12 @@ spec:
   timeout: 10m
   releaseName: clickstack-operators
   values:
+    mongodb-operator:
+      operator:
+        telemetry:
+          enabled: false
+          send:
+            enabled: false
     clickhouse-operator:
       manager:
         args:

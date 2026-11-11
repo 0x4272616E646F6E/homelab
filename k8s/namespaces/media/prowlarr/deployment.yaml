@@ -40,6 +40,8 @@ spec:
               value: America/New_York
             - name: PROWLARR__AUTH__METHOD
               value: "External"
+            - name: PROWLARR__LOG__ANALYTICSENABLED
+              value: "False"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false
