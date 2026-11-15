@@ -35,7 +35,7 @@ spec:
               value: America/New_York
             - name: RADARR__AUTH__METHOD
               value: "External"
-\            - name: RADARR__LOG__ANALYTICSENABLED
+            - name: RADARR__LOG__ANALYTICSENABLED
               value: "False"
           ports:
             - containerPort: 7878
