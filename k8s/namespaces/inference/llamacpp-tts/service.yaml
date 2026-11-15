@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llamacpp-tts
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: llamacpp-tts
+spec:
+  ports:
+  - name: llamacpp-tts
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app.kubernetes.io/name: llamacpp-tts
+  sessionAffinity: None
+  type: ClusterIP

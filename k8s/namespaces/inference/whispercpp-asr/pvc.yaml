@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: whispercpp-asr-pvc
+  namespace: inference
+  labels:
+    app.kubernetes.io/name: whispercpp-asr
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path-rwo
+  resources:
+    requests:
+      storage: 10Gi

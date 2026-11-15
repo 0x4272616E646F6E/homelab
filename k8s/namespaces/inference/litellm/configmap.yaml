@@ -38,6 +38,24 @@ data:
           timeout: 60
         model_info:
           mode: rerank
+      - model_name: ZONOS3-Mini
+        litellm_params:
+          # llama-server rejects OpenAI voice names (alloy, ...); send a ZONOS3 voice
+          model: openai/ZONOS3-Mini
+          api_base: http://llamacpp-tts.inference.svc.cluster.local:8000/v1
+          api_key: none
+          timeout: 120
+        model_info:
+          mode: audio_speech
+      - model_name: whisper-large-v3-turbo
+        litellm_params:
+          # whisper-server ignores the model field; one model per pod
+          model: openai/whisper-large-v3-turbo
+          api_base: http://whisper-asr.inference.svc.cluster.local:8000/v1
+          api_key: none
+          timeout: 300
+        model_info:
+          mode: audio_transcription
     search_tools:
       - search_tool_name: searxng
         litellm_params:

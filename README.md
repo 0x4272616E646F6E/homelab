@@ -204,5 +204,6 @@ The following applications are managed through flux in this repository:
 - [**TinyAuth**](https://github.com/steveiliop56/tinyauth)
 - [**Tor-Browser**](https://github.com/kasmtech/workspaces-images/blob/develop/dockerfile-kasm-tor-browser)
 - [**VaultWarden**](https://github.com/dani-garcia/vaultwarden)
+- [**WhisperCPP**](https://github.com/ggml-org/whisper.cpp)
 - [**Wizarr**](https://github.com/wizarrrr/wizarr)
 </details>
