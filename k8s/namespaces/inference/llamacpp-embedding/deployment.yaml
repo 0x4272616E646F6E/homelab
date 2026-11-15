@@ -34,7 +34,7 @@ spec:
       containers:
       - name: llamacpp-embedding
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-intel
+        image: ghcr.io/ggml-org/llama.cpp:server-intel@sha256:a3a13d0956ba215b34e153919a3dfad4f9efc34ff20ec7535b0c436e1f88fb73
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
