@@ -39,7 +39,7 @@ spec:
       containers:
       - name: mem0
         # renovate: datasource=docker depName=dockette/memzero
-        image: docker.io/dockette/memzero:server-2.2.1@sha256:60e6e9e46a624dbd737cc81a20070c0632e614839ea885de9ad20ce2ef7c2f85
+        image: docker.io/dockette/memzero:server-2.2.1@sha256:14a5a266d6cf8b17c695ec40cee6f1b57f2df267e020bf46d280b2f8b6951b81
         imagePullPolicy: IfNotPresent
         env:
         - { name: TZ,                          value: America/New_York }
