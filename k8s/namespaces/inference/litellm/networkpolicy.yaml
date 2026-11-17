@@ -40,6 +40,10 @@ spec:
         - namespaceSelector:
             matchLabels:
               kubernetes.io/metadata.name: development
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: homeassistant
       ports:
         - port: 4000
           protocol: TCP
