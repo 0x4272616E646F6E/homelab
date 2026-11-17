@@ -13,6 +13,7 @@ resources:
   - llamacpp-decision-waf/
   - llamacpp-embedding/
   - llamacpp-reranker/
+  - llamacpp-tts/
   - whispercpp-asr/
   - qdrant/
   - mem0/

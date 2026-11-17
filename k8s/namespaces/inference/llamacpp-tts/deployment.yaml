@@ -38,11 +38,11 @@ spec:
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
-          - AtomicChat/ZONOS3-Mini-GGUF
+          - ggml-org/ZONOS3-Mini-GGUF
           - --hf-file
-          - ZONOS3-Mini-AD-Q4_K_M.gguf
+          - ZONOS3-Mini-Q8_0.gguf
           - --mmproj-url
-          - https://huggingface.co/AtomicChat/ZONOS3-Mini-GGUF/resolve/main/mmproj-ZONOS3-Mini-F16.gguf
+          - https://huggingface.co/ggml-org/ZONOS3-Mini-GGUF/resolve/main/mmproj-ZONOS3-Mini-F32.gguf
           - --alias
           - ZONOS3-Mini
           - --tts-voice
