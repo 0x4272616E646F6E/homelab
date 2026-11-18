@@ -99,7 +99,7 @@ The Talos installer image is used to bootstrap and install the Talos operating s
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
 - **Version**: `v1.14.4` (Kubernetes v1.36.3, kernel 6.18.57-talos).
-- **Extensions**: gasket-driver, i915, mei, nonfree-kmod-nvidia-production,
+- **Extensions**: gasket-driver, i915, mei, nvidia-open-gpu-kernel-modules-production,
   nvidia-container-toolkit-production, qemu-guest-agent, util-linux-tools, youki
   (`terraform/modules/talos/main.tf`). `mei` provides the Intel MEI GSC drivers the
   Arc A310 needs to authenticate its HuC firmware; without them i915 logs

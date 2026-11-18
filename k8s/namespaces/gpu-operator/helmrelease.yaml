@@ -25,7 +25,7 @@ spec:
       retries: 3
   values:
     # Drivers and container toolkit are provided by Talos system extensions
-    # (nonfree-kmod-nvidia-production, nvidia-container-toolkit-production).
+    # (nvidia-open-gpu-kernel-modules-production, nvidia-container-toolkit-production).
     driver:
       enabled: false
     toolkit:
