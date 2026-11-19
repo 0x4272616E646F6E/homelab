@@ -112,7 +112,8 @@ data:
           udp:
             listen_address: 0.0.0.0:1514
           protocol: rfc3164
-          location: UTC
+          location: America/Detroit
+          on_error: send_quiet
 
         k8sobjects:
           k8s_leader_elector: k8s_leader_elector/k8s_cluster
@@ -160,6 +161,19 @@ data:
                 - 'set(attributes["status_code"], Int(attributes["status"])) where attributes["status"] != nil'
                 - 'set(attributes["response_bytes"], Int(attributes["bytes_sent"])) where attributes["bytes_sent"] != nil'
 
+        # UniFi CEF lines mix UTC (UniFi OS) and local (Protect) header times,
+        # so the receive time is used instead of the header timestamp.
+        transform/unifi_cef:
+          error_mode: ignore
+          log_statements:
+            - context: log
+              conditions:
+                - IsMatch(body, "^\\w{3} +\\d+ \\d{2}:\\d{2}:\\d{2} \\S+ CEF:")
+              statements:
+                - 'merge_maps(attributes, ExtractPatterns(body, "^\\w{3} +\\d+ \\d{2}:\\d{2}:\\d{2} (?P<hostname>\\S+) CEF:(?P<cef_version>\\d+)\\|(?P<cef_vendor>[^|]*)\\|(?P<appname>[^|]*)\\|(?P<cef_product_version>[^|]*)\\|(?P<cef_event_class_id>[^|]*)\\|(?P<cef_name>[^|]*)\\|(?P<cef_severity>[^|]*)\\|(?P<cef_extension>.*)$"), "upsert")'
+                - 'merge_maps(attributes, ExtractPatterns(attributes["cef_extension"], "(?:^| )msg=\"?(?P<message>.*?)\"?$"), "upsert") where attributes["cef_extension"] != nil'
+                - 'set(time, observed_time)'
+
       exporters:
         otlphttp:
           endpoint: "http://clickstack-otel-collector.monitoring.svc.cluster.local:4318"
@@ -180,7 +194,7 @@ data:
           # from and the processor would only add lookup churn.
           logs/syslog:
             receivers: [syslog]
-            processors: [memory_limiter, batch]
+            processors: [memory_limiter, transform/unifi_cef, batch]
             exporters: [otlphttp]
           logs/k8s_events:
             receivers: [k8sobjects]
