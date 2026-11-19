@@ -50,7 +50,7 @@ data:
               value:
                 name: decision-waf-module
                 configMap:
-                  name: decision-waf-nginx-module-ngf2.8.0
+                  name: decision-waf-nginx-module-ngf2.9.0
             - op: add
               path: /spec/template/spec/containers/0/volumeMounts/-
               value:
