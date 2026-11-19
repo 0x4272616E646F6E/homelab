@@ -62,6 +62,12 @@ data:
               values:
                 - [kube-service, wireguard, /usr/bin/ip]
                 - [media, port-forward-sync, /usr/bin/natpmpc]
+            - name: homelab_runtime_downloaded_binaries
+              fields: [k8s.ns.name, container.name, proc.exepath]
+              comps: [=, =, startswith]
+              values:
+                - [media, tdarr, /app/Tdarr_Server/assets/app/ffmpeg/]
+                - [media, flaresolverr, /app/chromedriver]
           override:
             exceptions: append
 
@@ -74,11 +80,32 @@ data:
                 - system:serviceaccount:flux-system:kustomize-controller
                 - system:serviceaccount:flux-system:source-controller
                 - system:serviceaccount:flux-system:helm-controller
+                - system:serviceaccount:kube-service:reflector
             - name: homelab_mongodb_agent_config
               fields: [ka.user.name, ka.target.namespace, ka.target.name]
               comps: [=, =, =]
               values:
                 - [system:serviceaccount:monitoring:mongodb-kubernetes-appdb, monitoring, clickstack-mongodb-config]
+          override:
+            exceptions: append
+
+        - rule: Create/Modify Configmap With Private Credentials
+          exceptions:
+            - name: homelab_empty_credential_keys
+              fields: [ka.target.namespace, ka.req.configmap.name]
+              comps: [=, =]
+              values:
+                - [development, renovate-config-map]
+          override:
+            exceptions: append
+
+        - rule: Fileless execution via memfd_create
+          exceptions:
+            - name: homelab_runc_sealed_memfd
+              fields: [proc.exepath, proc.pname]
+              comps: [=, =]
+              values:
+                - [memfd:pentacle_sealed, containerd-shim]
           override:
             exceptions: append
     falco:
