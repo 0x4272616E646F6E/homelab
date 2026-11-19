@@ -96,6 +96,7 @@ data:
               comps: [=, =]
               values:
                 - [development, renovate-config-map]
+                - [media, qbittorrent-port-forward-sync]
           override:
             exceptions: append
 

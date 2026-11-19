@@ -22,6 +22,19 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: ConfigMap
+              name: spire-bundle
+            patch: |
+              apiVersion: v1
+              kind: ConfigMap
+              metadata:
+                name: spire-bundle
+                annotations:
+                  reloader.stakater.com/ignore: "true"
   valuesFrom:
   - kind: ConfigMap
     name: cilium-config-map
