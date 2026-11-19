@@ -20,6 +20,7 @@ data:
     presets:
       logsCollection:
         enabled: true
+        storeCheckpoints: true
       hostMetrics:
         enabled: true
       kubernetesAttributes:
@@ -63,6 +64,11 @@ data:
         containerPort: 1514
         servicePort: 1514
         protocol: UDP
+      talos-logs:
+        enabled: true
+        containerPort: 5170
+        servicePort: 5170
+        protocol: TCP
 
     extraEnvs:
       - name: HYPERDX_API_KEY
@@ -108,6 +114,39 @@ data:
           protocol: rfc3164
           location: UTC
 
+        k8sobjects:
+          k8s_leader_elector: k8s_leader_elector/k8s_cluster
+          objects:
+            - name: events
+              mode: watch
+              group: events.k8s.io
+              exclude_watch_type: [DELETED]
+
+        tcp_log/talos:
+          listen_address: 0.0.0.0:5170
+          operators:
+            - type: json_parser
+              timestamp:
+                parse_from: attributes["talos-time"]
+                layout_type: gotime
+                layout: '2006-01-02T15:04:05.999999999Z07:00'
+              severity:
+                parse_from: attributes["talos-level"]
+            - type: move
+              from: attributes.msg
+              to: body
+            - type: move
+              if: 'attributes["talos-service"] != nil'
+              from: attributes["talos-service"]
+              to: resource["service.name"]
+            - type: add
+              if: 'resource["service.name"] == nil'
+              field: resource["service.name"]
+              value: kernel
+            - type: add
+              field: resource["k8s.node.name"]
+              value: '${env:K8S_NODE_NAME}'
+
       processors:
         transform/nginx:
           error_mode: ignore
@@ -141,5 +180,13 @@ data:
           # from and the processor would only add lookup churn.
           logs/syslog:
             receivers: [syslog]
+            processors: [memory_limiter, batch]
+            exporters: [otlphttp]
+          logs/k8s_events:
+            receivers: [k8sobjects]
+            processors: [memory_limiter, batch]
+            exporters: [otlphttp]
+          logs/talos:
+            receivers: [tcp_log/talos]
             processors: [memory_limiter, batch]
             exporters: [otlphttp]

@@ -37,6 +37,7 @@ resource "talos_machine_configuration_apply" "this" {
   config_patches = [
     local.machine_patch,
     local.cluster_patch,
+    local.kmsg_log_patch,
   ]
 
   timeouts {

@@ -127,6 +127,18 @@ The Talos installer image is used to bootstrap and install the Talos operating s
     --patch '{"machine":{"install":{"image":"factory.talos.dev/nocloud-installer/${IMAGE_HASH}:${IMAGE_VERSION}"}}}'
   ```
   Take an etcd snapshot first: `talosctl -n ${NODE_IP} etcd snapshot .local/talos/etcd-pre-<version>.snapshot`.
+- **Log shipping**: machined service logs and kernel logs go to ClickStack through the
+  otel-k8s agent's fixed ClusterIP `10.98.112.13:5170` (json_lines over TCP). Both apply
+  without a reboot; copy the result to the Proxmox snippet afterwards:
+  ```bash
+  talosctl -n ${NODE_IP} patch machineconfig --mode=no-reboot \
+    --patch '{"machine":{"logging":{"destinations":[{"endpoint":"tcp://10.98.112.13:5170/","format":"json_lines"}]}}}'
+  talosctl -n ${NODE_IP} patch machineconfig --mode=no-reboot --patch '
+  apiVersion: v1alpha1
+  kind: KmsgLogConfig
+  name: otel-k8s
+  url: tcp://10.98.112.13:5170/'
+  ```
 
 You can use this image to PXE boot or manually install Talos on your nodes.
 

@@ -187,6 +187,23 @@ locals {
     }
   }
 
+  # Ship machined service logs and kernel logs to the otel-k8s agent via its
+  # fixed ClusterIP Service (k8s/namespaces/monitoring/otel-k8s).
+  talos_logs_endpoint = "tcp://10.98.112.13:5170/"
+
+  machine_logging = {
+    destinations = [
+      { endpoint = local.talos_logs_endpoint, format = "json_lines" },
+    ]
+  }
+
+  kmsg_log_patch = yamlencode({
+    apiVersion = "v1alpha1"
+    kind       = "KmsgLogConfig"
+    name       = "otel-k8s"
+    url        = local.talos_logs_endpoint
+  })
+
   machine_node_labels = {
     "node.kubernetes.io/exclude-from-external-load-balancers" = ""
   }
@@ -204,6 +221,7 @@ locals {
       sysfs      = local.machine_sysfs
       time       = local.machine_time
       registries = local.machine_registries
+      logging    = local.machine_logging
     }
   })
 
