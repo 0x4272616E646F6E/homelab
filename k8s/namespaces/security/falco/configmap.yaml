@@ -52,6 +52,35 @@ data:
         ports:
           - port: 9765
             protocol: TCP
+    customRules:
+      homelab-exceptions.yaml: |-
+        - rule: Drop and execute new binary in container
+          exceptions:
+            - name: homelab_runtime_installed_tools
+              fields: [k8s.ns.name, container.name, proc.exepath]
+              comps: [=, =, =]
+              values:
+                - [kube-service, wireguard, /usr/bin/ip]
+                - [media, port-forward-sync, /usr/bin/natpmpc]
+          override:
+            exceptions: append
+
+        - rule: K8s Secret Get Successfully
+          exceptions:
+            - name: homelab_flux_controllers
+              fields: ka.user.name
+              comps: in
+              values:
+                - system:serviceaccount:flux-system:kustomize-controller
+                - system:serviceaccount:flux-system:source-controller
+                - system:serviceaccount:flux-system:helm-controller
+            - name: homelab_mongodb_agent_config
+              fields: [ka.user.name, ka.target.namespace, ka.target.name]
+              comps: [=, =, =]
+              values:
+                - [system:serviceaccount:monitoring:mongodb-kubernetes-appdb, monitoring, clickstack-mongodb-config]
+          override:
+            exceptions: append
     falco:
       json_output: true
       rules_files:
