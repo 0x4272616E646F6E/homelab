@@ -34,7 +34,7 @@ spec:
       initContainers:
       - name: fetch-model
         # renovate: datasource=docker depName=ghcr.io/ggml-org/whisper.cpp
-        image: ghcr.io/ggml-org/whisper.cpp:main-intel@sha256:13c655eb88a6d61c285dfd2304421b485abf73bf6ae1900c9907e76c223ab7cc
+        image: ghcr.io/ggml-org/whisper.cpp:main-intel@sha256:0446ff986679e11203842ff92d8d3068c439030d3a303693fba9884734b2f552
         imagePullPolicy: IfNotPresent
         command: ["bash", "-c"]
         args:
@@ -59,7 +59,7 @@ spec:
       containers:
       - name: whispercpp-asr
         # renovate: datasource=docker depName=ghcr.io/ggml-org/whisper.cpp
-        image: ghcr.io/ggml-org/whisper.cpp:main-intel@sha256:13c655eb88a6d61c285dfd2304421b485abf73bf6ae1900c9907e76c223ab7cc
+        image: ghcr.io/ggml-org/whisper.cpp:main-intel@sha256:0446ff986679e11203842ff92d8d3068c439030d3a303693fba9884734b2f552
         imagePullPolicy: IfNotPresent
         command: ["whisper-server"]
         args:
