@@ -52,3 +52,11 @@ data:
     mongodb:
       spec:
         members: 1
+        statefulSet:
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: mongodb-agent
+                    readinessProbe:
+                      timeoutSeconds: 5
