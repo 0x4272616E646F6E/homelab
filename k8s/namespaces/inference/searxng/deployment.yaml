@@ -48,7 +48,7 @@ spec:
       containers:
       - name: searxng
         # renovate: datasource=docker depName=ghcr.io/searxng/searxng
-        image: ghcr.io/searxng/searxng:2026.11.20-a7959eeaf@sha256:7c7c519639923552d54f19d32b1a88a116996966e67b7aaef9b8a39eee5bfd16
+        image: ghcr.io/searxng/searxng:2026.11.21-c6ee3e9fd@sha256:fc1d81d7e9d04d3c8b3e23c7162feddf5c3d6aecd32e67a56eaabcb8d8747f79
         imagePullPolicy: IfNotPresent
         env:
         - { name: TZ, value: America/New_York }
