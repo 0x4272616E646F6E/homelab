@@ -34,7 +34,7 @@ spec:
       containers:
       - name: llamacpp-decision-waf
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-intel@sha256:56df0a745f16eed7c819c929a9b40038d169509d8d3f05edc08fd11252d14c49
+        image: ghcr.io/ggml-org/llama.cpp:server-intel@sha256:82487673c8b07050643802782fd31ffd3c417fd5de15ecba5c76064d0b6b280b
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
