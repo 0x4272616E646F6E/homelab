@@ -398,6 +398,7 @@ data:
         enabled: false
       socketLB:
         enabled: true
+        hostNamespaceOnly: true
       certgen:
         generateCA: true
         image:
