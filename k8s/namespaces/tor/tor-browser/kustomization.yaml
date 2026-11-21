@@ -11,3 +11,8 @@ resources:
   - httproute.yaml
   - networkpolicy.yaml
   - cronjob.yaml
+configMapGenerator:
+  - name: tor-browser-cfg
+    files:
+      - browser-cfg/autoconfig.js
+      - browser-cfg/mozilla.cfg

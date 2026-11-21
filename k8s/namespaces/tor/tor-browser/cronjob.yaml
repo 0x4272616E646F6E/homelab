@@ -49,12 +49,28 @@ spec:
           serviceAccountName: tor-browser-restart
           restartPolicy: OnFailure
           automountServiceAccountToken: true
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
           containers:
             - name: restart
               image: alpine/k8s:1.37.2@sha256:7a82aeefea3d554a43a8676b137f2b88bae6c1fe11c13862b191b3a086cc28c0
               env:
                 - name: TZ
                   value: America/New_York
+                - name: HOME
+                  value: /tmp
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
               command:
                 - kubectl
                 - rollout
@@ -62,3 +78,6 @@ spec:
                 - deployment/tor-browser
                 - -n
                 - tor
+          volumes:
+            - name: tmp
+              emptyDir: {}
