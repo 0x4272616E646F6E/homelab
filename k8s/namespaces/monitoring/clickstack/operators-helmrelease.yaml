@@ -45,4 +45,7 @@ spec:
               - op: replace
                 path: /spec/strategy
                 value:
-                  type: Recreate
+                  type: RollingUpdate
+                  rollingUpdate:
+                    maxSurge: 0
+                    maxUnavailable: 1
