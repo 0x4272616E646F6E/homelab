@@ -370,3 +370,55 @@ allowedRoles:
   - os:etcd:backup
 allowedKubernetesNamespaces:
   - kube-system
+---
+apiVersion: v1alpha1
+kind: NetworkDefaultActionConfig
+ingress: block
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: cluster-internal-tcp
+portSelector:
+  ports:
+    - 1-65535
+  protocol: tcp
+ingress:
+  - subnet: 10.244.0.0/16
+  - subnet: 10.0.0.250/32
+  - subnet: 10.2.0.2/32
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: cluster-internal-udp
+portSelector:
+  ports:
+    - 1-65535
+  protocol: udp
+ingress:
+  - subnet: 10.244.0.0/16
+  - subnet: 10.0.0.250/32
+  - subnet: 10.2.0.2/32
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: talos-api
+portSelector:
+  ports:
+    - 50000
+  protocol: tcp
+ingress:
+  - subnet: 10.0.0.0/8
+  - subnet: 172.16.0.0/12
+  - subnet: 192.168.0.0/16
+---
+apiVersion: v1alpha1
+kind: NetworkRuleConfig
+name: kubernetes-api
+portSelector:
+  ports:
+    - 6443
+  protocol: tcp
+ingress:
+  - subnet: 10.0.0.0/8
+  - subnet: 172.16.0.0/12
+  - subnet: 192.168.0.0/16

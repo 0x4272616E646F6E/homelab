@@ -59,6 +59,18 @@ data:
         "controlledValues": "RequestsOnly" } ] }
 
     ports:
+      otlp:
+        enabled: false
+      otlp-http:
+        enabled: false
+      jaeger-compact:
+        enabled: false
+      jaeger-thrift:
+        enabled: false
+      jaeger-grpc:
+        enabled: false
+      zipkin:
+        enabled: false
       syslog-udp:
         enabled: true
         containerPort: 1514
