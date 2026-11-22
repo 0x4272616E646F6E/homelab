@@ -19,11 +19,12 @@ spec:
         app.kubernetes.io/name: sonarr
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: youki
+      runtimeClassName: gvisor
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsNonRoot: false
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: sonarr
@@ -37,6 +38,22 @@ spec:
               value: "External"
             - name: SONARR__LOG__ANALYTICSENABLED
               value: "False"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           ports:
             - containerPort: 8989
               protocol: TCP

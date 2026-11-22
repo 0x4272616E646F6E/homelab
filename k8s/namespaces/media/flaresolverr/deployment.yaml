@@ -30,7 +30,7 @@ spec:
         options:
           - name: ndots
             value: "5"
-      runtimeClassName: youki
+      runtimeClassName: gvisor
       automountServiceAccountToken: false
       securityContext:
         runAsUser: 1000

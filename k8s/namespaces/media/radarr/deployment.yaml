@@ -19,11 +19,14 @@ spec:
         app.kubernetes.io/name: radarr
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: youki
+      runtimeClassName: gvisor
+      # s6-overlay's rootless mode fails under gVisor (/run ownership,
+      # setgroups), so init runs as root with minimal caps and drops to PUID
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsNonRoot: false
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: radarr
@@ -37,6 +40,22 @@ spec:
               value: "External"
             - name: RADARR__LOG__ANALYTICSENABLED
               value: "False"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           ports:
             - containerPort: 7878
               protocol: TCP

@@ -19,7 +19,7 @@ spec:
         app.kubernetes.io/name: suwayomi
         app.kubernetes.io/managed-by: flux
     spec:
-      runtimeClassName: youki
+      runtimeClassName: gvisor
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
