@@ -26,6 +26,7 @@ spec:
         app.kubernetes.io/name: open-webui
         app.kubernetes.io/managed-by: flux
     spec:
+      runtimeClassName: gvisor
       terminationGracePeriodSeconds: 60
       automountServiceAccountToken: false
       securityContext:

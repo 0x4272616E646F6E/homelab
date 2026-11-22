@@ -32,11 +32,12 @@ spec:
         options:
           - name: ndots
             value: "5"
-      runtimeClassName: youki
+      runtimeClassName: gvisor
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsNonRoot: false
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       initContainers:
         - name: init-nzbget
@@ -72,6 +73,18 @@ spec:
               value: "1000"
             - name: PGID
               value: "1000"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           ports:
             - containerPort: 6789
           resources:

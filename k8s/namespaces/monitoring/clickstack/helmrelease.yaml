@@ -41,6 +41,9 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 60
+              - op: add
+                path: /spec/template/spec/runtimeClassName
+                value: gvisor
   valuesFrom:
   - kind: ConfigMap
     name: clickstack-config-map

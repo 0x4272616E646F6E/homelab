@@ -27,6 +27,7 @@ spec:
         app.kubernetes.io/name: forgejo
         app.kubernetes.io/managed-by: flux
     spec:
+      runtimeClassName: gvisor
       automountServiceAccountToken: false
       containers:
         - name: forgejo

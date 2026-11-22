@@ -24,6 +24,16 @@ spec:
     remediation:
       retries: 3
   releaseName: goldilocks
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: goldilocks-dashboard
+            patch: |
+              - op: add
+                path: /spec/template/spec/runtimeClassName
+                value: gvisor
   valuesFrom:
   - kind: ConfigMap
     name: goldilocks-config-map

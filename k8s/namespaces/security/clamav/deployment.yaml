@@ -29,6 +29,7 @@ spec:
         app.kubernetes.io/component: daemon
         app.kubernetes.io/managed-by: flux
     spec:
+      runtimeClassName: gvisor
       automountServiceAccountToken: false
       initContainers:
         - name: fix-permissions

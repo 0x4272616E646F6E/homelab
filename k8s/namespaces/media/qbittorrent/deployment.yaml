@@ -32,6 +32,7 @@ spec:
         app.kubernetes.io/managed-by: flux
         app.kubernetes.io/egress: wireguard
     spec:
+      runtimeClassName: gvisor
       dnsPolicy: None
       dnsConfig:
         nameservers:
