@@ -52,7 +52,10 @@ machine:
         ephemeral-storage: 5Gi
         memory: 2Gi
       maxParallelImagePulls: 3
+      podPidsLimit: 8192
       serializeImagePulls: false
+      shutdownGracePeriod: 120s
+      shutdownGracePeriodCriticalPods: 30s
       systemReserved:
         cpu: 1000m
         ephemeral-storage: 10Gi
