@@ -93,6 +93,8 @@ spec:
           env:
             - name: TZ
               value: America/New_York
+            - name: CLAMAV_NO_FRESHCLAMD
+              value: "true"
           ports:
             - name: clamd
               containerPort: 3310
