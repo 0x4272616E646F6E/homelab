@@ -34,7 +34,7 @@ spec:
       containers:
       - name: llamacpp-tts
         # renovate: datasource=docker depName=ghcr.io/ggml-org/llama.cpp
-        image: ghcr.io/ggml-org/llama.cpp:server-intel@sha256:82487673c8b07050643802782fd31ffd3c417fd5de15ecba5c76064d0b6b280b
+        image: ghcr.io/ggml-org/llama.cpp:server-intel@sha256:7c8a73ebb7226c2f1fc12e69dd2e3c89c53bb92ffe7886833c561ffc2cb14aed
         imagePullPolicy: IfNotPresent
         args:
           - --hf-repo
