@@ -36,6 +36,26 @@ spec:
                 annotations:
                   reloader.stakater.com/ignore: "true"
           - target:
+              kind: DaemonSet
+              name: cilium
+            patch: |
+              apiVersion: apps/v1
+              kind: DaemonSet
+              metadata:
+                name: cilium
+                annotations:
+                  reloader.stakater.com/auto: "false"
+          - target:
+              kind: Deployment
+              name: hubble-relay
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: hubble-relay
+                annotations:
+                  reloader.stakater.com/auto: "false"
+          - target:
               kind: Deployment
               name: hubble-ui
             patch: |
