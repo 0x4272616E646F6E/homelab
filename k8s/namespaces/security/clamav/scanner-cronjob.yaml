@@ -30,6 +30,7 @@ spec:
             app.kubernetes.io/name: clamav
             app.kubernetes.io/component: scanner
         spec:
+          runtimeClassName: gvisor
           automountServiceAccountToken: false
           restartPolicy: Never
           initContainers:

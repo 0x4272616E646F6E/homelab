@@ -8,7 +8,7 @@ metadata:
     goldilocks.fairwinds.com/vpa-resource-policy: >
       { "containerPolicies": [
       { "containerName": "qdrant",
-      "minAllowed": { "cpu": "500m", "memory": "4Gi" },
+      "minAllowed": { "cpu": "100m", "memory": "4Gi" },
       "maxAllowed": { "cpu": "4", "memory": "16Gi" },
       "controlledValues": "RequestsOnly" } ] }
   labels:

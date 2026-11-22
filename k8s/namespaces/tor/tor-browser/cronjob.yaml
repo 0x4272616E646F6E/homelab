@@ -46,6 +46,7 @@ spec:
       ttlSecondsAfterFinished: 3600
       template:
         spec:
+          runtimeClassName: gvisor
           serviceAccountName: tor-browser-restart
           restartPolicy: OnFailure
           automountServiceAccountToken: true

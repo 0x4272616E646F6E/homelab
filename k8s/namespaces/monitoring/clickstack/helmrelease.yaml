@@ -44,6 +44,9 @@ spec:
               - op: add
                 path: /spec/template/spec/runtimeClassName
                 value: gvisor
+              - op: add
+                path: /spec/template/spec/automountServiceAccountToken
+                value: false
   valuesFrom:
   - kind: ConfigMap
     name: clickstack-config-map

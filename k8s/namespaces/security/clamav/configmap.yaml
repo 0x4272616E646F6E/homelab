@@ -101,19 +101,20 @@ data:
     echo "=== ClamAV Cluster Scan Started: $(date) ==="
     echo "Waiting for clamd to be ready..."
     
-    # clamd runs as a sidecar in this pod on a UNIX socket in a shared emptyDir.
-    CLAMD_SOCKET="${CLAMD_SOCKET:-/run/clamav/clamd.sock}"
+    CLAMD_ADDR="${CLAMD_ADDR:-127.0.0.1}"
+    CLAMD_PORT="${CLAMD_PORT:-3310}"
     cat > /tmp/clamd-local.conf <<CONF
-    LocalSocket ${CLAMD_SOCKET}
+    TCPSocket ${CLAMD_PORT}
+    TCPAddr ${CLAMD_ADDR}
     ExcludePath ^.*/pvc-.*clamav-quarantine.*
     CONF
 
     # clamd needs 1-2 min to load signatures; --ping waits rather than guessing.
     if ! clamdscan --config-file=/tmp/clamd-local.conf --ping 60:5 >/dev/null 2>&1; then
-      echo "ERROR: clamd did not become ready on ${CLAMD_SOCKET}"
+      echo "ERROR: clamd did not become ready on ${CLAMD_ADDR}:${CLAMD_PORT}"
       exit 1
     fi
-    echo "clamd is ready on ${CLAMD_SOCKET}"
+    echo "clamd is ready on ${CLAMD_ADDR}:${CLAMD_PORT}"
     
     # Scan paths
     SCAN_PATHS="${SCAN_PATHS:-/media}"
@@ -128,7 +129,7 @@ data:
     
     # Run scan
     # --multiscan: Use multiple threads
-    # --fdpass: Pass file descriptors (faster for clamd)
+    # --stream: Send file contents to clamd over TCP
     # --infected: Only show infected files
     # --copy: Copy infected files to quarantine (source mount is readOnly)
 
@@ -145,7 +146,7 @@ data:
     clamdscan \
       --config-file=/tmp/clamd-local.conf \
       --multiscan \
-      --fdpass \
+      --stream \
       --infected \
       --copy="$QUARANTINE_DIR" \
       --file-list="$SCAN_LIST" || EXIT_CODE=$?
