@@ -6,6 +6,8 @@ metadata:
   namespace: kube-system
 spec:
   interval: 10m
+  driftDetection:
+    mode: warn
   timeout: 5m
   targetNamespace: kube-system
   releaseName: local-path-provisioner

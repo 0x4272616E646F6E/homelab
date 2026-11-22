@@ -44,13 +44,6 @@ data:
     controller:
       enabled: true
       logVerbosity: "1"
-      flags:
-        ignore-controller-kind: EphemeralRunner,EphemeralRunnerSet,AutoscalingListener,AutoscalingRunnerSet
-      rbac:
-        extraRules:
-          - apiGroups: ["actions.github.com"]
-            resources: ["ephemeralrunners", "ephemeralrunnersets", "autoscalinglisteners", "autoscalingrunnersets"]
-            verbs: ["get", "list", "watch"]
       resources:
         requests:
           cpu: 25m
@@ -60,11 +53,6 @@ data:
     dashboard:
       enabled: true
       replicaCount: 1
-      rbac:
-        extraRules:
-          - apiGroups: ["actions.github.com"]
-            resources: ["ephemeralrunners", "ephemeralrunnersets", "autoscalinglisteners", "autoscalingrunnersets"]
-            verbs: ["get", "list", "watch"]
       resources:
         requests:
           cpu: 25m

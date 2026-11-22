@@ -6,6 +6,8 @@
     ":semanticCommitTypeAll(chore)"
   ],
   "dependencyDashboard": true,
+  "minimumReleaseAge": "5 days",
+  "internalChecksFilter": "strict",
   "prHourlyLimit": 20,
   "prConcurrentLimit": 20,
   "rangeStrategy": "replace",
@@ -139,6 +141,16 @@
     {
       "description": "Require review for GitHub Actions updates (supply chain)",
       "matchManagers": ["github-actions"],
+      "automerge": false
+    },
+    {
+      "description": "Never auto-merge the CNI, certificate, GPU and runtime-security stacks. They run privileged or sit in every request path on a single node, so a bad release takes the cluster down; these get a human look first.",
+      "matchPackageNames": [
+        "/(^|/)cilium(/|$)/",
+        "/(^|/)cert-manager(-|/|$)/",
+        "/(^|/)gpu-operator(/|$)/",
+        "/(^|/)falco(security)?(/|-|$)/"
+      ],
       "automerge": false
     },
     {

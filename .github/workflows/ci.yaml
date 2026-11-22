@@ -48,12 +48,28 @@ jobs:
           else
             # CRDs-catalog covers Flux/cert-manager/etc; -ignore-missing-schemas
             # kept as fallback for CRDs absent from the catalog
-            kubeconform -summary -strict -ignore-missing-schemas -kubernetes-version 1.30.0 \
+            kubeconform -summary -strict -ignore-missing-schemas -kubernetes-version 1.36.3 \
               -schema-location default \
               -schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}-standalone/{{.ResourceKind}}.json' \
               -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
               "${FILES[@]}"
           fi
+
+  kustomize-build:
+    name: Build Kustomizations
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Build every kustomization root
+        run: |
+          set -euo pipefail
+          for dir in k8s/namespaces/*/ k8s/clusters/*/flux-system/; do
+            echo "::group::${dir}"
+            kubectl kustomize "${dir}" > /dev/null
+            echo "::endgroup::"
+          done
 
   gitleaks:
     name: Secret scan (diff)

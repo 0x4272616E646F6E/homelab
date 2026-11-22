@@ -6,6 +6,8 @@ metadata:
   namespace: gpu-operator
 spec:
   interval: 10m
+  driftDetection:
+    mode: warn
   timeout: 10m
   targetNamespace: gpu-operator
   releaseName: gpu-operator

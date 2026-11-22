@@ -159,7 +159,6 @@ The following applications are managed through flux in this repository:
 <details>
   <summary><b>Click here to view Applications</b></summary>
 
-- [**Actions Runner Controller**](https://github.com/actions/actions-runner-controller)
 - [**decision-waf**](https://github.com/0x4272616E646F6E/decision-waf)
 - [**decision-waf NGINX module**](https://github.com/0x4272616E646F6E/decision-waf-nginx-module)
 - [**Anubis**](https://github.com/TecharoHQ/anubis)

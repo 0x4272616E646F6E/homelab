@@ -94,14 +94,14 @@ kubectl scale deployment pod -n ns --replicas=0
 The Talos installer image is used to bootstrap and install the Talos operating system on your nodes. Below is the specific image version being used:
 
 ```bash
-  factory.talos.dev/nocloud-installer/952fe926cae4dc14a5aa434d3da855b1e4bdbfba406cdbd6694f91a346c1e258:v1.14.4
+  factory.talos.dev/nocloud-installer/875adc3eabefbedfbf479c627ecb5ce8355fcea668fb7859d5dcc3630af0fdcd:v1.14.6
 ```
 
 - **Image Source**: The image is hosted on `factory.talos.dev`, which is the official Talos image repository.
-- **Version**: `v1.14.4` (Kubernetes v1.36.3, kernel 6.18.57-talos).
-- **Extensions**: gasket-driver, i915, mei, nvidia-open-gpu-kernel-modules-production,
-  nvidia-container-toolkit-production, qemu-guest-agent, util-linux-tools, youki
-  (`terraform/modules/talos/main.tf`). `mei` provides the Intel MEI GSC drivers the
+- **Version**: `v1.14.6` (Kubernetes v1.36.3, kernel 6.18.63-talos).
+- **Extensions**: gasket-driver, gvisor, i915, mei, nvidia-container-toolkit-production,
+  nvidia-open-gpu-kernel-modules-production, qemu-guest-agent, util-linux-tools, xe, youki
+  (`docs/schematic.yaml`; the image hash is the schematic ID, and it depends on the list order). `mei` provides the Intel MEI GSC drivers the
   Arc A310 needs to authenticate its HuC firmware; without them i915 logs
   `HuC: timed out waiting for MEI GSC` and the low-power H.264/HEVC encoder only does
   constant QP (no VBR/CBR/ICQ for Jellyfin or tdarr).

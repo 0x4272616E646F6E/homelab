@@ -14,6 +14,8 @@ spec:
         name: metrics-server
         namespace: flux-system
   interval: 1h
+  driftDetection:
+    mode: warn
   timeout: 5m
   releaseName: metrics-server
   install:

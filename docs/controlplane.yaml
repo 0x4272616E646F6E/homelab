@@ -3,51 +3,25 @@ debug: false
 persist: true
 machine:
   type: controlplane
-  token: 
+  token: ""
   ca:
-    crt: ==
-    key: 
+    crt: ""
+    key: ""
   certSANs: []
-  network:
-    hostname: talos-4m3-8nj
-    interfaces:
-      - interface: eth0
-        addresses:
-          - 10.0.0.250/24
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.0.0.1
-            metric: 100
-      - interface: wg0
-        addresses:
-          - 10.2.0.2/32
-        wireguard:
-          # Proton VPN: Talos-NAT-PMP
-          privateKey: ""
-          peers:
-            - publicKey: ""
-              endpoint:
-              allowedIPs:
-                - 0.0.0.0/0
-                - ::/0
-              persistentKeepaliveInterval: 10s
   kubelet:
-    image: ghcr.io/siderolabs/kubelet:v1.35.1@sha256:58045fb4286ffa7d6973dca5fe019a4c79673f2c1f21684d43bf33d2d17ef0e4
-    defaultRuntimeSeccompProfileEnabled: true
-    disableManifestsDirectory: true
+    image: ghcr.io/siderolabs/kubelet:v1.36.3
     extraArgs:
-      node-ip: 10.0.0.250
       address: 0.0.0.0
-      max-pods: "250"
-      event-qps: "0"
-      registry-qps: "0"
-      pods-per-core: "0"
-      serialize-image-pulls: "true"
-      registry-burst: "5"
-      container-log-max-size: "10Mi"
       container-log-max-files: "3"
+      container-log-max-size: 10Mi
+      event-qps: "0"
+      kube-api-burst: "80"
       kube-api-qps: "50"
-      kube-api-burst: "100"
+      max-pods: "250"
+      node-ip: 10.0.0.250
+      pods-per-core: "0"
+      registry-burst: "5"
+      registry-qps: "0"
     extraMounts:
       - destination: /dev/dri
         type: bind
@@ -64,22 +38,110 @@ machine:
           - rshared
           - rw
     extraConfig:
+      evictionHard:
+        memory.available: 500Mi
+        nodefs.available: 10%
       featureGates:
         UserNamespacesSupport: true
-      systemReserved:
-        cpu: "1000m"
-        memory: "2Gi"
-        ephemeral-storage: "10Gi"
-      kubeReserved:
-        cpu: "1000m"
-        memory: "2Gi"
-        ephemeral-storage: "5Gi"
-      evictionHard:
-        memory.available: "500Mi"
-        nodefs.available: "10%"
       imageGCHighThresholdPercent: 70
       imageGCLowThresholdPercent: 50
       imageMinimumGCAge: 2m0s
+      kubeReserved:
+        cpu: 1000m
+        ephemeral-storage: 5Gi
+        memory: 2Gi
+      maxParallelImagePulls: 3
+      serializeImagePulls: false
+      systemReserved:
+        cpu: 1000m
+        ephemeral-storage: 10Gi
+        memory: 2Gi
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
+  network:
+    hostname: talos-4m3-8nj
+    interfaces:
+      - interface: eth0
+        addresses:
+          - 10.0.0.250/24
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.0.0.1
+            metric: 100
+      - interface: wg0
+        addresses:
+          - 10.2.0.2/32
+        wireguard:
+          privateKey: ""
+          peers:
+            - publicKey: ""
+              endpoint: ""
+              persistentKeepaliveInterval: 20s
+              allowedIPs:
+                - 0.0.0.0/0
+                - ::/0
+  install:
+    disk: /dev/sda
+    image: factory.talos.dev/nocloud-installer/875adc3eabefbedfbf479c627ecb5ce8355fcea668fb7859d5dcc3630af0fdcd:v1.14.6
+    wipe: null
+  files:
+    - content: |
+        apiVersion: v1
+        kind: Config
+        clusters:
+          - name: falco
+            cluster:
+              server: http://10.98.112.12:9765/k8s-audit
+        contexts:
+          - name: falco
+            context:
+              cluster: falco
+              user: ""
+        current-context: falco
+        preferences: {}
+        users: []
+      permissions: 0o644
+      path: /var/lib/kube-apiserver-audit/webhook.yaml
+      op: create
+  time:
+    disabled: false
+    servers:
+      - time.cloudflare.com
+  sysctls:
+    fs.inotify.max_user_instances: "8192"
+    net.core.bpf_jit_harden: "1"
+    net.core.rmem_max: "2500000"
+    net.core.somaxconn: "65535"
+    net.core.wmem_max: "16777216"
+    net.ipv4.conf.all.arp_announce: "2"
+    net.ipv4.conf.all.arp_ignore: "0"
+    net.ipv4.conf.all.arp_notify: "1"
+    net.ipv4.conf.all.forwarding: "1"
+    net.ipv4.conf.default.arp_announce: "2"
+    net.ipv4.conf.default.arp_ignore: "0"
+    net.ipv4.conf.eth0.arp_announce: "2"
+    net.ipv4.conf.eth0.arp_ignore: "0"
+    net.ipv4.conf.wg0.rp_filter: "2"
+    net.ipv4.tcp_fin_timeout: "15"
+    net.ipv4.tcp_keepalive_intvl: "10"
+    net.ipv4.tcp_keepalive_probes: "6"
+    net.ipv4.tcp_keepalive_time: "30"
+    net.ipv4.tcp_rmem: 4096 87380 16777216
+    net.ipv4.tcp_tw_reuse: "1"
+    net.ipv4.tcp_wmem: 4096 65536 16777216
+    user.max_user_namespaces: "11255"
+    vm.dirty_background_bytes: "134217728"
+    vm.dirty_bytes: "1073741824"
+    vm.max_map_count: "262144"
+    vm.nr_hugepages: "0"
+  sysfs:
+    block.sda.queue.scheduler: mq-deadline
+    block.sdb.queue.scheduler: mq-deadline
+  registries:
+    mirrors:
+      ghcr.io:
+        endpoints:
+          - https://ghcr.io
   features:
     rbac: true
     stableHostname: true
@@ -91,100 +153,73 @@ machine:
     hostDNS:
       enabled: true
       forwardKubeDNSToHost: true
-  nodeLabels:
-    node.kubernetes.io/exclude-from-external-load-balancers: ""
-  install:
-    disk: /dev/sda
-  disks:
-    - device: /dev/sdb
-      partitions:
-        - mountpoint: /var/mnt/storage
+  logging:
+    destinations:
+      - endpoint: tcp://10.98.112.13:5170/
+        format: json_lines
   kernel:
     modules:
-    - name: apex
-    - name: br_netfilter
-      parameters:
-        - nf_conntrack_max=131072
-    - name: nf_conntrack
-    - name: nf_nat
-    - name: xt_conntrack
-    - name: dm_mod
-    - name: drm
-    - name: gasket
-    - name: nbd
-    - name: nvidia
-    - name: nvidia_uvm
-    - name: nvidia_drm
-    - name: nvidia_modeset
-    - name: tun
-    - name: uio_pci_generic
-    - name: vfio_pci
-
-  sysctls:
-    fs.inotify.max_user_instances: "8192"
-    net.core.bpf_jit_harden: "1"
-    net.core.rmem_max: "2500000"
-    net.core.somaxconn: "65535"
-    net.core.wmem_max: "16777216" 
-    net.ipv4.conf.all.arp_announce: "2"
-    net.ipv4.conf.all.arp_ignore: "0"
-    net.ipv4.conf.all.arp_notify: "1"
-    net.ipv4.conf.all.forwarding: "1"
-    net.ipv4.conf.default.arp_ignore: "0"
-    net.ipv4.conf.default.arp_announce: "2"
-    net.ipv4.conf.eth0.arp_ignore: "0"
-    net.ipv4.conf.eth0.arp_announce: "2"
-    net.ipv4.conf.wg0.rp_filter: "2"
-    net.ipv4.tcp_fin_timeout: "15"
-    net.ipv4.tcp_keepalive_time: "30"
-    net.ipv4.tcp_keepalive_intvl: "10"
-    net.ipv4.tcp_keepalive_probes: "6"
-    net.ipv4.tcp_rmem: "4096 87380 16777216"
-    net.ipv4.tcp_tw_reuse: "1"
-    net.ipv4.tcp_wmem: "4096 65536 16777216"
-    user.max_user_namespaces: "11255"
-    vm.max_map_count: "262144"
-
-  sysfs:
-    block.sda.queue.scheduler: mq-deadline
-    block.sdb.queue.scheduler: mq-deadline
-    
-  time:
-    disabled: false
-    servers:
-      - time.cloudflare.com
-  registries:
-    mirrors:
-      ghcr.io:
-        endpoints:
-          - https://ghcr.io
+      - name: apex
+      - name: br_netfilter
+        parameters:
+          - nf_conntrack_max=131072
+      - name: nf_conntrack
+      - name: nf_nat
+      - name: xt_conntrack
+      - name: dm_mod
+      - name: drm
+      - name: gasket
+      - name: nbd
+      - name: nvidia
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
+      - name: tun
+      - name: uio_pci_generic
+      - name: vfio_pci
+  nodeLabels:
+    node.kubernetes.io/exclude-from-external-load-balancers: ""
 cluster:
-  id: 
-  secret: 
+  id: ""
+  secret: ""
   controlPlane:
     endpoint: https://talos.hosted.fail:6443
     localAPIServerPort: 6443
   clusterName: talos
   network:
+    cni:
+      name: none
     dnsDomain: cluster.local
     podSubnets:
       - 10.244.0.0/16
     serviceSubnets:
       - 10.96.0.0/12
-    cni:
-      name: none
-  token: 
-  secretboxEncryptionSecret: 
+  token: ""
+  secretboxEncryptionSecret: ""
   ca:
-    crt: 
-    key: 
+    crt: ""
+    key: ""
   aggregatorCA:
-    crt: 
-    key: 
+    crt: ""
+    key: ""
   serviceAccount:
-    key: 
+    key: ""
   apiServer:
-    image: registry.k8s.io/kube-apiserver:v1.35.1@sha256:011838b85f65454b95a013b2b902dd506789fd07f9abc84e52eb2b6a044cd392
+    image: registry.k8s.io/kube-apiserver:v1.36.3
+    extraArgs:
+      audit-webhook-config-file: /etc/kubernetes/audit-webhook/webhook.yaml
+      audit-webhook-mode: batch
+      default-not-ready-toleration-seconds: "300"
+      default-unreachable-toleration-seconds: "300"
+      feature-gates: UserNamespacesSupport=true
+      max-mutating-requests-inflight: "25"
+      max-requests-inflight: "50"
+      shutdown-delay-duration: 0s
+      watch-cache-sizes: events#100,pods#1000
+    extraVolumes:
+      - hostPath: /var/lib/kube-apiserver-audit
+        mountPath: /etc/kubernetes/audit-webhook
+        readonly: true
     certSANs:
       - 10.0.0.250
       - 127.0.0.1
@@ -209,31 +244,88 @@ cluster:
     auditPolicy:
       apiVersion: audit.k8s.io/v1
       kind: Policy
+      omitStages:
+        - RequestReceived
       rules:
+        - level: None
+          users:
+            - system:apiserver
+            - system:kube-scheduler
+            - system:kube-controller-manager
+        - level: None
+          userGroups:
+            - system:nodes
+        - level: None
+          resources:
+            - group: coordination.k8s.io
+              resources:
+                - leases
+        - level: None
+          resources:
+            - group: autoscaling.k8s.io
+              resources:
+                - verticalpodautoscalers
+                - verticalpodautoscalercheckpoints
         - level: Metadata
-    extraArgs:
-      default-not-ready-toleration-seconds: "300"
-      default-unreachable-toleration-seconds: "300"
-      feature-gates: "UserNamespacesSupport=true"
-      max-requests-inflight: "400"
-      max-mutating-requests-inflight: "200"
-      watch-cache-sizes: "events#100,pods#1000"
-
+          resources:
+            - group: ""
+              resources:
+                - secrets
+        - level: None
+          verbs:
+            - get
+            - list
+            - watch
+        - level: RequestResponse
+          resources:
+            - group: ""
+              resources:
+                - pods
+                - pods/exec
+                - pods/attach
+                - pods/portforward
+                - pods/ephemeralcontainers
+                - services
+                - serviceaccounts
+                - configmaps
+                - namespaces
+                - nodes
+            - group: apps
+              resources:
+                - deployments
+            - group: rbac.authorization.k8s.io
+              resources:
+                - roles
+                - rolebindings
+                - clusterroles
+                - clusterrolebindings
+            - group: networking.k8s.io
+              resources:
+                - ingresses
+        - level: Metadata
   controllerManager:
-    image: registry.k8s.io/kube-controller-manager:v1.35.1@sha256:9fb295baa9d68543d7bbecc23e16fcdf85c8c06680f91e628535aa6fbe180dbd
+    image: registry.k8s.io/kube-controller-manager:v1.36.3
     extraArgs:
-      kube-api-qps: "100"
-      kube-api-burst: "150"
       concurrent-deployment-syncs: "3"
       concurrent-replicaset-syncs: "3"
       concurrent-statefulset-syncs: "3"
+      kube-api-burst: "50"
+      kube-api-qps: "30"
+      leader-elect-lease-duration: 30s
+      leader-elect-renew-deadline: 20s
+      leader-elect-retry-period: 4s
+      node-monitor-grace-period: 60s
+      terminated-pod-gc-threshold: "20"
   proxy:
     disabled: true
   scheduler:
-    image: registry.k8s.io/kube-scheduler:v1.35.1@sha256:fc251ed4b8a03830bb8f75fb5fe983b3b0b5cc15a9c066d8f6c5d2e547deece8
+    image: registry.k8s.io/kube-scheduler:v1.36.3
     extraArgs:
-      kube-api-qps: "50"
-      kube-api-burst: "100"
+      kube-api-burst: "40"
+      kube-api-qps: "20"
+      leader-elect-lease-duration: 30s
+      leader-elect-renew-deadline: 20s
+      leader-elect-retry-period: 4s
   discovery:
     enabled: false
     registries:
@@ -241,20 +333,40 @@ cluster:
         disabled: true
       service: {}
   etcd:
-    extraArgs:
-      listen-metrics-urls: http://0.0.0.0:2381
-      heartbeat-interval: "1000"
-      election-timeout: "40000"
-      quota-backend-bytes: "8589934592"
-      max-request-bytes: "10485760"
-      auto-compaction-mode: periodic
-      auto-compaction-retention: "1h"
-      backend-batch-interval: "100ms"
-      backend-batch-limit: "10000"
-      log-level: warn
     ca:
-      crt: 
-      key: 
-  extraManifests: []
-  inlineManifests: []
+      crt: ""
+      key: ""
+    extraArgs:
+      auto-compaction-mode: periodic
+      auto-compaction-retention: 1h
+      backend-batch-interval: 100ms
+      backend-batch-limit: "10000"
+      election-timeout: "40000"
+      heartbeat-interval: "1000"
+      listen-metrics-urls: http://0.0.0.0:2381
+      log-level: warn
+      max-request-bytes: "10485760"
+      quota-backend-bytes: "8589934592"
   allowSchedulingOnControlPlanes: true
+---
+apiVersion: v1alpha1
+kind: ExistingVolumeConfig
+name: storage
+discovery:
+  volumeSelector:
+    match: volume.partition_uuid == "b016c77d-0183-485e-8f82-9de0c73c33df"
+mount:
+  secure: false
+---
+apiVersion: v1alpha1
+kind: KmsgLogConfig
+name: otel-k8s
+url: tcp://10.98.112.13:5170/
+---
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:operator
+  - os:etcd:backup
+allowedKubernetesNamespaces:
+  - kube-system

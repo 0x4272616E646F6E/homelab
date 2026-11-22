@@ -14,6 +14,8 @@ spec:
         name: cloudflare
         namespace: flux-system
   interval: 1h
+  driftDetection:
+    mode: warn
   timeout: 5m
   releaseName: cloudflared
   install:

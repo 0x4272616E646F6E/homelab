@@ -6,6 +6,8 @@ metadata:
   namespace: kube-service
 spec:
   interval: 1h
+  driftDetection:
+    mode: warn
   timeout: 5m
   chart:
     spec:

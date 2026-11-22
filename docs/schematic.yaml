@@ -5,8 +5,8 @@ customization:
             - siderolabs/gvisor
             - siderolabs/i915
             - siderolabs/mei
-            - siderolabs/nvidia-open-gpu-kernel-modules-production
             - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/nvidia-open-gpu-kernel-modules-production
             - siderolabs/qemu-guest-agent
             - siderolabs/util-linux-tools
             - siderolabs/xe

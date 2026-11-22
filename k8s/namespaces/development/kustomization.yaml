@@ -13,4 +13,3 @@ resources:
   - forgejo/
   - forgejo-runner/
   - pr-agent/
-  - actions-runner-controller/
