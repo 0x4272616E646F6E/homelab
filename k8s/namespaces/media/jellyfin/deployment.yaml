@@ -62,12 +62,14 @@ spec:
               ephemeral-storage: "1Gi"
             limits:
               cpu: "4000m"
-              memory: "8192Mi"
+              memory: "14336Mi"
               gpu.intel.com/xe: "1"
               ephemeral-storage: "20Gi"
           volumeMounts:
             - name: config
               mountPath: /config
+            - name: transcodes
+              mountPath: /config/cache/transcodes
             - name: media
               mountPath: /data
               subPath: media
@@ -75,6 +77,10 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: jellyfin-config
+        - name: transcodes
+          emptyDir:
+            medium: Memory
+            sizeLimit: 6Gi
         - name: media
           persistentVolumeClaim:
             claimName: media

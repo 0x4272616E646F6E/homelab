@@ -23,6 +23,16 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: gpu-operator
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --leader-lease-renew-deadline=50s
   values:
     # Drivers and container toolkit are provided by Talos system extensions
     # (nvidia-open-gpu-kernel-modules-production, nvidia-container-toolkit-production).

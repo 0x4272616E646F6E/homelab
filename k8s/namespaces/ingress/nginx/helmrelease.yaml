@@ -22,6 +22,22 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: nginx-gateway-fabric
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --leader-election-lease-duration=60s
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --leader-election-renew-deadline=50s
+              - op: add
+                path: /spec/template/spec/containers/0/args/-
+                value: --leader-election-retry-period=5s
   valuesFrom:
   - kind: ConfigMap
     name: nginx-gateway-fabric-config-map

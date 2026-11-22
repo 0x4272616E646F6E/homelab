@@ -18,4 +18,4 @@ resources:
   - metrics-server/
   # talos-debug is a privileged host-root debug pod; enable only while debugging
   # - talos-debug/
-  # - maintenance/
+  - maintenance/

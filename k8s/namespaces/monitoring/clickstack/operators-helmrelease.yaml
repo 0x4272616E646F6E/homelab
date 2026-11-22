@@ -26,7 +26,6 @@ spec:
     clickhouse-operator:
       manager:
         args:
-          - --leader-elect
           - --zap-devel=false
   install:
     crds: CreateReplace
@@ -36,3 +35,14 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: clickstack-operators-clickhouse-operator-controller-manager
+            patch: |
+              - op: replace
+                path: /spec/strategy
+                value:
+                  type: Recreate

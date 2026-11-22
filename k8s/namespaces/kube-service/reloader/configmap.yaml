@@ -34,7 +34,7 @@ data:
       logFormat: "json"
       logLevel: info
       watchGlobally: true
-      enableHA: true
+      enableHA: false
       enablePProf: false
       pprofAddr: ":6060"
       readOnlyRootFileSystem: true
@@ -44,7 +44,7 @@ data:
       enableMetricsByNamespace: false
       deployment:
         dnsConfig: {}
-        replicas: 2
+        replicas: 1
         revisionHistoryLimit: 2
         nodeSelector:
         affinity: {}
