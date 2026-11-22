@@ -42,6 +42,16 @@ data:
         operator: Exists
         effect: NoSchedule
 
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      seccompProfile:
+        type: RuntimeDefault
+
     resources:
       requests:
         cpu: 100m

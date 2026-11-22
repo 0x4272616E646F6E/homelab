@@ -21,8 +21,22 @@ spec:
     spec:
       runtimeClassName: gvisor
       automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: homeassistant
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           # renovate: datasource=docker depName=lscr.io/linuxserver/homeassistant
           image: lscr.io/linuxserver/homeassistant:latest@sha256:9b260b889d67a21d1bef7b260090e03bf17e9b94ea85d5a26627a69a1de73538
           imagePullPolicy: IfNotPresent

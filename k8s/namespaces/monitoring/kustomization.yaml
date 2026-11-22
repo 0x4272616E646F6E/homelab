@@ -10,5 +10,6 @@ components:
 resources:
   - namespace.yaml
   - networkpolicy.yaml
+  - serviceaccount.yaml
   - clickstack/
   - otel-k8s/

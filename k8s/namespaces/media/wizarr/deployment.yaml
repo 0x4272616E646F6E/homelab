@@ -25,8 +25,16 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
       containers:
         - name: wizarr
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           # renovate: datasource=docker depName=ghcr.io/wizarrrr/wizarr
           image: ghcr.io/wizarrrr/wizarr:latest@sha256:08f2c6de534ec7d36d39a4f55b7c5c379021ca881dc519c702aad0ddafbdc67a
           imagePullPolicy: IfNotPresent

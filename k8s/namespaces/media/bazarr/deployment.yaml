@@ -64,15 +64,16 @@ spec:
             - name: PGID
               value: "1000"
           securityContext:
-            runAsNonRoot: false
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
             capabilities:
               drop:
-                - NET_RAW
-                - MKNOD
-                - AUDIT_WRITE
-                - SETFCAP
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           startupProbe:
             tcpSocket:
               port: 6767

@@ -21,8 +21,13 @@ spec:
     spec:
       runtimeClassName: gvisor
       automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: redbot
+          securityContext:
+            allowPrivilegeEscalation: false
           # renovate: datasource=docker depName=docker.io/phasecorex/red-discordbot
           image: docker.io/phasecorex/red-discordbot:core@sha256:693cac07c2334462de77d063b0a0dd5ad2e784deb9827f994d1c1d0c254f667b
           imagePullPolicy: IfNotPresent

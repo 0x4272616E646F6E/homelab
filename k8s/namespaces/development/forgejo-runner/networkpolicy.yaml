@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: forgejo-runner
   namespace: development
@@ -7,12 +7,9 @@ metadata:
     app.kubernetes.io/name: forgejo-runner
     app.kubernetes.io/managed-by: flux
 spec:
-  podSelector:
+  endpointSelector:
     matchLabels:
       app.kubernetes.io/name: forgejo-runner
       app.kubernetes.io/managed-by: flux
-  policyTypes:
-    - Ingress
-    - Egress
-  egress:
+  ingress:
     - {}

@@ -29,8 +29,13 @@ spec:
     spec:
       runtimeClassName: gvisor
       automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: forgejo
+          securityContext:
+            allowPrivilegeEscalation: false
           # renovate: datasource=docker depName=codeberg.org/forgejo/forgejo
           image: codeberg.org/forgejo/forgejo:17@sha256:879f4f10a98e3e167b32cde5f7ae3af0163d50bfacf567559a27a0e95a95670c
           imagePullPolicy: IfNotPresent

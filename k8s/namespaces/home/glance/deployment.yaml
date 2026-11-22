@@ -22,8 +22,16 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
       containers:
         - name: glance
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           # renovate: datasource=docker depName=docker.io/glanceapp/glance
           image: docker.io/glanceapp/glance:latest@sha256:4d7445bc7971836858ffddee5d7501f1efbabb6e694a45b1dde1a789bb1943bb
           imagePullPolicy: IfNotPresent

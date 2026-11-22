@@ -45,6 +45,9 @@ spec:
           - name: ndots
             value: "5"
       automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       initContainers:
         - name: init-qb
           # renovate: datasource=docker depName=docker.io/busybox
@@ -67,6 +70,7 @@ spec:
               rm -f /config/qBittorrent/lockfile /config/qBittorrent/ipc-socket
           securityContext:
             runAsUser: 0
+            allowPrivilegeEscalation: false
           resources:
             requests:
               cpu: "100m"
@@ -83,6 +87,17 @@ spec:
               mountPath: /config
       containers:
         - name: qbittorrent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
           # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest@sha256:afed7399d0f336ee22d6d011b3c8c50a44e3810f0af6e3c4083d79e566f1677a
           imagePullPolicy: IfNotPresent
@@ -157,6 +172,7 @@ spec:
               value: "/run/protonvpn-forwarded-port"
           securityContext:
             runAsUser: 0
+            allowPrivilegeEscalation: false
           resources:
             requests:
               cpu: "100m"

@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: litellm
   namespace: inference
@@ -7,45 +7,49 @@ metadata:
     app.kubernetes.io/name: litellm
     app.kubernetes.io/managed-by: flux
 spec:
-  podSelector:
+  endpointSelector:
     matchLabels:
       app.kubernetes.io/name: litellm
       app.kubernetes.io/managed-by: flux
-  policyTypes:
-    - Ingress
-    - Egress
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: ingress
-      ports:
-        - port: 4000
-          protocol: TCP
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: mem0
-      ports:
-        - port: 4000
-          protocol: TCP
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: open-webui
-      ports:
-        - port: 4000
-          protocol: TCP
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: development
-    - from:
-        - podSelector:
-            matchLabels:
-              app.kubernetes.io/name: homeassistant
-      ports:
-        - port: 4000
-          protocol: TCP
-  egress:
-    - {}
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: ingress
+      authentication:
+        mode: required
+      toPorts:
+        - ports:
+            - port: "4000"
+              protocol: TCP
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: mem0
+      authentication:
+        mode: required
+      toPorts:
+        - ports:
+            - port: "4000"
+              protocol: TCP
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: open-webui
+      authentication:
+        mode: required
+      toPorts:
+        - ports:
+            - port: "4000"
+              protocol: TCP
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: development
+      authentication:
+        mode: required
+    - fromEndpoints:
+        - matchLabels:
+            app.kubernetes.io/name: homeassistant
+      authentication:
+        mode: required
+      toPorts:
+        - ports:
+            - port: "4000"
+              protocol: TCP

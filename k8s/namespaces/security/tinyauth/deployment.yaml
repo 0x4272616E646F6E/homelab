@@ -84,10 +84,7 @@ spec:
             readOnlyRootFilesystem: false
             capabilities:
               drop:
-                - NET_RAW
-                - MKNOD
-                - AUDIT_WRITE
-                - SETFCAP
+                - ALL
           startupProbe:
             tcpSocket:
               port: 3000

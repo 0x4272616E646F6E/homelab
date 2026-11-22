@@ -55,6 +55,13 @@ spec:
               - op: add
                 path: /spec/template/spec/automountServiceAccountToken
                 value: false
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext
+                value:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
           - target:
               kind: Deployment
               name: clickstack-otel-collector
@@ -62,6 +69,13 @@ spec:
               - op: add
                 path: /spec/template/spec/runtimeClassName
                 value: gvisor
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext
+                value:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop:
+                      - ALL
   valuesFrom:
   - kind: ConfigMap
     name: clickstack-config-map

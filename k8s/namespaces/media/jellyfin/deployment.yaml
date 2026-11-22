@@ -22,9 +22,23 @@ spec:
       securityContext:
         supplementalGroups:
           - 44 
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       containers:
         - name: jellyfin
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
+                - KILL
           # renovate: datasource=docker depName=lscr.io/linuxserver/jellyfin
           image: lscr.io/linuxserver/jellyfin:latest@sha256:b10044530553b2506f06279bf0b5223f9534f434f87a277da4b8fa8ac386cb58
           imagePullPolicy: IfNotPresent

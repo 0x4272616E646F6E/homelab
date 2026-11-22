@@ -29,10 +29,24 @@ spec:
       securityContext:
         supplementalGroups:
           - 44
+        seccompProfile:
+          type: RuntimeDefault
       automountServiceAccountToken: false
       priorityClassName: homelab-low
       containers:
         - name: tdarr
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - SETGID
+                - SETUID
+                - KILL
           # renovate: datasource=docker depName=ghcr.io/haveagitgat/tdarr
           image: ghcr.io/haveagitgat/tdarr:latest@sha256:84743e5ae433a5b49cb463b2dff2679eb02f0cac24fb88c830f49bf8aa9f1c04
           imagePullPolicy: IfNotPresent

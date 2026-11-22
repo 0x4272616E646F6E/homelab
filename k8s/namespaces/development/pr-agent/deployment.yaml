@@ -33,8 +33,16 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
       containers:
         - name: pr-agent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           # renovate: datasource=docker depName=docker.io/pragent/pr-agent
           image: docker.io/pragent/pr-agent:gitea_app@sha256:cb793134df124c97c8b7c41f67469af1051054d2274b7975937c7c5d322e1d6a
           imagePullPolicy: IfNotPresent
