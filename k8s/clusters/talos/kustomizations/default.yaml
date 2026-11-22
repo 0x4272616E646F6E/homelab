@@ -4,7 +4,8 @@ metadata:
   name: default
   namespace: flux-system
 spec:
-  interval: 4m
+  interval: 30m
+  retryInterval: 2m
   path: "./k8s/namespaces/default"
   prune: true
   sourceRef:
@@ -17,3 +18,10 @@ spec:
       name: sops-age
   dependsOn:
     - name: kube-system
+  patches:
+    - target:
+        kind: Deployment
+      patch: |
+        - op: add
+          path: /spec/revisionHistoryLimit
+          value: 2

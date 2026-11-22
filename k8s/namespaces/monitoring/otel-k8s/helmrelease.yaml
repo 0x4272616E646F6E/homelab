@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: opentelemetry
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 10m
   releaseName: otel-k8s
   dependsOn:
@@ -25,6 +25,15 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
   valuesFrom:
   - kind: ConfigMap
     name: otel-k8s-config-map

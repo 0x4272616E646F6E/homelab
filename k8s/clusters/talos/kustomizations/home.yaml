@@ -4,7 +4,8 @@ metadata:
   name: home
   namespace: flux-system
 spec:
-  interval: 4m
+  interval: 30m
+  retryInterval: 2m
   path: "./k8s/namespaces/home"
   prune: true
   sourceRef:
@@ -18,3 +19,10 @@ spec:
   dependsOn:
     - name: kube-system
     - name: ingress
+  patches:
+    - target:
+        kind: Deployment
+      patch: |
+        - op: add
+          path: /spec/revisionHistoryLimit
+          value: 2

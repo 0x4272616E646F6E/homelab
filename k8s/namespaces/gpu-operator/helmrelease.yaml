@@ -28,6 +28,12 @@ spec:
         patches:
           - target:
               kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
+          - target:
+              kind: Deployment
               name: gpu-operator
             patch: |
               - op: add

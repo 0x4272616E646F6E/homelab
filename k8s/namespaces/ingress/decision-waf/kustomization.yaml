@@ -21,6 +21,7 @@ patches:
         replicas: 1
         template:
           spec:
+            priorityClassName: homelab-critical
             containers:
               - name: decision-waf
                 env:

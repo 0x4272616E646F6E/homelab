@@ -120,7 +120,10 @@ data:
           type: "Unconfined"
       podAnnotations: {}
       podLabels: {}
-      resources: {}
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
 
       initResources: {}
       securityContext:
@@ -195,7 +198,7 @@ data:
         leaseRenewDeadline: 30s
         leaseRetryPeriod: 10s
       l2podAnnouncements:
-        enabled: true
+        enabled: false
         interfacePattern: "eth0"
       bgpControlPlane:
         enabled: false
@@ -506,7 +509,10 @@ data:
             digest: ""
             useDigest: false
             pullPolicy: "IfNotPresent"
-          resources: {}
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
           replicas: 1
           affinity:
             podAffinity:
@@ -849,7 +855,10 @@ data:
             type: "Unconfined"
         podAnnotations: {}
         podLabels: {}
-        resources: {}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
         startupProbe:
           failureThreshold: 105
           periodSeconds: 2
@@ -1007,7 +1016,10 @@ data:
           enabled: false
           minAvailable: null
           maxUnavailable: 1
-        resources: {}
+        resources:
+          requests:
+            cpu: 25m
+            memory: 128Mi
         securityContext: {}
         endpointGCInterval: "5m0s"
         nodeGCInterval: "5m0s"

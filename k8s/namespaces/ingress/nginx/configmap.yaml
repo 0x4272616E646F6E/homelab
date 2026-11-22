@@ -46,6 +46,9 @@ data:
         - type: JSONPatch
           value:
             - op: add
+              path: /spec/template/spec/priorityClassName
+              value: homelab-critical
+            - op: add
               path: /spec/template/spec/volumes/-
               value:
                 name: decision-waf-module

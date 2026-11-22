@@ -8,6 +8,10 @@ data:
     # Local Path Provisioner Configuration - Only Custom Values
     # Chart defaults are used for all other settings
 
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
     storageClass:
       create: false
     nodePathMap:

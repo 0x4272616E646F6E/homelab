@@ -25,6 +25,7 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      priorityClassName: homelab-critical
       containers:
         - name: vaultwarden
           # renovate: datasource=docker depName=docker.io/vaultwarden/server

@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: actions-runner-controller
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: actions-runner-controller
   install:
@@ -24,6 +24,15 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
   valuesFrom:
   - kind: ConfigMap
     name: actions-runner-controller-config-map

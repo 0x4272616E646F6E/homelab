@@ -9,6 +9,7 @@ components:
   - ../../components/nginx-filters
 resources:
   - runtimeclass.yaml
+  - priorityclass.yaml
   - local-path-provisioner/
   - cilium/
   - coredns/

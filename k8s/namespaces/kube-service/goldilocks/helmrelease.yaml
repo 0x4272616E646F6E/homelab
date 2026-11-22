@@ -5,7 +5,7 @@ metadata:
   name: goldilocks
   namespace: kube-service
 spec:
-  interval: 15m
+  interval: 1h
   timeout: 5m
   chart:
     spec:
@@ -27,6 +27,12 @@ spec:
   postRenderers:
     - kustomize:
         patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
           - target:
               kind: Deployment
               name: goldilocks-dashboard

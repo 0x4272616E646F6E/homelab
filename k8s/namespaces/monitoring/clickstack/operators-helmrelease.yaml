@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: clickstack
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 10m
   releaseName: clickstack-operators
   values:
@@ -38,6 +38,12 @@ spec:
   postRenderers:
     - kustomize:
         patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
           - target:
               kind: Deployment
               name: clickstack-operators-clickhouse-operator-controller-manager

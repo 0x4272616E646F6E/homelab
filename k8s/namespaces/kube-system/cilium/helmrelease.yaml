@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: cilium
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: cilium
   install:
@@ -35,6 +35,12 @@ spec:
                 name: spire-bundle
                 annotations:
                   reloader.stakater.com/ignore: "true"
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
           - target:
               kind: DaemonSet
               name: cilium

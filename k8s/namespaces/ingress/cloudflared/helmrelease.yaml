@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: cloudflare
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: cloudflared
   install:
@@ -27,8 +27,17 @@ spec:
         patches:
           - target:
               kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
+          - target:
+              kind: Deployment
               name: cloudflared-cloudflare-tunnel-remote
             patch: |
+              - op: add
+                path: /spec/template/spec/priorityClassName
+                value: homelab-critical
               - op: add
                 path: /spec/template/spec/runtimeClassName
                 value: gvisor

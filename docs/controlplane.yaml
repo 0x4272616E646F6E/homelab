@@ -144,7 +144,6 @@ machine:
     net.ipv4.tcp_wmem: "4096 65536 16777216"
     user.max_user_namespaces: "11255"
     vm.max_map_count: "262144"
-    vm.nr_hugepages: "1024"
 
   sysfs:
     block.sda.queue.scheduler: mq-deadline
@@ -236,7 +235,7 @@ cluster:
       kube-api-qps: "50"
       kube-api-burst: "100"
   discovery:
-    enabled: true
+    enabled: false
     registries:
       kubernetes:
         disabled: true

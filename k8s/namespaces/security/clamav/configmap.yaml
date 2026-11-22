@@ -143,14 +143,16 @@ data:
     echo "Files to scan: $(wc -l < "$SCAN_LIST")"
     echo "Skipped, >=100M so beyond clamd's MaxFileSize: $SKIPPED"
 
+    SCAN_LOG=/tmp/scan.log
     clamdscan \
       --config-file=/tmp/clamd-local.conf \
       --multiscan \
       --stream \
       --infected \
       --copy="$QUARANTINE_DIR" \
-      --file-list="$SCAN_LIST" || EXIT_CODE=$?
-    
+      --file-list="$SCAN_LIST" > "$SCAN_LOG" 2>&1 || EXIT_CODE=$?
+    cat "$SCAN_LOG"
+
     echo ""
     echo "=== Scan Summary ==="
     echo "Exit code: ${EXIT_CODE:-0}"
@@ -165,9 +167,17 @@ data:
     echo "=== ClamAV Cluster Scan Completed: $(date) ==="
 
     # clamdscan exit codes: 0 = clean, 1 = infected found, 2 = error.
+    ACCESS_ERRORS=$(grep -c "^ERROR: Can't access file" "$SCAN_LOG" || true)
+    OTHER_ERRORS=$(grep '^ERROR:' "$SCAN_LOG" | grep -vc "Can't access file" || true)
     case "${EXIT_CODE:-0}" in
       0) echo "RESULT: clean"; exit 0 ;;
       1) echo "RESULT: infected files found - review $QUARANTINE_DIR"; exit 0 ;;
+      2)
+        if [ "$ACCESS_ERRORS" -gt 0 ] && [ "$OTHER_ERRORS" -eq 0 ]; then
+          echo "RESULT: completed, $ACCESS_ERRORS files were inaccessible during the scan"
+          exit 0
+        fi
+        echo "RESULT: clamdscan error (exit 2, $OTHER_ERRORS non-access errors)"; exit 2 ;;
       *) echo "RESULT: clamdscan error (exit ${EXIT_CODE})"; exit "${EXIT_CODE}" ;;
     esac
 

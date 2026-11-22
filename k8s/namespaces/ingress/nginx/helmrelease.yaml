@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: nginx-gateway-fabric
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: nginx-gateway-fabric
   install:
@@ -27,8 +27,17 @@ spec:
         patches:
           - target:
               kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
+          - target:
+              kind: Deployment
               name: nginx-gateway-fabric
             patch: |
+              - op: add
+                path: /spec/template/spec/priorityClassName
+                value: homelab-critical
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --leader-election-lease-duration=60s

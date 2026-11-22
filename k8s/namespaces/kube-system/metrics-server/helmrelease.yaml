@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: metrics-server
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: metrics-server
   install:
@@ -22,6 +22,15 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
   valuesFrom:
   - kind: ConfigMap
     name: metrics-server-config-map

@@ -25,6 +25,7 @@ spec:
           runtimeClassName: gvisor
           automountServiceAccountToken: false
           restartPolicy: OnFailure
+          priorityClassName: homelab-low
           containers:
             - name: freshclam
               # renovate: datasource=docker depName=clamav/clamav

@@ -4,7 +4,8 @@ metadata:
   name: media
   namespace: flux-system
 spec:
-  interval: 4m
+  interval: 30m
+  retryInterval: 2m
   path: "./k8s/namespaces/media"
   prune: true
   sourceRef:
@@ -19,3 +20,10 @@ spec:
     - name: kube-system
     - name: kube-service
     - name: ingress
+  patches:
+    - target:
+        kind: Deployment
+      patch: |
+        - op: add
+          path: /spec/revisionHistoryLimit
+          value: 2

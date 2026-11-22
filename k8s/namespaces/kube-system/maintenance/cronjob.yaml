@@ -2,6 +2,15 @@
 apiVersion: talos.dev/v1alpha1
 kind: ServiceAccount
 metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  roles:
+    - os:etcd:backup
+---
+apiVersion: talos.dev/v1alpha1
+kind: ServiceAccount
+metadata:
   name: etcd-maintenance
   namespace: kube-system
 spec:
@@ -91,7 +100,7 @@ spec:
                 claimName: etcd-backups
             - name: talos-secrets
               secret:
-                secretName: etcd-maintenance
+                secretName: etcd-backup
 ---
 apiVersion: batch/v1
 kind: CronJob

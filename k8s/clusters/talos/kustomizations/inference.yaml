@@ -4,7 +4,8 @@ metadata:
   name: inference
   namespace: flux-system
 spec:
-  interval: 4m
+  interval: 30m
+  retryInterval: 2m
   path: "./k8s/namespaces/inference"
   prune: true
   sourceRef:
@@ -19,3 +20,10 @@ spec:
     - name: kube-system
     - name: ingress
     - name: gpu-operator
+  patches:
+    - target:
+        kind: Deployment
+      patch: |
+        - op: add
+          path: /spec/revisionHistoryLimit
+          value: 2

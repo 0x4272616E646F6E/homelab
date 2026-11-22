@@ -13,7 +13,7 @@ spec:
         kind: HelmRepository
         name: kubelet-csr-approver
         namespace: flux-system
-  interval: 15m
+  interval: 1h
   timeout: 5m
   releaseName: kubelet-csr-approver
   install:
@@ -22,6 +22,15 @@ spec:
   upgrade:
     remediation:
       retries: 3
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+            patch: |
+              - op: add
+                path: /spec/revisionHistoryLimit
+                value: 2
   valuesFrom:
   - kind: ConfigMap
     name: kubelet-csr-approver-config-map

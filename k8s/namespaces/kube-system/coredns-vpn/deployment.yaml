@@ -127,7 +127,7 @@ spec:
               memory: "16Mi"
               ephemeral-storage: "50Mi"
             limits:
-              cpu: "100m"
+              cpu: "500m"
               memory: "64Mi"
               ephemeral-storage: "100Mi"
           volumeMounts:

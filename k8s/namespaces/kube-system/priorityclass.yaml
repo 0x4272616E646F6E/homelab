@@ -1,0 +1,16 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: homelab-critical
+value: 1000000
+globalDefault: false
+description: Ingress path, authentication and the password store.
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: homelab-low
+value: -1000
+preemptionPolicy: Never
+globalDefault: false
+description: Batch and background work that can wait or be evicted first.

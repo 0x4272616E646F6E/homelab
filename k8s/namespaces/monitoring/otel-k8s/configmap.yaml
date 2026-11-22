@@ -47,7 +47,7 @@ data:
         cpu: 100m
         memory: 256Mi
       limits:
-        cpu: 500m
+        cpu: "2"
         memory: 512Mi
 
     annotations:
@@ -55,7 +55,7 @@ data:
         { "containerPolicies": [
         { "containerName": "opentelemetry-collector",
         "minAllowed": { "cpu": "100m", "memory": "256Mi" },
-        "maxAllowed": { "cpu": "500m", "memory": "512Mi" },
+        "maxAllowed": { "cpu": "2", "memory": "512Mi" },
         "controlledValues": "RequestsOnly" } ] }
 
     ports:

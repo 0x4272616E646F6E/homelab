@@ -29,6 +29,8 @@ spec:
       terminationGracePeriodSeconds: 300
       automountServiceAccountToken: false
       securityContext:
+        seccompProfile:
+          type: RuntimeDefault
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
       initContainers:

@@ -4,7 +4,8 @@ metadata:
   name: kube-system
   namespace: flux-system
 spec:
-  interval: 4m
+  interval: 30m
+  retryInterval: 2m
   path: "./k8s/namespaces/kube-system"
   prune: true
   sourceRef:
@@ -15,3 +16,10 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+  patches:
+    - target:
+        kind: Deployment
+      patch: |
+        - op: add
+          path: /spec/revisionHistoryLimit
+          value: 2

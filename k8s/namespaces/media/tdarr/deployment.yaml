@@ -30,6 +30,7 @@ spec:
         supplementalGroups:
           - 44
       automountServiceAccountToken: false
+      priorityClassName: homelab-low
       containers:
         - name: tdarr
           # renovate: datasource=docker depName=ghcr.io/haveagitgat/tdarr

@@ -13,6 +13,15 @@ patches:
       value: |
         /*
         !/k8s/
+    - op: replace
+      path: /spec/interval
+      value: 5m
+- target:
+    kind: Deployment
+  patch: |
+    - op: add
+      path: /spec/revisionHistoryLimit
+      value: 2
 - target:
     kind: Deployment
     name: kustomize-controller
