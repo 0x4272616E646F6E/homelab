@@ -286,7 +286,6 @@ data:
       devices: "eth0,wg0"
       enableRuntimeDeviceDetection: true
       forceDeviceDetection: false
-      egressMasqueradeInterfaces: ""
       enableCiliumEndpointSlice: false
       ciliumEndpointSlice:
         enabled: false
@@ -490,10 +489,13 @@ data:
           enabled: true
           auto:
             enabled: true
-            method: cronJob
+            method: certmanager
             certValidityDuration: 365
             schedule: "0 0 1 */4 *"
-            certManagerIssuerRef: {}
+            certManagerIssuerRef:
+              group: cert-manager.io
+              kind: ClusterIssuer
+              name: selfsigned-intermediate
           server:
             existingSecret: ""
             cert: ""
