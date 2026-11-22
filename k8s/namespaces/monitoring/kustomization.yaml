@@ -9,5 +9,6 @@ components:
   - ../../components/nginx-filters
 resources:
   - namespace.yaml
+  - networkpolicy.yaml
   - clickstack/
   - otel-k8s/

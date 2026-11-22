@@ -6,5 +6,6 @@ labels:
     includeSelectors: false
 resources:
   - namespace.yaml
+  - networkpolicy.yaml
   - configmap.yaml
   - helmrelease.yaml

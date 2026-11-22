@@ -6,6 +6,7 @@ labels:
     includeSelectors: false
 resources:
   - namespace.yaml
+  - networkpolicy.yaml
   - nginx/
   - cloudflared/
   - decision-waf/
