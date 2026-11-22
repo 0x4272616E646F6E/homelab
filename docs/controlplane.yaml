@@ -15,6 +15,7 @@ machine:
       container-log-max-files: "3"
       container-log-max-size: 10Mi
       event-qps: "0"
+      housekeeping-interval: 30s
       kube-api-burst: "80"
       kube-api-qps: "50"
       max-pods: "250"
