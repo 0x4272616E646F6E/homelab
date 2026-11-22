@@ -41,6 +41,9 @@ spec:
                 path: /spec/template/spec/priorityClassName
                 value: homelab-critical
               - op: add
+                path: /spec/template/spec/runtimeClassName
+                value: gvisor
+              - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --leader-election-lease-duration=60s
               - op: add

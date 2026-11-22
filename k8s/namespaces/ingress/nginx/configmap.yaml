@@ -49,6 +49,9 @@ data:
               path: /spec/template/spec/priorityClassName
               value: homelab-critical
             - op: add
+              path: /spec/template/spec/runtimeClassName
+              value: gvisor
+            - op: add
               path: /spec/template/spec/volumes/-
               value:
                 name: decision-waf-module

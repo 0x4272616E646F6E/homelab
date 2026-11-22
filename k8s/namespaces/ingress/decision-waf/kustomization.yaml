@@ -22,6 +22,7 @@ patches:
         template:
           spec:
             priorityClassName: homelab-critical
+            runtimeClassName: gvisor
             containers:
               - name: decision-waf
                 env:

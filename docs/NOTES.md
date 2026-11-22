@@ -250,5 +250,5 @@ These are the runtimes used in this cluster:
 
 - **Container Runtimes**
   - **Default**: `runc`
-  - **Alternatives** `crun` & `youki`
+  - **Sandboxed** `gvisor`
   - **GPU** `nvidia`
