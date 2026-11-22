@@ -59,8 +59,10 @@ spec:
               set -e
               mkdir -p /init/downloads/complete /init/downloads/incomplete
               mkdir -p /init/media/movies /init/media/tvshows
-              chown -R 1000:1000 /init
-              chmod -R 775 /init
+              cd /init
+              chown 1000:1000 . downloads downloads/complete downloads/incomplete media media/movies media/tvshows
+              chmod 775 . downloads downloads/complete downloads/incomplete media media/movies media/tvshows
+              find /init \( ! -user 1000 -o ! -group 1000 \) -exec chown 1000:1000 {} +
               # Remove stale lockfile/IPC socket
               rm -f /config/qBittorrent/lockfile /config/qBittorrent/ipc-socket
           securityContext:

@@ -43,7 +43,8 @@ spec:
             - sh
             - -c
             - |
-              mkdir -p /var/log/shelfmark && chown -R 1000:1000 /var/log/shelfmark
+              mkdir -p /var/log/shelfmark && chown 1000:1000 /var/log/shelfmark
+              find /var/log/shelfmark \( ! -user 1000 -o ! -group 1000 \) -exec chown 1000:1000 {} +
           securityContext:
             runAsUser: 0
             runAsGroup: 0

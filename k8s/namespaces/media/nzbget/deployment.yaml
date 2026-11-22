@@ -54,8 +54,10 @@ spec:
               echo "[init] pre-creating folder tree and fixing ownership"
               mkdir -p /init/downloads/complete /init/downloads/incomplete
               mkdir -p /init/media/movies /init/media/tvshows /init/media/leaving-soon
-              chown -R 1000:1000 /init
-              chmod -R 775 /init
+              cd /init
+              chown 1000:1000 . downloads downloads/complete downloads/incomplete media media/movies media/tvshows media/leaving-soon
+              chmod 775 . downloads downloads/complete downloads/incomplete media media/movies media/tvshows media/leaving-soon
+              find /init \( ! -user 1000 -o ! -group 1000 \) -exec chown 1000:1000 {} +
           securityContext:
             runAsUser: 0
           volumeMounts:

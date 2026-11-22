@@ -41,8 +41,9 @@ spec:
             - sh
             - -c
             - |
-              chown -R 100:101 /var/lib/clamav
-              chmod -R 755 /var/lib/clamav
+              chown 100:101 /var/lib/clamav
+              chmod 755 /var/lib/clamav
+              find /var/lib/clamav \( ! -user 100 -o ! -group 101 \) -exec chown 100:101 {} +
           volumeMounts:
             - name: clamav-data
               mountPath: /var/lib/clamav
