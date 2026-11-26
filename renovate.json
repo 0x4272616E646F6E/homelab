@@ -5,7 +5,9 @@
     ":semanticCommits",
     ":semanticCommitTypeAll(chore)"
   ],
-  "dependencyDashboard": true,
+  "dependencyDashboard": {
+    "enabled": true
+  },
   "minimumReleaseAge": "5 days",
   "internalChecksFilter": "strict",
   "prHourlyLimit": 20,
