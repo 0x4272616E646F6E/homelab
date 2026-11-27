@@ -1,0 +1,310 @@
+{
+  "name": "UniFi Network",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "firewall-blocks",
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Firewall blocks",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] = 'Blocked by Firewall'",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "client-connects",
+      "x": 6,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Client connects",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] LIKE '% Client Connected'",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "protect-events",
+      "x": 12,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Protect events",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['appname'] = 'UniFi Protect'",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "admin-logins",
+      "x": 18,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Admin logins",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] = 'Admin Accessed UniFi OS'",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "events-by-type",
+      "x": 0,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Events by type",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti'",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['cef_name']",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "firewall-blocks-by-policy",
+      "x": 12,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Firewall blocks by policy",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] = 'Blocked by Firewall'",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "extract(LogAttributes['cef_extension'], 'UNIFIpolicyName=(.*?) UNIFIpolicyType=')",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "top-blocked-flows",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Top blocked flows",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "blocks"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] = 'Blocked by Firewall'",
+        "whereLanguage": "sql",
+        "groupBy": "extract(LogAttributes['cef_extension'], 'UNIFIsrcClient(?:Alias|Hostname)=(.*?) UNIFI'), coalesce(nullIf(extract(LogAttributes['cef_extension'], 'UNIFIdstDomain=(\\\\S+)'), ''), nullIf(extract(LogAttributes['cef_extension'], 'UNIFIdstDeviceName=(.*?) UNIFI'), ''), extract(LogAttributes['cef_extension'], ' dst=(\\\\S+)')), concat(extract(LogAttributes['cef_extension'], ' proto=(\\\\S+)'), '/', extract(LogAttributes['cef_extension'], ' dpt=([0-9]+)')), extract(LogAttributes['cef_extension'], 'UNIFIpolicyName=(.*?) UNIFIpolicyType=')",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`blocks` DESC"
+      }
+    },
+    {
+      "id": "client-connects-and-disconnects",
+      "x": 12,
+      "y": 11,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Client connects and disconnects",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "LogAttributes['cef_name'] LIKE '% Connected'",
+            "aggConditionLanguage": "sql",
+            "alias": "connects"
+          },
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "LogAttributes['cef_name'] LIKE '% Disconnected'",
+            "aggConditionLanguage": "sql",
+            "alias": "disconnects"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] LIKE '% Client %onnected'",
+        "whereLanguage": "sql",
+        "groupBy": "extract(LogAttributes['cef_extension'], 'UNIFIclient(?:Alias|Hostname)=(.*?) UNIFI')",
+        "limit": {
+          "limit": 25
+        },
+        "description": "A client with hundreds of connects is flapping.",
+        "orderBy": "`connects` DESC"
+      }
+    },
+    {
+      "id": "protect-events-by-type",
+      "x": 0,
+      "y": 19,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Protect events by type",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['appname'] = 'UniFi Protect'",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['cef_name']",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "device-syslog-by-host",
+      "x": 12,
+      "y": 19,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Device syslog by host",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ScopeName LIKE '%syslogreceiver' AND NOT mapContains(LogAttributes, 'cef_name')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['hostname']",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "recent-firewall-blocks",
+      "x": 0,
+      "y": 26,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Recent firewall blocks",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, extract(LogAttributes['cef_extension'], 'UNIFIsrcClient(?:Alias|Hostname)=(.*?) UNIFI') AS source, coalesce(nullIf(extract(LogAttributes['cef_extension'], 'UNIFIdstDomain=(\\\\S+)'), ''), nullIf(extract(LogAttributes['cef_extension'], 'UNIFIdstDeviceName=(.*?) UNIFI'), ''), extract(LogAttributes['cef_extension'], ' dst=(\\\\S+)')) AS destination, concat(extract(LogAttributes['cef_extension'], ' proto=(\\\\S+)'), '/', extract(LogAttributes['cef_extension'], ' dpt=([0-9]+)')) AS port, extract(LogAttributes['cef_extension'], 'UNIFIpolicyName=(.*?) UNIFIpolicyType=') AS policy",
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['cef_name'] = 'Blocked by Firewall'",
+        "whereLanguage": "sql"
+      }
+    },
+    {
+      "id": "recent-unifi-os-and-protect-events",
+      "x": 0,
+      "y": 35,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Recent UniFi OS and Protect events",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, LogAttributes['appname'] AS app, LogAttributes['cef_name'] AS event, LogAttributes['message'] AS message",
+        "where": "LogAttributes['cef_vendor'] = 'Ubiquiti' AND LogAttributes['appname'] != 'UniFi Network'",
+        "whereLanguage": "sql"
+      }
+    }
+  ]
+}

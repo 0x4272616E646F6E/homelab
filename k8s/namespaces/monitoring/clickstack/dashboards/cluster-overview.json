@@ -1,0 +1,518 @@
+{
+  "name": "Cluster Overview",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "node-cpu",
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Node CPU",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.cpu.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 2,
+          "unit": " cores"
+        }
+      }
+    },
+    {
+      "id": "node-memory-in-use",
+      "x": 6,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Node memory in use",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.memory.working_set",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        }
+      }
+    },
+    {
+      "id": "node-disk-in-use",
+      "x": 12,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Node disk in use",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.filesystem.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        }
+      }
+    },
+    {
+      "id": "load-average-1m",
+      "x": 18,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Load average (1m)",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "system.cpu.load_average.1m",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 2
+        }
+      }
+    },
+    {
+      "id": "node-cpu-usage",
+      "x": 0,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Node CPU usage",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.cpu.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "cores used"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 2,
+          "unit": " cores"
+        }
+      }
+    },
+    {
+      "id": "load-average",
+      "x": 12,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Load average",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "system.cpu.load_average.1m",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "1m"
+          },
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "system.cpu.load_average.5m",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "5m"
+          },
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "system.cpu.load_average.15m",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "15m"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true
+      }
+    },
+    {
+      "id": "node-memory",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Node memory",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.memory.working_set",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "working set"
+          },
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.memory.available",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "available"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        }
+      }
+    },
+    {
+      "id": "node-filesystem",
+      "x": 12,
+      "y": 11,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Node filesystem",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.filesystem.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "used"
+          },
+          {
+            "aggFn": "avg",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.filesystem.capacity",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "capacity"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        }
+      }
+    },
+    {
+      "id": "cpu-by-namespace",
+      "x": 0,
+      "y": 18,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "CPU by namespace",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.cpu.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.namespace.name']",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 2,
+          "unit": " cores"
+        },
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "memory-by-namespace",
+      "x": 12,
+      "y": 18,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Memory by namespace",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.memory.working_set",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.namespace.name']",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        },
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "node-network-i-o",
+      "x": 0,
+      "y": 25,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Node network I/O",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.node.network.io",
+            "metricType": "sum",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "Attributes['direction']",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        },
+        "description": "Bytes per chart interval, all interfaces."
+      }
+    },
+    {
+      "id": "running-pods-by-namespace",
+      "x": 12,
+      "y": 25,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Running pods by namespace",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.phase",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "Value = 2",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.namespace.name']",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        },
+        "seriesLimit": 20
+      }
+    },
+    {
+      "id": "pods-not-running",
+      "x": 0,
+      "y": 32,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Pods not running",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.phase",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "phase"
+          }
+        ],
+        "where": "Value NOT IN (2, 3)",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], ResourceAttributes['k8s.pod.name']",
+        "limit": {
+          "limit": 25
+        },
+        "description": "Phase 1 = Pending, 4 = Failed, 5 = Unknown. Empty is good.",
+        "orderBy": "`phase` DESC"
+      }
+    },
+    {
+      "id": "container-restarts",
+      "x": 12,
+      "y": 32,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Container restarts",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.container.restarts",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "restarts"
+          }
+        ],
+        "where": "Value > 0",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], ResourceAttributes['k8s.pod.name'], ResourceAttributes['k8s.container.name']",
+        "limit": {
+          "limit": 25
+        },
+        "description": "Restart count since the pod was created.",
+        "orderBy": "`restarts` DESC"
+      }
+    },
+    {
+      "id": "talos-logs-by-service",
+      "x": 0,
+      "y": 39,
+      "w": 24,
+      "h": 7,
+      "config": {
+        "name": "Talos logs by service",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(LogAttributes, 'talos-level')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "ServiceName",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "talos-warnings-and-errors",
+      "x": 0,
+      "y": 46,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Talos warnings and errors",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, ServiceName, SeverityText, Body",
+        "where": "mapContains(LogAttributes, 'talos-level') AND SeverityNumber >= 13",
+        "whereLanguage": "sql"
+      }
+    }
+  ]
+}

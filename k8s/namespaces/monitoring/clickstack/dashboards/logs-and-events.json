@@ -1,0 +1,325 @@
+{
+  "name": "Logs and Events",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "pod-log-lines",
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Pod log lines",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name')",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "error-and-fatal-lines",
+      "x": 6,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Error and fatal lines",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name') AND SeverityNumber >= 17",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "warning-events",
+      "x": 12,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Warning events",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['k8s.resource.name'] = 'events' AND JSONExtractString(LogAttributes['object'], 'type') = 'Warning'",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "services-logging-errors",
+      "x": 18,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Services logging errors",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count_distinct",
+            "valueExpression": "ServiceName",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name') AND SeverityNumber >= 17",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "log-volume-by-service",
+      "x": 0,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Log volume by service",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "ServiceName",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "log-volume-by-level",
+      "x": 12,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Log volume by level",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "multiIf(SeverityNumber >= 21, 'fatal', SeverityNumber >= 17, 'error', SeverityNumber >= 13, 'warn', SeverityNumber >= 9, 'info', 'debug')"
+      }
+    },
+    {
+      "id": "errors-by-service",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Errors by service",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name') AND SeverityNumber >= 17",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "ServiceName",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "noisiest-services",
+      "x": 12,
+      "y": 11,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Noisiest services",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "lines"
+          },
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "SeverityNumber >= 17",
+            "aggConditionLanguage": "sql",
+            "alias": "errors"
+          },
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "SeverityNumber >= 13 AND SeverityNumber < 17",
+            "aggConditionLanguage": "sql",
+            "alias": "warnings"
+          }
+        ],
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name')",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], ServiceName",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`lines` DESC"
+      }
+    },
+    {
+      "id": "warning-events-by-reason",
+      "x": 0,
+      "y": 18,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Warning events by reason",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['k8s.resource.name'] = 'events' AND JSONExtractString(LogAttributes['object'], 'type') = 'Warning'",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "JSONExtractString(LogAttributes['object'], 'reason')",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "warning-events-by-object",
+      "x": 12,
+      "y": 18,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Warning events by object",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "events"
+          }
+        ],
+        "where": "LogAttributes['k8s.resource.name'] = 'events' AND JSONExtractString(LogAttributes['object'], 'type') = 'Warning'",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], JSONExtractString(LogAttributes['object'], 'regarding', 'kind'), JSONExtractString(LogAttributes['object'], 'regarding', 'name'), JSONExtractString(LogAttributes['object'], 'reason')",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`events` DESC"
+      }
+    },
+    {
+      "id": "recent-warning-events",
+      "x": 0,
+      "y": 25,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Recent warning events",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, ResourceAttributes['k8s.namespace.name'] AS namespace, JSONExtractString(LogAttributes['object'], 'regarding', 'kind') AS kind, JSONExtractString(LogAttributes['object'], 'regarding', 'name') AS name, JSONExtractString(LogAttributes['object'], 'reason') AS reason, JSONExtractString(LogAttributes['object'], 'note') AS note",
+        "where": "LogAttributes['k8s.resource.name'] = 'events' AND JSONExtractString(LogAttributes['object'], 'type') = 'Warning'",
+        "whereLanguage": "sql"
+      }
+    },
+    {
+      "id": "recent-error-logs",
+      "x": 0,
+      "y": 34,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Recent error logs",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, ResourceAttributes['k8s.namespace.name'] AS namespace, ServiceName, SeverityText, Body",
+        "where": "mapContains(ResourceAttributes, 'k8s.pod.name') AND SeverityNumber >= 17",
+        "whereLanguage": "sql"
+      }
+    }
+  ],
+  "filters": [
+    {
+      "id": "namespace",
+      "type": "QUERY_EXPRESSION",
+      "name": "Namespace",
+      "expression": "ResourceAttributes['k8s.namespace.name']",
+      "source": "6a77f61f0befe6a492bcf6ec",
+      "whereLanguage": "sql"
+    }
+  ]
+}

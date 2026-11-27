@@ -17,6 +17,19 @@ data:
           limits:
             cpu: 500m
             memory: 1Gi
+        env:
+          - name: DASHBOARD_PROVISIONER_DIR
+            value: /dashboards
+          - name: DASHBOARD_PROVISIONER_ALL_TEAMS
+            value: "true"
+        volumes:
+          - name: dashboards
+            configMap:
+              name: clickstack-dashboards
+        volumeMounts:
+          - name: dashboards
+            mountPath: /dashboards
+            readOnly: true
     clickhouse:
       keeper:
         spec:

@@ -1,0 +1,311 @@
+{
+  "name": "Ingress",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "requests",
+      "x": 0,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Requests",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "4xx-responses",
+      "x": 6,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "4xx responses",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != '' AND toUInt16OrZero(LogAttributes['status_code']) BETWEEN 400 AND 499",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "5xx-responses",
+      "x": 12,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "5xx responses",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != '' AND toUInt16OrZero(LogAttributes['status_code']) >= 500",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "bytes-sent",
+      "x": 18,
+      "y": 0,
+      "w": 6,
+      "h": 4,
+      "config": {
+        "name": "Bytes sent",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "toUInt64OrZero(LogAttributes['response_bytes'])",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        }
+      }
+    },
+    {
+      "id": "requests-by-status-class",
+      "x": 0,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Requests by status class",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "concat(substring(LogAttributes['status_code'], 1, 1), 'xx')"
+      }
+    },
+    {
+      "id": "requests-by-method",
+      "x": 12,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Requests by method",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['method']"
+      }
+    },
+    {
+      "id": "top-paths",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Top paths",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "requests"
+          },
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "toUInt16OrZero(LogAttributes['status_code']) >= 400",
+            "aggConditionLanguage": "sql",
+            "alias": "errors"
+          },
+          {
+            "aggFn": "sum",
+            "valueExpression": "toUInt64OrZero(LogAttributes['response_bytes'])",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "bytes"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['path']",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`requests` DESC"
+      }
+    },
+    {
+      "id": "top-clients",
+      "x": 12,
+      "y": 11,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Top clients",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "requests"
+          },
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "toUInt16OrZero(LogAttributes['status_code']) >= 400",
+            "aggConditionLanguage": "sql",
+            "alias": "errors"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['client_ip']",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`requests` DESC"
+      }
+    },
+    {
+      "id": "top-user-agents",
+      "x": 0,
+      "y": 19,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Top user agents",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "requests"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != ''",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['user_agent']",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`requests` DESC"
+      }
+    },
+    {
+      "id": "errors-by-path-and-status",
+      "x": 12,
+      "y": 19,
+      "w": 12,
+      "h": 8,
+      "config": {
+        "name": "Errors by path and status",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "responses"
+          }
+        ],
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != '' AND toUInt16OrZero(LogAttributes['status_code']) >= 400",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['status_code'], LogAttributes['path']",
+        "limit": {
+          "limit": 25
+        },
+        "orderBy": "`responses` DESC"
+      }
+    },
+    {
+      "id": "recent-error-responses",
+      "x": 0,
+      "y": 27,
+      "w": 24,
+      "h": 9,
+      "config": {
+        "name": "Recent error responses",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, LogAttributes['status_code'], LogAttributes['method'], LogAttributes['path'], LogAttributes['client_ip'], LogAttributes['user_agent']",
+        "where": "ServiceName = 'nginx-gateway-fabric' AND LogAttributes['status_code'] != '' AND toUInt16OrZero(LogAttributes['status_code']) >= 400",
+        "whereLanguage": "sql"
+      }
+    }
+  ]
+}

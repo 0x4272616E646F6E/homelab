@@ -12,3 +12,14 @@ resources:
   - httproute.yaml
   - syslog-service.yaml
   - syslog-routes.yaml
+configMapGenerator:
+  - name: clickstack-dashboards
+    namespace: monitoring
+    options:
+      disableNameSuffixHash: true
+    files:
+      - dashboards/cluster-overview.json
+      - dashboards/workloads.json
+      - dashboards/ingress.json
+      - dashboards/logs-and-events.json
+      - dashboards/unifi-network.json

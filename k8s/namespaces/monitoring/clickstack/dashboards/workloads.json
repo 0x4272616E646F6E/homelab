@@ -1,0 +1,272 @@
+{
+  "name": "Workloads",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "cpu-by-pod",
+      "x": 0,
+      "y": 0,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "CPU by pod",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.cpu.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.pod.name']",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 2,
+          "unit": " cores"
+        },
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "memory-by-pod",
+      "x": 12,
+      "y": 0,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Memory by pod",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.memory.working_set",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.pod.name']",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        },
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "memory-against-requests-and-limits",
+      "x": 0,
+      "y": 7,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "Memory against requests and limits",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.container.memory_limit_utilization",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "of limit",
+            "numberFormat": {
+              "output": "percent",
+              "mantissa": 0
+            }
+          },
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.container.memory_request_utilization",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "of request",
+            "numberFormat": {
+              "output": "percent",
+              "mantissa": 0
+            }
+          },
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "container.memory.working_set",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "working set",
+            "numberFormat": {
+              "output": "byte",
+              "mantissa": 1
+            }
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], ResourceAttributes['k8s.pod.name'], ResourceAttributes['k8s.container.name']",
+        "limit": {
+          "limit": 30
+        },
+        "description": "Sorted by share of the memory limit. Near 100% of limit is an OOM kill waiting to happen.",
+        "orderBy": "`of limit` DESC"
+      }
+    },
+    {
+      "id": "cpu-against-requests-and-limits",
+      "x": 12,
+      "y": 7,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "CPU against requests and limits",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.container.cpu_limit_utilization",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "of limit",
+            "numberFormat": {
+              "output": "percent",
+              "mantissa": 0
+            }
+          },
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.container.cpu_request_utilization",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "of request",
+            "numberFormat": {
+              "output": "percent",
+              "mantissa": 0
+            }
+          },
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "container.cpu.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "cores",
+            "numberFormat": {
+              "output": "number",
+              "mantissa": 2,
+              "unit": " cores"
+            }
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "groupBy": "ResourceAttributes['k8s.namespace.name'], ResourceAttributes['k8s.pod.name'], ResourceAttributes['k8s.container.name']",
+        "limit": {
+          "limit": 30
+        },
+        "description": "Sorted by share of the CPU limit. Sustained 100% of limit means the container is being throttled.",
+        "orderBy": "`of limit` DESC"
+      }
+    },
+    {
+      "id": "network-i-o-by-pod",
+      "x": 0,
+      "y": 16,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Network I/O by pod",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "sum",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.network.io",
+            "metricType": "sum",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.pod.name']",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        },
+        "seriesLimit": 15,
+        "description": "Bytes per chart interval, both directions."
+      }
+    },
+    {
+      "id": "ephemeral-storage-by-pod",
+      "x": 12,
+      "y": 16,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Ephemeral storage by pod",
+        "source": "6a77f61f0befe6a492bcf6f0",
+        "displayType": "line",
+        "select": [
+          {
+            "aggFn": "max",
+            "valueExpression": "Value",
+            "metricName": "k8s.pod.filesystem.usage",
+            "metricType": "gauge",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "alignDateRangeToGranularity": true,
+        "groupBy": "ResourceAttributes['k8s.pod.name']",
+        "numberFormat": {
+          "output": "byte",
+          "mantissa": 1
+        },
+        "seriesLimit": 15
+      }
+    }
+  ],
+  "filters": [
+    {
+      "id": "namespace",
+      "type": "QUERY_EXPRESSION",
+      "name": "Namespace",
+      "expression": "ResourceAttributes['k8s.namespace.name']",
+      "source": "6a77f61f0befe6a492bcf6f0",
+      "whereLanguage": "sql",
+      "sourceMetricType": "gauge"
+    }
+  ]
+}
