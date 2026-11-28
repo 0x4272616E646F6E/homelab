@@ -1,0 +1,292 @@
+{
+  "name": "UniFi DNS",
+  "tags": [
+    "homelab"
+  ],
+  "tiles": [
+    {
+      "id": "blocked-queries",
+      "x": 0,
+      "y": 0,
+      "w": 8,
+      "h": 4,
+      "config": {
+        "name": "Blocked queries",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "clients-with-blocks",
+      "x": 8,
+      "y": 0,
+      "w": 8,
+      "h": 4,
+      "config": {
+        "name": "Clients with blocks",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count_distinct",
+            "valueExpression": "LogAttributes['ip']",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "blocked-domains",
+      "x": 16,
+      "y": 0,
+      "w": 8,
+      "h": 4,
+      "config": {
+        "name": "Blocked domains",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "number",
+        "select": [
+          {
+            "aggFn": "count_distinct",
+            "valueExpression": "LogAttributes['domain']",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "numberFormat": {
+          "output": "number",
+          "mantissa": 0,
+          "thousandSeparated": true
+        }
+      }
+    },
+    {
+      "id": "blocked-queries-by-client",
+      "x": 0,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Blocked queries by client",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['ip']",
+        "seriesLimit": 15
+      }
+    },
+    {
+      "id": "blocked-queries-by-domain",
+      "x": 12,
+      "y": 4,
+      "w": 12,
+      "h": 7,
+      "config": {
+        "name": "Blocked queries by domain",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "stacked_bar",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "granularity": "auto",
+        "groupBy": "LogAttributes['domain']",
+        "seriesLimit": 10
+      }
+    },
+    {
+      "id": "top-clients",
+      "x": 0,
+      "y": 11,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "Top clients",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "queries"
+          },
+          {
+            "aggFn": "count_distinct",
+            "valueExpression": "LogAttributes['domain']",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "domains"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['ip'], LogAttributes['mac']",
+        "limit": {
+          "limit": 50
+        },
+        "description": "Match the IP or MAC against the DHCP leases table for a hostname.",
+        "orderBy": "`queries` DESC"
+      }
+    },
+    {
+      "id": "top-blocked-domains",
+      "x": 12,
+      "y": 11,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "Top blocked domains",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "queries"
+          },
+          {
+            "aggFn": "count_distinct",
+            "valueExpression": "LogAttributes['ip']",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "clients"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['domain'], LogAttributes['category']",
+        "limit": {
+          "limit": 50
+        },
+        "orderBy": "`queries` DESC"
+      }
+    },
+    {
+      "id": "top-client-and-domain-pairs",
+      "x": 0,
+      "y": 20,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "Top client and domain pairs",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "queries"
+          }
+        ],
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql",
+        "groupBy": "LogAttributes['ip'], LogAttributes['domain']",
+        "limit": {
+          "limit": 50
+        },
+        "orderBy": "`queries` DESC"
+      }
+    },
+    {
+      "id": "dhcp-leases",
+      "x": 12,
+      "y": 20,
+      "w": 12,
+      "h": 9,
+      "config": {
+        "name": "DHCP leases",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "table",
+        "select": [
+          {
+            "aggFn": "count",
+            "valueExpression": "",
+            "aggCondition": "",
+            "aggConditionLanguage": "sql",
+            "alias": "renewals"
+          }
+        ],
+        "where": "Body LIKE '%dnsmasq-dhcp[%DHCPACK(%'",
+        "whereLanguage": "sql",
+        "groupBy": "extractGroups(Body, 'DHCPACK\\\\(\\\\S+\\\\) (\\\\S+) (\\\\S+) ?(.*)$')[1], extractGroups(Body, 'DHCPACK\\\\(\\\\S+\\\\) (\\\\S+) (\\\\S+) ?(.*)$')[2], extractGroups(Body, 'DHCPACK\\\\(\\\\S+\\\\) (\\\\S+) (\\\\S+) ?(.*)$')[3]",
+        "limit": {
+          "limit": 200
+        },
+        "description": "IP, MAC and hostname from gateway DHCP acknowledgements. Empty while the Client IP filter is set.",
+        "orderBy": "`renewals` DESC"
+      }
+    },
+    {
+      "id": "recent-blocked-queries",
+      "x": 0,
+      "y": 29,
+      "w": 24,
+      "h": 10,
+      "config": {
+        "name": "Recent blocked queries",
+        "source": "6a77f61f0befe6a492bcf6ec",
+        "displayType": "search",
+        "select": "Timestamp, LogAttributes['ip'] AS client, LogAttributes['mac'] AS mac, LogAttributes['domain'] AS domain, LogAttributes['category'] AS category",
+        "where": "LogAttributes['type'] LIKE 'dns%' AND mapContains(LogAttributes, 'domain')",
+        "whereLanguage": "sql"
+      }
+    }
+  ],
+  "filters": [
+    {
+      "id": "client",
+      "type": "QUERY_EXPRESSION",
+      "name": "Client IP",
+      "expression": "LogAttributes['ip']",
+      "source": "6a77f61f0befe6a492bcf6ec",
+      "whereLanguage": "sql"
+    }
+  ]
+}
